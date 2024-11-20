@@ -9,19 +9,30 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "storybook": "turbo storybook",
-    "preview": "turbo preview"
+    "preview": "turbo preview",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.1.0",
-    "@typescript-eslint/parser": "^7.1.0",
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@commitlint/types": "^19.5.0",
     "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
     "prettier": "^3.2.5",
     "turbo": "^2.3.0",
-    "typescript": "5.5.4"
+    "typescript": "5.5.4",
+    "typescript-eslint": "^8.15.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --config ./.prettierrc --write -u"
+    ]
   },
   "packageManager": "pnpm@9.9.0",
   "engines": {
