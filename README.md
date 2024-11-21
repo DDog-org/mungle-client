@@ -7,7 +7,7 @@
 ## 기술 스택
 
 - Turborepo
-- Next.js
+- Next.js, React
 - SCSS Modules
 - Zustand, Tanstack-query
 - Storybook
@@ -20,8 +20,11 @@
 .
 ├── README.md
 ├── apps
+│   ├── admin
+│   ├── daengle
 │   ├── groomer
-│   └── web
+│   ├── storybook
+│   └── vet
 ├── node_modules
 ├── package.json
 ├── packages
@@ -37,8 +40,10 @@
 
 ## 패키지 설명
 
-- `apps/web` 일반 사용자들이 이용하는 서비스입니다.
-- `apps/groomers` 미용사들이 이용하는 서비스입니다.
+- `apps/admin` 관리자 서비스입니다.
+- `apps/daengle` 일반 사용자들이 이용하는 서비스입니다.
+- `apps/groomer` 미용사들이 이용하는 서비스입니다.
+- `apps/vet` 병원이 이용하는 서비스입니다.
 - `packages/eslint-config` 프로젝트 공통으로 사용되는 ESLint 설정 관련 패키지입니다.
 - `packages/typescript-config` 프로젝트 공통으로 사용되는 TypeScript 설정 관련 패키지입니다.
 - `packages/ui` 프로젝트 공통으로 사용되는 디자인 컴포넌트 패키지입니다.
@@ -61,9 +66,26 @@
   pnpm install
   ```
 - 서버를 실행합니다.
-  ```bash
-  pnpm dev
-  ```
+  - 모든 서비스가 각각 다른 포트번호로 실행됩니다.
+    ```bash
+    pnpm dev
+    ```
+  - 관리자 서비스(admin)를 실행합니다.
+    ```bash
+    pnpm admin
+    ```
+  - 사용자 서비스(daengle)를 실행합니다.
+    ```bash
+    pnpm daengle
+    ```
+  - 미용사 서비스(groomer)를 실행합니다.
+    ```bash
+    pnpm groomer
+    ```
+  - 병원 서비스(vet)를 실행합니다.
+    ```bash
+    pnpm vet
+    ```
 
 <br/>
 

@@ -8,9 +8,12 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "storybook": "turbo storybook",
     "preview": "turbo preview",
-    "prepare": "husky"
+    "prepare": "husky",
+    "admin": "turbo dev --filter admin",
+    "daengle": "turbo dev --filter daengle",
+    "groomer": "turbo dev --filter groomer",
+    "vet": "turbo dev --filter vet"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
