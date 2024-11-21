@@ -24,9 +24,11 @@ jobs:
           version: '9.9.0'
 
       - name: 🧁 Install dependencies
+        working-directory: apps/storybook
         run: |
           pnpm install
 
       - name: 🍩 Build and Deploy Storybook
+        working-directory: apps/storybook
         run: |
-          pnpm storybook:deploy
+          pnpm deploy-storybook

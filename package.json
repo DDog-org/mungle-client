@@ -13,8 +13,7 @@
     "admin": "turbo dev --filter admin",
     "daengle": "turbo dev --filter daengle",
     "groomer": "turbo dev --filter groomer",
-    "vet": "turbo dev --filter vet",
-    "storybook:deploy": "turbo run build-storybook --filter=storybook && touch apps/storybook/storybook-static/.nojekyll && gh-pages -d apps/storybook/storybook-static -t true -b deploy-storybook"
+    "vet": "turbo dev --filter vet"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",

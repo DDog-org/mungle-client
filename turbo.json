@@ -7,7 +7,7 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "build:storybook": {
-      "outputs": ["storybook-static/**"]
+      "outputs": ["apps/storybook/storybook-static/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
