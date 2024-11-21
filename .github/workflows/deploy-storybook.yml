@@ -15,7 +15,7 @@ jobs:
 
       - name: 🔧 Configure Git user
         run: |
-          git config --global user.email "actions@github.com"
+          git config --global user.email ""
           git config --global user.name "GitHub Actions"
 
       - name: 🚀 Setup Node.js
@@ -33,9 +33,13 @@ jobs:
         run: |
           pnpm install
 
-      - name: 🍩 Build and Deploy Storybook
+      - name: 🍩 Build Storybook
         working-directory: apps/storybook
         run: |
-          pnpm deploy-storybook
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          pnpm build-storybook
+
+      - name: 💬 Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          publish_dir: apps/storybook/storybook-static
