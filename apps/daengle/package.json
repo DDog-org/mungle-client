@@ -10,7 +10,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@daengle/ui": "workspace:*",
+    "@daengle/design-system": "workspace:*",
     "clsx": "^2.1.1",
     "next": "14.2.10",
     "react": "^18",
