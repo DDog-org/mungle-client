@@ -35,7 +35,7 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --config ./.prettierrc --write -u"
     ]
   },
   "packageManager": "pnpm@9.9.0",
