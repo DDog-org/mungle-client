@@ -3,7 +3,7 @@ name: 🎨 Deploy Storybook to GitHub Pages
 on:
   push:
     branches:
-      - feature/#32
+      - develop
 
 jobs:
   build-and-deploy:
@@ -12,11 +12,6 @@ jobs:
     steps:
       - name: 🔔 Checkout code
         uses: actions/checkout@v3
-
-      - name: 🔧 Configure Git user
-        run: |
-          git config --global user.email ""
-          git config --global user.name "GitHub Actions"
 
       - name: 🚀 Setup Node.js
         uses: actions/setup-node@v3
