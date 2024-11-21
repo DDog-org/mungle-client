@@ -96,7 +96,7 @@ importers:
 
   apps/daengle:
     dependencies:
-      '@daengle/ui':
+      '@daengle/design-system':
         specifier: workspace:*
         version: link:../../packages/ui
       clsx:
