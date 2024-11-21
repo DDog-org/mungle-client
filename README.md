@@ -30,7 +30,7 @@
 ├── packages
 │   ├── eslint-config
 │   ├── typescript-config
-│   └── ui
+│   └── design-system
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
 └── turbo.json
@@ -46,7 +46,7 @@
 - `apps/vet` 병원이 이용하는 서비스입니다.
 - `packages/eslint-config` 프로젝트 공통으로 사용되는 ESLint 설정 관련 패키지입니다.
 - `packages/typescript-config` 프로젝트 공통으로 사용되는 TypeScript 설정 관련 패키지입니다.
-- `packages/ui` 프로젝트 공통으로 사용되는 디자인 컴포넌트 패키지입니다.
+- `packages/design-system` 프로젝트 공통으로 사용되는 디자인 컴포넌트 패키지입니다.
 
 <br/>
 
