@@ -9,6 +9,11 @@
     "generate:component": "turbo gen react-component",
     "check-types": "tsc --noEmit"
   },
+  "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
   "devDependencies": {
     "@daengle/eslint-config": "workspace:*",
     "@daengle/typescript-config": "workspace:*",
@@ -18,9 +23,5 @@
     "@types/react": "18.3.0",
     "@types/react-dom": "18.3.1",
     "typescript": "5.5.4"
-  },
-  "dependencies": {
-    "react": "19.0.0-rc-5c56b873-20241107",
-    "react-dom": "19.0.0-rc-5c56b873-20241107"
   }
 }
