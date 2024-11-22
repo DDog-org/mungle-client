@@ -1,0 +1,21 @@
+name: 🧐 Commit Message Lint
+
+on:
+  pull_request:
+    types: [synchronize, opened, reopened]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git fetch --unshallow
+
+      - name: Check Commit Message
+        run: |
+          bash ${{ github.workspace }}/scripts/check-commit-message.sh
