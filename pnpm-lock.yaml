@@ -63,55 +63,6 @@ importers:
       '@daengle/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@eslint/js':
-        specifier: ^9.13.0
-        version: 9.15.0
-      '@types/react':
-        specifier: ^18.3.12
-        version: 18.3.12
-      '@types/react-dom':
-        specifier: ^18.3.1
-        version: 18.3.1
-      '@vitejs/plugin-react':
-        specifier: ^4.3.3
-        version: 4.3.3(vite@5.4.11(@types/node@20.17.6)(sass@1.81.0)(terser@5.36.0))
-      eslint:
-        specifier: ^9.13.0
-        version: 9.15.0(jiti@1.21.6)
-      eslint-plugin-react-hooks:
-        specifier: ^5.0.0
-        version: 5.0.0(eslint@9.15.0(jiti@1.21.6))
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.14
-        version: 0.4.14(eslint@9.15.0(jiti@1.21.6))
-      globals:
-        specifier: ^15.11.0
-        version: 15.12.0
-      typescript:
-        specifier: ~5.6.2
-        version: 5.6.3
-      typescript-eslint:
-        specifier: ^8.11.0
-        version: 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
-      vite:
-        specifier: ^5.4.10
-        version: 5.4.11(@types/node@20.17.6)(sass@1.81.0)(terser@5.36.0)
-
-  apps/daengle:
-    dependencies:
-      '@daengle/design-system':
-        specifier: workspace:*
-        version: link:../../packages/design-system
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
       next:
         specifier: 14.2.10
         version: 14.2.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)
@@ -121,9 +72,43 @@ importers:
       react-dom:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
-      sass:
-        specifier: ^1.81.0
-        version: 1.81.0
+    devDependencies:
+      '@daengle/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@daengle/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@types/node':
+        specifier: ^20
+        version: 20.17.6
+      '@types/react':
+        specifier: 18.3.1
+        version: 18.3.1
+      '@types/react-dom':
+        specifier: 18.3.0
+        version: 18.3.0
+      eslint-config-next:
+        specifier: 15.0.3
+        version: 15.0.3(eslint@9.15.0(jiti@1.21.6))(typescript@5.5.4)
+      typescript:
+        specifier: 5.5.4
+        version: 5.5.4
+
+  apps/daengle:
+    dependencies:
+      '@daengle/design-system':
+        specifier: workspace:*
+        version: link:../../packages/design-system
+      next:
+        specifier: 14.2.10
+        version: 14.2.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)
+      react:
+        specifier: ^18
+        version: 18.3.1
+      react-dom:
+        specifier: ^18
+        version: 18.3.1(react@18.3.1)
     devDependencies:
       '@daengle/eslint-config':
         specifier: workspace:*
@@ -152,46 +137,37 @@ importers:
       '@daengle/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
+      next:
+        specifier: 14.2.10
+        version: 14.2.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)
       react:
-        specifier: ^18.3.1
+        specifier: ^18
         version: 18.3.1
       react-dom:
-        specifier: ^18.3.1
+        specifier: ^18
         version: 18.3.1(react@18.3.1)
     devDependencies:
-      '@eslint/js':
-        specifier: ^9.13.0
-        version: 9.15.0
+      '@daengle/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@daengle/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@types/node':
+        specifier: ^20
+        version: 20.17.6
       '@types/react':
-        specifier: ^18.3.12
-        version: 18.3.12
-      '@types/react-dom':
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1
-      '@vitejs/plugin-react':
-        specifier: ^4.3.3
-        version: 4.3.3(vite@5.4.11(@types/node@20.17.6)(sass@1.81.0)(terser@5.36.0))
-      eslint:
-        specifier: ^9.13.0
-        version: 9.15.0(jiti@1.21.6)
-      eslint-plugin-react-hooks:
-        specifier: ^5.0.0
-        version: 5.0.0(eslint@9.15.0(jiti@1.21.6))
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.14
-        version: 0.4.14(eslint@9.15.0(jiti@1.21.6))
-      globals:
-        specifier: ^15.11.0
-        version: 15.12.0
+      '@types/react-dom':
+        specifier: 18.3.0
+        version: 18.3.0
+      eslint-config-next:
+        specifier: 15.0.3
+        version: 15.0.3(eslint@9.15.0(jiti@1.21.6))(typescript@5.5.4)
       typescript:
-        specifier: ~5.6.2
-        version: 5.6.3
-      typescript-eslint:
-        specifier: ^8.11.0
-        version: 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
-      vite:
-        specifier: ^5.4.10
-        version: 5.4.11(@types/node@20.17.6)(sass@1.81.0)(terser@5.36.0)
+        specifier: 5.5.4
+        version: 5.5.4
 
   apps/storybook:
     dependencies:
@@ -280,46 +256,37 @@ importers:
       '@daengle/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
+      next:
+        specifier: 14.2.10
+        version: 14.2.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)
       react:
-        specifier: ^18.3.1
+        specifier: ^18
         version: 18.3.1
       react-dom:
-        specifier: ^18.3.1
+        specifier: ^18
         version: 18.3.1(react@18.3.1)
     devDependencies:
-      '@eslint/js':
-        specifier: ^9.13.0
-        version: 9.15.0
+      '@daengle/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@daengle/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@types/node':
+        specifier: ^20
+        version: 20.17.6
       '@types/react':
-        specifier: ^18.3.12
-        version: 18.3.12
-      '@types/react-dom':
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1
-      '@vitejs/plugin-react':
-        specifier: ^4.3.3
-        version: 4.3.3(vite@5.4.11(@types/node@20.17.6)(sass@1.81.0)(terser@5.36.0))
-      eslint:
-        specifier: ^9.13.0
-        version: 9.15.0(jiti@1.21.6)
-      eslint-plugin-react-hooks:
-        specifier: ^5.0.0
-        version: 5.0.0(eslint@9.15.0(jiti@1.21.6))
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.14
-        version: 0.4.14(eslint@9.15.0(jiti@1.21.6))
-      globals:
-        specifier: ^15.11.0
-        version: 15.12.0
+      '@types/react-dom':
+        specifier: 18.3.0
+        version: 18.3.0
+      eslint-config-next:
+        specifier: 15.0.3
+        version: 15.0.3(eslint@9.15.0(jiti@1.21.6))(typescript@5.5.4)
       typescript:
-        specifier: ~5.6.2
-        version: 5.6.3
-      typescript-eslint:
-        specifier: ^8.11.0
-        version: 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
-      vite:
-        specifier: ^5.4.10
-        version: 5.4.11(@types/node@20.17.6)(sass@1.81.0)(terser@5.36.0)
+        specifier: 5.5.4
+        version: 5.5.4
 
   packages/design-system:
     dependencies:
@@ -1696,10 +1663,6 @@ packages:
   clone@1.0.4:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
-
-  clsx@2.1.1:
-    resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
-    engines: {node: '>=6'}
 
   color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
@@ -4934,10 +4897,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/eslint-plugin@8.15.0(@typescript-eslint/parser@8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)':
+  '@typescript-eslint/eslint-plugin@8.15.0(@typescript-eslint/parser@8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.5.4))(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
+      '@typescript-eslint/parser': 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.5.4)
       '@typescript-eslint/scope-manager': 8.15.0
       '@typescript-eslint/type-utils': 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
       '@typescript-eslint/utils': 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
@@ -5397,6 +5360,7 @@ snapshots:
   chokidar@4.0.1:
     dependencies:
       readdirp: 4.0.2
+    optional: true
 
   clean-stack@2.2.0: {}
 
@@ -5426,8 +5390,6 @@ snapshots:
       wrap-ansi: 7.0.0
 
   clone@1.0.4: {}
-
-  clsx@2.1.1: {}
 
   color-convert@1.9.3:
     dependencies:
@@ -6360,7 +6322,8 @@ snapshots:
 
   ignore@5.3.2: {}
 
-  immutable@5.0.3: {}
+  immutable@5.0.3:
+    optional: true
 
   import-fresh@3.3.0:
     dependencies:
@@ -7178,7 +7141,8 @@ snapshots:
       string_decoder: 1.3.0
       util-deprecate: 1.0.2
 
-  readdirp@4.0.2: {}
+  readdirp@4.0.2:
+    optional: true
 
   recast@0.23.9:
     dependencies:
@@ -7323,6 +7287,7 @@ snapshots:
       source-map-js: 1.2.1
     optionalDependencies:
       '@parcel/watcher': 2.5.0
+    optional: true
 
   scheduler@0.23.2:
     dependencies:
@@ -7720,7 +7685,7 @@ snapshots:
 
   typescript-eslint@8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.15.0(@typescript-eslint/parser@8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
+      '@typescript-eslint/eslint-plugin': 8.15.0(@typescript-eslint/parser@8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.5.4))(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
       '@typescript-eslint/parser': 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
       '@typescript-eslint/utils': 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
       eslint: 9.15.0(jiti@1.21.6)
