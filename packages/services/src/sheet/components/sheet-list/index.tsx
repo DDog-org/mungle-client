@@ -1,4 +1,6 @@
 /** @jsxImportSource @emotion/react */
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import styles from './index.styles';
 // import NavBar from '../components/NavBar'; // 하단 네비게이션 바 컴포넌트
 
@@ -14,57 +16,72 @@ const sheetData: SheetCardProps[] = [
   {
     profileImage: 'https://via.placeholder.com/40',
     name: '미꼬누나',
-    type: '일반', // 리터럴 타입 "일반"
+    type: '일반',
     details: '노견, 슬개골 탈구',
     date: '2024. 11. 18(수) · 11:00',
   },
   {
     profileImage: 'https://via.placeholder.com/40',
     name: '꼬미누나',
-    type: '지정', // 리터럴 타입 "지정"
+    type: '지정',
     details: '특이사항 없음',
     date: '2024. 11. 18(수) · 11:00',
   },
   {
     profileImage: 'https://via.placeholder.com/40',
     name: '꼬미누나',
-    type: '지정', // 리터럴 타입 "지정"
+    type: '지정',
+    details: '대형견',
+    date: '2024. 11. 18(수) · 11:00',
+  },
+  {
+    profileImage: 'https://via.placeholder.com/40',
+    name: '꼬미누나',
+    type: '일반',
     details: '특이사항 없음',
     date: '2024. 11. 18(수) · 11:00',
   },
   {
     profileImage: 'https://via.placeholder.com/40',
     name: '꼬미누나',
-    type: '지정', // 리터럴 타입 "지정"
+    type: '일반',
     details: '특이사항 없음',
     date: '2024. 11. 18(수) · 11:00',
   },
   {
     profileImage: 'https://via.placeholder.com/40',
     name: '꼬미누나',
-    type: '지정', // 리터럴 타입 "지정"
-    details: '특이사항 없음',
-    date: '2024. 11. 18(수) · 11:00',
-  },
-  {
-    profileImage: 'https://via.placeholder.com/40',
-    name: '꼬미누나',
-    type: '지정', // 리터럴 타입 "지정"
+    type: '지정',
     details: '특이사항 없음',
     date: '2024. 11. 18(수) · 11:00',
   },
 ];
 
 export default function SheetList(): JSX.Element {
+  const [filterType, setFilterType] = useState<'전체' | '지정'>('전체');
+
+  const filteredData =
+    filterType === '전체' ? sheetData : sheetData.filter((data) => data.type === '지정');
+
   return (
     <div css={styles.wrapper}>
       <header css={styles.headerContainer}>견적</header>
       <div css={styles.tabContainer}>
-        <button css={[styles.tab, styles.activeTab]}>전체 견적서</button>
-        <button css={styles.tab}>지정 견적서</button>
+        <button
+          css={[styles.tab, filterType === '전체' && styles.activeTab]}
+          onClick={() => setFilterType('전체')}
+        >
+          전체 견적서
+        </button>
+        <button
+          css={[styles.tab, filterType === '지정' && styles.activeTab]}
+          onClick={() => setFilterType('지정')}
+        >
+          지정 견적서
+        </button>
       </div>
       <div css={styles.listContainer}>
-        {sheetData.map((data, index) => (
+        {filteredData.map((data, index) => (
           <SheetCard key={index} {...data} />
         ))}
       </div>
@@ -73,6 +90,12 @@ export default function SheetList(): JSX.Element {
 }
 
 function SheetCard({ profileImage, name, type, details, date }: SheetCardProps): JSX.Element {
+  const router = useRouter();
+
+  const handleDetailClick = () => {
+    router.push(`/details?name=${encodeURIComponent(name)}`); //임시 경로입니다
+  };
+
   return (
     <div css={styles.card}>
       {/* contentContainer */}
@@ -95,7 +118,9 @@ function SheetCard({ profileImage, name, type, details, date }: SheetCardProps):
 
       {/* detailContainer */}
       <div css={styles.detailContainer}>
-        <button css={styles.detailButton}>자세히 보기 &gt;</button>
+        <button css={styles.detailButton} onClick={handleDetailClick}>
+          자세히 보기 &gt;
+        </button>
       </div>
     </div>
   );
