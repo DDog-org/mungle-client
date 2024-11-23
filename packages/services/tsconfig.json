@@ -1,0 +1,11 @@
+{
+  "extends": "@daengle/typescript-config/react-library.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/*"]
+    }
+  },
+  "include": ["src", "src/onboarding"],
+  "exclude": ["node_modules"]
+}
