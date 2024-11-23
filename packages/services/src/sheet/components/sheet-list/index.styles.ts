@@ -42,7 +42,6 @@ const tab = css`
   background: none;
   color: #d9d9d9;
   cursor: pointer;
-  transition: color 0.3s;
 
   &:hover {
     color: #000000;
@@ -106,8 +105,8 @@ const profileImage = css`
 `;
 
 const name = css`
-  font-size: 1rem;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 600;
 `;
 
 const type = css`
@@ -152,7 +151,6 @@ const detailButton = css`
   background: none;
   border: none;
   cursor: pointer;
-  transition: color 0.3s;
 
   &:hover {
     color: #000000;
