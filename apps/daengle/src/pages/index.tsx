@@ -1,3 +1,5 @@
+import { wrapper } from './index.styles';
+
 export default function Home() {
-  return <div>Daengle</div>;
+  return <div css={wrapper}>Daengle</div>;
 }
