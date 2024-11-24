@@ -1,4 +1,9 @@
+import colors from './colors';
+import typography from './typography';
+
 const theme = {
+  colors,
+  typo: typography,
   size: {
     minWidth: '320px',
     maxWidth: '480px',
