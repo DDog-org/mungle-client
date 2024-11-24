@@ -1,0 +1,8 @@
+{
+  "extends": "@daengle/typescript-config/react-library.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": ["stories"],
+  "exclude": ["node_modules", "dist"]
+}
