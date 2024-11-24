@@ -1,10 +1,9 @@
-/** @jsxImportSource @emotion/react */
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import styles from './index.styles';
 // import NavBar from '../components/NavBar'; // 하단 네비게이션 바 컴포넌트
 
-interface SheetCardProps {
+interface Props {
   profileImage: string;
   name: string;
   type: '일반' | '지정';
@@ -12,7 +11,7 @@ interface SheetCardProps {
   date: string;
 }
 
-const sheetData: SheetCardProps[] = [
+const sheetData: Props[] = [
   {
     profileImage: 'https://via.placeholder.com/40',
     name: '미꼬누나',
@@ -83,13 +82,14 @@ export default function SheetList(): JSX.Element {
       <div css={styles.listContainer}>
         {filteredData.map((data, index) => (
           <SheetCard key={index} {...data} />
+          /* API 연동 후 key 고유 id값으로 변경 */
         ))}
       </div>
     </div>
   );
 }
 
-function SheetCard({ profileImage, name, type, details, date }: SheetCardProps): JSX.Element {
+function SheetCard({ profileImage, name, type, details, date }: Props): JSX.Element {
   const router = useRouter();
 
   const handleDetailClick = () => {

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 
 const wrapper = css`
@@ -62,7 +61,6 @@ const listContainer = css`
 const card = css`
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
   align-items: stretch;
   padding: 20px 24px;
   margin-bottom: 12px;
