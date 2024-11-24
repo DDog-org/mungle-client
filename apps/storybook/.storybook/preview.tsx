@@ -1,4 +1,6 @@
+import React from 'react';
 import type { Preview } from '@storybook/react';
+import { GlobalStyle } from '@daengle/design-system';
 
 const preview: Preview = {
   parameters: {
@@ -18,6 +20,15 @@ const preview: Preview = {
       ],
     },
   },
+  decorators: [
+    (Story) => (
+      <GlobalStyle>
+        <div style={{ width: '100vh', maxWidth: '480px', margin: '0 auto' }}>
+          <Story />
+        </div>
+      </GlobalStyle>
+    ),
+  ],
 };
 
 export default preview;
