@@ -1,8 +1,13 @@
 import type { AppProps } from 'next/app';
+import { GlobalStyle } from '@daengle/design-system';
 import { initMSW } from '~/mocks/init-msw';
 
 initMSW();
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <GlobalStyle>
+      <Component {...pageProps} />
+    </GlobalStyle>
+  );
 }
