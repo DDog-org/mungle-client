@@ -2,7 +2,7 @@ declare module 'react-datepicker' {
   import * as React from 'react';
   import { Interpolation, Theme } from '@emotion/react';
 
-  export interface ReactDatePickerProps {
+  export interface Props {
     selected: Date | null;
     onChange: (date: Date | null, event?: React.SyntheticEvent) => void;
     showTimeSelect?: boolean;
@@ -20,6 +20,6 @@ declare module 'react-datepicker' {
     customInput?: React.ReactNode;
   }
 
-  const ReactDatePicker: React.FC<ReactDatePickerProps>;
+  const ReactDatePicker: React.FC<Props>;
   export default ReactDatePicker;
 }
