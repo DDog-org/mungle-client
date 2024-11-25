@@ -21,7 +21,7 @@ export default function Sheet() {
     ],
   };
 
-  const [selectedDateTime, setSelectedDateTime] = useState<Date | null>(null);
+  const [, setSelectedDateTime] = useState<Date | null>(null);
 
   const handleDateTimeChange = (dateTime: Date) => {
     setSelectedDateTime(dateTime);
