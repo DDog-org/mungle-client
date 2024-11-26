@@ -10,8 +10,7 @@
     "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "deploy-storybook": "storybook build && touch ./storybook-static/.nojekyll && gh-pages -d ./storybook-static -t true -b deploy-storybook",
-    "svgr": "rm -r src/icons/* && pnpm dlx @svgr/cli public/icons --no-dimensions --typescript --out-dir src/icons"
+    "deploy-storybook": "storybook build && touch ./storybook-static/.nojekyll && gh-pages -d ./storybook-static -t true -b deploy-storybook"
   },
   "dependencies": {
     "@daengle/design-system": "workspace:*",
