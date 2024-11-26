@@ -1,13 +1,13 @@
 import { css } from '@emotion/react';
 
-const wrapper = css`
+export const wrapper = css`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 `;
 
-const buttonBox = css`
+export const buttonBox = css`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,15 +19,7 @@ const buttonBox = css`
 
   background-color: #fee500;
 `;
-const buttonTextBox = css`
+export const buttonTextBox = css`
   font-size: 14px;
   font-weight: 500;
 `;
-
-const styles = {
-  wrapper,
-  buttonBox,
-  buttonTextBox,
-};
-
-export default styles;

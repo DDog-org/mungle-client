@@ -1,4 +1,4 @@
-import styles from './index.styles';
+import { wrapper, buttonBox, buttonTextBox } from './index.styles';
 
 const REST_API_KEY = process.env.NEXT_PUBLIC_REST_API_KEY;
 const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI;
@@ -9,9 +9,9 @@ export default function Auth() {
     window.location.href = kakaoAuthUrl;
   };
   return (
-    <div css={styles.wrapper}>
-      <button css={styles.buttonBox} onClick={handleKakaoLoginClick}>
-        <span css={styles.buttonTextBox}>카카오톡으로 시작하기 zz</span>
+    <div css={wrapper}>
+      <button css={buttonBox} onClick={handleKakaoLoginClick}>
+        <span css={buttonTextBox}>카카오톡으로 시작하기 zz</span>
       </button>
     </div>
   );
