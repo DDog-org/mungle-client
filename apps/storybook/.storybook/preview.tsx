@@ -23,7 +23,7 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <GlobalStyle>
-        <div style={{ width: '100vh', maxWidth: '480px', margin: '0 auto' }}>
+        <div style={{ width: '100vw', maxWidth: '768px', margin: '0 auto' }}>
           <Story />
         </div>
       </GlobalStyle>

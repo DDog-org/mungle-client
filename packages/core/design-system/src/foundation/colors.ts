@@ -27,6 +27,8 @@ export const colors = {
   grayOpacity100: 'rgba(0, 0, 0, 0.1)',
   grayOpacity200: 'rgba(0, 0, 0, 0.2)',
   grayOpacity300: 'rgba(0, 0, 0, 0.6)',
+
+  blueGradient100: 'linear-gradient(180deg, #5D86FE 0%, #7B9DFF 100%)',
 } as const;
 
 export default colors;
