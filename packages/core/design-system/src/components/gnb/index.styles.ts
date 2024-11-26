@@ -2,13 +2,13 @@ import { css } from '@emotion/react';
 import { theme } from '../../foundation';
 
 export const wrapper = css`
+  width: 100%;
+  padding: 12px 0;
   position: fixed;
   bottom: 0;
   margin: 0 auto;
   z-index: ${theme.zIndex.gnb};
-  width: 100%;
   max-width: ${theme.size.maxWidth};
-  padding: 12px 0;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -17,20 +17,10 @@ export const wrapper = css`
 `;
 
 export const menuItem = ({ isActive }: { isActive: boolean }) => css`
-  width: 88px;
+  width: 69px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  cursor: pointer;
-
-  svg {
-    path {
-      fill: ${isActive ? theme.colors.green200 : theme.colors.black100};
-    }
-    rect {
-      stroke: ${isActive ? theme.colors.green200 : theme.colors.black100};
-    }
-  }
 `;

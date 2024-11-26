@@ -4,7 +4,7 @@ ${imports};
 
 ${interfaces};
 
-export const ${componentName} = (${props}) => (
+export const ${componentName.replace('Svg', '')} = (${props}) => (
   ${jsx}
 );
 `;

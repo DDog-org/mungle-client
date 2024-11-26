@@ -1,3 +1,24 @@
+import {
+  GnbChattingActive,
+  GnbChattingInactive,
+  GnbHomeActive,
+  GnbHomeInactive,
+  GnbMyActive,
+  GnbMyInactive,
+  GnbReservationActive,
+  GnbReservationInactive,
+  GnbSheetActive,
+  GnbSheetInactive,
+} from '@daengle/design-system/icons';
+
+export const PATHS = {
+  SHEET: '/sheet',
+  RESERVATION: '/reservation',
+  HOME: '/',
+  CHATTING: '/chatting',
+  MYPAGE: '/mypage',
+} as const;
+
 export const MENUS = [
   {
     name: '견적',
@@ -5,7 +26,7 @@ export const MENUS = [
       active: <GnbSheetActive width="32px" height="32px" />,
       inactive: <GnbSheetInactive width="32px" height="32px" />,
     },
-    path: '/sheet',
+    path: PATHS.SHEET,
   },
   {
     name: '예약',
@@ -13,7 +34,7 @@ export const MENUS = [
       active: <GnbReservationActive width="32px" height="32px" />,
       inactive: <GnbReservationInactive width="32px" height="32px" />,
     },
-    path: '/reservation',
+    path: PATHS.RESERVATION,
   },
   {
     name: '홈',
@@ -21,7 +42,7 @@ export const MENUS = [
       active: <GnbHomeActive width="32px" height="32px" />,
       inactive: <GnbHomeInactive width="32px" height="32px" />,
     },
-    path: '/',
+    path: PATHS.HOME,
   },
   {
     name: '채팅',
@@ -29,7 +50,7 @@ export const MENUS = [
       active: <GnbChattingActive width="32px" height="32px" />,
       inactive: <GnbChattingInactive width="32px" height="32px" />,
     },
-    path: '/chatting',
+    path: PATHS.CHATTING,
   },
   {
     name: '마이',
@@ -37,6 +58,6 @@ export const MENUS = [
       active: <GnbMyActive width="32px" height="32px" />,
       inactive: <GnbMyInactive width="32px" height="32px" />,
     },
-    path: '/mypage',
+    path: PATHS.MYPAGE,
   },
-] as const;
+];

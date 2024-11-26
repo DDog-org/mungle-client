@@ -1,5 +1,5 @@
 import type { SVGProps } from 'react';
-export const SvgGnbMyActive = (props: SVGProps<SVGSVGElement>) => (
+export const GnbMyActive = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 33 32" {...props}>
     <g clipPath="url(#gnb_my_active_svg__a)">
       <path
