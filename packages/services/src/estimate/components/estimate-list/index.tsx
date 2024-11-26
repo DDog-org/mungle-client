@@ -24,7 +24,7 @@ import {
 } from './index.styles';
 //import NavBar
 
-interface SheetContent {
+interface EstimateContent {
   id: number;
   userImage: string;
   nickname: string;
@@ -34,14 +34,16 @@ interface SheetContent {
 }
 
 interface Props {
-  sheetData: SheetContent[];
+  estimateData: EstimateContent[];
 }
 
-export default function SheetList({ sheetData }: Props): JSX.Element {
+export default function EstimateList({ estimateData }: Props): JSX.Element {
   const [filterType, setFilterType] = useState<'전체' | '지정'>('전체');
 
   const filteredData =
-    filterType === '전체' ? sheetData : sheetData.filter((data) => data.proposal === 'DESIGNATION');
+    filterType === '전체'
+      ? estimateData
+      : estimateData.filter((data) => data.proposal === 'DESIGNATION');
 
   return (
     <div css={wrapper}>
@@ -62,20 +64,20 @@ export default function SheetList({ sheetData }: Props): JSX.Element {
       </div>
       <div css={listContainer}>
         {filteredData.map((data) => (
-          <SheetCard key={data.id} {...data} />
+          <EstimateCard key={data.id} {...data} />
         ))}
       </div>
     </div>
   );
 }
 
-function SheetCard({
+function EstimateCard({
   userImage,
   nickname,
   proposal,
   petSignificant,
   reservedDate,
-}: SheetContent): JSX.Element {
+}: EstimateContent): JSX.Element {
   const router = useRouter();
 
   const handleDetailClick = () => {

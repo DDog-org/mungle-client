@@ -10,7 +10,7 @@ import {
 } from '@daengle/services';
 import { wrapper, header, sectionDivider, backButton, requestTitle } from './index.styles';
 
-export default function Sheet() {
+export default function Estimate() {
   const petData = {
     image: 'https://via.placeholder.com/80',
     name: '꼬미',

@@ -1,4 +1,4 @@
-import { SheetList } from '@daengle/services';
+import { EstimateList } from '@daengle/services';
 
 const apiData = [
   {
@@ -27,7 +27,7 @@ const apiData = [
   },
 ];
 
-const sheetData = apiData.map((data) => ({
+const estimateData = apiData.map((data) => ({
   id: data.groomingEstimateId,
   userImage: data.userImage,
   nickname: data.nickname,
@@ -39,7 +39,7 @@ const sheetData = apiData.map((data) => ({
 export default function List() {
   return (
     <div>
-      <SheetList sheetData={sheetData} />
+      <EstimateList estimateData={estimateData} />
     </div>
   );
 }
