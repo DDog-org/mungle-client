@@ -1,11 +1,13 @@
-.wrapper {
+import { css } from '@emotion/react';
+
+const wrapper = css`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-}
+`;
 
-.buttonBox {
+const buttonBox = css`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,8 +18,16 @@
   cursor: pointer;
 
   background-color: #fee500;
-}
-.buttonTextBox {
+`;
+const buttonTextBox = css`
   font-size: 14px;
   font-weight: 500;
-}
+`;
+
+const styles = {
+  wrapper,
+  buttonBox,
+  buttonTextBox,
+};
+
+export default styles;
