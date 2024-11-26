@@ -23,11 +23,7 @@ export function GNB({ menus, activePath, onNavigate }: Props) {
   return (
     <nav css={wrapper}>
       {menus.map((menu) => (
-        <button
-          key={menu.path}
-          css={menuItem({ isActive: isActiveMenu(menu.path) })}
-          onClick={() => onNavigate(menu.path)}
-        >
+        <button key={menu.path} css={menuItem} onClick={() => onNavigate(menu.path)}>
           {isActiveMenu(menu.path) ? menu.icon.active : menu.icon.inactive}
           <Text typo="medium03" color={isActiveMenu(menu.path) ? 'black' : 'gray400'}>
             {menu.name}
