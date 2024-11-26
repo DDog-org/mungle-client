@@ -1,10 +1,10 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../query-keys';
 import { postKakaoOauth, postOauthKakao } from '~/api/oauth';
 
-export const useFetchKakaoAccessToken = () => {
+export const usePostKakaoOauth = () => {
   return useMutation({
-    mutationKey: QUERY_KEYS.FETCH_KAKAO_ACCESS_TOKEN,
+    mutationKey: QUERY_KEYS.POST_KAKAO_OAUTH,
     mutationFn: async (code: string) => {
       try {
         return await postKakaoOauth(code);
@@ -14,9 +14,9 @@ export const useFetchKakaoAccessToken = () => {
     },
   });
 };
-export const usePostApiOauthKakao = () => {
+export const usePostOauthKakao = () => {
   return useMutation({
-    mutationKey: QUERY_KEYS.POST_API_OAUTH_KAKAO,
+    mutationKey: QUERY_KEYS.POST_OAUTH_KAKAO,
     mutationFn: async ({ accessToken, loginType }: { accessToken: string; loginType: string }) => {
       try {
         return await postOauthKakao(accessToken, loginType);

@@ -3,10 +3,10 @@ import { api } from '../api';
 
 const REST_API_KEY = process.env.NEXT_PUBLIC_REST_API_KEY || '';
 const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI || '';
-const KAKAO_OAUTH_TOKEN_URL = process.env.NEXT_PUBLIC_KAKAO_OAUTH_TOKEN_URL || '';
+const POST_KAKAO_OAUTH_URL = process.env.NEXT_PUBLIC_POST_KAKAO_OAUTH_URL || '';
 
 export const postKakaoOauth = async (code: string) => {
-  const response = await axios.post(KAKAO_OAUTH_TOKEN_URL, null, {
+  const response = await axios.post(POST_KAKAO_OAUTH_URL, null, {
     params: {
       grant_type: 'authorization_code',
       client_id: REST_API_KEY,
@@ -21,7 +21,7 @@ export const postKakaoOauth = async (code: string) => {
 };
 
 export const postOauthKakao = async (accessToken: string, loginType: string) => {
-  await api.post('/api/oauth/kakao', {
+  return await api.post('/api/oauth/kakao', {
     kakaoAccessToken: accessToken,
     loginType: loginType,
   });
