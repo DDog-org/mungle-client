@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { usePostKakaoOauth, usePostOauthKakao } from '~/queries/oauth';
-import { useAuthStore } from '~/stores/oauth';
-import { api } from '~/api/api';
 
 export default function AuthCallback() {
   const router = useRouter();
@@ -18,18 +16,7 @@ export default function AuthCallback() {
       try {
         const accessToken = await postKakaoOauth(code as string);
         // 액세스 토큰 백엔드한테 보내주기
-        const response = await postOauthKakao({ accessToken, loginType: 'GROOMER' });
-
-        // 응답 데이터 추출
-        const {
-          response: { accessToken: serverAccessToken },
-        } = response.data;
-
-        // zustand 스토어에 토큰 저장
-        useAuthStore.getState().setAccessToken(serverAccessToken);
-
-        // 토큰 헤더 저장 테스트용 api
-        await api.post('https://dev-api.daengle.com/test');
+        await postOauthKakao({ accessToken, loginType: 'GROOMER' });
       } catch (error) {
         throw new Error('로그인 실패');
       }
