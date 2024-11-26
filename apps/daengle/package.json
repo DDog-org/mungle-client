@@ -15,7 +15,8 @@
     "axios": "^1.7.7",
     "next": "14.2.10",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@daengle/eslint-config": "workspace:*",
