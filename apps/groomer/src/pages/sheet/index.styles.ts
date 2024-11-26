@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-const wrapper = css`
+export const wrapper = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -11,7 +11,7 @@ const wrapper = css`
   background-color: #ffffff;
 `;
 
-const header = css`
+export const header = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,7 +19,7 @@ const header = css`
   font-weight: bold;
 `;
 
-const sectionDivider = css`
+export const sectionDivider = css`
   width: 100%;
   height: 8px;
   background-color: #f6f6f6;
@@ -27,7 +27,7 @@ const sectionDivider = css`
   margin: 0;
 `;
 
-const backButton = css`
+export const backButton = css`
   font-size: 16px;
   color: #000;
   margin: 20px 18px;
@@ -36,18 +36,8 @@ const backButton = css`
   cursor: pointer;
 `;
 
-const requestTitle = css`
+export const requestTitle = css`
   padding: 24px 18px;
   font-size: 16px;
   font-weight: 600;
 `;
-
-const styles = {
-  wrapper,
-  header,
-  sectionDivider,
-  backButton,
-  requestTitle,
-};
-
-export default styles;
