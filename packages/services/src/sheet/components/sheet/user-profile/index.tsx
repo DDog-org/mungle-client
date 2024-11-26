@@ -1,16 +1,15 @@
-import React from 'react';
-import styles from './index.styles';
+import { wrapper, image, name } from './index.styles';
 
 interface Props {
   userImage: string;
   userName: string;
 }
 
-const UserProfile: React.FC<Props> = ({ userImage, userName }: Props) => {
+const UserProfile = ({ userImage, userName }: Props) => {
   return (
-    <div css={styles.wrapper}>
-      <img src={userImage} alt={`${userName} 프로필`} css={styles.image} />
-      <p css={styles.name}>{userName}</p>
+    <div css={wrapper}>
+      <img src={userImage} alt={`${userName} 프로필`} css={image} />
+      <p css={name}>{userName}</p>
     </div>
   );
 };

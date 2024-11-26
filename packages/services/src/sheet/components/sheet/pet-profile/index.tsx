@@ -1,5 +1,15 @@
-import React from 'react';
-import styles from './index.styles';
+import {
+  wrapper,
+  profile,
+  imageUrl,
+  petName,
+  detail,
+  labelWrapper,
+  valueWrapper,
+  label,
+  value,
+  detailButton,
+} from './index.styles';
 
 interface Props {
   image: string;
@@ -7,26 +17,28 @@ interface Props {
   attributes: { label: string; value: string }[];
 }
 
-const PetDetails: React.FC<Props> = ({ image, name, attributes }: Props) => {
+const PetDetails = ({ image, name, attributes }: Props) => {
   return (
-    <div css={styles.wrapper}>
-      <div css={styles.profile}>
-        <img src={image} alt={`${name} 프로필`} css={styles.image} />
-        <div css={styles.name}>{name}</div>
+    <div css={wrapper}>
+      <div css={profile}>
+        <img src={image} alt={`${name} 프로필`} css={imageUrl} />
+        <div css={petName}>{name}</div>
       </div>
-      <div css={styles.detail}>
-        <div css={styles.labelWrapper}>
-          {attributes.map((attr, index) => (
-            <div css={styles.label} key={`label-${index}`}>
-              {attr.label}
+      <div css={detail}>
+        <div css={labelWrapper}>
+          {/* api 연동 시 key 값 변경 */}
+          {attributes.map((attribute, index) => (
+            <div css={label} key={`label-${index}`}>
+              {attribute.label}
             </div>
           ))}
-          <div css={styles.detailButton}>자세히보기 {'>'}</div>
+          <div css={detailButton}>자세히보기 {'>'}</div>
         </div>
-        <div css={styles.valueWrapper}>
-          {attributes.map((attr, index) => (
-            <div css={styles.value} key={`value-${index}`}>
-              {attr.value}
+        <div css={valueWrapper}>
+          {/* api 연동 시 key 값 변경 */}
+          {attributes.map((attribute, index) => (
+            <div css={value} key={`value-${index}`}>
+              {attribute.value}
             </div>
           ))}
         </div>

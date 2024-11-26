@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 
-const addTitle = css`
+export const addTitle = css`
   font-size: 14px;
   color: #979797;
   padding: 24px 18px 14px;
 `;
 
-const inputSection = css`
+export const inputSection = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,7 +15,7 @@ const inputSection = css`
   margin-bottom: 16px;
 `;
 
-const textarea = css`
+export const textarea = css`
   width: 100%;
   min-height: 80px;
   padding: 8px;
@@ -31,11 +31,3 @@ const textarea = css`
     box-shadow: 0 0 3px rgba(37, 99, 235, 0.5);
   }
 `;
-
-const styles = {
-  addTitle,
-  inputSection,
-  textarea,
-};
-
-export default styles;

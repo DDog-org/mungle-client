@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-const acceptButton = css`
+export const acceptButton = css`
   background-color: #d9d9d9;
   width: 100%;
   color: #000000;
@@ -16,9 +16,3 @@ const acceptButton = css`
     color: white;
   }
 `;
-
-const styles = {
-  acceptButton,
-};
-
-export default styles;

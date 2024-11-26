@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from './index.styles';
+import { addTitle, inputSection, textarea } from './index.styles';
 
 interface Props {
   title: string;
@@ -7,13 +6,13 @@ interface Props {
   height?: number;
 }
 
-const AddInput: React.FC<Props> = ({ title, placeholder, height }: Props) => {
+const AddInput = ({ title, placeholder, height }: Props) => {
   return (
     <div>
-      <div css={styles.addTitle}>{title}</div>
-      <section css={styles.inputSection}>
+      <div css={addTitle}>{title}</div>
+      <section css={inputSection}>
         <textarea
-          css={[styles.textarea, height && { minHeight: `${height}px` }]}
+          css={[textarea, height && { minHeight: `${height}px` }]}
           placeholder={placeholder}
         />
       </section>

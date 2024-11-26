@@ -1,16 +1,7 @@
 import { css } from '@emotion/react';
 
-const wrapper = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-right: 30px;
-`;
-
-const datePicker = css`
+export const datePicker = css`
   width: 100%;
-  max-width: 100%;
   padding: 12px 18px;
   font-size: 14px;
   border: 1px solid #d9d9d9;
@@ -23,10 +14,3 @@ const datePicker = css`
     outline: none;
   }
 `;
-
-const styles = {
-  wrapper,
-  datePicker,
-};
-
-export default styles;

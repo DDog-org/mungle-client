@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-const wrapper = css`
+export const wrapper = css`
   display: flex;
   align-items: center;
   gap: 40px;
@@ -8,12 +8,12 @@ const wrapper = css`
   margin-bottom: 4px;
 `;
 
-const profile = css`
+export const profile = css`
   display: flex;
   flex-direction: column;
 `;
 
-const image = css`
+export const imageUrl = css`
   display: flex;
   flex-direction: column;
   width: 80px;
@@ -22,45 +22,44 @@ const image = css`
   background-color: #d9d9d9;
 `;
 
-const name = css`
+export const petName = css`
   font-size: 16px;
   width: 100%;
   text-align: center;
   margin-top: 10px;
 `;
 
-const detail = css`
+export const detail = css`
   display: flex;
-  align-items: flex-start; /* 나란히 정렬 */
   flex-direction: row;
   gap: 24px;
   border-left: 2px solid #d9d9d9;
   padding-left: 12px;
 `;
 
-const labelWrapper = css`
+export const labelWrapper = css`
   display: flex;
   flex-direction: column;
   gap: 8px;
 `;
 
-const valueWrapper = css`
+export const valueWrapper = css`
   display: flex;
   flex-direction: column;
   gap: 8px;
 `;
 
-const label = css`
+export const label = css`
   font-size: 14px;
   color: #979797;
 `;
 
-const value = css`
+export const value = css`
   font-size: 14px;
   color: #000000;
 `;
 
-const detailButton = css`
+export const detailButton = css`
   font-size: 14px;
   color: #d9d9d9;
   background: none;
@@ -71,18 +70,3 @@ const detailButton = css`
     text-decoration: underline;
   }
 `;
-
-const styles = {
-  wrapper,
-  profile,
-  image,
-  name,
-  detail,
-  labelWrapper,
-  valueWrapper,
-  label,
-  value,
-  detailButton,
-};
-
-export default styles;

@@ -1,14 +1,13 @@
-import React from 'react';
-import styles from './index.styles';
+import { acceptButton } from './index.styles';
 
 interface Props {
   label: string;
   onClick?: () => void;
 }
 
-const AcceptButton: React.FC<Props> = ({ label, onClick }: Props) => {
+const AcceptButton = ({ label, onClick }: Props) => {
   return (
-    <button css={styles.acceptButton} onClick={onClick}>
+    <button css={acceptButton} onClick={onClick}>
       {label}
     </button>
   );

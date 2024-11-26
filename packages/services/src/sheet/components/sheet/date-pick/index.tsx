@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import styles from './index.styles';
+import { datePicker } from './index.styles';
 
 interface Props {
   onChange: (dateTime: Date) => void;
 }
 
-const DatePick: React.FC<Props> = ({ onChange }: Props) => {
+const DatePick = ({ onChange }: Props) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const now = new Date();
@@ -27,7 +27,7 @@ const DatePick: React.FC<Props> = ({ onChange }: Props) => {
   };
 
   return (
-    <div css={styles.wrapper}>
+    <div>
       <DatePicker
         selected={selectedDate}
         onChange={handleDateChange}
@@ -46,7 +46,7 @@ const DatePick: React.FC<Props> = ({ onChange }: Props) => {
         }
         maxTime={endOfDay}
         placeholderText="날짜와 시간을 선택하세요"
-        css={styles.datePicker}
+        css={datePicker}
       />
     </div>
   );
