@@ -1,3 +1,4 @@
+export * from './ButtonTextButtonArrow';
 export * from './GnbChattingActive';
 export * from './GnbChattingInactive';
 export * from './GnbHomeActive';

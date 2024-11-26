@@ -16,7 +16,7 @@ interface Props extends HTMLAttributes<HTMLSpanElement> {
   children: ReactNode;
 }
 
-export function Text({ tag = 'span', color = 'black100', typo, children, ...rest }: Props) {
+export function Text({ tag = 'span', color = 'black100', typo, children, ...props }: Props) {
   return jsx(
     tag,
     {
@@ -24,7 +24,7 @@ export function Text({ tag = 'span', color = 'black100', typo, children, ...rest
         color: ${colors[color]};
         ${typography[typo]};
       `,
-      ...rest,
+      ...props,
     },
     [children]
   );
