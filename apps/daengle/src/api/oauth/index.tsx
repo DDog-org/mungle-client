@@ -21,7 +21,7 @@ export const postKakaoOauth = async (code: string) => {
 };
 
 export const postOauthKakao = async (accessToken: string, loginType: string) => {
-  return await api.post('/api/oauth/kakao', {
+  return await api.post('/oauth/kakao', {
     kakaoAccessToken: accessToken,
     loginType: loginType,
   });
