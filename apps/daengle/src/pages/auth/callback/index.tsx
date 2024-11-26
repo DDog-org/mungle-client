@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useFetchKakaoAccessToken, usePostApiOauthKakao } from '~/queries/oauth';
+import { usePostKakaoOauth, usePostOauthKakao } from '~/queries/oauth';
 
 export default function AuthCallback() {
   const router = useRouter();
   const { code } = router.query || {};
 
-  const { mutateAsync: postKakaoOauth } = useFetchKakaoAccessToken();
+  const { mutateAsync: postKakaoOauth } = usePostKakaoOauth();
 
-  const { mutateAsync: postOauthKakao } = usePostApiOauthKakao();
+  const { mutateAsync: postOauthKakao } = usePostOauthKakao();
 
   useEffect(() => {
     const handleAuthentication = async () => {
