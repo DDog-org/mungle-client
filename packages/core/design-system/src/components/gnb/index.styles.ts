@@ -13,7 +13,7 @@ export const wrapper = css`
   align-items: center;
   justify-content: space-evenly;
   background: ${theme.colors.white};
-  box-shadow: 0px -4px 6px 0px ${theme.colors.grayOpacity100};
+  box-shadow: 0px -4px 6px 0px ${theme.colors.grayOpacity50};
 `;
 
 export const menuItem = ({ isActive }: { isActive: boolean }) => css`
