@@ -1,0 +1,4 @@
+export const QUERY_KEYS = {
+  POST_KAKAO_OAUTH: ['POST_KAKAO_OAUTH'],
+  POST_OAUTH_KAKAO: ['POST_OAUTH_KAKAO'],
+} as const;
