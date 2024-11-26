@@ -1,124 +1,112 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import styles from './index.styles';
-// import NavBar from '../components/NavBar'; // 하단 네비게이션 바 컴포넌트
+import {
+  wrapper,
+  headerContainer,
+  tabContainer,
+  tab,
+  activeTab,
+  listContainer,
+  card,
+  contentContainer,
+  detailContainer,
+  profileImage,
+  cardContent,
+  cardHeader,
+  name,
+  type,
+  general,
+  designated,
+  specials,
+  specialsNot,
+  date,
+  detailButton,
+} from './index.styles';
+//import NavBar
 
-interface Props {
-  profileImage: string;
-  name: string;
-  type: '일반' | '지정';
-  details: string;
-  date: string;
+interface SheetContent {
+  id: number;
+  userImage: string;
+  nickname: string;
+  proposal: string;
+  petSignificant: string;
+  reservedDate: string;
 }
 
-const sheetData: Props[] = [
-  {
-    profileImage: 'https://via.placeholder.com/40',
-    name: '미꼬누나',
-    type: '일반',
-    details: '노견, 슬개골 탈구',
-    date: '2024. 11. 18(수) · 11:00',
-  },
-  {
-    profileImage: 'https://via.placeholder.com/40',
-    name: '꼬미누나',
-    type: '지정',
-    details: '특이사항 없음',
-    date: '2024. 11. 18(수) · 11:00',
-  },
-  {
-    profileImage: 'https://via.placeholder.com/40',
-    name: '꼬미누나',
-    type: '지정',
-    details: '대형견',
-    date: '2024. 11. 18(수) · 11:00',
-  },
-  {
-    profileImage: 'https://via.placeholder.com/40',
-    name: '꼬미누나',
-    type: '일반',
-    details: '특이사항 없음',
-    date: '2024. 11. 18(수) · 11:00',
-  },
-  {
-    profileImage: 'https://via.placeholder.com/40',
-    name: '꼬미누나',
-    type: '일반',
-    details: '특이사항 없음',
-    date: '2024. 11. 18(수) · 11:00',
-  },
-  {
-    profileImage: 'https://via.placeholder.com/40',
-    name: '꼬미누나',
-    type: '지정',
-    details: '특이사항 없음',
-    date: '2024. 11. 18(수) · 11:00',
-  },
-];
+interface Props {
+  sheetData: SheetContent[];
+}
 
-export default function SheetList(): JSX.Element {
+export default function SheetList({ sheetData }: Props): JSX.Element {
   const [filterType, setFilterType] = useState<'전체' | '지정'>('전체');
 
   const filteredData =
-    filterType === '전체' ? sheetData : sheetData.filter((data) => data.type === '지정');
+    filterType === '전체' ? sheetData : sheetData.filter((data) => data.proposal === 'DESIGNATION');
 
   return (
-    <div css={styles.wrapper}>
-      <header css={styles.headerContainer}>견적</header>
-      <div css={styles.tabContainer}>
+    <div css={wrapper}>
+      <header css={headerContainer}>견적</header>
+      <div css={tabContainer}>
         <button
-          css={[styles.tab, filterType === '전체' && styles.activeTab]}
+          css={[tab, filterType === '전체' && activeTab]}
           onClick={() => setFilterType('전체')}
         >
           전체 견적서
         </button>
         <button
-          css={[styles.tab, filterType === '지정' && styles.activeTab]}
+          css={[tab, filterType === '지정' && activeTab]}
           onClick={() => setFilterType('지정')}
         >
           지정 견적서
         </button>
       </div>
-      <div css={styles.listContainer}>
-        {filteredData.map((data, index) => (
-          <SheetCard key={index} {...data} />
-          /* API 연동 후 key 고유 id값으로 변경 */
+      <div css={listContainer}>
+        {filteredData.map((data) => (
+          <SheetCard key={data.id} {...data} />
         ))}
       </div>
     </div>
   );
 }
 
-function SheetCard({ profileImage, name, type, details, date }: Props): JSX.Element {
+function SheetCard({
+  userImage,
+  nickname,
+  proposal,
+  petSignificant,
+  reservedDate,
+}: SheetContent): JSX.Element {
   const router = useRouter();
 
   const handleDetailClick = () => {
-    router.push(`/details?name=${encodeURIComponent(name)}`); //임시 경로입니다
+    router.push(`/details?nickname=${encodeURIComponent(nickname)}`); // 임시 경로입니다.
   };
 
   return (
-    <div css={styles.card}>
+    <div css={card}>
       {/* contentContainer */}
-      <div css={styles.contentContainer}>
+      <div css={contentContainer}>
         {/* Header */}
-        <div css={styles.cardHeader}>
-          <img src={profileImage} alt={`${name} 프로필`} css={styles.profileImage} />
-          <span css={styles.name}>{name}</span>
-          <span css={[styles.type, type === '지정' ? styles.designated : styles.general]}>
-            {type}
+        <div css={cardHeader}>
+          <img src={userImage} alt={`${nickname} 프로필`} css={profileImage} />
+          <span css={name}>{nickname}</span>
+          <span css={[type, proposal === 'DESIGNATION' ? designated : general]}>
+            {proposal === 'GENERAL' ? '일반' : '지정'}
           </span>
         </div>
 
         {/* Content */}
-        <div css={styles.cardContent}>
-          <p css={[styles.details, details === '특이사항 없음' && styles.detailsNot]}>{details}</p>
-          <p css={styles.date}>{date}</p>
+        <div css={cardContent}>
+          <p css={[specials, petSignificant === '특이사항 없음' && specialsNot]}>
+            {petSignificant}
+          </p>
+          <p css={date}>{reservedDate}</p>
         </div>
       </div>
 
       {/* detailContainer */}
-      <div css={styles.detailContainer}>
-        <button css={styles.detailButton} onClick={handleDetailClick}>
+      <div css={detailContainer}>
+        <button css={detailButton} onClick={handleDetailClick}>
           자세히 보기 &gt;
         </button>
       </div>

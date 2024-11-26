@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-const wrapper = css`
+export const wrapper = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -11,32 +11,24 @@ const wrapper = css`
   background-color: #f9fafb;
 `;
 
-const headerContainer = css`
+export const headerContainer = css`
   padding: 18px;
   font-size: 24px;
   font-weight: 600;
   margin-top: 20px;
 `;
 
-const tabContainer = css`
+export const tabContainer = css`
   display: flex;
   padding: 18px 18px 0px 18px;
   position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 18px;
-    right: 18px;
-    height: 0.5px;
-    background-color: #d9d9d9;
-  }
+  border-bottom: 0.5px solid #e6e6e6;
 `;
 
-const tab = css`
+export const tab = css`
   font-size: 16px;
-  padding: 4px 13px 12px;
+  width: 100%;
+  padding: 9px 32px;
   border: none;
   background: none;
   color: #d9d9d9;
@@ -47,18 +39,19 @@ const tab = css`
   }
 `;
 
-const activeTab = css`
+export const activeTab = css`
   color: #000000;
+  font-weight: 600;
   border-bottom: 2px solid #000000;
 `;
 
-const listContainer = css`
+export const listContainer = css`
   flex: 1;
   overflow-y: auto;
   padding: 12px 18px 12px 0px;
 `;
 
-const card = css`
+export const card = css`
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -69,81 +62,81 @@ const card = css`
   border-bottom-right-radius: 65.6px;
 `;
 
-const contentContainer = css`
+export const contentContainer = css`
   display: flex;
   flex-direction: column;
   flex: 1;
   gap: 15px;
 `;
 
-const detailContainer = css`
+export const detailContainer = css`
   display: flex;
   justify-content: center;
   align-items: center;
   flex: 0 0 auto;
 `;
 
-const cardHeader = css`
+export const cardHeader = css`
   display: flex;
   align-items: center;
   gap: 8px;
 `;
 
-const cardContent = css`
+export const cardContent = css`
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
 
-const profileImage = css`
+export const profileImage = css`
   width: 30px;
   height: 30px;
   border-radius: 50%;
   object-fit: cover;
 `;
 
-const name = css`
+export const name = css`
   font-size: 14px;
   font-weight: 600;
 `;
 
-const type = css`
+export const type = css`
   font-size: 9px;
   padding: 2px 7px;
   border-radius: 14.03px;
   font-weight: bold;
 `;
 
-const general = css`
+export const general = css`
   background-color: #eefffd;
   color: #81d9d0;
   border: #81d9d0 solid 0.5px;
 `;
 
-const designated = css`
+export const designated = css`
   background-color: #fffcf3;
   color: #ffc748;
   border: #ffc748 solid 0.5px;
 `;
 
-const details = css`
+export const specials = css`
   font-size: 16px;
   color: #000000;
   font-weight: 600;
   margin: 0;
 `;
 
-const detailsNot = css`
+export const specialsNot = css`
   color: #d9d9d9;
 `;
 
-const date = css`
+export const date = css`
   font-size: 12px;
   color: #979797;
   margin: 0;
 `;
 
-const detailButton = css`
+export const detailButton = css`
   font-size: 10px;
   color: #d9d9d9;
   background: none;
@@ -154,28 +147,3 @@ const detailButton = css`
     color: #000000;
   }
 `;
-
-const styles = {
-  wrapper,
-  headerContainer,
-  tabContainer,
-  tab,
-  activeTab,
-  listContainer,
-  card,
-  contentContainer,
-  detailContainer,
-  profileImage,
-  cardContent,
-  cardHeader,
-  name,
-  type,
-  general,
-  designated,
-  details,
-  detailsNot,
-  date,
-  detailButton,
-};
-
-export default styles;

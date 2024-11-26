@@ -1,18 +1,13 @@
 import { css } from '@emotion/react';
 
 export const acceptButton = css`
-  background-color: #d9d9d9;
+  background: linear-gradient(to right, #84dacf, #93e1d7);
   width: 100%;
-  color: #000000;
+  color: #ffffff;
   font-size: 14px;
   font-weight: 600;
   padding: 16px 0px;
   border: none;
   border-radius: 24px;
   cursor: pointer;
-
-  &:hover {
-    background-color: #000000;
-    color: white;
-  }
 `;

@@ -33,7 +33,7 @@ export const detail = css`
   display: flex;
   flex-direction: row;
   gap: 24px;
-  border-left: 2px solid #d9d9d9;
+  border-left: 2px solid #84dacf;
   padding-left: 12px;
 `;
 
