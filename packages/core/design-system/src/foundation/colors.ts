@@ -22,6 +22,10 @@ export const colors = {
   gray400: '#BEBEBE',
   gray500: '#979797',
   gray600: '#6E6E6E',
+
+  grayOpacity100: 'rgba(0, 0, 0, 0.1)',
+  grayOpacity200: 'rgba(0, 0, 0, 0.2)',
+  grayOpacity300: 'rgba(0, 0, 0, 0.6)',
 } as const;
 
 export default colors;
