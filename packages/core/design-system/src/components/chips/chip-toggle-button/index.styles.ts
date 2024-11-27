@@ -11,8 +11,6 @@ export const wrapper = ({
   size: Size;
   disabled: boolean;
 }) => css`
-  ${theme.typo.regular04};
-
   ${size === 'fixed' &&
   css`
     width: 67px;
@@ -21,12 +19,14 @@ export const wrapper = ({
     align-items: center;
     justify-content: center;
     border-radius: 19px;
+    ${theme.typo.body11};
   `}
 
   ${size === 'fluid' &&
   css`
     padding: 8px 18px;
     border-radius: 30px;
+    ${theme.typo.body9};
   `}
 
    ${size === 'full' &&
@@ -37,6 +37,7 @@ export const wrapper = ({
     align-items: center;
     justify-content: center;
     border-radius: 28px;
+    ${theme.typo.body10};
   `}
 
   ${disabled

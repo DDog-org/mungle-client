@@ -37,5 +37,5 @@ export const select = css`
   border: none;
   outline: none;
   cursor: pointer;
-  ${theme.typo.medium03};
+  ${theme.typo.body10};
 `;

@@ -36,7 +36,7 @@ export const input = css`
   flex: 1;
   padding: 6px 0 10px 6px;
 
-  ${theme.typo.regular01};
+  ${theme.typo.body8};
 
   &::placeholder {
     color: ${theme.colors.gray300};
