@@ -5,7 +5,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
 
-export function CapsuleButton({ disabled = false, children, ...props }: Props) {
+export function ChipButton({ disabled = false, children, ...props }: Props) {
   return (
     <button {...props} css={wrapper({ disabled })}>
       {children}
