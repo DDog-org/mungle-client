@@ -6,6 +6,6 @@ export const wrapper = css`
   bottom: 18px;
   z-index: ${theme.zIndex.ctaButton};
   margin: 0 auto;
-  width: 100%;
+  width: calc(100% - 36px);
   max-width: calc(${theme.size.maxWidth} - 36px);
 `;
