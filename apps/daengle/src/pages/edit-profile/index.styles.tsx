@@ -43,3 +43,8 @@ export const duplicateButtonBox = css`
   border-radius: 15px;
   font-size: 10px;
 `;
+export const readOnlyTextBox = css`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
