@@ -1,5 +1,6 @@
 import { Input, Layout, RoundButton, Text } from '@daengle/design-system';
 import {
+  wrapper,
   titleBox,
   profileImageWrapper,
   profileImageBox,
@@ -13,7 +14,7 @@ import Image from 'next/image';
 export default function DogEditProfile() {
   return (
     <Layout>
-      <div>
+      <div css={wrapper}>
         <div css={titleBox}>
           <Text typo={'semibold01'}>반려견 프로필 수정</Text>
         </div>
