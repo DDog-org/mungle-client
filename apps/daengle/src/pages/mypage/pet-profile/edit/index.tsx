@@ -2,6 +2,10 @@ import { Input, Layout, RoundButton, Text } from '@daengle/design-system';
 import {
   wrapper,
   titleBox,
+  petProfileWrapper,
+  petProfileEditWrapper,
+  petProfileImageBox,
+  line,
   profileImageWrapper,
   profileImageBox,
   profileEditButtonBox,
@@ -18,16 +22,30 @@ export default function DogEditProfile() {
         <div css={titleBox}>
           <Text typo={'semibold01'}>반려견 프로필 수정</Text>
         </div>
-        <Text typo={'medium01'}>내 아이</Text>
-
+        <div css={petProfileWrapper}>
+          <Text typo={'medium01'}>내 아이</Text>
+          <div css={petProfileEditWrapper}>
+            <div css={petProfileImageBox}>
+              <Image
+                src="/icons/pet-profile/edit_image.jpeg"
+                alt="펫 필터링 이미지"
+                width={70}
+                height={70}
+              />
+            </div>
+            <Text typo="medium03" color="blue200">
+              가이
+            </Text>
+          </div>
+        </div>
+        <div css={line}></div>
         <div css={profileImageWrapper}>
           <div css={profileImageBox}>
             <Image
-              src="/icons/dog-edit-profile_image.jpeg"
-              alt="프로필 이미지"
+              src="/icons/pet-profile/edit_image.jpeg"
+              alt="펫 프로필 이미지"
               width={116}
               height={116}
-              objectFit="fill"
             />
           </div>
           <button css={profileEditButtonBox}>
@@ -46,7 +64,7 @@ export default function DogEditProfile() {
             수정하기
           </RoundButton>
           <button>
-            <Text typo="semibold04" color="gray200">
+            <Text typo="semibold04" color="gray300">
               삭제하기
             </Text>
           </button>

@@ -6,6 +6,32 @@ export const wrapper = css`
 export const titleBox = css`
   margin: 0 0 40px;
 `;
+export const petProfileWrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+export const petProfileEditWrapper = css`
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+`;
+export const petProfileImageBox = css`
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  object-fit: cover;
+  border: 5px solid ${colors.blue200};
+`;
+export const line = css`
+  background-color: ${colors.gray100};
+  width: 100%;
+  height: 7px;
+  margin: 31px 0 32px;
+`;
 export const profileImageWrapper = css`
   display: flex;
   flex-direction: column;
@@ -14,12 +40,11 @@ export const profileImageWrapper = css`
   margin: 32px 0 40px;
 `;
 export const profileImageBox = css`
-  position: relative;
-  display: block;
+  width: 116px;
+  height: 116px;
   border-radius: 50%;
   overflow: hidden;
-  box-sizing: border-box;
-  object-fit: fill; // 이미지를 컨테이너에 맞게 채움
+  object-fit: cover;
 `;
 export const profileEditButtonBox = css`
   margin-top: 12px;
