@@ -14,11 +14,7 @@ export function AppBar({ onBackClick, prefix, title, suffix }: Props) {
   return (
     <header css={wrapper}>
       <div css={contents}>
-        {prefix ? (
-          prefix
-        ) : (
-          <AppBarBack width="6px" height="12px" cursor="pointer" onClick={onBackClick} />
-        )}
+        {prefix ? prefix : <AppBarBack width="8px" cursor="pointer" onClick={onBackClick} />}
         {title && (
           <Text id="title" color="black" typo="semibold05">
             {title}
