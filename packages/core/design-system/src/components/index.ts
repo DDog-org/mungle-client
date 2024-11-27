@@ -4,5 +4,6 @@ export * from './chips';
 export * from './gnb';
 export * from './input';
 export * from './layout';
+export * from './radio-group';
 export * from './select';
 export * from './text';
