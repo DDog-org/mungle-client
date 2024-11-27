@@ -36,7 +36,7 @@ function Radio({ name = 'radio-group', value, label, onChange, defaultValue }: R
   return (
     <label css={radio} onChange={onChange}>
       <input type="radio" name={name} value={value} defaultChecked={defaultValue === value} />
-      <Text typo="medium03">{label}</Text>
+      <Text typo="body11">{label}</Text>
     </label>
   );
 }

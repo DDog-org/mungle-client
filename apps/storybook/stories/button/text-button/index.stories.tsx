@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: (
-      <Text color="gray500" typo="regular01">
+      <Text color="gray500" typo="body8">
         꼬꼬마 관리샵
       </Text>
     ),

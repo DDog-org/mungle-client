@@ -51,6 +51,10 @@ export const input = css`
   &[type='button'] {
     cursor: pointer;
   }
+
+  &:disabled {
+    color: ${theme.colors.gray300};
+  }
 `;
 
 export const infoTextWrapper = css`
