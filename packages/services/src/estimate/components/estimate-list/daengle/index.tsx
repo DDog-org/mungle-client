@@ -1,26 +1,26 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { Text, TextButton } from '@daengle/design-system';
 import {
   wrapper,
   headerContainer,
   tabContainer,
-  tab,
-  activeTab,
+  tabButton,
+  activeTabButton,
   userProfileContainer,
   profileButton,
-  selectedProfile,
+  selectedProfileButton,
   optionContainer,
-  optionButton,
   listContainer,
   card,
   contentContainer,
   profileImage,
   cardContent,
   cardHeader,
-  name,
-  getDistanceColor,
-  tags,
-  tagButton,
+  nameStyle,
+  distanceStyle,
+  tagsContainer,
+  tagButtonStyle,
 } from './index.styles';
 
 interface UserEstimateContent {
@@ -63,50 +63,56 @@ export default function UserEstimateList({ petInfos }: Props): JSX.Element {
 
   return (
     <div css={wrapper}>
-      <header css={headerContainer}>견적</header>
+      <div css={headerContainer}>
+        <Text typo="semibold01">견적</Text>
+      </div>
       <div css={tabContainer}>
-        <button
-          css={[tab, filterType === '미용사' && activeTab]}
+        <TextButton
+          css={[tabButton, filterType === '미용사' && activeTabButton]}
           onClick={() => setFilterType('미용사')}
         >
           미용사
-        </button>
-        <button
-          css={[tab, filterType === '병원' && activeTab]}
+        </TextButton>
+        <TextButton
+          css={[tabButton, filterType === '병원' && activeTabButton]}
           onClick={() => setFilterType('병원')}
         >
           병원
-        </button>
+        </TextButton>
       </div>
       <div css={userProfileContainer}>
         {petInfos.map((pet, index) => (
-          <button
+          <TextButton
             key={pet.petId}
-            css={[profileButton, index === selectedPetIndex && selectedProfile]}
+            css={[profileButton, index === selectedPetIndex && selectedProfileButton]}
             onClick={() => setSelectedPetIndex(index)}
+            icons={{
+              prefix: <img src={pet.petImage} alt={`${pet.petName} 프로필`} />,
+            }}
           >
-            <img src={pet.petImage} alt={`${pet.petName} 프로필`} />
             {pet.petName}
-          </button>
+          </TextButton>
         ))}
       </div>
       <div css={optionContainer}>
-        <button
-          css={optionButton}
+        <TextButton
           onClick={() => {
             alert('해당 요청에 대한 견적을 그만 받으시겠습니까?');
           }}
         >
-          견적 그만 받기
-        </button>
-        <button
-          css={optionButton}
+          <Text typo="medium02" color="gray500">
+            견적 그만 받기
+          </Text>
+        </TextButton>
+        <TextButton
           onClick={() => {
             handleRequestClick();
           }}
         >
-          내가 보낸 요청
-        </button>
+          <Text typo="medium02" color="gray500">
+            내가 보낸 요청
+          </Text>
+        </TextButton>
       </div>
       <div css={listContainer}>
         {estimateData &&
@@ -114,17 +120,27 @@ export default function UserEstimateList({ petInfos }: Props): JSX.Element {
             <div key={data.id} css={card}>
               <div css={contentContainer}>
                 <div css={cardHeader}>
-                  <div css={name}>{data.name}</div>
-                  <div css={getDistanceColor(data.daengleMeter)}>🐾 {data.daengleMeter}m</div>
+                  <Text css={nameStyle} typo="medium01">
+                    {data.name}
+                  </Text>
+                  <div css={distanceStyle(data.daengleMeter)}>🐾 {data.daengleMeter}m</div>
                 </div>
                 <div css={cardContent}>
-                  <div>{data.shopName || ''}</div>
-                  <p>{data.reservedDate}</p>
-                  <div css={tags}>
+                  <Text typo="regular04" color="gray400">
+                    {data.shopName || ''}
+                  </Text>
+                  <Text typo="regular05" color="gray600">
+                    {data.reservedDate}
+                  </Text>
+                  <div css={tagsContainer}>
                     {data.tags?.map((tag, index) => (
-                      <span key={`${data.id}-${index}`} css={tagButton}>
+                      <TextButton
+                        key={`${data.id}-${index}`}
+                        css={tagButtonStyle}
+                        onClick={() => {}}
+                      >
                         #{tag}
-                      </span>
+                      </TextButton>
                     ))}
                   </div>
                 </div>

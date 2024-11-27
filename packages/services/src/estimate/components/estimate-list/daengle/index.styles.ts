@@ -1,19 +1,13 @@
 import { css } from '@emotion/react';
+import { theme } from '@daengle/design-system';
 
 export const wrapper = css`
   display: flex;
   flex-direction: column;
-  max-width: 768px;
-  width: 100%;
-  min-height: 100vh;
-  height: 100%;
-  margin: 0 auto;
   background-color: #f3f5f8;
 `;
 
 export const headerContainer = css`
-  font-size: 24px;
-  font-weight: 600;
   padding: 18px 34px;
   margin-top: 4px;
 `;
@@ -21,44 +15,49 @@ export const headerContainer = css`
 export const tabContainer = css`
   display: flex;
   padding: 18px 18px 0px 18px;
-  position: relative;
-  border-bottom: 0.5px solid #e6e6e6;
+  border-bottom: 0.5px solid ${theme.colors.gray200};
 `;
 
-export const tab = css`
-  font-size: 16px;
+export const tabButton = css`
+  ${theme.typo.medium01};
   width: 100%;
   padding: 9px 32px;
-  border: none;
+  justify-content: center;
   background: none;
-  color: #d9d9d9;
+  color: ${theme.colors.gray500};
   cursor: pointer;
   &:hover {
-    color: #000000;
+    color: ${theme.colors.black};
   }
 `;
 
-export const activeTab = css`
-  color: #000000;
+export const activeTabButton = css`
+  color: ${theme.colors.black};
   font-weight: 600;
-  border-bottom: 2px solid #000000;
+  border-bottom: 2px solid ${theme.colors.black};
 `;
 
 export const userProfileContainer = css`
   display: flex;
   gap: 8px;
   margin: 18px;
+
+  button {
+    ${theme.typo.medium02};
+    color: ${theme.colors.gray500};
+  }
 `;
 
 export const profileButton = css`
   padding: 4px 14px 4px 4px;
   border-radius: 28px;
-  border: 1px solid #e6e6e6;
-  background-color: #e6e6e6;
+  border: 1px solid ${theme.colors.gray200};
+  background-color: ${theme.colors.gray200};
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
+  color: ${theme.colors.gray500};
 
   img {
     width: 32px;
@@ -66,43 +65,32 @@ export const profileButton = css`
     border-radius: 50%;
     object-fit: cover;
   }
-
-  &:not(.selectedProfile) {
-    color: #979797;
-  }
 `;
 
-export const selectedProfile = css`
+export const selectedProfileButton = css`
   && {
-    background-color: #000000;
-    color: #ffffff;
+    background-color: ${theme.colors.black};
+    ${theme.typo.medium02};
+    color: ${theme.colors.white};
   }
 `;
 
 export const optionContainer = css`
   display: flex;
   margin-bottom: 18px;
-`;
-
-export const optionButton = css`
-  font-size: 14px;
   padding: 0 22px;
-  color: #979797;
-  cursor: pointer;
-  background: none;
-  border: none;
+  gap: 12px;
 
-  &:hover {
-    color: #000;
+  button:hover span {
+    color: ${theme.colors.black100};
   }
 
-  &:not(:last-of-type) {
-    border-right: 1px solid #d9d9d9;
-  }
-
-  &.active {
-    color: #000;
-    font-weight: bold;
+  button:not(:last-of-type)::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 100%;
+    background-color: ${theme.colors.gray300};
   }
 `;
 
@@ -116,7 +104,7 @@ export const card = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #ffffff;
+  background-color: ${theme.colors.white};
   margin-right: 16px;
   padding: 12px 12px 12px 24px;
   border-top-right-radius: 65.5px;
@@ -142,13 +130,21 @@ export const profileImage = css`
   object-fit: cover;
 `;
 
-export const name = css`
+export const nameStyle = css`
   font-size: 16px;
 `;
 
-export const getDistanceColor = (distanceValue: number) => css`
-  background-color: ${distanceValue < 50 ? '#ffe3e3' : distanceValue < 80 ? '#fffcf3' : '#dde6ff'};
-  color: ${distanceValue < 50 ? '#ff6767' : distanceValue < 80 ? '#ffc748' : '#5d86fe'};
+export const distanceStyle = (distanceValue: number) => css`
+  background-color: ${distanceValue < 50
+    ? theme.colors.red100
+    : distanceValue < 80
+      ? theme.colors.yellow100
+      : theme.colors.blue100};
+  color: ${distanceValue < 50
+    ? theme.colors.red200
+    : distanceValue < 80
+      ? theme.colors.yellow200
+      : theme.colors.blue200};
   padding: 5px 8px;
   border-radius: 30px;
   font-size: 9px;
@@ -157,20 +153,24 @@ export const getDistanceColor = (distanceValue: number) => css`
 
 export const cardContent = css`
   margin-top: 4px;
-  color: #bebebe;
+  color: ${theme.colors.gray400};
   font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 `;
 
-export const tags = css`
+export const tagsContainer = css`
   display: flex;
+  margin-top: 5px;
   gap: 6px;
 `;
 
-export const tagButton = css`
+export const tagButtonStyle = css`
   background-color: transparent;
-  color: #5d86fe;
+  color: ${theme.colors.blue200};
   padding: 5px 16px;
-  border: 1px solid #5d86fe;
+  border: 1px solid ${theme.colors.blue200};
   border-radius: 14px;
   font-size: 10px;
   cursor: pointer;
