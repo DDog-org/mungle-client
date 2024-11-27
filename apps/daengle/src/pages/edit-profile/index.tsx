@@ -10,7 +10,7 @@ import {
 import { Input, Layout, RoundButton, Text } from '@daengle/design-system';
 import Image from 'next/image';
 
-export default function editProfile() {
+export default function EditProfile() {
   return (
     <Layout>
       <Header />
