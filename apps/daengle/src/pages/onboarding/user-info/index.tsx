@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useRouter } from 'next/router';
-import { AppBar, CapsuleButton, CTAButton, Input, RoundButton, Text } from '@daengle/design-system';
+import { AppBar, ChipButton, CTAButton, Input, RoundButton, Text } from '@daengle/design-system';
 import { ROUTES } from '~/constants/routes';
 import { useSearchAddressStore } from '~/store/onboarding/address';
 import { location, locationButton, section, wrapper } from './index.styles';
@@ -18,7 +18,7 @@ export default function UserInfo() {
     <>
       <AppBar />
       <div css={wrapper}>
-        <Text typo="semibold01" color="black">
+        <Text typo="title1" color="black">
           회원 정보를 입력해 주세요
         </Text>
 
@@ -27,10 +27,10 @@ export default function UserInfo() {
 
           <Input label="휴대폰 번호" />
 
-          <Input label="닉네임" suffix={<CapsuleButton variant="line">중복검사</CapsuleButton>} />
+          <Input label="닉네임" suffix={<ChipButton>중복검사</ChipButton>} />
 
           <div css={location}>
-            <Text typo="medium01" color="black">
+            <Text typo="subtitle3" color="black">
               위치 설정
             </Text>
             <RoundButton
@@ -40,11 +40,11 @@ export default function UserInfo() {
             >
               <div css={locationButton}>
                 {address ? (
-                  <Text typo="regular02" color="black">
+                  <Text typo="body10" color="black">
                     {jibunAddress}
                   </Text>
                 ) : (
-                  <Text typo="regular02" color="gray200">
+                  <Text typo="body10" color="gray200">
                     위치(필수)
                   </Text>
                 )}
