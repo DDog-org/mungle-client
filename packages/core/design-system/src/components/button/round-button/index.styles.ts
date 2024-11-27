@@ -78,7 +78,7 @@ export const buttonVariant = ({
   ${disabled &&
   css`
     color: ${theme.colors.white} !important;
-    background: ${theme.colors.gray300} !important;
+    background: ${theme.colors.gray400} !important;
     cursor: default;
   `}
 
@@ -86,6 +86,11 @@ export const buttonVariant = ({
   css`
     color: ${theme.colors.white};
     background: ${theme.colors.blueGradient100};
+  `}
+  ${variant === 'ghost' &&
+  css`
+    color: ${theme.colors.gray200};
+    border: 1px solid ${theme.colors.gray200};
   `}
   ${variant === 'kakao' &&
   css`

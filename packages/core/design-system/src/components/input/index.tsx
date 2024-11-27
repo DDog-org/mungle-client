@@ -1,5 +1,4 @@
 import {
-  FocusEvent,
   forwardRef,
   InputHTMLAttributes,
   ReactNode,
@@ -57,20 +56,7 @@ export const Input = forwardRef<InputRef, Props>(
           </Text>
         )}
 
-        <div
-          onClick={() => {
-            if (inputRef.current) {
-              inputRef.current.focus();
-              setIsFocused(true);
-            }
-          }}
-          onBlur={(e: FocusEvent<HTMLDivElement>) => {
-            if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-              setIsFocused(false);
-            }
-          }}
-          css={inputWrapper({ errorMessage, isFocused })}
-        >
+        <div css={inputWrapper}>
           {prefix && prefix}
           <input
             ref={inputRef}
@@ -78,7 +64,8 @@ export const Input = forwardRef<InputRef, Props>(
             spellCheck={spellCheck}
             autoComplete={autoComplete}
             disabled={disabled}
-            css={input}
+            css={input({ errorMessage, isFocused })}
+            onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             {...props}
           />

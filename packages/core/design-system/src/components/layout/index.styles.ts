@@ -16,4 +16,5 @@ export const main = css`
   padding: ${theme.size.appBarHeight} 0 0 0;
   display: flex;
   flex-direction: column;
+  border: 1px solid ${theme.colors.gray200};
 `;
