@@ -12,7 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-export const WidthTitle: Story = {
+export const WithTitle: Story = {
   args: {
     title: 'Daengle',
   },
