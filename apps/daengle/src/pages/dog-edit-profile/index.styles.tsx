@@ -1,5 +1,8 @@
 import { css } from '@emotion/react';
 import { colors } from '@daengle/design-system';
+export const wrapper = css`
+  padding: 0 18px;
+`;
 export const titleBox = css`
   margin: 0 0 40px;
 `;
