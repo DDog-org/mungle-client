@@ -1,9 +1,7 @@
 import { css } from '@emotion/react';
 
 export const wrapper = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 0 18px;
 `;
 export const container = css`
   width: 393px;
@@ -38,6 +36,7 @@ export const editButtonBox = css`
   margin: 0 0 18px;
 `;
 export const duplicateButtonBox = css`
+  margin: 0 0 18px 4px;
   width: 59px;
   height: 30px;
   border: 1px solid black;
