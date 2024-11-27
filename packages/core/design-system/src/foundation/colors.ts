@@ -14,7 +14,7 @@ export const colors = {
   red200: '#FF6767',
 
   green100: '#F1FFFE',
-  green200: '#81D9D0',
+  green200: '#84DACF',
 
   gray100: '#F6F6F6',
   gray200: '#E6E6E6',
@@ -29,6 +29,8 @@ export const colors = {
   grayOpacity300: 'rgba(0, 0, 0, 0.6)',
 
   blueGradient100: 'linear-gradient(180deg, #5D86FE 0%, #7B9DFF 100%)',
+
+  greenGradient100: 'linear-gradient(180deg, #84DACF 0%, #93E1D7 100%)',
 } as const;
 
 export default colors;
