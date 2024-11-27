@@ -1,6 +1,5 @@
-import { css } from '@emotion/react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { CapsuleButton, RoundButton } from '@daengle/design-system';
+import { CapsuleButton } from '@daengle/design-system';
 
 const meta = {
   title: 'Components/Buttons/CapsuleButton',

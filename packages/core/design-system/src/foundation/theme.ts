@@ -15,6 +15,7 @@ const theme = {
     appBar: 10,
     gnb: 10,
     fab: 10,
+    ctaButton: 10,
     dim: 20,
     actionSheet: 30,
     bottomSheet: 30,

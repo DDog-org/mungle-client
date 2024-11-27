@@ -7,12 +7,12 @@ import {
   GnbMyInactive,
   GnbReservationActive,
   GnbReservationInactive,
-  GnbSheetActive,
-  GnbSheetInactive,
+  GnbEstimateActive,
+  GnbEstimateInactive,
 } from '@daengle/design-system/icons';
 
 export const PATHS = {
-  SHEET: '/sheet',
+  ESTIMATE: '/estimate',
   RESERVATION: '/reservation',
   HOME: '/',
   CHATTING: '/chatting',
@@ -23,10 +23,10 @@ export const MENUS = [
   {
     name: '견적',
     icon: {
-      active: <GnbSheetActive width="32px" height="32px" />,
-      inactive: <GnbSheetInactive width="32px" height="32px" />,
+      active: <GnbEstimateActive width="32px" height="32px" />,
+      inactive: <GnbEstimateInactive width="32px" height="32px" />,
     },
-    path: PATHS.SHEET,
+    path: PATHS.ESTIMATE,
   },
   {
     name: '예약',
