@@ -51,7 +51,7 @@ export const Input = forwardRef<InputRef, Props>(
     return (
       <div css={wrapper}>
         {label && (
-          <Text typo="medium01" css={labelCss}>
+          <Text typo="subtitle3" css={labelCss}>
             {label}
           </Text>
         )}
@@ -74,7 +74,7 @@ export const Input = forwardRef<InputRef, Props>(
 
         {confirmMessage && (
           <div css={infoTextWrapper}>
-            <Text typo="regular05" color="blue200">
+            <Text typo="body12" color="blue200">
               {confirmMessage}
             </Text>
           </div>
@@ -82,7 +82,7 @@ export const Input = forwardRef<InputRef, Props>(
 
         {errorMessage && (
           <div css={infoTextWrapper}>
-            <Text typo="regular05" color="red200">
+            <Text typo="body12" color="red200">
               {errorMessage}
             </Text>
           </div>

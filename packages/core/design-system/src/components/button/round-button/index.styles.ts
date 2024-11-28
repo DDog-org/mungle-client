@@ -28,35 +28,35 @@ export const buttonSize = ({ size, fullWidth }: { size: Size; fullWidth: boolean
     width: 100%;
     padding: 27px 0;
     border-radius: 35px;
-    ${theme.typo.semibold02};
+    ${theme.typo.title2};
   `}
   ${size === 'L' &&
   css`
     width: ${fullWidth ? '100%' : '354px'};
     padding: 18px 0;
     border-radius: 27px;
-    ${theme.typo.semibold04};
+    ${theme.typo.subtitle2};
   `}
   ${size === 'M' &&
   css`
     width: ${fullWidth ? '100%' : '172px'};
     padding: 16px 0;
     border-radius: 24px;
-    ${theme.typo.semibold05};
+    ${theme.typo.body1};
   `}
   ${size === 'S' &&
   css`
     width: ${fullWidth ? '100%' : '143px'};
     padding: 13px 0;
     border-radius: 30px;
-    ${theme.typo.medium02};
+    ${theme.typo.body1};
   `}
   ${size === 'XS' &&
   css`
     width: ${fullWidth ? '100%' : '60px'};
     padding: 10px 0;
     border-radius: 30px;
-    ${theme.typo.regular04};
+    ${theme.typo.body4};
   `}
 `;
 

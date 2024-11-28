@@ -30,7 +30,7 @@ export const input = ({
   flex: 1;
   padding: 6px 0 10px 6px;
 
-  ${theme.typo.regular01};
+  ${theme.typo.body8};
 
   &::placeholder {
     color: ${theme.colors.gray300};
@@ -46,13 +46,9 @@ export const input = ({
     cursor: pointer;
   }
 
-  border-bottom: ${errorMessage
-    ? `1px solid ${theme.colors.red200}`
-    : isFocused
-      ? `1px solid ${theme.colors.blue200}`
-      : `1px solid ${theme.colors.gray200}`};
-
-  transition: border-bottom 0.2s ease;
+  &:disabled {
+    color: ${theme.colors.gray300};
+  }
 `;
 
 export const infoTextWrapper = css`

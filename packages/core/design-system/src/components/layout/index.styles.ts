@@ -10,10 +10,10 @@ export const screen = css`
   overscroll-behavior-y: contain;
 `;
 
-export const main = css`
+export const main = ({ isAppBarExist }: { isAppBarExist: boolean }) => css`
   width: 100%;
   height: 100%;
-  padding: ${theme.size.appBarHeight} 0 0 0;
+  padding: ${isAppBarExist ? `${theme.size.appBarHeight} 0 0 0` : 0};
   display: flex;
   flex-direction: column;
   border: 1px solid ${theme.colors.gray200};

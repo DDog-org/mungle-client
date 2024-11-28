@@ -2,65 +2,73 @@ import { css } from '@emotion/react';
 
 // TODO: 변수명 변경
 const typography = {
-  semibold01: css`
+  title1: css`
     font-weight: 600;
     font-size: 24px;
   `,
-  semibold02: css`
+  title2: css`
     font-weight: 600;
     font-size: 20px;
   `,
-  semibold03: css`
+
+  subtitle1: css`
     font-weight: 600;
     font-size: 16px;
   `,
-  semibold04: css`
+  subtitle2: css`
     font-weight: 600;
     font-size: 15px;
   `,
-  semibold05: css`
-    font-weight: 600;
-    font-size: 14px;
-  `,
-  semibold06: css`
-    font-weight: 600;
-    font-size: 10px;
-  `,
-
-  medium01: css`
+  subtitle3: css`
     font-weight: 500;
     font-size: 16px;
   `,
-  medium02: css`
+
+  body1: css`
+    font-weight: 600;
+    font-size: 14px;
+  `,
+  body2: css`
+    font-weight: 600;
+    font-size: 9px;
+  `,
+  body3: css`
+    font-weight: 500;
+    font-size: 18px;
+  `,
+  body4: css`
     font-weight: 500;
     font-size: 14px;
   `,
-  medium03: css`
+  body5: css`
     font-weight: 500;
     font-size: 12px;
   `,
-  medium04: css`
+  body6: css`
+    font-weight: 500;
+    font-size: 11px;
+  `,
+  body7: css`
     font-weight: 500;
     font-size: 10px;
   `,
-
-  regular01: css`
+  body8: css`
     font-weight: 400;
     font-size: 16px;
   `,
-  regular02: css`
+  body9: css`
     font-weight: 400;
     font-size: 14px;
   `,
-  regular03: css`
+  body10: css`
     font-weight: 400;
     font-size: 13px;
   `,
-  regular04: css`
+  body11: css`
     font-weight: 400;
     font-size: 12px;
   `,
-  regular05: css`
+  body12: css`
     font-weight: 400;
     font-size: 10px;
   `,
