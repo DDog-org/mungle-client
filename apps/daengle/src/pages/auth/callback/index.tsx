@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { usePostKakaoOauth, usePostOauthKakao } from '~/queries/oauth';
-import { useAuthStore } from '~/stores/oauth/auth-store';
+import { useAuthStore } from '~/stores/oauth';
 import { api } from '~/api/api';
 
 export default function AuthCallback() {

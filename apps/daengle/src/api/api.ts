@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useAuthStore } from '~/stores/oauth/auth-store';
+import { useAuthStore } from '~/stores/oauth';
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const api = axios.create({
@@ -15,4 +15,4 @@ api.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${accessToken}`; // 헤더에 토큰 추가
   }
   return config;
-}); // Axios 요청 인터셉터 설정
+});
