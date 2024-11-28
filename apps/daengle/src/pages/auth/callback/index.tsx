@@ -19,7 +19,6 @@ export default function AuthCallback() {
         const accessToken = await postKakaoOauth(code as string);
         // 액세스 토큰 백엔드한테 보내주기
         const response = await postOauthKakao({ accessToken, loginType: 'GROOMER' });
-        console.log('response.data----->', response.data);
 
         // 응답 데이터 추출
         const {
@@ -28,11 +27,9 @@ export default function AuthCallback() {
 
         // zustand 스토어에 토큰 저장
         useAuthStore.getState().setAccessToken(serverAccessToken);
-        console.log('Server Access Token 저장 완료:', serverAccessToken);
 
         // 토큰 헤더 저장 테스트용 api
         await api.post('https://dev-api.daengle.com/test');
-        console.log('헤더 저장 성공 !');
       } catch (error) {
         throw new Error('로그인 실패');
       }
