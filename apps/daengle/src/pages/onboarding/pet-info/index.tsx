@@ -63,7 +63,7 @@ export default function PetInfo() {
         </Text>
 
         <section css={section}>
-          <Input label="이름" placeholder="이름(필수)" />
+          <Input label="이름" placeholder="이름을 입력해 주세요" />
 
           <div css={itemWrapper}>
             <Text typo="subtitle3" color="black">
@@ -71,7 +71,7 @@ export default function PetInfo() {
             </Text>
             <Select
               options={BIRTH_YEAR_OPTIONS}
-              placeholder="탄생년도(필수)"
+              placeholder="탄생년도"
               selectedValue={selectedValue}
               onChange={(option) => setSelectedValue(option)}
             />
@@ -110,7 +110,7 @@ export default function PetInfo() {
             </Text>
             <Select
               options={PET_BREED.map((breed) => ({ value: breed.breed, label: breed.breedName }))}
-              placeholder="품종(필수)"
+              placeholder="품종"
               selectedValue={selectedValue}
               onChange={(option) => setSelectedValue(option)}
             />

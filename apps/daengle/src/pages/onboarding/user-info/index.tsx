@@ -23,7 +23,7 @@ export default function UserInfo() {
         </Text>
 
         <section css={section}>
-          <Input label="이름" placeholder="이름(필수)" />
+          <Input label="이름" placeholder="이름을 입력해 주세요" />
 
           <Input label="휴대폰 번호" />
 
@@ -45,7 +45,7 @@ export default function UserInfo() {
                   </Text>
                 ) : (
                   <Text typo="body10" color="gray200">
-                    위치(필수)
+                    위치
                   </Text>
                 )}
               </div>
