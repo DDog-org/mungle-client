@@ -1,11 +1,4 @@
-import {
-  forwardRef,
-  InputHTMLAttributes,
-  ReactNode,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import { forwardRef, InputHTMLAttributes, ReactNode, useImperativeHandle, useRef } from 'react';
 import { input, wrapper, label as labelCss, infoTextWrapper, inputWrapper } from './index.styles';
 import { Text } from '../text';
 
@@ -38,15 +31,7 @@ export const Input = forwardRef<InputRef, Props>(
     ref
   ) => {
     const inputRef = useRef<HTMLInputElement>(null);
-    const [isFocused, setIsFocused] = useState<boolean>(false);
-
-    useImperativeHandle(ref, () => {
-      return {
-        focus: () => {
-          if (inputRef.current) inputRef.current.focus();
-        },
-      };
-    });
+    useImperativeHandle(ref, () => inputRef.current as InputRef);
 
     return (
       <div css={wrapper}>
@@ -64,9 +49,7 @@ export const Input = forwardRef<InputRef, Props>(
             spellCheck={spellCheck}
             autoComplete={autoComplete}
             disabled={disabled}
-            css={input({ errorMessage, isFocused })}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            css={input({ errorMessage })}
             {...props}
           />
           {suffix && suffix}

@@ -1,0 +1,3 @@
+export const QUERY_KEYS = {
+  POST_JOIN_WITHOUT_PET: ['POST_JOIN_WITHOUT_PET'],
+};
