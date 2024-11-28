@@ -4,7 +4,7 @@ export const wrapper = css`
   display: flex;
   flex-direction: column;
   gap: 40px;
-  padding: 18px;
+  padding: 18px 18px 146px 18px;
 `;
 
 export const section = css`
@@ -19,10 +19,17 @@ export const itemWrapper = css`
   gap: 16px;
 `;
 
-export const locationButton = css`
+export const radioGroup = css`
   width: 100%;
-  padding: 0 24px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  gap: 12px;
+`;
+
+export const weightWrapper = css`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 3px;
 `;

@@ -5,7 +5,7 @@ import { chipRadio } from './index.styles';
 interface Props {
   name?: string;
   label: string;
-  value: string | number;
+  value: string | number | boolean;
   isSelected?: boolean;
   onChange?: () => void;
   size?: Size;
@@ -21,7 +21,7 @@ export function ChipRadio({
 }: Props) {
   return (
     <label css={chipRadio({ isSelected, size })} onChange={onChange}>
-      <input type="radio" name={name} value={value} />
+      <input type="radio" name={name} value={String(value)} />
       <Text typo="body10" color={isSelected ? 'blue200' : 'gray500'}>
         {label}
       </Text>

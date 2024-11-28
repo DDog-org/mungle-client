@@ -7,8 +7,13 @@ export const wrapper = ({ selectedValue }: { selectedValue?: boolean }) => css`
   width: 100%;
   border-radius: 30px;
   overflow: hidden;
-  border: 1px solid ${selectedValue ? theme.colors.blue200 : theme.colors.gray200};
+  border: 1px solid ${theme.colors.gray200};
   color: ${selectedValue ? theme.colors.black : theme.colors.gray200};
+  transition: all 0.2s ease;
+
+  &:focus-within {
+    border: 1px solid ${theme.colors.blue200};
+  }
 `;
 
 export const contents = css`

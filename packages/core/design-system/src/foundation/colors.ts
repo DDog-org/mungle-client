@@ -28,6 +28,8 @@ export const colors = {
   grayOpacity200: 'rgba(0, 0, 0, 0.2)',
   grayOpacity300: 'rgba(0, 0, 0, 0.6)',
 
+  whiteGradient100: 'linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 71.19%)',
+
   blueGradient100: 'linear-gradient(180deg, #5D86FE 0%, #7B9DFF 100%)',
 
   greenGradient100: 'linear-gradient(180deg, #84DACF 0%, #93E1D7 100%)',
