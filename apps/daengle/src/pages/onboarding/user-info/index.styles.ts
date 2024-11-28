@@ -4,7 +4,7 @@ export const wrapper = css`
   display: flex;
   flex-direction: column;
   gap: 40px;
-  padding: 0 18px;
+  padding: 18px;
 `;
 
 export const section = css`
