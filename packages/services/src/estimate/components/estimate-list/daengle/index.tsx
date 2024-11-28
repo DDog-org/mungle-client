@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Layout, Text, TextButton } from '@daengle/design-system';
+import { RoundButton, Text, TextButton } from '@daengle/design-system';
 import {
   wrapper,
   headerContainer,
@@ -21,7 +21,12 @@ import {
   distanceStyle,
   tagsContainer,
   tagButtonStyle,
+  emptyStateWrapper,
+  emptyButton,
+  emptyText,
+  hiddenContainer,
 } from './index.styles';
+import { EmptyStateBone } from '@daengle/design-system/icons';
 
 interface UserEstimateContent {
   id: number;
@@ -34,7 +39,7 @@ interface UserEstimateContent {
 }
 
 interface PetInfo {
-  petId: number;
+  petId: number | null;
   petName: string;
   petImage: string;
   groomingEstimates: UserEstimateContent[];
@@ -47,25 +52,21 @@ interface Props {
 
 export default function UserEstimateList({ petInfos }: Props): JSX.Element {
   const router = useRouter();
-  // 필터 api GET값으로 변경될 가능성
   const [filterType, setFilterType] = useState<'미용사' | '병원'>('미용사');
   const [selectedPetIndex, setSelectedPetIndex] = useState(0);
 
-  const selectedPet = petInfos[selectedPetIndex];
+  const selectedPet = petInfos[selectedPetIndex] ?? null;
+
   const estimateData =
     selectedPet &&
     (filterType === '미용사' ? selectedPet.groomingEstimates : selectedPet.careEstimates);
-
-  const handleRequestClick = () => {
-    // 임시 경로
-    router.push('/temporary-route');
-  };
 
   return (
     <div css={wrapper}>
       <div css={headerContainer}>
         <Text typo="title1">견적</Text>
       </div>
+
       <div css={tabContainer}>
         <TextButton
           css={[tabButton, filterType === '미용사' && activeTabButton]}
@@ -80,20 +81,28 @@ export default function UserEstimateList({ petInfos }: Props): JSX.Element {
           병원
         </TextButton>
       </div>
-      <div css={profileContainer}>
-        {petInfos.map((pet, index) => (
-          <TextButton
-            key={pet.petId}
-            css={[profileButton, index === selectedPetIndex && selectedProfileButton]}
-            onClick={() => setSelectedPetIndex(index)}
-            icons={{
-              prefix: <img src={pet.petImage} alt={`${pet.petName} 프로필`} />,
-            }}
-          >
-            {pet.petName}
-          </TextButton>
-        ))}
-      </div>
+
+      {petInfos.length > 0 ? (
+        <div css={profileContainer}>
+          {petInfos.map((pet, index) => (
+            <TextButton
+              key={pet.petId}
+              css={[profileButton, index === selectedPetIndex && selectedProfileButton]}
+              onClick={() => setSelectedPetIndex(index)}
+              icons={{
+                prefix: pet.petImage ? (
+                  <img src={pet.petImage} alt={`${pet.petName} 프로필`} />
+                ) : null,
+              }}
+            >
+              {pet.petName}
+            </TextButton>
+          ))}
+        </div>
+      ) : (
+        <div css={hiddenContainer} aria-hidden="true" />
+      )}
+
       <div css={optionContainer}>
         <TextButton
           onClick={() => {
@@ -104,17 +113,18 @@ export default function UserEstimateList({ petInfos }: Props): JSX.Element {
             견적 그만 받기
           </Text>
         </TextButton>
-        <TextButton onClick={handleRequestClick}>
+        <TextButton onClick={() => router.push('/temporary-route')}>
           <Text typo="body4" color="gray500">
             내가 보낸 요청
           </Text>
         </TextButton>
       </div>
-      <div css={listContainer}>
-        {estimateData &&
-          estimateData.map((data) => (
+
+      {estimateData && estimateData.length > 0 ? (
+        <div css={listContainer}>
+          {estimateData.map((data) => (
             <div key={data.id} css={card}>
-              <div css={contentContainer} onClick={handleRequestClick}>
+              <div css={contentContainer} onClick={() => router.push('/temporary-route')}>
                 <div css={cardHeader}>
                   <Text css={nameStyle} typo="subtitle3">
                     {data.name}
@@ -133,7 +143,7 @@ export default function UserEstimateList({ petInfos }: Props): JSX.Element {
                       <TextButton
                         key={`${data.id}-${index}`}
                         css={tagButtonStyle}
-                        onClick={handleRequestClick}
+                        onClick={() => router.push('/temporary-route')}
                       >
                         #{tag}
                       </TextButton>
@@ -145,11 +155,25 @@ export default function UserEstimateList({ petInfos }: Props): JSX.Element {
                 src={data.image}
                 alt={`${data.name} 프로필`}
                 css={profileImage}
-                onClick={handleRequestClick}
+                onClick={() => router.push('/temporary-route')}
               />
             </div>
           ))}
-      </div>
+        </div>
+      ) : (
+        <div css={emptyStateWrapper}>
+          <EmptyStateBone />
+          <div css={emptyText}>선택한 탭에 대한 견적이 없습니다.</div>
+          <RoundButton
+            css={emptyButton}
+            size="M"
+            variant="primary"
+            onClick={() => router.push('/request-estimate')}
+          >
+            견적 요청하기
+          </RoundButton>
+        </div>
+      )}
     </div>
   );
 }

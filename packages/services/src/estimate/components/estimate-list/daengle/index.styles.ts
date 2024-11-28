@@ -178,3 +178,26 @@ export const tagButtonStyle = css`
   font-size: 10px;
   cursor: pointer;
 `;
+
+export const emptyStateWrapper = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  text-align: center;
+  gap: 15px;
+`;
+
+export const emptyText = css`
+  ${theme.typo.subtitle3};
+  color: ${theme.colors.gray400};
+`;
+
+export const emptyButton = css`
+  margin-top: 20px;
+  border-radius: 29.5px;
+  cursor: pointer;
+  text-align: center;
+  ${theme.typo.body4};
+`;
