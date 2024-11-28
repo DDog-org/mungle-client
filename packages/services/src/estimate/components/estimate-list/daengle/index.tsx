@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Text, TextButton } from '@daengle/design-system';
+import { Layout, Text, TextButton } from '@daengle/design-system';
 import {
   wrapper,
   headerContainer,
   tabContainer,
   tabButton,
   activeTabButton,
-  userProfileContainer,
+  profileContainer,
   profileButton,
   selectedProfileButton,
   optionContainer,
@@ -64,7 +64,7 @@ export default function UserEstimateList({ petInfos }: Props): JSX.Element {
   return (
     <div css={wrapper}>
       <div css={headerContainer}>
-        <Text typo="semibold01">견적</Text>
+        <Text typo="title1">견적</Text>
       </div>
       <div css={tabContainer}>
         <TextButton
@@ -80,7 +80,7 @@ export default function UserEstimateList({ petInfos }: Props): JSX.Element {
           병원
         </TextButton>
       </div>
-      <div css={userProfileContainer}>
+      <div css={profileContainer}>
         {petInfos.map((pet, index) => (
           <TextButton
             key={pet.petId}
@@ -100,16 +100,12 @@ export default function UserEstimateList({ petInfos }: Props): JSX.Element {
             alert('해당 요청에 대한 견적을 그만 받으시겠습니까?');
           }}
         >
-          <Text typo="medium02" color="gray500">
+          <Text typo="body4" color="gray500">
             견적 그만 받기
           </Text>
         </TextButton>
-        <TextButton
-          onClick={() => {
-            handleRequestClick();
-          }}
-        >
-          <Text typo="medium02" color="gray500">
+        <TextButton onClick={handleRequestClick}>
+          <Text typo="body4" color="gray500">
             내가 보낸 요청
           </Text>
         </TextButton>
@@ -118,18 +114,18 @@ export default function UserEstimateList({ petInfos }: Props): JSX.Element {
         {estimateData &&
           estimateData.map((data) => (
             <div key={data.id} css={card}>
-              <div css={contentContainer}>
+              <div css={contentContainer} onClick={handleRequestClick}>
                 <div css={cardHeader}>
-                  <Text css={nameStyle} typo="medium01">
+                  <Text css={nameStyle} typo="subtitle3">
                     {data.name}
                   </Text>
                   <div css={distanceStyle(data.daengleMeter)}>🐾 {data.daengleMeter}m</div>
                 </div>
                 <div css={cardContent}>
-                  <Text typo="regular04" color="gray400">
+                  <Text typo="body11" color="gray400">
                     {data.shopName || ''}
                   </Text>
-                  <Text typo="regular05" color="gray600">
+                  <Text typo="body12" color="gray600">
                     {data.reservedDate}
                   </Text>
                   <div css={tagsContainer}>
@@ -137,7 +133,7 @@ export default function UserEstimateList({ petInfos }: Props): JSX.Element {
                       <TextButton
                         key={`${data.id}-${index}`}
                         css={tagButtonStyle}
-                        onClick={() => {}}
+                        onClick={handleRequestClick}
                       >
                         #{tag}
                       </TextButton>
@@ -145,7 +141,12 @@ export default function UserEstimateList({ petInfos }: Props): JSX.Element {
                   </div>
                 </div>
               </div>
-              <img src={data.image} alt={`${data.name} 프로필`} css={profileImage} />
+              <img
+                src={data.image}
+                alt={`${data.name} 프로필`}
+                css={profileImage}
+                onClick={handleRequestClick}
+              />
             </div>
           ))}
       </div>

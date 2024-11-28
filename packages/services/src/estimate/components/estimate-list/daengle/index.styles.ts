@@ -3,6 +3,7 @@ import { theme } from '@daengle/design-system';
 
 export const wrapper = css`
   display: flex;
+  height: 100%;
   flex-direction: column;
   background-color: #f3f5f8;
 `;
@@ -19,7 +20,7 @@ export const tabContainer = css`
 `;
 
 export const tabButton = css`
-  ${theme.typo.medium01};
+  ${theme.typo.subtitle1};
   width: 100%;
   padding: 9px 32px;
   justify-content: center;
@@ -37,13 +38,13 @@ export const activeTabButton = css`
   border-bottom: 2px solid ${theme.colors.black};
 `;
 
-export const userProfileContainer = css`
+export const profileContainer = css`
   display: flex;
   gap: 8px;
   margin: 18px;
 
   button {
-    ${theme.typo.medium02};
+    ${theme.typo.body4};
     color: ${theme.colors.gray500};
   }
 `;
@@ -70,7 +71,7 @@ export const profileButton = css`
 export const selectedProfileButton = css`
   && {
     background-color: ${theme.colors.black};
-    ${theme.typo.medium02};
+    ${theme.typo.body4};
     color: ${theme.colors.white};
   }
 `;
@@ -115,6 +116,7 @@ export const contentContainer = css`
   display: flex;
   flex-direction: column;
   flex: 1;
+  cursor: pointer;
 `;
 
 export const cardHeader = css`
@@ -128,6 +130,7 @@ export const profileImage = css`
   height: 108px;
   border-radius: 50%;
   object-fit: cover;
+  cursor: pointer;
 `;
 
 export const nameStyle = css`

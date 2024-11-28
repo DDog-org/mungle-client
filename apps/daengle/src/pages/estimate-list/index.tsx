@@ -1,8 +1,9 @@
 import { UserEstimateList } from '@daengle/services';
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { GNB } from '@daengle/design-system';
-import { wrapper } from './index.styles';
+
 import {
   GnbChattingActive,
   GnbChattingInactive,
@@ -12,12 +13,13 @@ import {
   GnbMyInactive,
   GnbReservationActive,
   GnbReservationInactive,
-  GnbSheetActive,
-  GnbSheetInactive,
+  GnbEstimateActive,
+  GnbEstimateInactive,
 } from '@daengle/design-system/icons';
+import { wrapper } from './index.styles';
 
 export const PATHS = {
-  SHEET: '/estimate-list',
+  ESTIMATE: '/estimate-list',
   RESERVATION: '/reservation',
   HOME: '/',
   CHATTING: '/chatting',
@@ -28,10 +30,10 @@ export const MENUS = [
   {
     name: '견적',
     icon: {
-      active: <GnbSheetActive width="32px" height="32px" />,
-      inactive: <GnbSheetInactive width="32px" height="32px" />,
+      active: <GnbEstimateActive width="32px" height="32px" />,
+      inactive: <GnbEstimateInactive width="32px" height="32px" />,
     },
-    path: PATHS.SHEET,
+    path: PATHS.ESTIMATE,
   },
   {
     name: '예약',
@@ -66,6 +68,14 @@ export const MENUS = [
     path: PATHS.MYPAGE,
   },
 ];
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  return {
+    props: {
+      isAppBarExist: false,
+    },
+  };
+};
 
 const petInfos = [
   {
@@ -138,7 +148,7 @@ const petInfos = [
 
 export default function EstimatePage() {
   const router = useRouter();
-  const [activePath] = useState(PATHS.SHEET);
+  const [activePath] = useState(PATHS.ESTIMATE);
 
   const handleNavigate = (path: string) => {
     // 임시 경로

@@ -5,7 +5,9 @@ import QueryProvider from '~/providers/query-provider';
 
 initMSW();
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps }: AppProps & { isAppBarExist?: boolean }) {
+  const isAppBarExist = pageProps?.isAppBarExist ?? true;
+
   return (
     <QueryProvider>
       <GlobalStyle>
