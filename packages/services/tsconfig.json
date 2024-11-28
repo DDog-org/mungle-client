@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@services/*": ["./src/*"],
       "~/*": ["src/*"]
     },
     "jsxImportSource": "@emotion/react"
