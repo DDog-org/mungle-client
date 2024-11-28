@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 
 export const wrapper = css`
-  padding: 0 18px;
+  padding: 18px;
 `;
 export const container = css`
   width: 393px;
@@ -33,7 +33,7 @@ export const nickNameWrapper = css`
   align-items: flex-end;
 `;
 export const editButtonBox = css`
-  margin: 0 0 18px;
+  /* margin: 0 0 18px; */
 `;
 export const duplicateButtonBox = css`
   margin: 0 0 18px 4px;
