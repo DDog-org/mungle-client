@@ -2,11 +2,6 @@ import { css } from '@emotion/react';
 import { theme } from '../../../foundation';
 
 export const wrapper = ({ disabled }: { disabled: boolean }) => css`
-  ${!disabled &&
-  css`
-    transition: all 0.25s ease;
-  `}
-
   ${disabled &&
   css`
     color: ${theme.colors.gray400} !important;
@@ -20,9 +15,5 @@ export const wrapper = ({ disabled }: { disabled: boolean }) => css`
   color: ${theme.colors.black};
   background: ${theme.colors.white};
   border: 0.7px solid ${disabled ? theme.colors.gray400 : theme.colors.black};
-  ${theme.typo.regular05};
-
-  &:hover {
-    background: ${theme.colors.gray100};
-  }
+  ${theme.typo.body12};
 `;

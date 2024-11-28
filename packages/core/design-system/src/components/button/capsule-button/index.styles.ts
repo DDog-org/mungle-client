@@ -18,5 +18,5 @@ export const wrapper = ({ disabled }: { disabled: boolean }) => css`
   color: ${theme.colors.gray600};
   background: ${theme.colors.gray100};
   border-radius: 20px;
-  ${theme.typo.medium04};
+  ${theme.typo.body5};
 `;

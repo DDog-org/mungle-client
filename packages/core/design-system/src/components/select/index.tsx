@@ -19,7 +19,7 @@ export function Select({ options, selectedValue, onChange, placeholder = '' }: P
   return (
     <div css={wrapper({ selectedValue: Boolean(selectedValue?.value) })}>
       <div css={contents}>
-        <Text typo="medium03" color={selectedValue ? 'blue200' : 'gray200'}>
+        <Text typo="body10" color={selectedValue ? 'blue200' : 'gray200'}>
           {selectedValue?.label ?? placeholder}
         </Text>
 
