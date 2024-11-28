@@ -1,5 +1,7 @@
-import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+
+import { useGroomerEstimateListQuery } from '@services/queries/estimate-list';
 import {
   wrapper,
   headerContainer,
@@ -22,23 +24,29 @@ import {
   date,
   detailButton,
 } from './index.styles';
-//import NavBar
 
 interface EstimateContent {
   id: number;
   userImage: string;
   nickname: string;
-  proposal: string;
+  proposal: 'GENERAL' | 'DESIGNATION';
   petSignificant: string;
   reservedDate: string;
 }
 
-interface Props {
-  estimateData: EstimateContent[];
-}
-
-export default function EstimateList({ estimateData }: Props): JSX.Element {
+export default function EstimateList(): JSX.Element {
   const [filterType, setFilterType] = useState<'전체' | '지정'>('전체');
+  const { data, isLoading, isError } = useGroomerEstimateListQuery();
+
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (isError) {
+    return <div>데이터를 가져오는 데 실패했습니다.</div>;
+  }
+
+  const estimateData: EstimateContent[] = data || [];
 
   const filteredData =
     filterType === '전체'
@@ -72,6 +80,7 @@ export default function EstimateList({ estimateData }: Props): JSX.Element {
 }
 
 function EstimateCard({
+  id,
   userImage,
   nickname,
   proposal,

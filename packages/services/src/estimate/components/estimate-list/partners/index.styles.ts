@@ -4,8 +4,6 @@ export const wrapper = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 852px;
-  width: 100%;
   height: 100vh;
   margin: 0 auto;
   background-color: #f9fafb;
@@ -13,8 +11,6 @@ export const wrapper = css`
 
 export const headerContainer = css`
   padding: 18px;
-  font-size: 24px;
-  font-weight: 600;
   margin-top: 20px;
 `;
 
