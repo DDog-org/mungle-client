@@ -6,7 +6,7 @@ import { wrapper } from './index.styles';
 
 const TYPE = [
   { value: '1', label: '남아' },
-  { value: '2', label: '여아ㄴ' },
+  { value: '2', label: '여아' },
 ];
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
