@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { usePostKakaoOauth, usePostOauthKakao } from '~/queries/oauth';
 import { useAuthStore } from '~/stores/oauth/auth-store';
+import { api } from '~/api/api';
 
 export default function AuthCallback() {
   const router = useRouter();
@@ -27,8 +28,12 @@ export default function AuthCallback() {
 
         // zustand 스토어에 토큰 저장
         useAuthStore.getState().setAccessToken(serverAccessToken);
-
         console.log('Server Access Token 저장 완료:', serverAccessToken);
+
+        async () => {
+          return await api.post('https://dev-api.daengle.com/test');
+          console.log('헤더 저장 성공 !');
+        };
       } catch (error) {
         throw new Error('로그인 실패');
       }
