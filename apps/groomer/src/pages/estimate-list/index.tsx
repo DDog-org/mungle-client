@@ -1,45 +1,77 @@
 import { EstimateList } from '@daengle/services';
+import { GNB } from '@daengle/design-system';
+import { useState } from 'react';
+import {
+  GnbChattingActive,
+  GnbChattingInactive,
+  GnbHomeActive,
+  GnbHomeInactive,
+  GnbMyActive,
+  GnbMyInactive,
+  GnbReservationActive,
+  GnbReservationInactive,
+  GnbSheetActive,
+  GnbSheetInactive,
+} from '@daengle/design-system/icons';
 
-const apiData = [
+export const PATHS = {
+  SHEET: '/sheet',
+  RESERVATION: '/reservation',
+  HOME: '/',
+  CHATTING: '/chatting',
+  MYPAGE: '/mypage',
+} as const;
+
+export const MENUS = [
   {
-    groomingEstimateId: 1,
-    userImage: 'https://via.placeholder.com/40',
-    nickname: '미꼬누나',
-    proposal: 'GENERAL',
-    petSignificant: '노견, 슬개골 탈구',
-    reservedDate: '2024-11-25 11:22:11',
+    name: '견적',
+    icon: {
+      active: <GnbSheetActive width="32px" height="32px" />,
+      inactive: <GnbSheetInactive width="32px" height="32px" />,
+    },
+    path: PATHS.SHEET,
   },
   {
-    groomingEstimateId: 3,
-    userImage: 'https://via.placeholder.com/40',
-    nickname: '사용자 닉네임',
-    proposal: 'DESIGNATION',
-    petSignificant: '특이사항 없음',
-    reservedDate: '2024-11-25 11:22:11',
+    name: '예약',
+    icon: {
+      active: <GnbReservationActive width="32px" height="32px" />,
+      inactive: <GnbReservationInactive width="32px" height="32px" />,
+    },
+    path: PATHS.RESERVATION,
   },
   {
-    groomingEstimateId: 4,
-    userImage: 'https://via.placeholder.com/40',
-    nickname: '사용자 닉네임',
-    proposal: 'GENERAL',
-    petSignificant: '특이사항 없음',
-    reservedDate: '2024-11-25 11:22:11',
+    name: '홈',
+    icon: {
+      active: <GnbHomeActive width="32px" height="32px" />,
+      inactive: <GnbHomeInactive width="32px" height="32px" />,
+    },
+    path: PATHS.HOME,
+  },
+  {
+    name: '채팅',
+    icon: {
+      active: <GnbChattingActive width="32px" height="32px" />,
+      inactive: <GnbChattingInactive width="32px" height="32px" />,
+    },
+    path: PATHS.CHATTING,
+  },
+  {
+    name: '마이',
+    icon: {
+      active: <GnbMyActive width="32px" height="32px" />,
+      inactive: <GnbMyInactive width="32px" height="32px" />,
+    },
+    path: PATHS.MYPAGE,
   },
 ];
 
-const estimateData = apiData.map((data) => ({
-  id: data.groomingEstimateId,
-  userImage: data.userImage,
-  nickname: data.nickname,
-  proposal: data.proposal,
-  petSignificant: data.petSignificant,
-  reservedDate: data.reservedDate,
-}));
+export default function ListPage() {
+  const [activePath, setActivePath] = useState<string>(PATHS.SHEET);
 
-export default function List() {
   return (
     <div>
-      <EstimateList estimateData={estimateData} />
+      <EstimateList />
+      <GNB menus={MENUS} activePath={activePath} onNavigate={(path) => setActivePath(path)} />;
     </div>
   );
 }
