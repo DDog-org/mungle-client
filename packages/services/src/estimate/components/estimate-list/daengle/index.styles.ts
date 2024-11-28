@@ -201,3 +201,7 @@ export const emptyButton = css`
   text-align: center;
   ${theme.typo.body4};
 `;
+
+export const hiddenContainer = css`
+  display: none;
+`;
