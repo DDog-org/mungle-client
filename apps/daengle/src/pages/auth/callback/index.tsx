@@ -30,10 +30,9 @@ export default function AuthCallback() {
         useAuthStore.getState().setAccessToken(serverAccessToken);
         console.log('Server Access Token 저장 완료:', serverAccessToken);
 
-        async () => {
-          return await api.post('https://dev-api.daengle.com/test');
-          console.log('헤더 저장 성공 !');
-        };
+        // 토큰 헤더 저장 테스트용 api
+        await api.post('https://dev-api.daengle.com/test');
+        console.log('헤더 저장 성공 !');
       } catch (error) {
         throw new Error('로그인 실패');
       }
