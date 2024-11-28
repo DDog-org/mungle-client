@@ -4,18 +4,24 @@ import { Size } from './index.types';
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: Size;
+  isSelected?: boolean;
   children: ReactNode;
 }
 
-export function ChipToggleButton({ size = 'fluid', disabled = false, children, ...props }: Props) {
-  const [isSelected, setIsSelected] = useState<boolean>(false);
-
-  const handleButtonToggle = () => setIsSelected((prev) => !prev);
+export function ChipToggleButton({
+  size = 'fluid',
+  disabled = false,
+  isSelected = false,
+  children,
+  ...props
+}: Props) {
+  const [isButtonSelected, setIsButtonSelected] = useState<boolean>(isSelected);
+  const handleButtonToggle = () => setIsButtonSelected((prev) => !prev);
 
   return (
     <button
       {...props}
-      css={wrapper({ isSelected, size, disabled })}
+      css={wrapper({ isSelected: isButtonSelected, size, disabled })}
       onClick={disabled ? undefined : handleButtonToggle}
     >
       {children}

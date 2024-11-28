@@ -8,4 +8,8 @@ export const wrapper = css`
   margin: 0 auto;
   width: calc(100% - 36px);
   max-width: calc(${theme.size.maxWidth} - 36px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 21px;
 `;
