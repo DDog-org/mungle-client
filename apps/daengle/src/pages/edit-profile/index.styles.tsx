@@ -32,9 +32,6 @@ export const nickNameWrapper = css`
   display: flex;
   align-items: flex-end;
 `;
-export const editButtonBox = css`
-  /* margin: 0 0 18px; */
-`;
 export const duplicateButtonBox = css`
   margin: 0 0 18px 4px;
   width: 59px;
