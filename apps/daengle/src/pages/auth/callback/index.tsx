@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useFetchKakaoAccessToken, usePostApiOauthKakao } from '~/queries/oauth';
+import { usePostKakaoOauth, usePostOauthKakao } from '~/queries/oauth';
+import { useAuthStore } from '~/stores/oauth';
+import { api } from '~/api/api';
 
 export default function AuthCallback() {
   const router = useRouter();
   const { code } = router.query || {};
 
-  const { mutateAsync: postKakaoOauth } = useFetchKakaoAccessToken();
+  const { mutateAsync: postKakaoOauth } = usePostKakaoOauth();
 
-  const { mutateAsync: postOauthKakao } = usePostApiOauthKakao();
+  const { mutateAsync: postOauthKakao } = usePostOauthKakao();
 
   useEffect(() => {
     const handleAuthentication = async () => {
@@ -16,9 +18,18 @@ export default function AuthCallback() {
       try {
         const accessToken = await postKakaoOauth(code as string);
         // 액세스 토큰 백엔드한테 보내주기
-        await postOauthKakao({ accessToken, loginType: 'GROOMER' });
+        const response = await postOauthKakao({ accessToken, loginType: 'GROOMER' });
 
-        router.push('/home'); // 로그인 성공 시 홈으로 이동
+        // 응답 데이터 추출
+        const {
+          response: { accessToken: serverAccessToken },
+        } = response.data;
+
+        // zustand 스토어에 토큰 저장
+        useAuthStore.getState().setAccessToken(serverAccessToken);
+
+        // 토큰 헤더 저장 테스트용 api
+        await api.post('https://dev-api.daengle.com/test');
       } catch (error) {
         throw new Error('로그인 실패');
       }
