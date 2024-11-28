@@ -1,3 +1,4 @@
+import { ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import {
@@ -12,6 +13,7 @@ import {
 import { ROUTES } from '~/constants/routes';
 import { usePostJoinWithoutPetMutation } from '~/queries';
 import { PostJoinWithoutPetRequestBody } from '~/models';
+import { formatPhoneNumber } from '~/utils/format';
 import { location, locationButton, section, wrapper } from './index.styles';
 import { useOnboardingFormStore } from './store/form';
 import { useValidateUserForm } from './hooks';
@@ -28,6 +30,7 @@ export default function UserInfo() {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<PostJoinWithoutPetRequestBody>({ defaultValues: { ...form, email: EMAIL } });
 
@@ -58,7 +61,11 @@ export default function UserInfo() {
           <Input
             label="휴대폰 번호"
             placeholder="휴대폰 번호를 입력해 주세요"
+            maxLength={13}
             {...register('phoneNumber', { ...validation.phoneNumber })}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setValue('phoneNumber', formatPhoneNumber(e.target.value))
+            }
             errorMessage={errors.phoneNumber?.message}
           />
 
