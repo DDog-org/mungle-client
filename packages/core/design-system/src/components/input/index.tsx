@@ -1,4 +1,12 @@
-import { forwardRef, InputHTMLAttributes, ReactNode, useImperativeHandle, useRef } from 'react';
+import {
+  FocusEvent,
+  forwardRef,
+  InputHTMLAttributes,
+  ReactNode,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { input, wrapper, label as labelCss, infoTextWrapper, inputWrapper } from './index.styles';
 import { Text } from '../text';
 
@@ -49,7 +57,7 @@ export const Input = forwardRef<InputRef, Props>(
             spellCheck={spellCheck}
             autoComplete={autoComplete}
             disabled={disabled}
-            css={input({ errorMessage })}
+            css={input}
             {...props}
           />
           {suffix && suffix}
