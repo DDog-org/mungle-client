@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { theme } from '../../foundation';
 
-export const wrapper = css`
+export const wrapper = (isDefaultBackground: boolean) => css`
   position: fixed;
   top: 0;
   margin: 0 auto;
@@ -9,7 +9,7 @@ export const wrapper = css`
   width: 100%;
   height: 52px;
   max-width: ${theme.size.maxWidth};
-  background: ${theme.colors.white};
+  background: ${isDefaultBackground ? theme.colors.white : '#f3f5f8'};
 `;
 
 export const contents = css`
