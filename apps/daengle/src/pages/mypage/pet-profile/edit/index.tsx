@@ -137,7 +137,7 @@ export default function DogEditProfile() {
             </section>
           </section>
           <section css={formBox}>
-            <Text typo="subtitle3">몸무게</Text>
+            <Text typo="subtitle3">싫어하는 부위</Text>
             <section css={selectChipButtonBox}>
               {ITEMS.map((item) => (
                 <ChipToggleButton key={item} size="fixed">
