@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { colors } from '@daengle/design-system';
 export const wrapper = css`
-  padding: 0 18px;
+  padding: 0 18px 21px;
 `;
 export const titleBox = css`
   margin: 0 0 40px;
@@ -51,11 +51,38 @@ export const profileEditButtonBox = css`
   font-size: 14px;
   color: ${colors.gray400};
 `;
+
 export const inputWrapper = css`
   display: flex;
   flex-direction: column;
   gap: 32px;
-  margin: 0 0 159px;
+`;
+export const formBox = css`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+export const toggleButtonBox = css`
+  display: flex;
+  gap: 13px;
+`;
+export const chipToggleButtonBox = css`
+  display: flex;
+  gap: 10px;
+`;
+export const selectChipButtonBox = css`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+`;
+export const detailformBox = css`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+export const chipButtonBox = css`
+  display: flex;
+  gap: 7px;
 `;
 export const buttonContainer = css`
   margin: 32px 0 0;
@@ -65,17 +92,10 @@ export const buttonContainer = css`
   justify-content: center;
   gap: 21px;
 `;
-export const detailInputWrapper = css`
-  display: flex;
-  flex-direction: column;
-`;
 export const detailInput = css`
-  margin: 15px 0 0;
   background-color: ${colors.gray100};
   height: 136px;
   border-radius: 10px;
-  display: flex;
-  align-items: flex-start;
   padding: 14px;
   ::placeholder {
     color: ${colors.gray200};
