@@ -20,6 +20,7 @@ import {
   profileEditButtonBox,
   inputWrapper,
   formBox,
+  weightButtonBox,
   toggleButtonBox,
   chipToggleButtonBox,
   selectChipButtonBox,
@@ -39,7 +40,6 @@ const OPTIONS = [
 
 export default function DogEditProfile() {
   const [selectedValue, setSelectedValue] = useState<{ value: string; label: string }>();
-  const [isSelected, setIsSelected] = useState<boolean>(false);
   const ITEMS = ['없음', '눈', '코', '입', '귀', '목', '몸통', '다리', '꼬리', '생식기'];
 
   return (
@@ -116,9 +116,24 @@ export default function DogEditProfile() {
           <section css={formBox}>
             <Text typo="subtitle3">몸무게</Text>
             <section css={chipToggleButtonBox}>
-              <ChipToggleButton size="full">소형견</ChipToggleButton>
-              <ChipToggleButton size="full">중형견</ChipToggleButton>
-              <ChipToggleButton size="full">대형견</ChipToggleButton>
+              <div css={weightButtonBox}>
+                <ChipToggleButton size="full">소형견</ChipToggleButton>
+                <Text typo="body12" color="gray200">
+                  7kg 이하
+                </Text>
+              </div>
+              <div css={weightButtonBox}>
+                <ChipToggleButton size="full">중형견</ChipToggleButton>
+                <Text typo="body12" color="gray200">
+                  7kg 초과 ~ 15kg 이하
+                </Text>
+              </div>
+              <div css={weightButtonBox}>
+                <ChipToggleButton size="full">대형견</ChipToggleButton>
+                <Text typo="body12" color="gray200">
+                  15kg 초과
+                </Text>
+              </div>
             </section>
           </section>
           <section css={formBox}>
