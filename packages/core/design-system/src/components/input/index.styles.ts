@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { theme } from '../../foundation';
 
 export const wrapper = css`
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -11,26 +12,13 @@ export const label = css`
   margin-bottom: 9px;
 `;
 
-export const inputWrapper = ({
-  errorMessage,
-  isFocused,
-}: {
-  errorMessage?: string;
-  isFocused: boolean;
-}) => css`
+export const inputWrapper = css`
   display: flex;
   align-items: center;
-
-  border-bottom: ${errorMessage
-    ? `1px solid ${theme.colors.red200}`
-    : isFocused
-      ? `1px solid ${theme.colors.blue200}`
-      : `1px solid ${theme.colors.gray200}`};
-
-  transition: border-bottom 0.2s ease;
+  gap: 4px;
 `;
 
-export const input = css`
+export const input = ({ errorMessage }: { errorMessage?: string }) => css`
   display: flex;
   text-align: left;
   flex: 1;
@@ -55,8 +43,21 @@ export const input = css`
   &:disabled {
     color: ${theme.colors.gray300};
   }
+
+  border-bottom: ${errorMessage
+    ? `1px solid ${theme.colors.red200}`
+    : `1px solid ${theme.colors.gray200}`};
+
+  &:focus {
+    border-bottom: 1px solid ${theme.colors.blue200};
+  }
+
+  transition: border-bottom 0.2s ease;
 `;
 
 export const infoTextWrapper = css`
+  position: absolute;
+  left: 2px;
+  bottom: -20px;
   padding: 0 2px;
 `;

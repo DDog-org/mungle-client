@@ -1,12 +1,4 @@
-import {
-  FocusEvent,
-  forwardRef,
-  InputHTMLAttributes,
-  ReactNode,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import { forwardRef, InputHTMLAttributes, ReactNode, useImperativeHandle, useRef } from 'react';
 import { input, wrapper, label as labelCss, infoTextWrapper, inputWrapper } from './index.styles';
 import { Text } from '../text';
 
@@ -39,15 +31,7 @@ export const Input = forwardRef<InputRef, Props>(
     ref
   ) => {
     const inputRef = useRef<HTMLInputElement>(null);
-    const [isFocused, setIsFocused] = useState<boolean>(false);
-
-    useImperativeHandle(ref, () => {
-      return {
-        focus: () => {
-          if (inputRef.current) inputRef.current.focus();
-        },
-      };
-    });
+    useImperativeHandle(ref, () => inputRef.current as InputRef);
 
     return (
       <div css={wrapper}>
@@ -57,20 +41,7 @@ export const Input = forwardRef<InputRef, Props>(
           </Text>
         )}
 
-        <div
-          onClick={() => {
-            if (inputRef.current) {
-              inputRef.current.focus();
-              setIsFocused(true);
-            }
-          }}
-          onBlur={(e: FocusEvent<HTMLDivElement>) => {
-            if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-              setIsFocused(false);
-            }
-          }}
-          css={inputWrapper({ errorMessage, isFocused })}
-        >
+        <div css={inputWrapper}>
           {prefix && prefix}
           <input
             ref={inputRef}
@@ -78,14 +49,13 @@ export const Input = forwardRef<InputRef, Props>(
             spellCheck={spellCheck}
             autoComplete={autoComplete}
             disabled={disabled}
-            css={input}
-            onBlur={() => setIsFocused(false)}
+            css={input({ errorMessage })}
             {...props}
           />
           {suffix && suffix}
         </div>
 
-        {confirmMessage && (
+        {!errorMessage && confirmMessage && (
           <div css={infoTextWrapper}>
             <Text typo="body12" color="blue200">
               {confirmMessage}
