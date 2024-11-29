@@ -49,7 +49,7 @@ export default function EditProfile() {
           </section>
         </div>
         <footer>
-          <RoundButton variant={'primary'} size={'XL'} spellCheck={true}>
+          <RoundButton variant={'primary'} size={'L'} fullWidth={true}>
             수정하기
           </RoundButton>
         </footer>
