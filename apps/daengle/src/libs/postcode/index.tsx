@@ -98,8 +98,7 @@ export default function DaumPostcode({
 
         postcode.embed(wrap.current, { q: defaultQuery, autoClose });
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(() => {
         setHasError(true);
       });
 

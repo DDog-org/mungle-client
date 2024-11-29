@@ -1,23 +1,27 @@
 import { useRouter } from 'next/router';
-import { AppBar } from '@daengle/design-system';
+import { AppBar, Layout } from '@daengle/design-system';
 import { ROUTES } from '~/constants/routes';
 import DaumPostcode, { Address } from '~/libs/postcode';
-import { useSearchAddressStore } from '~/store/onboarding/address';
 import { wrapper } from './index.styles';
+import { useOnboardingFormStore } from '../user-info/store/form';
 
 export default function SearchAddress() {
   const router = useRouter();
-  const { setAddress } = useSearchAddressStore();
+  const { setForm } = useOnboardingFormStore();
 
-  const handleSearchAddressComplete = (data: Address) => {
-    setAddress(data);
+  const handleSearchAddressComplete = (address: Address) => {
+    const jibunAddress = `${address.sido} ${address.sigungu} ${address.bname}`;
+    setForm({ address: jibunAddress });
+
     router.replace(ROUTES.ONBOARDING_USER_INFO);
   };
 
   return (
-    <section css={wrapper}>
-      <AppBar onBackClick={router.back} />
-      <DaumPostcode onComplete={handleSearchAddressComplete} />
-    </section>
+    <Layout>
+      <section css={wrapper}>
+        <AppBar onBackClick={router.back} />
+        <DaumPostcode onComplete={handleSearchAddressComplete} />
+      </section>
+    </Layout>
   );
 }

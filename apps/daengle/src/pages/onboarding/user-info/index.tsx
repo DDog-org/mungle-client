@@ -1,33 +1,98 @@
-import { useMemo } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useRouter } from 'next/router';
-import { AppBar, ChipButton, CTAButton, Input, RoundButton, Text } from '@daengle/design-system';
+import { useForm } from 'react-hook-form';
+import {
+  AppBar,
+  ChipButton,
+  CTAButton,
+  Input,
+  Layout,
+  RoundButton,
+  Text,
+} from '@daengle/design-system';
 import { ROUTES } from '~/constants/routes';
-import { useSearchAddressStore } from '~/store/onboarding/address';
+import { usePostAvailableNicknameMutation, usePostJoinWithoutPetMutation } from '~/queries';
+import { PostJoinWithoutPetRequestBody } from '~/models';
+import { formatPhoneNumber } from '~/utils/format';
 import { location, locationButton, section, wrapper } from './index.styles';
+import { useOnboardingFormStore } from './store/form';
+import { useValidateUserForm } from './hooks';
+
+// TODO: 임시 이메일
+const EMAIL = 'daengle@daengle.com';
 
 export default function UserInfo() {
   const router = useRouter();
-  const { address } = useSearchAddressStore();
+  const { form, setForm } = useOnboardingFormStore();
+  const { mutate: postJoinWithoutPet } = usePostJoinWithoutPetMutation();
+  const { mutateAsync: postAvailableNickname } = usePostAvailableNicknameMutation();
+  const validation = useValidateUserForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    setError,
+    formState: { errors },
+  } = useForm<PostJoinWithoutPetRequestBody>({ defaultValues: { ...form, email: EMAIL } });
 
-  const jibunAddress = useMemo(
-    () => `${address?.sido} ${address?.sigungu} ${address?.bname}`,
-    [address]
-  );
+  const [isAvailableNickname, setIsAvailableNickname] = useState<boolean>(false);
+
+  const checkIsAvailableNickname = async () => {
+    const response = await postAvailableNickname({ nickname: watch('nickname') });
+    if (response.isAvailable) {
+      setError('nickname', {
+        type: 'duplicate',
+        message: '이미 사용중인 닉네임입니다',
+      });
+    } else {
+      setIsAvailableNickname(true);
+    }
+  };
+
+  const onSubmit = (data: PostJoinWithoutPetRequestBody) => {
+    if (!data.address) return;
+    postJoinWithoutPet({ ...data, email: EMAIL });
+  };
 
   return (
-    <>
+    <Layout>
       <AppBar />
-      <div css={wrapper}>
+
+      <form css={wrapper} onSubmit={handleSubmit(onSubmit)}>
         <Text typo="title1" color="black">
           회원 정보를 입력해 주세요
         </Text>
 
         <section css={section}>
-          <Input label="이름" placeholder="이름(필수)" />
+          <Input
+            label="이름"
+            placeholder="이름을 입력해 주세요"
+            maxLength={10}
+            {...register('username', { ...validation.username })}
+            errorMessage={errors.username?.message}
+          />
 
-          <Input label="휴대폰 번호" />
+          <Input
+            label="휴대폰 번호"
+            placeholder="휴대폰 번호를 입력해 주세요"
+            maxLength={13}
+            {...register('phoneNumber', { ...validation.phoneNumber })}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setValue('phoneNumber', formatPhoneNumber(e.target.value))
+            }
+            errorMessage={errors.phoneNumber?.message}
+          />
 
-          <Input label="닉네임" suffix={<ChipButton>중복검사</ChipButton>} />
+          <Input
+            label="닉네임"
+            placeholder="닉네임을 입력해 주세요"
+            maxLength={10}
+            suffix={<ChipButton onClick={checkIsAvailableNickname}>중복검사</ChipButton>}
+            {...register('nickname', { ...validation.nickname })}
+            errorMessage={errors.nickname?.message}
+            confirmMessage={isAvailableNickname ? '사용 가능한 닉네임입니다' : ''}
+          />
 
           <div css={location}>
             <Text typo="subtitle3" color="black">
@@ -36,12 +101,16 @@ export default function UserInfo() {
             <RoundButton
               variant="ghost"
               fullWidth
-              onClick={() => router.push(ROUTES.ONBOARDING_SEARCH_ADDRESS)}
+              type="button"
+              onClick={() => {
+                setForm({ ...watch() });
+                router.push(ROUTES.ONBOARDING_SEARCH_ADDRESS);
+              }}
             >
               <div css={locationButton}>
-                {address ? (
+                {form?.address ? (
                   <Text typo="body10" color="black">
-                    {jibunAddress}
+                    {form?.address}
                   </Text>
                 ) : (
                   <Text typo="body10" color="gray200">
@@ -53,8 +122,8 @@ export default function UserInfo() {
           </div>
         </section>
 
-        <CTAButton disabled>다음</CTAButton>
-      </div>
-    </>
+        <CTAButton type="submit">다음</CTAButton>
+      </form>
+    </Layout>
   );
 }

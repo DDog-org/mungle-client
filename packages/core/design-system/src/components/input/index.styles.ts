@@ -18,13 +18,7 @@ export const inputWrapper = css`
   gap: 4px;
 `;
 
-export const input = ({
-  errorMessage,
-  isFocused,
-}: {
-  errorMessage?: string;
-  isFocused: boolean;
-}) => css`
+export const input = ({ errorMessage }: { errorMessage?: string }) => css`
   display: flex;
   text-align: left;
   flex: 1;
@@ -52,9 +46,11 @@ export const input = ({
 
   border-bottom: ${errorMessage
     ? `1px solid ${theme.colors.red200}`
-    : isFocused
-      ? `1px solid ${theme.colors.blue200}`
-      : `1px solid ${theme.colors.gray200}`};
+    : `1px solid ${theme.colors.gray200}`};
+
+  &:focus {
+    border-bottom: 1px solid ${theme.colors.blue200};
+  }
 
   transition: border-bottom 0.2s ease;
 `;
