@@ -68,7 +68,7 @@ export default function UserInfo() {
           <Input
             label="이름"
             placeholder="이름을 입력해 주세요"
-            maxLength={30}
+            maxLength={10}
             {...register('username', { ...validation.username })}
             errorMessage={errors.username?.message}
           />
@@ -87,7 +87,7 @@ export default function UserInfo() {
           <Input
             label="닉네임"
             placeholder="닉네임을 입력해 주세요"
-            maxLength={20}
+            maxLength={10}
             suffix={<ChipButton onClick={checkIsAvailableNickname}>중복검사</ChipButton>}
             {...register('nickname', { ...validation.nickname })}
             errorMessage={errors.nickname?.message}
