@@ -13,3 +13,11 @@ export interface PostJoinWithoutPetResponse {
   isRegistered: boolean;
   accessToken: string;
 }
+
+export interface PostAvailableNicknameRequestBody {
+  nickname: string;
+}
+
+export interface PostAvailableNicknameResponse {
+  isAvailable: boolean;
+}

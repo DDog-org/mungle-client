@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { postJoinWithoutPet } from '~/apis';
-import { PostJoinWithoutPetRequestBody } from '~/models';
+import { postAvailableNickname, postJoinWithoutPet } from '~/apis';
+import { PostAvailableNicknameRequestBody, PostJoinWithoutPetRequestBody } from '~/models';
 import { QUERY_KEYS } from '~/queries/query-keys';
 
 export const usePostJoinWithoutPetMutation = () => {
@@ -9,6 +9,19 @@ export const usePostJoinWithoutPetMutation = () => {
     mutationFn: async (body: PostJoinWithoutPetRequestBody) => {
       try {
         return await postJoinWithoutPet(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
+
+export const usePostAvailableNicknameMutation = () => {
+  return useMutation({
+    mutationKey: [QUERY_KEYS.POST_AVAILABLE_NICKNAME],
+    mutationFn: async (body: PostAvailableNicknameRequestBody) => {
+      try {
+        return await postAvailableNickname(body);
       } catch (error) {
         throw new Error(String(error));
       }

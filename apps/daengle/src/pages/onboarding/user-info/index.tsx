@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import {
@@ -11,7 +11,7 @@ import {
   Text,
 } from '@daengle/design-system';
 import { ROUTES } from '~/constants/routes';
-import { usePostJoinWithoutPetMutation } from '~/queries';
+import { usePostAvailableNicknameMutation, usePostJoinWithoutPetMutation } from '~/queries';
 import { PostJoinWithoutPetRequestBody } from '~/models';
 import { formatPhoneNumber } from '~/utils/format';
 import { location, locationButton, section, wrapper } from './index.styles';
@@ -25,16 +25,30 @@ export default function UserInfo() {
   const router = useRouter();
   const { form, setForm } = useOnboardingFormStore();
   const { mutate: postJoinWithoutPet } = usePostJoinWithoutPetMutation();
-
+  const { mutateAsync: postAvailableNickname } = usePostAvailableNicknameMutation();
+  const validation = useValidateUserForm();
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<PostJoinWithoutPetRequestBody>({ defaultValues: { ...form, email: EMAIL } });
 
-  const validation = useValidateUserForm();
+  const [isAvailableNickname, setIsAvailableNickname] = useState<boolean>(false);
+
+  const checkIsAvailableNickname = async () => {
+    const response = await postAvailableNickname({ nickname: watch('nickname') });
+    if (response.isAvailable) {
+      setError('nickname', {
+        type: 'duplicate',
+        message: '이미 사용중인 닉네임입니다',
+      });
+    } else {
+      setIsAvailableNickname(true);
+    }
+  };
 
   const onSubmit = (data: PostJoinWithoutPetRequestBody) => {
     if (!data.address) return;
@@ -54,6 +68,7 @@ export default function UserInfo() {
           <Input
             label="이름"
             placeholder="이름을 입력해 주세요"
+            maxLength={30}
             {...register('username', { ...validation.username })}
             errorMessage={errors.username?.message}
           />
@@ -72,9 +87,11 @@ export default function UserInfo() {
           <Input
             label="닉네임"
             placeholder="닉네임을 입력해 주세요"
-            suffix={<ChipButton>중복검사</ChipButton>}
+            maxLength={20}
+            suffix={<ChipButton onClick={checkIsAvailableNickname}>중복검사</ChipButton>}
             {...register('nickname', { ...validation.nickname })}
             errorMessage={errors.nickname?.message}
+            confirmMessage={isAvailableNickname ? '사용 가능한 닉네임입니다' : ''}
           />
 
           <div css={location}>

@@ -1,9 +1,5 @@
 import axios from 'axios';
-import {
-  convertToDaengleErrorResponse,
-  convertToDaengleSuccessResponse,
-  HttpClient,
-} from './index.types';
+import { HttpClient } from './index.types';
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -23,11 +19,6 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-  (response) => {
-    response.data = convertToDaengleSuccessResponse(response);
-    return response;
-  },
-  (error) => {
-    return Promise.reject(convertToDaengleErrorResponse(error));
-  }
+  (response) => response.data.response,
+  (error) => Promise.reject(error)
 );

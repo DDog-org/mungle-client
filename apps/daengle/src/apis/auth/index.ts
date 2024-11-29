@@ -1,7 +1,15 @@
 import { api } from '~/apis';
-import { PostJoinWithoutPetRequestBody, PostJoinWithoutPetResponse } from '~/models';
+import {
+  PostAvailableNicknameRequestBody,
+  PostAvailableNicknameResponse,
+  PostJoinWithoutPetRequestBody,
+  PostJoinWithoutPetResponse,
+} from '~/models';
 
 export const postJoinWithoutPet = async (body: PostJoinWithoutPetRequestBody) => {
-  const response = await api.post<PostJoinWithoutPetResponse>('/join-without-pet', body);
-  return response;
+  return await api.post<PostJoinWithoutPetResponse>('/join-without-pet', body);
+};
+
+export const postAvailableNickname = async (body: PostAvailableNicknameRequestBody) => {
+  return await api.post<PostAvailableNicknameResponse>('/available-nickname', body);
 };
