@@ -62,6 +62,13 @@ export const formBox = css`
   flex-direction: column;
   gap: 15px;
 `;
+export const weightButtonBox = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+`;
 export const toggleButtonBox = css`
   display: flex;
   gap: 13px;
