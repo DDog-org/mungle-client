@@ -1,4 +1,13 @@
-import { Input, Layout, RoundButton, Text } from '@daengle/design-system';
+import {
+  AppBar,
+  ChipToggleButton,
+  Input,
+  Layout,
+  RoundButton,
+  Select,
+  Text,
+  TextButton,
+} from '@daengle/design-system';
 import {
   wrapper,
   titleBox,
@@ -10,20 +19,38 @@ import {
   profileImageBox,
   profileEditButtonBox,
   inputWrapper,
+  formBox,
+  toggleButtonBox,
+  chipToggleButtonBox,
+  selectChipButtonBox,
+  detailformBox,
+  chipButtonBox,
   buttonContainer,
-  detailInputWrapper,
   detailInput,
 } from './index.styles';
 import Image from 'next/image';
+import { useState } from 'react';
+
+const OPTIONS = [
+  { value: '1', label: '2024' },
+  { value: '2', label: '2023' },
+  { value: '3', label: '2022' },
+];
+
 export default function DogEditProfile() {
+  const [selectedValue, setSelectedValue] = useState<{ value: string; label: string }>();
+  const [isSelected, setIsSelected] = useState<boolean>(false);
+  const ITEMS = ['없음', '눈', '코', '입', '귀', '목', '몸통', '다리', '꼬리', '생식기'];
+
   return (
-    <Layout>
+    <Layout isAppBarExist={false}>
+      <AppBar />
       <div css={wrapper}>
         <div css={titleBox}>
-          <Text typo={'semibold01'}>반려견 프로필 수정</Text>
+          <Text typo={'title1'}>반려견 프로필 수정</Text>
         </div>
         <div css={petProfileWrapper}>
-          <Text typo={'medium01'}>내 아이</Text>
+          <Text typo={'subtitle1'}>내 아이</Text>
           <div css={petProfileEditWrapper}>
             <div css={petProfileImageBox}>
               <Image
@@ -33,7 +60,7 @@ export default function DogEditProfile() {
                 height={70}
               />
             </div>
-            <Text typo="medium03" color="blue200">
+            <Text typo="body5" color="blue200">
               가이
             </Text>
           </div>
@@ -49,25 +76,83 @@ export default function DogEditProfile() {
             />
           </div>
           <button css={profileEditButtonBox}>
-            <span>프로필 사진 변경하기</span>
+            <Text typo="body4">프로필 사진 변경하기</Text>
           </button>
         </div>
-        <section css={inputWrapper}>
+        <div css={inputWrapper}>
           <Input label={'이름'} />
-        </section>
-        <section css={detailInputWrapper}>
-          <Text typo="medium01">특이사항</Text>
-          <input css={detailInput} placeholder="특이사항이 있다면 입력해주세요" />
-        </section>
+          <section css={formBox}>
+            <Text typo="subtitle3">탄생년도</Text>
+            <Select
+              options={OPTIONS}
+              placeholder="탄생년도(필수)"
+              selectedValue={selectedValue}
+              onChange={(option) => setSelectedValue(option)}
+            />
+          </section>
+          <section css={formBox}>
+            <Text typo="subtitle3">성별</Text>
+            <section css={toggleButtonBox}>
+              <ChipToggleButton size="full">남아</ChipToggleButton>
+              <ChipToggleButton size="full">여아</ChipToggleButton>
+            </section>
+          </section>
+          <section css={formBox}>
+            <Text typo="subtitle3">중성화</Text>
+            <section css={toggleButtonBox}>
+              <ChipToggleButton size="full">했어요</ChipToggleButton>
+              <ChipToggleButton size="full">안했어요</ChipToggleButton>
+            </section>
+          </section>
+          <section css={formBox}>
+            <Text typo="subtitle3">품종</Text>
+            <Select
+              options={OPTIONS}
+              placeholder="품종"
+              selectedValue={selectedValue}
+              onChange={(option) => setSelectedValue(option)}
+            />
+          </section>
+          <section css={formBox}>
+            <Text typo="subtitle3">몸무게</Text>
+            <section css={chipToggleButtonBox}>
+              <ChipToggleButton size="full">소형견</ChipToggleButton>
+              <ChipToggleButton size="full">중형견</ChipToggleButton>
+              <ChipToggleButton size="full">대형견</ChipToggleButton>
+            </section>
+          </section>
+          <section css={formBox}>
+            <Text typo="subtitle3">몸무게</Text>
+            <section css={selectChipButtonBox}>
+              {ITEMS.map((item) => (
+                <ChipToggleButton key={item} size="fixed">
+                  {item}
+                </ChipToggleButton>
+              ))}
+            </section>
+          </section>
+          <section css={formBox}>
+            <section css={detailformBox}>
+              <Text typo="subtitle3">특이사항</Text>
+              <section css={chipButtonBox}>
+                <ChipToggleButton size="full">피부병</ChipToggleButton>
+                <ChipToggleButton size="full">심장질환</ChipToggleButton>
+                <ChipToggleButton size="full">마킹</ChipToggleButton>
+                <ChipToggleButton size="full">마운팅</ChipToggleButton>
+              </section>
+              <textarea css={detailInput} placeholder="특이사항이 있다면 입력해주세요" />
+            </section>
+          </section>
+        </div>
         <footer css={buttonContainer}>
-          <RoundButton variant="primary" size="XL">
+          <RoundButton variant="primary" size="L" fullWidth={true}>
             수정하기
           </RoundButton>
-          <button>
-            <Text typo="semibold04" color="gray300">
+          <TextButton>
+            <Text typo="subtitle2" color="gray300">
               삭제하기
             </Text>
-          </button>
+          </TextButton>
         </footer>
       </div>
     </Layout>
