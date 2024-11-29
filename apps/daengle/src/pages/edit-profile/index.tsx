@@ -15,7 +15,7 @@ export default function EditProfile() {
     <Layout isAppBarExist={false}>
       <AppBar />
       <div css={wrapper}>
-        <Text typo={'title1'}>사용자 정보 등록</Text>
+        <Text typo="title1">사용자 정보 등록</Text>
         <div css={profileImageWrapper}>
           <Image src="/icons/profile_image.svg" alt="프로필 이미지" width={116} height={116} />
           <button css={profileEditButtonBox}>

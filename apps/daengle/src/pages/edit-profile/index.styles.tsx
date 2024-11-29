@@ -1,3 +1,4 @@
+import { colors } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
@@ -20,7 +21,7 @@ export const profileImageWrapper = css`
 export const profileEditButtonBox = css`
   margin-top: 12px;
   font-size: 14px;
-  color: #bebebe;
+  color: ${colors.gray400};
 `;
 export const inputWrapper = css`
   display: flex;
