@@ -55,7 +55,7 @@ export const Input = forwardRef<InputRef, Props>(
           {suffix && suffix}
         </div>
 
-        {confirmMessage && (
+        {!errorMessage && confirmMessage && (
           <div css={infoTextWrapper}>
             <Text typo="body12" color="blue200">
               {confirmMessage}
