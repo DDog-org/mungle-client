@@ -27,7 +27,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    typo: 'semibold01',
+    typo: 'body8',
     children: '댕글 Daengle',
   },
 };

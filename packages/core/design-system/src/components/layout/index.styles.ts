@@ -17,4 +17,5 @@ export const main = ({ isAppBarExist }: { isAppBarExist: boolean }) => css`
   display: flex;
   flex-direction: column;
   border: 1px solid ${theme.colors.gray200};
+  overflow: scroll;
 `;

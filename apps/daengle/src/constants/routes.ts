@@ -1,9 +1,9 @@
 export const ROUTES = {
   LOGIN: '/login',
   ONBOARDING: '/onboarding',
-  ONBOARDING_USER_INFO: '/onboarding/user-info',
-  ONBOARDING_SEARCH_ADDRESS: '/onboarding/search-address',
-  ONBOARDING_PET_INFO: '/onboarding/pet-info',
+  ONBOARDING_USER_INFO: '/onboarding?step=user-info',
+  ONBOARDING_SEARCH_ADDRESS: '/onboarding?step=search-address',
+  ONBOARDING_PET_INFO: '/onboarding?step=pet-info',
 
   HOME: '/',
   SEARCH: '/search',

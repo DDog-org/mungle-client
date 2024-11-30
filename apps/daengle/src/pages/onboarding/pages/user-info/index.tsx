@@ -1,70 +1,73 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import {
-  AppBar,
-  ChipButton,
-  CTAButton,
-  Input,
-  Layout,
-  RoundButton,
-  Text,
-} from '@daengle/design-system';
+import { ChipButton, CTAButton, Input, RoundButton, Text } from '@daengle/design-system';
 import { ROUTES } from '~/constants/routes';
-import { usePostAvailableNicknameMutation, usePostJoinWithoutPetMutation } from '~/queries';
-import { PostJoinWithoutPetRequestBody } from '~/models';
 import { formatPhoneNumber } from '~/utils/format';
+import { usePostAvailableNicknameMutation } from '~/queries';
+import { useUserInfoFormStore } from '~/pages/onboarding/store/user-info-form';
+import { useValidateUserForm } from '~/pages/onboarding/hooks';
 import { location, locationButton, section, wrapper } from './index.styles';
-import { useOnboardingFormStore } from './store/form';
-import { useValidateUserForm } from './hooks';
+import { UserInfoFormFormType } from '~/pages/onboarding/interfaces';
 
-// TODO: 임시 이메일
-const EMAIL = 'daengle@daengle.com';
+interface Props {
+  onNext?: () => void;
+}
 
-export default function UserInfo() {
+export default function UserInfo({ onNext }: Props) {
   const router = useRouter();
-  const { form, setForm } = useOnboardingFormStore();
-  const { mutate: postJoinWithoutPet } = usePostJoinWithoutPetMutation();
+  const { userInfoForm, setForm, setUserInfoForm } = useUserInfoFormStore();
   const { mutateAsync: postAvailableNickname } = usePostAvailableNicknameMutation();
   const validation = useValidateUserForm();
+
   const {
     register,
     handleSubmit,
     watch,
     setValue,
     setError,
-    formState: { errors },
-  } = useForm<PostJoinWithoutPetRequestBody>({ defaultValues: { ...form, email: EMAIL } });
-
-  const [isAvailableNickname, setIsAvailableNickname] = useState<boolean>(false);
+    clearErrors,
+    formState: { errors, isValid },
+  } = useForm<UserInfoFormFormType>({ defaultValues: { ...userInfoForm.form } });
 
   const checkIsAvailableNickname = async () => {
-    const response = await postAvailableNickname({ nickname: watch('nickname') });
+    const nickname = watch('nickname');
+
+    if (!nickname) {
+      setError('nickname', { message: '닉네임을 입력해 주세요' });
+    }
+
+    if (nickname.length < 2 || nickname.length > 10) {
+      setError('nickname', { message: '닉네임은 2글자 이상 10글자 미만으로 작성해 주세요' });
+    }
+
+    const response = await postAvailableNickname({ nickname });
     if (response.isAvailable) {
-      setError('nickname', {
-        type: 'duplicate',
-        message: '이미 사용중인 닉네임입니다',
-      });
+      setError('nickname', { message: '이미 사용중인 닉네임입니다' });
     } else {
-      setIsAvailableNickname(true);
+      setUserInfoForm({ ...watch(), isAvailableNickname: true });
     }
   };
 
-  const onSubmit = (data: PostJoinWithoutPetRequestBody) => {
+  const onSubmit = (data: UserInfoFormFormType) => {
     if (!data.address) return;
-    postJoinWithoutPet({ ...data, email: EMAIL });
+    setUserInfoForm({ ...userInfoForm, ...watch() });
+  };
+
+  const handleNextButtonClick = () => {
+    if (!isValid || !userInfoForm.isAvailableNickname || !userInfoForm?.form.address) return;
+
+    onNext?.();
   };
 
   return (
-    <Layout>
-      <AppBar />
-
-      <form css={wrapper} onSubmit={handleSubmit(onSubmit)}>
+    <>
+      <section css={wrapper}>
         <Text typo="title1" color="black">
           회원 정보를 입력해 주세요
         </Text>
 
-        <section css={section}>
+        <form css={section} onSubmit={handleSubmit(onSubmit)}>
           <Input
             label="이름"
             placeholder="이름을 입력해 주세요"
@@ -88,10 +91,18 @@ export default function UserInfo() {
             label="닉네임"
             placeholder="닉네임을 입력해 주세요"
             maxLength={10}
-            suffix={<ChipButton onClick={checkIsAvailableNickname}>중복검사</ChipButton>}
+            suffix={
+              <ChipButton onClick={checkIsAvailableNickname} type="button">
+                중복검사
+              </ChipButton>
+            }
             {...register('nickname', { ...validation.nickname })}
+            onChange={() => {
+              setUserInfoForm({ ...watch(), isAvailableNickname: false });
+              clearErrors();
+            }}
             errorMessage={errors.nickname?.message}
-            confirmMessage={isAvailableNickname ? '사용 가능한 닉네임입니다' : ''}
+            confirmMessage={userInfoForm.isAvailableNickname ? '사용 가능한 닉네임입니다' : ''}
           />
 
           <div css={location}>
@@ -108,9 +119,9 @@ export default function UserInfo() {
               }}
             >
               <div css={locationButton}>
-                {form?.address ? (
+                {userInfoForm?.form.address ? (
                   <Text typo="body10" color="black">
-                    {form?.address}
+                    {userInfoForm?.form.address}
                   </Text>
                 ) : (
                   <Text typo="body10" color="gray200">
@@ -120,10 +131,16 @@ export default function UserInfo() {
               </div>
             </RoundButton>
           </div>
-        </section>
 
-        <CTAButton type="submit">다음</CTAButton>
-      </form>
-    </Layout>
+          <CTAButton
+            type="submit"
+            onClick={handleNextButtonClick}
+            disabled={!isValid || !userInfoForm.isAvailableNickname || !userInfoForm?.form.address}
+          >
+            다음
+          </CTAButton>
+        </form>
+      </section>
+    </>
   );
 }

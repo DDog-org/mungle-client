@@ -22,7 +22,7 @@ export const Default = () => {
   return (
     <Select
       options={OPTIONS}
-      placeholder="탄생년도(필수)"
+      placeholder="탄생년도"
       selectedValue={selectedValue}
       onChange={(option) => setSelectedValue(option)}
     />
