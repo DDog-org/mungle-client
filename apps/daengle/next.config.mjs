@@ -8,6 +8,8 @@ const nextConfig = {
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
     AWS_BUCKET: process.env.AWS_BUCKET,
   },
+  reactStrictMode: true,
+  transpilePackages: ['@daengle/design-system', '@daengle/services'],
 };
 
 export default nextConfig;
