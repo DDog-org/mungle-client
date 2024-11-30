@@ -1,8 +1,8 @@
 export interface GetGroomerEstimateListResponse {
   success: boolean;
   response: {
-    allGroomingEstimates: GroomingEstimateList[];
-    designationGroomingEstimates: GroomingEstimateList[];
+    allEstimates: GroomingEstimateList[];
+    designationEstimates: GroomingEstimateList[];
   };
   error: any;
 }
