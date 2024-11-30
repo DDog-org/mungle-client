@@ -1,13 +1,14 @@
+import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
-  height: 100%;
+  height: 100vh;
 `;
 
 export const sectionDivider = css`
   width: 100%;
   height: 8px;
-  background-color: #f6f6f6;
+  background-color: ${theme.colors.gray100};
   display: block;
   margin: 0;
 `;
