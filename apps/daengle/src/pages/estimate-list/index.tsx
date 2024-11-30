@@ -1,9 +1,13 @@
-import { UserEstimateList } from '@daengle/services';
-import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { GNB } from '@daengle/design-system';
-
+import { useRouter } from 'next/router';
+import {
+  CardList,
+  EmptyState,
+  FilterTabs,
+  OptionSelector,
+  ProfileSelector,
+} from '@daengle/services';
+import { GNB, Layout, Text } from '@daengle/design-system';
 import {
   GnbChattingActive,
   GnbChattingInactive,
@@ -16,7 +20,7 @@ import {
   GnbEstimateActive,
   GnbEstimateInactive,
 } from '@daengle/design-system/icons';
-import { wrapper } from './index.styles';
+import { wrapper, headerContainer } from './index.styles';
 
 export const PATHS = {
   ESTIMATE: '/estimate-list',
@@ -68,14 +72,6 @@ export const MENUS = [
     path: PATHS.MYPAGE,
   },
 ];
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    props: {
-      isAppBarExist: false,
-    },
-  };
-};
 
 const petInfos = [
   {
@@ -146,9 +142,15 @@ const petInfos = [
   },
 ];
 
-export default function EstimatePage() {
+export default function EstimateList() {
   const router = useRouter();
-  const [activePath] = useState(PATHS.ESTIMATE);
+  const [filterType, setFilterType] = useState<'미용사' | '병원'>('미용사');
+  const [selectedPetIndex, setSelectedPetIndex] = useState(0);
+
+  const selectedPet = petInfos[selectedPetIndex] ?? null;
+  const estimateData =
+    selectedPet &&
+    (filterType === '미용사' ? selectedPet.groomingEstimates : selectedPet.careEstimates);
 
   const handleNavigate = (path: string) => {
     // 임시 경로
@@ -156,9 +158,27 @@ export default function EstimatePage() {
   };
 
   return (
-    <div css={wrapper}>
-      <UserEstimateList petInfos={petInfos} />
-      <GNB menus={MENUS} activePath={activePath} onNavigate={handleNavigate} />
-    </div>
+    <Layout isAppBarExist={false}>
+      <div css={wrapper}>
+        <div css={headerContainer}>
+          <Text typo="title1">견적</Text>
+        </div>
+        <FilterTabs filterType={filterType} onFilterChange={setFilterType} />
+        {petInfos.length > 0 ? (
+          <ProfileSelector
+            petInfos={petInfos}
+            selectedPetIndex={selectedPetIndex}
+            onSelectPet={setSelectedPetIndex}
+          />
+        ) : null}
+        <OptionSelector />
+        {estimateData && estimateData.length > 0 ? (
+          <CardList estimateData={estimateData} />
+        ) : (
+          <EmptyState />
+        )}
+        <GNB menus={MENUS} activePath={PATHS.ESTIMATE} onNavigate={handleNavigate} />
+      </div>
+    </Layout>
   );
 }

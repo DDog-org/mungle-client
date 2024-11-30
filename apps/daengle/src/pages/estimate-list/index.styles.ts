@@ -5,3 +5,8 @@ export const wrapper = css`
   margin-bottom: 100px;
   background-color: #f3f5f8;
 `;
+
+export const headerContainer = css`
+  padding: 18px 34px;
+  margin-top: 4px;
+`;
