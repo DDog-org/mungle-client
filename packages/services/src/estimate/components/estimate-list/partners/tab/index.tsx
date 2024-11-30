@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { tabContainer, tab, activeTab } from './index.styles';
-import { TextButton, Text } from '../../../../../../../core/design-system/src';
+import { TextButton } from '@daengle/design-system';
 
 interface Props {
   filterType: '전체' | '지정';

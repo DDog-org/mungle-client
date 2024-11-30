@@ -19,12 +19,12 @@ export const tab = css`
   cursor: pointer;
 
   &:hover {
-    color: ${theme.colors.black};
+    color: ${theme.colors.black100};
   }
 `;
 
 export const activeTab = css`
-  color: ${theme.colors.black};
+  color: ${theme.colors.black100};
   ${theme.typo.subtitle1}
-  border-bottom: 2px solid #000000;
+  border-bottom: 2px solid ${theme.colors.black100};
 `;

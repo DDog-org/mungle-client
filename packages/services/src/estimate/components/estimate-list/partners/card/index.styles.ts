@@ -1,6 +1,7 @@
+import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
-export const card = css`
+export const wrapper = css`
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -57,26 +58,25 @@ export const type = css`
 `;
 
 export const general = css`
-  background-color: #eefffd;
-  color: #81d9d0;
-  border: #81d9d0 solid 0.5px;
+  background-color: ${theme.colors.green100};
+  color: ${theme.colors.green200};
+  border: ${theme.colors.green200} solid 0.5px;
 `;
 
 export const designated = css`
-  background-color: #fffcf3;
-  color: #ffc748;
-  border: #ffc748 solid 0.5px;
+  background-color: ${theme.colors.yellow100};
+  color: ${theme.colors.yellow200};
+  border: ${theme.colors.yellow200} solid 0.5px;
 `;
 
 export const specials = css`
-  font-size: 16px;
-  color: #000000;
-  font-weight: 600;
+  ${theme.typo.subtitle1};
   margin: 0;
 `;
 
 export const specialsNot = css`
-  color: #d9d9d9;
+  ${theme.typo.subtitle1};
+  color: ${theme.colors.gray200};
 `;
 
 export const date = css`

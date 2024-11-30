@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
+import { Text, TextButton } from '@daengle/design-system';
 import {
-  card,
+  wrapper,
   contentContainer,
   cardHeader,
   profileImage,
@@ -15,13 +16,14 @@ import {
   detailContainer,
   detailButton,
 } from './index.styles';
-//여기 story-book 적용해라잇
+import { ButtonTextButtonArrow } from '@daengle/design-system/icons';
+
 interface EstimateContent {
   id: number;
   userImage: string;
   nickname: string;
   proposal: 'GENERAL' | 'DESIGNATION';
-  petSignificant: string;
+  significant: string | null;
   reservedDate: string;
 }
 
@@ -30,7 +32,7 @@ export default function Card({
   userImage,
   nickname,
   proposal,
-  petSignificant,
+  significant,
   reservedDate,
 }: EstimateContent): JSX.Element {
   const router = useRouter();
@@ -40,12 +42,12 @@ export default function Card({
   };
 
   return (
-    <div css={card}>
+    <div css={wrapper}>
       <div css={contentContainer}>
         {/* Header */}
         <div css={cardHeader}>
           <img src={userImage} alt={`${nickname} 프로필`} css={profileImage} />
-          <span css={name}>{nickname}</span>
+          <Text typo="body1">{nickname}</Text>
           <span css={[type, proposal === 'DESIGNATION' ? designated : general]}>
             {proposal === 'GENERAL' ? '일반' : '지정'}
           </span>
@@ -53,18 +55,25 @@ export default function Card({
 
         {/* Content */}
         <div css={cardContent}>
-          <p css={[specials, petSignificant === '특이사항 없음' && specialsNot]}>
-            {petSignificant}
+          <p css={[specials, significant === null && specialsNot]}>
+            {significant ? significant : '특이사항 없음'}
           </p>
-          <p css={date}>{reservedDate}</p>
+          <Text typo="body11" color="gray500">
+            {reservedDate}
+          </Text>
         </div>
       </div>
 
       {/* Detail Button */}
       <div css={detailContainer}>
-        <button css={detailButton} onClick={handleDetailClick}>
-          자세히 보기 &gt;
-        </button>
+        <TextButton
+          icons={{ suffix: <ButtonTextButtonArrow width="6px" /> }}
+          onClick={handleDetailClick}
+        >
+          <Text typo="body7" color="gray200">
+            자세히보기
+          </Text>
+        </TextButton>
       </div>
     </div>
   );

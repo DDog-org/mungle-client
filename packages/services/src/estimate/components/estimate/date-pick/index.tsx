@@ -5,9 +5,10 @@ import { datePicker } from './index.styles';
 
 interface Props {
   onChange: (dateTime: Date) => void;
+  placeholderText?: string;
 }
 
-const DatePick = ({ onChange }: Props) => {
+const DatePick = ({ onChange, placeholderText }: Props) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const now = new Date();
@@ -45,7 +46,7 @@ const DatePick = ({ onChange }: Props) => {
             : startOfDay
         }
         maxTime={endOfDay}
-        placeholderText="날짜와 시간을 선택하세요"
+        placeholderText={placeholderText || '날짜를 선택해주세요'}
         css={datePicker}
       />
     </div>
