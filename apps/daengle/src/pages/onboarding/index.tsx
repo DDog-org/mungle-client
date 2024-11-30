@@ -1,13 +1,27 @@
 import { useRouter } from 'next/router';
+import { useFunnel } from '@daengle/services/hooks';
 import { AppBar, Layout } from '@daengle/design-system';
 import { ROUTES } from '~/constants/routes';
-import { useFunnel } from '~/hooks/use-funnel';
 import { STEPS } from './constants';
 import { UserInfo, PetInfo, SearchAddress } from './pages';
 
 export default function Onboarding() {
   const router = useRouter();
-  const { Funnel, Step, setStep } = useFunnel({ defaultStep: STEPS.USER_INFO });
+
+  const getCurrentStep = () => router.query.step as string | undefined;
+
+  const onSetStep = (newStep: string) => {
+    router.push({
+      pathname: router.pathname,
+      query: { step: newStep },
+    });
+  };
+
+  const { Funnel, Step, setStep } = useFunnel({
+    defaultStep: STEPS.USER_INFO,
+    onSetStep,
+    getCurrentStep,
+  });
 
   return (
     <Layout>

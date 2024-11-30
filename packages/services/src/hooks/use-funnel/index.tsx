@@ -1,8 +1,9 @@
 import { ReactElement, ReactNode } from 'react';
-import { useRouter } from 'next/router';
 
 interface Props {
   defaultStep?: string;
+  onSetStep?: (newStep: string) => void;
+  getCurrentStep?: () => string | undefined;
 }
 
 interface StepProps {
@@ -14,26 +15,20 @@ export interface FunnelProps {
   children: Array<ReactElement<StepProps>>;
 }
 
-export function useFunnel({ defaultStep }: Props) {
-  const router = useRouter();
-
+export function useFunnel({ defaultStep, onSetStep, getCurrentStep }: Props) {
   const Step = ({ children }: StepProps) => {
     return <>{children}</>;
   };
 
   const Funnel = ({ children }: FunnelProps) => {
-    const { step = defaultStep } = router.query;
+    const step = getCurrentStep ? getCurrentStep() : defaultStep;
     const targetStep = children.find((childStep) => childStep.props.name === step);
-
     return <>{targetStep}</>;
   };
 
   const setStep = (newStep: string) => {
-    router.push({
-      pathname: router.pathname,
-      query: { step: newStep },
-    });
+    onSetStep?.(newStep);
   };
 
-  return { Funnel, Step, setStep, currentStep: router.query.step } as const;
+  return { Funnel, Step, setStep, currentStep: getCurrentStep?.() } as const;
 }
