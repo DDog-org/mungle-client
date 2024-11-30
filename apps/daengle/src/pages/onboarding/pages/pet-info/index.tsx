@@ -16,7 +16,6 @@ import { useValidatePetForm } from '~/pages/onboarding/hooks';
 import { PetInfoFormType } from '~/pages/onboarding/interfaces';
 import { useUserInfoFormStore } from '~/pages/onboarding/store/user-info-form';
 import { itemWrapper, radioGroup, section, weightWrapper, wrapper } from './index.styles';
-import { DevTool } from '@hookform/devtools';
 
 // TODO: 임시 이메일
 const EMAIL = 'daengle@daengle.com';
@@ -67,7 +66,6 @@ export default function PetInfo({ onNext }: Props) {
       </Text>
 
       <form css={section} onSubmit={handleSubmit(onSubmit)}>
-        <DevTool control={control} />
         <Input
           label="이름"
           placeholder="이름을 입력해 주세요"
