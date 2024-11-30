@@ -8,13 +8,6 @@ export const wrapper = css`
   gap: 14px;
 `;
 
-export const sectionTitle = css`
-  font-size: 14px;
-  color: #979797;
-`;
-
 export const content = css`
-  font-size: 16px;
-  color: #000000;
   margin-left: 2px;
 `;

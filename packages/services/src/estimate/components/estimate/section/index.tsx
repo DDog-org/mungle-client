@@ -1,5 +1,6 @@
 import React from 'react';
-import { wrapper, sectionTitle, content } from './index.styles';
+import { Text } from '@daengle/design-system';
+import { wrapper, content } from './index.styles';
 
 interface Props {
   title: string;
@@ -9,7 +10,9 @@ interface Props {
 const Section = ({ title, children }: Props) => {
   return (
     <section css={wrapper}>
-      <div css={sectionTitle}>{title}</div>
+      <Text typo="body4" color="gray400">
+        {title}
+      </Text>
       <div css={content}>{children}</div>
     </section>
   );

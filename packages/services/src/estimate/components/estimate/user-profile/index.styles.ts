@@ -13,8 +13,3 @@ export const image = css`
   height: 50px;
   border-radius: 50%;
 `;
-
-export const name = css`
-  font-size: 16px;
-  color: #000;
-`;

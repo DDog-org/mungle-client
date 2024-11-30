@@ -1,4 +1,5 @@
-import { wrapper, image, name } from './index.styles';
+import { Text } from '@daengle/design-system';
+import { wrapper, image } from './index.styles';
 
 interface Props {
   userImage: string;
@@ -9,7 +10,9 @@ const UserProfile = ({ userImage, userName }: Props) => {
   return (
     <div css={wrapper}>
       <img src={userImage} alt={`${userName} 프로필`} css={image} />
-      <p css={name}>{userName}</p>
+      <Text typo="body4" tag="p">
+        {userName}
+      </Text>
     </div>
   );
 };

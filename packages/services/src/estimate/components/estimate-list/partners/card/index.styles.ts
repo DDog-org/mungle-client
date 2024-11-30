@@ -1,52 +1,5 @@
 import { css } from '@emotion/react';
 
-export const wrapper = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100vh;
-  margin: 0 auto;
-  background-color: #f9fafb;
-`;
-
-export const headerContainer = css`
-  padding: 18px;
-  margin-top: 20px;
-`;
-
-export const tabContainer = css`
-  display: flex;
-  padding: 18px 18px 0px 18px;
-  position: relative;
-  border-bottom: 0.5px solid #e6e6e6;
-`;
-
-export const tab = css`
-  font-size: 16px;
-  width: 100%;
-  padding: 9px 32px;
-  border: none;
-  background: none;
-  color: #d9d9d9;
-  cursor: pointer;
-
-  &:hover {
-    color: #000000;
-  }
-`;
-
-export const activeTab = css`
-  color: #000000;
-  font-weight: 600;
-  border-bottom: 2px solid #000000;
-`;
-
-export const listContainer = css`
-  flex: 1;
-  overflow-y: auto;
-  padding: 12px 18px 12px 0px;
-`;
-
 export const card = css`
   display: flex;
   flex-direction: row;

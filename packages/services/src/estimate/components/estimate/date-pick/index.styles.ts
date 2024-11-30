@@ -1,9 +1,10 @@
+import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const datePicker = css`
   width: 100%;
   padding: 12px 18px;
-  font-size: 14px;
+  ${theme.typo.body4}
   border: 1px solid #d9d9d9;
   border-radius: 20px;
   background-color: #ffffff;

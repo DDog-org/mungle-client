@@ -23,7 +23,6 @@ export const imageUrl = css`
 `;
 
 export const petName = css`
-  font-size: 16px;
   width: 100%;
   text-align: center;
   margin-top: 10px;
@@ -49,19 +48,7 @@ export const valueWrapper = css`
   gap: 8px;
 `;
 
-export const label = css`
-  font-size: 14px;
-  color: #979797;
-`;
-
-export const value = css`
-  font-size: 14px;
-  color: #000000;
-`;
-
 export const detailButton = css`
-  font-size: 14px;
-  color: #d9d9d9;
   background: none;
   border: none;
   cursor: pointer;
