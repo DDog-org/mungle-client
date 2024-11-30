@@ -9,7 +9,7 @@ export const useGroomerEstimateListQuery = () => {
     queryFn: async () => {
       try {
         const data = await getGroomerEstimateList();
-        return data.allGroomingEstimates;
+        return data.allEstimates;
       } catch (error) {
         throw new Error('견적 리스트를 가져오는 데 실패했습니다.');
       }
