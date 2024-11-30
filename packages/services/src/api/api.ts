@@ -4,6 +4,7 @@ export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
+    // 임시 인가 코드 넣어서 테스트하였습니다.
     // Authorization: `Bearer ${token}`,
   },
 });
