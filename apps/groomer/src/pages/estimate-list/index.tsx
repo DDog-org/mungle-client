@@ -73,15 +73,6 @@ export default function EstimateList(): JSX.Element {
   const { data, isLoading, isError } = useGroomerEstimateListQuery();
   const [, setActivePath] = useState<string>(PATHS.ESTIMATE);
 
-  interface EstimateContent {
-    id: number;
-    userImage: string;
-    nickname: string;
-    proposal: 'GENERAL' | 'DESIGNATION';
-    petSignificant: string;
-    reservedDate: string;
-  }
-
   if (isLoading) {
     return <div>로딩 중...</div>;
   }
@@ -90,7 +81,7 @@ export default function EstimateList(): JSX.Element {
     return <div>데이터를 가져오는 데 실패했습니다.</div>;
   }
 
-  const estimateData: EstimateContent[] = data || [];
+  const estimateData = data || [];
   const filteredData =
     filterType === '전체'
       ? estimateData
