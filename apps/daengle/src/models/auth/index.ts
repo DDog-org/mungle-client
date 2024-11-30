@@ -40,4 +40,5 @@ export interface PostJoinWithPetRequestBody extends PostJoinWithoutPetRequestBod
   petWeight: string;
 }
 
+// TODO: api 변경 후 수정 필요
 export type PostJoinWithPetResponse = string;

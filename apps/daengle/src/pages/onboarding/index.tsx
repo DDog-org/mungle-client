@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { AppBar, Layout } from '@daengle/design-system';
+import { ROUTES } from '~/constants/routes';
 import { useFunnel } from '~/hooks/use-funnel';
 import { STEPS } from './constants';
 import { UserInfo, PetInfo, SearchAddress } from './pages';
@@ -18,7 +19,7 @@ export default function Onboarding() {
         </Step>
 
         <Step name={STEPS.PET_INFO}>
-          <PetInfo />
+          <PetInfo onNext={() => router.push(ROUTES.HOME)} />
         </Step>
 
         <Step name={STEPS.SEARCH_ADDRESS}>
