@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/routes';
-import DaumPostcode, { Address } from '~/libs/postcode';
+import { DaumPostcode, Address } from '@daengle/services';
 import { useUserInfoFormStore } from '~/pages/onboarding/store/user-info-form';
 import { wrapper } from './index.styles';
 
