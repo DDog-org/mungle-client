@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useGroomerEstimateListQuery } from '@services/queries/estimate-list';
+import { useGroomerEstimateListQuery } from '@services/queries/estimate';
 import { Tab } from '@daengle/services';
 import { Card } from '@daengle/services';
 import { wrapper, headerContainer, listContainer } from './index.styles';
