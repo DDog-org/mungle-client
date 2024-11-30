@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, forwardRef, FocusEvent } from 'react';
 import { SelectUnfoldActive, SelectUnfoldInactive } from '../../icons';
 import { Text } from '../text';
 import { select, wrapper, contents } from './index.styles';
@@ -10,48 +10,56 @@ interface Option {
 
 interface Props {
   options: Option[];
-  selectedValue?: Option;
-  onChange: (value: Option) => void;
   placeholder?: string;
+  onChange?: (e: ChangeEvent<HTMLSelectElement>) => void;
+  onBlur?: (e: FocusEvent<HTMLSelectElement>) => void;
+  name?: string;
+  value?: string | number;
 }
 
-export function Select({ options, selectedValue, onChange, placeholder = '' }: Props) {
-  const [isFocused, setIsFocused] = useState<boolean>(false);
+export const Select = forwardRef<HTMLSelectElement, Props>(
+  ({ options, placeholder, onChange, onBlur, name, value }: Props, ref) => {
+    const [isFocused, setIsFocused] = useState<boolean>(false);
 
-  return (
-    <div css={wrapper({ selectedValue: Boolean(selectedValue?.value) })}>
-      <div css={contents}>
-        <Text
-          typo="body10"
-          color={isFocused ? 'blue200' : selectedValue?.label ? 'black100' : 'gray200'}
+    return (
+      <div css={wrapper({ selectedValue: isFocused })}>
+        <div css={contents}>
+          <Text typo="body10" color={isFocused ? 'blue200' : value ? 'black100' : 'gray200'}>
+            {value ? options.find((option) => option.value === String(value))?.label : placeholder}
+          </Text>
+          {isFocused ? (
+            <SelectUnfoldActive width="8px" height="5px" />
+          ) : (
+            <SelectUnfoldInactive width="8px" height="5px" />
+          )}
+        </div>
+
+        <select
+          css={select}
+          ref={ref}
+          name={name}
+          value={value || ''}
+          onFocus={() => setIsFocused(true)}
+          onBlur={(e: FocusEvent<HTMLSelectElement>) => {
+            setIsFocused(false);
+            onBlur?.(e);
+          }}
+          onChange={onChange}
         >
-          {selectedValue?.label ?? placeholder}
-        </Text>
-
-        {isFocused ? (
-          <SelectUnfoldActive width="8px" height="5px" />
-        ) : (
-          <SelectUnfoldInactive width="8px" height="5px" />
-        )}
+          {placeholder && (
+            <option value="" disabled hidden>
+              {placeholder}
+            </option>
+          )}
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
       </div>
+    );
+  }
+);
 
-      <select
-        css={select}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-          const selectedOption = options.find((option) => option.label === e.target.value);
-          if (selectedOption) {
-            onChange(selectedOption);
-          }
-        }}
-      >
-        {options.map((option) => (
-          <option key={option.value} value={option.label} data-option={option}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}
+Select.displayName = 'Select';

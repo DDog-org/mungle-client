@@ -1,99 +1,90 @@
 import { ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
 import { ChipButton, CTAButton, Input, RoundButton, Text } from '@daengle/design-system';
 import { ROUTES } from '~/constants/routes';
-import { USER_ROLE } from '~/constants/role';
 import { formatPhoneNumber } from '~/utils/format';
-import { usePostAvailableNicknameMutation, usePostJoinWithoutPetMutation } from '~/queries';
+import { usePostAvailableNicknameMutation } from '~/queries';
 import { useUserInfoFormStore } from '~/pages/onboarding/store/user-info-form';
-import { useValidateUserForm } from '~/pages/onboarding/hooks/use-validate-user-form';
+import { useValidateUserForm } from '~/pages/onboarding/hooks';
 import { location, locationButton, section, wrapper } from './index.styles';
-import { UserInfoFormType } from '~/interfaces/auth';
+import { UserInfoFormFormType } from '~/pages/onboarding/interfaces';
 
 interface Props {
   onNext?: () => void;
 }
 
-// TODO: 임시 이메일
-const EMAIL = 'daengle@daengle.com';
-
 export default function UserInfo({ onNext }: Props) {
   const router = useRouter();
-  const { userInfoForm, setUserInfoForm } = useUserInfoFormStore();
-  const { mutate: postJoinWithoutPet } = usePostJoinWithoutPetMutation();
+  const { userInfoForm, setForm, setUserInfoForm } = useUserInfoFormStore();
   const { mutateAsync: postAvailableNickname } = usePostAvailableNicknameMutation();
   const validation = useValidateUserForm();
-  console.log(userInfoForm);
+
   const {
     register,
     handleSubmit,
     watch,
-    control,
     setValue,
     setError,
     clearErrors,
     formState: { errors, isValid },
-  } = useForm<UserInfoFormType>({ defaultValues: { ...userInfoForm } });
+  } = useForm<UserInfoFormFormType>({ defaultValues: { ...userInfoForm.form } });
 
   const checkIsAvailableNickname = async () => {
-    const nickname = watch('form.nickname');
+    const nickname = watch('nickname');
 
     if (!nickname) {
-      setError('form.nickname', { message: '닉네임을 입력해 주세요' });
+      setError('nickname', { message: '닉네임을 입력해 주세요' });
     }
 
     if (nickname.length < 2 || nickname.length > 10) {
-      setError('form.nickname', { message: '닉네임은 2글자 이상 10글자 미만으로 작성해 주세요' });
+      setError('nickname', { message: '닉네임은 2글자 이상 10글자 미만으로 작성해 주세요' });
     }
 
     const response = await postAvailableNickname({ nickname });
     if (response.isAvailable) {
-      setError('form.nickname', { message: '이미 사용중인 닉네임입니다' });
+      setError('nickname', { message: '이미 사용중인 닉네임입니다' });
     } else {
       setUserInfoForm({ ...watch(), isAvailableNickname: true });
     }
   };
 
-  const onSubmit = (data: UserInfoFormType) => {
-    if (!data.form.address) return;
-    postJoinWithoutPet({ ...data.form, role: USER_ROLE, email: EMAIL });
+  const onSubmit = (data: UserInfoFormFormType) => {
+    if (!data.address) return;
+    setUserInfoForm({ ...userInfoForm, ...watch() });
   };
 
   const handleNextButtonClick = () => {
     if (!isValid || !userInfoForm.isAvailableNickname || !userInfoForm?.form.address) return;
 
-    setUserInfoForm({});
     onNext?.();
   };
 
   return (
     <>
-      <DevTool control={control} />
-      <form css={wrapper} onSubmit={handleSubmit(onSubmit)}>
+      <section css={wrapper}>
         <Text typo="title1" color="black">
           회원 정보를 입력해 주세요
         </Text>
 
-        <section css={section}>
+        <form css={section} onSubmit={handleSubmit(onSubmit)}>
           <Input
             label="이름"
             placeholder="이름을 입력해 주세요"
             maxLength={10}
-            {...register('form.username', { ...validation.username })}
-            errorMessage={errors.form?.username?.message}
+            {...register('username', { ...validation.username })}
+            errorMessage={errors.username?.message}
           />
 
           <Input
             label="휴대폰 번호"
             placeholder="휴대폰 번호를 입력해 주세요"
             maxLength={13}
-            {...register('form.phoneNumber', { ...validation.phoneNumber })}
+            {...register('phoneNumber', { ...validation.phoneNumber })}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setValue('form.phoneNumber', formatPhoneNumber(e.target.value))
+              setValue('phoneNumber', formatPhoneNumber(e.target.value))
             }
-            errorMessage={errors.form?.phoneNumber?.message}
+            errorMessage={errors.phoneNumber?.message}
           />
 
           <Input
@@ -105,12 +96,12 @@ export default function UserInfo({ onNext }: Props) {
                 중복검사
               </ChipButton>
             }
-            {...register('form.nickname', { ...validation.nickname })}
+            {...register('nickname', { ...validation.nickname })}
             onChange={() => {
               setUserInfoForm({ ...watch(), isAvailableNickname: false });
               clearErrors();
             }}
-            errorMessage={errors.form?.nickname?.message}
+            errorMessage={errors.nickname?.message}
             confirmMessage={userInfoForm.isAvailableNickname ? '사용 가능한 닉네임입니다' : ''}
           />
 
@@ -123,7 +114,7 @@ export default function UserInfo({ onNext }: Props) {
               fullWidth
               type="button"
               onClick={() => {
-                setUserInfoForm({ ...watch() });
+                setForm({ ...watch() });
                 router.push(ROUTES.ONBOARDING_SEARCH_ADDRESS);
               }}
             >
@@ -140,16 +131,16 @@ export default function UserInfo({ onNext }: Props) {
               </div>
             </RoundButton>
           </div>
-        </section>
 
-        <CTAButton
-          type="submit"
-          onClick={handleNextButtonClick}
-          disabled={!isValid || !userInfoForm.isAvailableNickname || !userInfoForm?.form.address}
-        >
-          다음
-        </CTAButton>
-      </form>
+          <CTAButton
+            type="submit"
+            onClick={handleNextButtonClick}
+            disabled={!isValid || !userInfoForm.isAvailableNickname || !userInfoForm?.form.address}
+          >
+            다음
+          </CTAButton>
+        </form>
+      </section>
     </>
   );
 }
