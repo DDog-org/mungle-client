@@ -1,6 +1,9 @@
-import { EstimateList } from '@daengle/services';
-import { GNB } from '@daengle/design-system';
 import { useState } from 'react';
+import { useGroomerEstimateListQuery } from '@services/queries/estimate-list';
+import { Tab } from '@daengle/services';
+import { Card } from '@daengle/services';
+import { wrapper, headerContainer, listContainer } from './index.styles';
+import { GNB, Layout, Text } from '@daengle/design-system';
 import {
   GnbChattingActive,
   GnbChattingInactive,
@@ -10,12 +13,12 @@ import {
   GnbMyInactive,
   GnbReservationActive,
   GnbReservationInactive,
-  GnbSheetActive,
-  GnbSheetInactive,
+  GnbEstimateActive,
+  GnbEstimateInactive,
 } from '@daengle/design-system/icons';
 
 export const PATHS = {
-  SHEET: '/sheet',
+  ESTIMATE: '/estimate',
   RESERVATION: '/reservation',
   HOME: '/',
   CHATTING: '/chatting',
@@ -26,10 +29,10 @@ export const MENUS = [
   {
     name: '견적',
     icon: {
-      active: <GnbSheetActive width="32px" height="32px" />,
-      inactive: <GnbSheetInactive width="32px" height="32px" />,
+      active: <GnbEstimateActive width="32px" height="32px" />,
+      inactive: <GnbEstimateInactive width="32px" height="32px" />,
     },
-    path: PATHS.SHEET,
+    path: PATHS.ESTIMATE,
   },
   {
     name: '예약',
@@ -65,13 +68,48 @@ export const MENUS = [
   },
 ];
 
-export default function ListPage() {
-  const [activePath, setActivePath] = useState<string>(PATHS.SHEET);
+export default function EstimateList(): JSX.Element {
+  const [filterType, setFilterType] = useState<'전체' | '지정'>('전체');
+  const { data, isLoading, isError } = useGroomerEstimateListQuery();
+  const [, setActivePath] = useState<string>(PATHS.ESTIMATE);
+
+  interface EstimateContent {
+    id: number;
+    userImage: string;
+    nickname: string;
+    proposal: 'GENERAL' | 'DESIGNATION';
+    petSignificant: string;
+    reservedDate: string;
+  }
+
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (isError) {
+    return <div>데이터를 가져오는 데 실패했습니다.</div>;
+  }
+
+  const estimateData: EstimateContent[] = data || [];
+  const filteredData =
+    filterType === '전체'
+      ? estimateData
+      : estimateData.filter((data) => data.proposal === 'DESIGNATION');
 
   return (
-    <div>
-      <EstimateList />
-      <GNB menus={MENUS} activePath={activePath} onNavigate={(path) => setActivePath(path)} />;
-    </div>
+    <Layout isAppBarExist={false}>
+      <div css={wrapper}>
+        <header css={headerContainer}>
+          <Text typo="title1">견적</Text>
+        </header>
+        <Tab filterType={filterType} setFilterType={setFilterType} />
+        <div css={listContainer}>
+          {filteredData.map((data) => (
+            <Card key={data.id} {...data} />
+          ))}
+        </div>
+      </div>
+      <GNB menus={MENUS} activePath={PATHS.ESTIMATE} onNavigate={(path) => setActivePath(path)} />
+    </Layout>
   );
 }
