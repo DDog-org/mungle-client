@@ -1,6 +1,7 @@
 export * from './AppBarBack';
 export * from './AuthLogo';
 export * from './ButtonTextButtonArrow';
+export * from './EmptyStateBone';
 export * from './GnbChattingActive';
 export * from './GnbChattingInactive';
 export * from './GnbEstimateActive';
