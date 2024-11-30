@@ -3,25 +3,20 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { ChipButton, CTAButton, Input, RoundButton, Text } from '@daengle/design-system';
 import { ROUTES } from '~/constants/routes';
-import { USER_ROLE } from '~/constants/role';
 import { formatPhoneNumber } from '~/utils/format';
-import { usePostAvailableNicknameMutation, usePostJoinWithoutPetMutation } from '~/queries';
+import { usePostAvailableNicknameMutation } from '~/queries';
 import { useUserInfoFormStore } from '~/pages/onboarding/store/user-info-form';
-import { useValidateUserForm } from '~/pages/onboarding/hooks/use-validate-user-form';
+import { useValidateUserForm } from '~/pages/onboarding/hooks';
 import { location, locationButton, section, wrapper } from './index.styles';
-import { UserInfoFormFormType } from '~/interfaces/auth';
+import { UserInfoFormFormType } from '~/pages/onboarding/interfaces';
 
 interface Props {
   onNext?: () => void;
 }
 
-// TODO: 임시 이메일
-const EMAIL = 'daengle@daengle.com';
-
 export default function UserInfo({ onNext }: Props) {
   const router = useRouter();
   const { userInfoForm, setForm, setUserInfoForm } = useUserInfoFormStore();
-  const { mutate: postJoinWithoutPet } = usePostJoinWithoutPetMutation();
   const { mutateAsync: postAvailableNickname } = usePostAvailableNicknameMutation();
   const validation = useValidateUserForm();
 
@@ -56,7 +51,7 @@ export default function UserInfo({ onNext }: Props) {
 
   const onSubmit = (data: UserInfoFormFormType) => {
     if (!data.address) return;
-    postJoinWithoutPet({ ...data, role: USER_ROLE, email: EMAIL });
+    setUserInfoForm({ ...userInfoForm, ...watch() });
   };
 
   const handleNextButtonClick = () => {
@@ -67,12 +62,12 @@ export default function UserInfo({ onNext }: Props) {
 
   return (
     <>
-      <form css={wrapper} onSubmit={handleSubmit(onSubmit)}>
+      <section css={wrapper}>
         <Text typo="title1" color="black">
           회원 정보를 입력해 주세요
         </Text>
 
-        <section css={section}>
+        <form css={section} onSubmit={handleSubmit(onSubmit)}>
           <Input
             label="이름"
             placeholder="이름을 입력해 주세요"
@@ -136,16 +131,16 @@ export default function UserInfo({ onNext }: Props) {
               </div>
             </RoundButton>
           </div>
-        </section>
 
-        <CTAButton
-          type="submit"
-          onClick={handleNextButtonClick}
-          disabled={!isValid || !userInfoForm.isAvailableNickname || !userInfoForm?.form.address}
-        >
-          다음
-        </CTAButton>
-      </form>
+          <CTAButton
+            type="submit"
+            onClick={handleNextButtonClick}
+            disabled={!isValid || !userInfoForm.isAvailableNickname || !userInfoForm?.form.address}
+          >
+            다음
+          </CTAButton>
+        </form>
+      </section>
     </>
   );
 }

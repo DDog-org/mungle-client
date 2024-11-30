@@ -1,3 +1,35 @@
+// import { Text } from '../../text';
+// import { Size } from './index.types';
+// import { chipRadio } from './index.styles';
+
+// interface Props {
+//   name?: string;
+//   label: string;
+//   value: string | number | boolean;
+//   isSelected?: boolean;
+//   onChange?: () => void;
+//   size?: Size;
+// }
+
+// export function ChipRadio({
+//   name = 'chip-radio-group',
+//   isSelected = false,
+//   label,
+//   value,
+//   onChange,
+//   size = 'fluid',
+// }: Props) {
+//   return (
+//     <label css={chipRadio({ isSelected, size })} onChange={onChange}>
+//       <input type="radio" name={name} value={String(value)} />
+//       <Text typo="body10" color={isSelected ? 'blue200' : 'gray500'}>
+//         {label}
+//       </Text>
+//     </label>
+//   );
+// }
+
+import { ChangeEvent } from 'react';
 import { Text } from '../../text';
 import { Size } from './index.types';
 import { chipRadio } from './index.styles';
@@ -5,14 +37,14 @@ import { chipRadio } from './index.styles';
 interface Props {
   name?: string;
   label: string;
-  value: string | number | boolean;
+  value: unknown;
   isSelected?: boolean;
-  onChange?: () => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   size?: Size;
 }
 
 export function ChipRadio({
-  name = 'chip-radio-group',
+  name,
   isSelected = false,
   label,
   value,
@@ -20,8 +52,8 @@ export function ChipRadio({
   size = 'fluid',
 }: Props) {
   return (
-    <label css={chipRadio({ isSelected, size })} onChange={onChange}>
-      <input type="radio" name={name} value={String(value)} />
+    <label css={chipRadio({ isSelected, size })}>
+      <input type="radio" name={name} value={String(value)} onChange={onChange} />
       <Text typo="body10" color={isSelected ? 'blue200' : 'gray500'}>
         {label}
       </Text>

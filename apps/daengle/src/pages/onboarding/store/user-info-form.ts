@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { UserInfoFormFormType, UserInfoFormType } from '~/interfaces/auth';
+import { UserInfoFormFormType, UserInfoFormType } from '~/pages/onboarding/interfaces';
 
 interface UserInfoForm {
   userInfoForm: UserInfoFormType;

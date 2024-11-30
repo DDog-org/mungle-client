@@ -21,3 +21,23 @@ export interface PostAvailableNicknameRequestBody {
 export interface PostAvailableNicknameResponse {
   isAvailable: boolean;
 }
+
+export interface GetBreedListResponse {
+  breedList: Breed[];
+}
+
+export interface Breed {
+  breedName: string;
+  breed: string;
+}
+
+export interface PostJoinWithPetRequestBody extends PostJoinWithoutPetRequestBody {
+  petName: string;
+  petBirth: number;
+  petGender: string;
+  isNeutered: boolean;
+  breed: string;
+  petWeight: string;
+}
+
+export type PostJoinWithPetResponse = string;
