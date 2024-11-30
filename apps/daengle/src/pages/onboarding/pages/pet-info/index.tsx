@@ -48,20 +48,16 @@ export default function PetInfo({ onNext }: Props) {
   const onSubmit = async () => {
     if (!isValid) return;
 
-    try {
-      await postJoinWithPet({
-        ...userInfoForm.form,
-        role: USER_ROLE,
-        email: EMAIL,
-        ...watch(),
-        petBirth: Number(watch('petBirth')),
-        isNeutered: watch('isNeutered') === 'true',
-      });
+    await postJoinWithPet({
+      ...userInfoForm.form,
+      role: USER_ROLE,
+      email: EMAIL,
+      ...watch(),
+      petBirth: Number(watch('petBirth')),
+      isNeutered: watch('isNeutered') === 'true',
+    });
 
-      onNext?.();
-    } catch (error) {
-      console.error(error);
-    }
+    onNext?.();
   };
 
   return (

@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 
 interface StepProps {
   name: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export interface FunnelProps {
