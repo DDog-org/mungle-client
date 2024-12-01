@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { theme } from '../../foundation';
 
-export const wrapper = css`
+export const wrapper = (isDefaultBackground: boolean) => css`
   position: fixed;
   top: 0;
   z-index: ${theme.zIndex.appBar};
@@ -11,7 +11,7 @@ export const wrapper = css`
   height: 52px;
   margin: 0 auto;
 
-  background: ${theme.colors.white};
+  background: ${isDefaultBackground ? theme.colors.white : '#f3f5f8'};
 `;
 
 export const contents = css`
