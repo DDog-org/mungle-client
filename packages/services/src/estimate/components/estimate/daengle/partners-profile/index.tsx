@@ -6,10 +6,10 @@ interface Props {
   profile: {
     id: number;
     name: string;
-    shopName: string;
+    shopName?: string | null;
     image: string;
     daengleMeter: number;
-    tags: string[];
+    tags?: string[];
   };
 }
 
@@ -31,7 +31,7 @@ export const DesignerInfo = ({ profile }: Props) => {
           </Text>
         </TextButton>
         <div css={tags}>
-          {profile.tags.map((hashtag, index) => (
+          {profile?.tags?.map((hashtag, index) => (
             <Text color="blue200" typo="body12" key={`${profile.id}-${index}`} css={tag}>
               #{hashtag}
             </Text>
