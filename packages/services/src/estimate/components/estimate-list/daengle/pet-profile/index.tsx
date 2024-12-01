@@ -1,11 +1,6 @@
 import { TextButton } from '@daengle/design-system';
 import { profileContainer, profileButton, selectedProfileButton } from './index.styles';
-
-interface PetInfo {
-  petId: number | null;
-  petName: string;
-  petImage: string;
-}
+import { PetInfo } from '@services/types/estimate';
 
 interface Props {
   petInfos: PetInfo[];
@@ -22,14 +17,14 @@ export default function ProfileSelector({
     <div css={profileContainer}>
       {petInfos.map((pet, index) => (
         <TextButton
-          key={pet.petId}
+          key={pet.id ?? `pet-${index}`}
           css={[profileButton, index === selectedPetIndex && selectedProfileButton]}
           onClick={() => onSelectPet(index)}
           icons={{
-            prefix: pet.petImage ? <img src={pet.petImage} alt={`${pet.petName} 프로필`} /> : null,
+            prefix: pet.image ? <img src={pet.image} alt={`${pet.name} 프로필`} /> : null,
           }}
         >
-          {pet.petName}
+          {pet.name}
         </TextButton>
       ))}
     </div>

@@ -12,16 +12,9 @@ import {
   tagsContainer,
   tagButtonStyle,
 } from './index.styles';
+import { CareEstimate, GroomingEstimate } from '@services/types/estimate';
 
-interface UserEstimateContent {
-  id: number;
-  image: string;
-  name: string;
-  daengleMeter: number;
-  shopName?: string | null;
-  reservedDate: string;
-  tags?: string[];
-}
+type UserEstimateContent = GroomingEstimate | CareEstimate;
 
 interface Props {
   estimateData: UserEstimateContent[];
@@ -32,7 +25,7 @@ export default function CardList({ estimateData }: Props): JSX.Element {
 
   return (
     <div css={listContainer}>
-      {estimateData.map((data) => (
+      {estimateData?.map((data) => (
         <div key={data.id} css={card}>
           <div css={contentContainer} onClick={() => router.push('/temporary-route')}>
             <div css={cardHeader}>
