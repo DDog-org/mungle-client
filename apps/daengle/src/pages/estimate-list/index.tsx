@@ -6,7 +6,6 @@ import {
   FilterTabs,
   OptionSelector,
   ProfileSelector,
-  useDaengleEstimateListQuery,
 } from '@daengle/services';
 import { GNB, Layout, Text } from '@daengle/design-system';
 import {
@@ -22,6 +21,7 @@ import {
   GnbEstimateInactive,
 } from '@daengle/design-system/icons';
 import { wrapper, headerContainer } from './index.styles';
+import { useDaengleEstimateListQuery } from '~/queries';
 
 export const PATHS = {
   ESTIMATE: '/estimate-list',

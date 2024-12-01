@@ -1,5 +1,5 @@
-import { api } from '@services/api/api';
-import { GetDaengleEstimateListResponse } from '@services/types/estimate';
+import { api } from '@daengle/services';
+import { GetDaengleEstimateListResponse } from '~/models';
 
 export const getDaengleEstimateList = async () => {
   const response = await api.get<GetDaengleEstimateListResponse>('/daengle/estimate/list');

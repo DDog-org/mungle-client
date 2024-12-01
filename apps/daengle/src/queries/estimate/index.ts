@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { getDaengleEstimateList } from '@services/api/estimate';
-import { GetDaengleEstimateListResponse } from '@services/types/estimate';
-import { QUERY_KEYS } from '../query-keys';
+import { getDaengleEstimateList } from '~/apis';
+import { GetDaengleEstimateListResponse } from '~/models';
+import { QUERY_KEYS } from '~/queries/query-keys';
 
 export const useDaengleEstimateListQuery = () => {
   return useQuery<GetDaengleEstimateListResponse>({
