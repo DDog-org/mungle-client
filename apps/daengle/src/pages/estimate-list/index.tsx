@@ -6,6 +6,7 @@ import {
   FilterTabs,
   OptionSelector,
   ProfileSelector,
+  useDaengleEstimateListQuery,
 } from '@daengle/services';
 import { GNB, Layout, Text } from '@daengle/design-system';
 import {
@@ -73,81 +74,18 @@ export const MENUS = [
   },
 ];
 
-const petInfos = [
-  {
-    petId: 1,
-    petName: '강아지A',
-    petImage: 'https://via.placeholder.com/40',
-    groomingEstimates: [
-      {
-        id: 2,
-        name: '미용사A',
-        daengleMeter: 10,
-        image: 'https://placehold.co/400',
-        shopName: '꼬꼬마 관리샵',
-        reservedDate: '2024-11-25 11:33:22',
-        tags: ['대형견', '노견'],
-      },
-      {
-        id: 19,
-        name: '미용사A',
-        daengleMeter: 20,
-        image: 'https://placehold.co/400',
-        shopName: '뽀까샵',
-        reservedDate: '2024-11-25 11:33:22',
-      },
-      {
-        id: 22,
-        name: '미용사A',
-        daengleMeter: 30,
-        image: 'https://placehold.co/400',
-        shopName: '빠까뽀',
-        reservedDate: '2024-11-25 11:33:22',
-        tags: ['대형견', '노견'],
-      },
-    ],
-    careEstimates: [
-      // {
-      //   id: 5,
-      //   name: '수의사A',
-      //   daengleMeter: 60,
-      //   image: 'https://placehold.co/400',
-      //   reservedDate: '2024-11-25 11:33:22',
-      // },
-    ],
-  },
-  {
-    petId: 2,
-    petName: '강아지B',
-    petImage: 'https://via.placeholder.com/40',
-    groomingEstimates: [
-      //     {
-      //       id: 87,
-      //       name: '미용사A',
-      //       daengleMeter: 87,
-      //       image: 'https://placehold.co/400',
-      //       shopName: null,
-      //       reservedDate: '2024-11-25 11:33:22',
-      //     },
-    ],
-    careEstimates: [
-      {
-        id: 6,
-        name: '수의사A',
-        daengleMeter: 50,
-        image: 'https://placehold.co/400',
-        reservedDate: '2024-11-25 11:33:22',
-      },
-    ],
-  },
-];
-
 export default function EstimateList() {
   const router = useRouter();
   const [filterType, setFilterType] = useState<'미용사' | '병원'>('미용사');
   const [selectedPetIndex, setSelectedPetIndex] = useState(0);
+  const { data, isLoading, error } = useDaengleEstimateListQuery();
 
-  const selectedPet = petInfos[selectedPetIndex] ?? null;
+  if (isLoading) return <div>Loading...</div>;
+  if (error || !data) return <div>에러가 발생했습니다.</div>;
+
+  const cardData = data.response;
+
+  const selectedPet = cardData?.petInfos?.[selectedPetIndex];
   const estimateData =
     selectedPet &&
     (filterType === '미용사' ? selectedPet.groomingEstimates : selectedPet.careEstimates);
@@ -164,9 +102,9 @@ export default function EstimateList() {
           <Text typo="title1">견적</Text>
         </div>
         <FilterTabs filterType={filterType} onFilterChange={setFilterType} />
-        {petInfos.length > 0 ? (
+        {cardData?.petInfos && cardData.petInfos.length > 0 ? (
           <ProfileSelector
-            petInfos={petInfos}
+            petInfos={cardData.petInfos}
             selectedPetIndex={selectedPetIndex}
             onSelectPet={setSelectedPetIndex}
           />
