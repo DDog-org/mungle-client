@@ -1,6 +1,9 @@
+import { AxiosResponse } from 'axios';
+
 import axios from 'axios';
 import { api } from '~/apis';
 import {
+  GetUserProfileInfoResponse,
   GetBreedListResponse,
   PostAvailableNicknameRequestBody,
   PostAvailableNicknameResponse,
@@ -44,4 +47,9 @@ export const getBreedList = async () => {
 
 export const postJoinWithPet = async (body: PostJoinWithPetRequestBody) => {
   return await api.post<PostJoinWithPetResponse>('/user/join-with-pet', body);
+};
+
+export const getUserProfileInfo = async (): Promise<GetUserProfileInfoResponse> => {
+  const response: AxiosResponse<GetUserProfileInfoResponse> = await api.get('/daengle/modify-page');
+  return response;
 };

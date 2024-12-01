@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '~/queries/query-keys';
 import {
   getBreedList,
+  getUserProfileInfo,
   postAvailableNickname,
   postJoinWithoutPet,
   postJoinWithPet,
@@ -77,5 +78,12 @@ export const usePostJoinWithPetMutation = () => {
         throw new Error(String(error));
       }
     },
+  });
+};
+
+export const useGetUserProfileInfoQuery = () => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USERPROFILE_INFO],
+    queryFn: getUserProfileInfo,
   });
 };
