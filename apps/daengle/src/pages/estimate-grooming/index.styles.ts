@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 
 export const wrapper = css`
   width: 100%;
-  padding: 18px;
+  padding: 18px 18px 104px 18px;
   display: flex;
   flex-direction: column;
   gap: 32px;

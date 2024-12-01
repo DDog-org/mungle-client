@@ -1,4 +1,4 @@
-import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
+import { AppBar, CTAButton, Layout, RoundButton, Text } from '@daengle/design-system';
 import {
   wrapper,
   section,
@@ -122,7 +122,7 @@ export default function EstimateCreate() {
             원하는 미용
           </Text>
           <div css={selectBox}>
-            <div css={selectItem} onClick={toggleActive}>
+            <div css={selectItem}>
               <Text typo="body5" color="gray400">
                 전체 클리핑
               </Text>
@@ -176,9 +176,7 @@ export default function EstimateCreate() {
           </Text>
           <textarea placeholder="추가 요청사항을 입력해주세요" css={textField} />
         </section>
-        <RoundButton variant="primary" size="L" fullWidth={true} disabled>
-          요청하기
-        </RoundButton>
+        <CTAButton disabled>요청하기</CTAButton>
       </div>
     </Layout>
   );
