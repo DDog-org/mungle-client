@@ -9,12 +9,27 @@ import {
   selectBox,
   selectItem,
   textField,
-  arrow,
 } from './index.styles';
 import Image from 'next/image';
-import unfoldIcon from '../../../../../packages/core/design-system/public/icons/select_unfold_inactive.svg';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
+import dayjs, { Dayjs } from 'dayjs';
+import 'dayjs/locale/ko';
 
 export default function EstimateCreate() {
+  const router = useRouter();
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
+  const [selectedTime, setSelectedTime] = useState<Dayjs | null>(dayjs());
+
+  const handleDateChange = (newValue: Dayjs | null) => {
+    setSelectedDate(newValue);
+  };
+  const handleTimeChange = (newValue: Dayjs | null) => {
+    setSelectedTime(newValue);
+  };
+
   return (
     <Layout>
       <AppBar />
@@ -36,16 +51,46 @@ export default function EstimateCreate() {
           </Text>
           <div css={box}>
             <div css={dateSelect}>
-              <Text typo="body10" color="black">
-                2024.11.17
-              </Text>
-              <Image src={unfoldIcon} alt="폴드 아이콘" width={8} height={5} css={arrow} />
+              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+                <DatePicker
+                  format="YYYY.MM.DD"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  slotProps={{
+                    textField: {
+                      size: 'small',
+                      InputProps: {
+                        sx: {
+                          borderRadius: '30px',
+                          input: { color: '#5D86FE', textAlign: 'center' },
+                          fontSize: '13px',
+                        },
+                      },
+                    },
+                  }}
+                />
+              </LocalizationProvider>
             </div>
             <div css={dateSelect}>
-              <Text typo="body10" color="black">
-                14:00
-              </Text>
-              <Image src={unfoldIcon} alt="폴드 아이콘" width={8} height={5} css={arrow} />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <TimePicker
+                  value={selectedTime}
+                  onChange={handleTimeChange}
+                  slotProps={{
+                    textField: {
+                      size: 'small',
+                      InputProps: {
+                        sx: {
+                          borderRadius: '30px',
+                          input: { color: '#5D86FE', textAlign: 'center' },
+                          fontSize: '13px',
+                        },
+                      },
+                    },
+                  }}
+                  sx={{ borderRadius: '30px' }}
+                />
+              </LocalizationProvider>
             </div>
           </div>
         </section>
@@ -55,9 +100,19 @@ export default function EstimateCreate() {
           </Text>
           <div css={registerPet}>
             <div css={circle}>
-              <Image src="/icons/add_button.svg" alt="등록 버튼" width={12} height={12} />
+              <Image
+                src="/icons/add_button.svg"
+                alt="등록 버튼"
+                width={12}
+                height={12}
+                onClick={() => {
+                  router.push({
+                    pathname: '/mypage/pet-profile/edit',
+                  });
+                }}
+              />
             </div>
-            <Text typo="body5" color="gray400">
+            <Text typo="body11" color="gray400">
               반려견을 등록해주세요
             </Text>
           </div>
@@ -67,7 +122,7 @@ export default function EstimateCreate() {
             원하는 미용
           </Text>
           <div css={selectBox}>
-            <div css={selectItem}>
+            <div css={selectItem} onClick={toggleActive}>
               <Text typo="body5" color="gray400">
                 전체 클리핑
               </Text>

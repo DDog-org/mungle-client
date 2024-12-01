@@ -2,7 +2,6 @@ import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
-  /* background-color: aliceblue; */
   width: 100%;
   padding: 18px;
   display: flex;
@@ -24,19 +23,12 @@ export const box = css`
 export const dateSelect = css`
   width: 100%;
   height: 36px;
-  border: 1px solid ${theme.colors.gray200};
-  border-radius: 30px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   align-items: center;
   position: relative;
   cursor: pointer;
-`;
-
-export const arrow = css`
-  position: absolute;
-  right: 17px;
 `;
 
 export const registerPet = css`
@@ -60,6 +52,11 @@ export const circle = css`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  :hover {
+    background-color: ${theme.colors.gray100};
+    transition: 0.3s;
+  }
 `;
 
 export const selectBox = css`
@@ -79,6 +76,11 @@ export const selectItem = css`
   padding: 17px;
   gap: 35px;
   cursor: pointer;
+
+  :hover {
+    background-color: ${theme.colors.gray100};
+    transition: 0.3s;
+  }
 `;
 
 export const textField = css`
