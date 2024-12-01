@@ -77,10 +77,10 @@ export const tagsContainer = css`
 
 export const tagButtonStyle = css`
   background-color: transparent;
+  ${theme.typo.body12};
   color: ${theme.colors.blue200};
   padding: 5px 16px;
   border: 1px solid ${theme.colors.blue200};
   border-radius: 14px;
-  font-size: 10px;
   cursor: pointer;
 `;

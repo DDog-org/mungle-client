@@ -18,8 +18,3 @@ export const emptyButton = css`
   text-align: center;
   ${theme.typo.body4};
 `;
-
-export const emptyText = css`
-  ${theme.typo.subtitle3};
-  color: ${theme.colors.gray400};
-`;
