@@ -95,12 +95,3 @@ export const zigzagUpsideDown = css`
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
 `;
-
-export const content = css`
-  display: flex;
-  flex-direction: column;
-  padding: 18px;
-  background-color: #ffffff;
-  gap: 8px;
-  margin: -2px 14px;
-`;
