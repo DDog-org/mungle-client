@@ -28,6 +28,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
     "prettier": "^3.2.5",
+    "stylelint": "^15.0.0",
     "turbo": "^2.3.0",
     "typescript": "5.5.4",
     "typescript-eslint": "^8.15.0"
