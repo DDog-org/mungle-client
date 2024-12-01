@@ -103,13 +103,15 @@ export default function EstimateList() {
         </div>
         <FilterTabs filterType={filterType} onFilterChange={setFilterType} />
         {cardData?.petInfos && cardData.petInfos.length > 0 ? (
-          <ProfileSelector
-            petInfos={cardData.petInfos}
-            selectedPetIndex={selectedPetIndex}
-            onSelectPet={setSelectedPetIndex}
-          />
+          <div>
+            <ProfileSelector
+              petInfos={cardData.petInfos}
+              selectedPetIndex={selectedPetIndex}
+              onSelectPet={setSelectedPetIndex}
+            />
+            <OptionSelector />
+          </div>
         ) : null}
-        <OptionSelector />
         {estimateData && estimateData.length > 0 ? (
           <CardList estimateData={estimateData} />
         ) : (
