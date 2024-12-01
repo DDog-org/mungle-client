@@ -1,19 +1,26 @@
 import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
 import { wrapper, header, section, buttonGroup } from './index.styles';
-import { DesignerInfo, Receipt } from '@daengle/services';
+import { DesignerInfo, Receipt, useGroomerDetailQuery } from '@daengle/services';
+import { useRouter } from 'next/router';
 
 export default function Detail() {
+  const router = useRouter();
+  const { id } = router.query;
+  const validId = Number(id) || 1;
+
+  const { data, isLoading, error } = useGroomerDetailQuery(validId);
+  if (isLoading) return <div>Loading...</div>;
+  if (error || !data) return <div>데이터를 불러오지 못했습니다.</div>;
+
+  const detailData = data || [];
+
   const designerData = {
-    id: 1,
-    name: '미용사A',
-    shopName: '꼬꼬마 관리샵',
-    image: '/local-image.jpg',
-    daengleMeter: 30,
-    tags: ['대형견', '노견'],
-    address: '서울특별시 관악구',
-    reservedDate: '2024-11-25(월) 11:33',
-    desiredStyle: '대형견 - 전체 가위컷',
-    overallOpinion: '아이의 편안함을 위해 조심스럽게 진행하겠습니다. 추가 의견 없음.',
+    id: validId,
+    name: detailData.name,
+    shopName: detailData.shopName,
+    image: detailData.image,
+    daengleMeter: detailData.daengleMeter,
+    tags: detailData?.tags || [],
   };
 
   return (
@@ -33,10 +40,10 @@ export default function Detail() {
         </section>
         <Receipt
           items={[
-            { title: '지역', receipt: designerData.address },
-            { title: '일정', receipt: designerData.reservedDate },
-            { title: '서비스', receipt: designerData.desiredStyle },
-            { title: '추가 소견', receipt: designerData.overallOpinion, typo: 'body4' },
+            { title: '지역', receipt: detailData.address },
+            { title: '일정', receipt: detailData.reservedDate },
+            { title: '서비스', receipt: detailData.desiredStyle },
+            { title: '추가 소견', receipt: detailData.overallOpinion, typo: 'body4' },
           ]}
         />
         <div css={buttonGroup}>
