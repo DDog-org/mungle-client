@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 
-export const emptyStateWrapper = css`
+export const wrapper = css`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh;
+  height: 80vh;
   text-align: center;
   gap: 15px;
 `;

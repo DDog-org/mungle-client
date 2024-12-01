@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
 import { Text, RoundButton } from '@daengle/design-system';
 import { EmptyStateBone } from '@daengle/design-system/icons';
-import { emptyStateWrapper, emptyButton } from './index.styles';
+import { wrapper, emptyButton } from './index.styles';
 
 export default function EmptyState(): JSX.Element {
   const router = useRouter();
 
   return (
-    <div css={emptyStateWrapper}>
+    <div css={wrapper}>
       <EmptyStateBone />
       <Text typo="subtitle3" color="gray400">
         견적을 요청해 보세요!

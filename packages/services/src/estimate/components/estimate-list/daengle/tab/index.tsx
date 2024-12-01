@@ -1,5 +1,5 @@
 import { TextButton } from '@daengle/design-system';
-import { tabContainer, tabButton, activeTabButton } from './index.styles';
+import { wrapper, tabButton, activeTabButton } from './index.styles';
 
 interface Props {
   filterType: '미용사' | '병원';
@@ -8,7 +8,7 @@ interface Props {
 
 export default function FilterTabs({ filterType, onFilterChange }: Props): JSX.Element {
   return (
-    <div css={tabContainer}>
+    <div css={wrapper}>
       <TextButton
         css={[tabButton, filterType === '미용사' && activeTabButton]}
         onClick={() => onFilterChange('미용사')}

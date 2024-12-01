@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import { TextButton, Text } from '@daengle/design-system';
-import { optionContainer } from './index.styles';
+import { wrapper } from './index.styles';
 
 export default function OptionSelector(): JSX.Element {
   const router = useRouter();
   return (
-    <div css={optionContainer}>
+    <div css={wrapper}>
       <TextButton
         onClick={() => {
           alert('해당 요청에 대한 견적을 그만 받으시겠습니까?');

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { Text, TextButton } from '@daengle/design-system';
 import {
-  listContainer,
+  wrapper,
   card,
   contentContainer,
   cardHeader,
@@ -24,7 +24,7 @@ export default function CardList({ estimateData }: Props): JSX.Element {
   const router = useRouter();
 
   return (
-    <div css={listContainer}>
+    <div css={wrapper}>
       {estimateData?.map((data) => (
         <div key={data.id} css={card}>
           <div css={contentContainer} onClick={() => router.push('/temporary-route')}>

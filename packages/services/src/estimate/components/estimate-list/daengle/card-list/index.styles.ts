@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 
-export const listContainer = css`
+export const wrapper = css`
   display: flex;
   flex-direction: column;
   gap: 12px;

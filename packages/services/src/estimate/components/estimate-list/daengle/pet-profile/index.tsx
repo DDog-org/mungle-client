@@ -1,5 +1,5 @@
 import { TextButton } from '@daengle/design-system';
-import { profileContainer, profileButton, selectedProfileButton } from './index.styles';
+import { wrapper, profileButton, selectedProfileButton } from './index.styles';
 import { PetInfo } from '@services/types/estimate';
 
 interface Props {
@@ -14,7 +14,7 @@ export default function ProfileSelector({
   onSelectPet,
 }: Props): JSX.Element {
   return (
-    <div css={profileContainer}>
+    <div css={wrapper}>
       {petInfos.map((pet, index) => (
         <TextButton
           key={pet.id ?? `pet-${index}`}

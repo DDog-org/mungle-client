@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 
-export const tabContainer = css`
+export const wrapper = css`
   display: flex;
   padding: 18px 18px 0px 18px;
   border-bottom: 0.5px solid ${theme.colors.gray200};
