@@ -19,7 +19,7 @@ export const useGroomerEstimateListQuery = () => {
 
 export const useGroomerEstimateDetailQuery = (id: number) => {
   return useQuery<GetGroomerEstimateDetailResponse>({
-    queryKey: ['GROOMER_ESTIMATE_DETAIL', id],
+    queryKey: [QUERY_KEYS.GET_GROOMER_ESTIMATE_DETAIL, id],
     queryFn: async () => {
       try {
         const data = await getGroomerEstimateDetail(id);
