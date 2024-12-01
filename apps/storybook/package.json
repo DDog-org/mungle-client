@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "deploy-storybook": "storybook build && touch ./storybook-static/.nojekyll && gh-pages -d ./storybook-static -t true -b deploy-storybook"
+    "deploy-storybook": "storybook build && touch ./storybook-static/.nojekyll && gh-pages -d ./storybook-static -t true -b deploy-storybook",
+    "lint:styles": "stylelint \"**/*.styles.ts\""
   },
   "dependencies": {
     "@daengle/design-system": "workspace:*",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@daengle/eslint-config": "workspace:*",
     "@daengle/typescript-config": "workspace:*",
+    "@daengle/stylelint-config": "workspace:*",
     "@eslint/js": "^9.13.0",
     "@storybook/addon-essentials": "^8.4.5",
     "@storybook/addon-interactions": "^8.4.5",
