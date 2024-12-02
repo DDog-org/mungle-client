@@ -58,3 +58,10 @@ export interface GetUserProfileInfoResponse {
   phoneNumber: string;
   email: string;
 }
+
+// api 변경 수 수정 필요
+export type PostUserProfileInfoEditResponse = string;
+export interface PostUserProfileInfoEditBody {
+  image: string;
+  nickname: string;
+}

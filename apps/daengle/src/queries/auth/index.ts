@@ -7,12 +7,14 @@ import {
   postJoinWithoutPet,
   postJoinWithPet,
   postKakao,
+  postUserProfileInfoEdit,
 } from '~/apis';
 import {
   PostAvailableNicknameRequestBody,
   PostJoinWithoutPetRequestBody,
   PostJoinWithPetRequestBody,
   PostKakaoRequestBody,
+  PostUserProfileInfoEditBody,
 } from '~/models';
 
 export const usePostKakaoMutation = () => {
@@ -83,7 +85,20 @@ export const usePostJoinWithPetMutation = () => {
 
 export const useGetUserProfileInfoQuery = () => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_USERPROFILE_INFO],
+    queryKey: [QUERY_KEYS.GET_USER_PROFILE_INFO],
     queryFn: getUserProfileInfo,
+  });
+};
+
+export const usePostUserProfileInfoEditMutation = () => {
+  return useMutation({
+    mutationKey: [QUERY_KEYS.POST_USER_PROFILE_INFO],
+    mutationFn: async (body: PostUserProfileInfoEditBody) => {
+      try {
+        return await postUserProfileInfoEdit(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
   });
 };

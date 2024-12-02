@@ -13,6 +13,8 @@ import {
   PostJoinWithPetResponse,
   PostKakaoRequestBody,
   PostKakaoResponse,
+  PostUserProfileInfoEditResponse,
+  PostUserProfileInfoEditBody,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -50,6 +52,10 @@ export const postJoinWithPet = async (body: PostJoinWithPetRequestBody) => {
 };
 
 export const getUserProfileInfo = async (): Promise<GetUserProfileInfoResponse> => {
-  const response: AxiosResponse<GetUserProfileInfoResponse> = await api.get('/daengle/modify-page');
+  const response: AxiosResponse<GetUserProfileInfoResponse> = await api.get('/modify-page');
   return response;
+};
+
+export const postUserProfileInfoEdit = async (body: PostUserProfileInfoEditBody) => {
+  return await api.post<PostUserProfileInfoEditResponse>('/modify-info', body);
 };
