@@ -7,9 +7,7 @@ initMSW();
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <GlobalStyle>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <Component {...pageProps} />
     </GlobalStyle>
   );
 }

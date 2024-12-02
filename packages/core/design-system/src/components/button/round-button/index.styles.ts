@@ -1,18 +1,20 @@
 import { css } from '@emotion/react';
-import { Size, Variant } from './index.types';
 import { theme } from '../../../foundation';
+import { Service } from '../../../types';
+import { Size, Variant } from './index.types';
 
 interface WrapperProps {
   size: Size;
+  service: Service;
   variant: Variant;
   disabled: boolean;
   fullWidth: boolean;
 }
 
-export const wrapper = ({ size, variant, disabled, fullWidth }: WrapperProps) => css`
+export const wrapper = ({ size, service, variant, disabled, fullWidth }: WrapperProps) => css`
   ${box};
   ${buttonSize({ size, fullWidth })};
-  ${buttonVariant({ variant, disabled })};
+  ${buttonVariant({ service, variant, disabled })};
 `;
 
 export const box = css`
@@ -61,9 +63,11 @@ export const buttonSize = ({ size, fullWidth }: { size: Size; fullWidth: boolean
 `;
 
 export const buttonVariant = ({
+  service,
   variant,
   disabled,
 }: {
+  service: Service;
   variant: Variant;
   disabled: boolean;
 }) => css`
@@ -85,7 +89,9 @@ export const buttonVariant = ({
   ${variant === 'primary' &&
   css`
     color: ${theme.colors.white};
-    background: ${theme.colors.blueGradient100};
+    background: ${service === 'daengle'
+      ? theme.colors.blueGradient100
+      : theme.colors.greenGradient100};
   `}
   ${variant === 'ghost' &&
   css`

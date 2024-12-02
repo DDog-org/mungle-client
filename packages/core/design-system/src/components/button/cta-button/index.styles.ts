@@ -14,4 +14,8 @@ export const wrapper = css`
   align-items: center;
   gap: 21px;
   background: ${theme.colors.whiteGradient100} !important;
+
+  button {
+    z-index: 2;
+  }
 `;

@@ -10,5 +10,6 @@ export * from './GnbMyActive';
 export * from './GnbMyInactive';
 export * from './GnbReservationActive';
 export * from './GnbReservationInactive';
+export * from './ImageUploadPlus';
 export * from './SelectUnfoldActive';
 export * from './SelectUnfoldInactive';
