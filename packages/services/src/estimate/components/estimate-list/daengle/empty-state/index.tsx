@@ -3,11 +3,15 @@ import { Text, RoundButton } from '@daengle/design-system';
 import { EmptyStateBone } from '@daengle/design-system/icons';
 import { wrapper, emptyButton } from './index.styles';
 
-export default function EmptyState(): JSX.Element {
+interface Props {
+  hasOptions: boolean;
+}
+
+export default function EmptyState({ hasOptions }: Props): JSX.Element {
   const router = useRouter();
 
   return (
-    <div css={wrapper}>
+    <div css={[wrapper, { marginTop: hasOptions ? '150px' : '100px' }]}>
       <EmptyStateBone />
       <Text typo="subtitle3" color="gray400">
         견적을 요청해 보세요!

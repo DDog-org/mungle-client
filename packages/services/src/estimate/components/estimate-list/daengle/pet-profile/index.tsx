@@ -22,7 +22,7 @@ export default function ProfileSelector({
     <div css={wrapper}>
       {petInfos.map((pet, index) => (
         <TextButton
-          key={pet.id ?? `pet-${index}`}
+          key={pet.id}
           css={[profileButton, index === selectedPetIndex && selectedProfileButton]}
           onClick={() => onSelectPet(index)}
           icons={{

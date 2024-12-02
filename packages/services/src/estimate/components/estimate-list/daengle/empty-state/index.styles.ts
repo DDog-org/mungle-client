@@ -6,7 +6,6 @@ export const wrapper = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80vh;
   text-align: center;
   gap: 15px;
 `;
