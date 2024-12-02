@@ -1,7 +1,6 @@
-import { api } from '@daengle/services';
+import { api } from '~/apis';
 import { GetDaengleEstimateListResponse } from '~/models';
 
 export const getDaengleEstimateList = async () => {
-  const response = await api.get<GetDaengleEstimateListResponse>('/daengle/estimate/list');
-  return response.data;
+  return await api.get<GetDaengleEstimateListResponse>('/estimate/list');
 };

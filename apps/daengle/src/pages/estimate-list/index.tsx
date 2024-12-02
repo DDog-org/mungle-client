@@ -6,7 +6,7 @@ import {
   FilterTabs,
   OptionSelector,
   ProfileSelector,
-} from '@daengle/services';
+} from '@daengle/services/estimate';
 import { GNB, Layout, Text } from '@daengle/design-system';
 import {
   GnbChattingActive,
@@ -83,12 +83,15 @@ export default function EstimateList() {
   if (isLoading) return <div>Loading...</div>;
   if (error || !data) return <div>에러가 발생했습니다.</div>;
 
-  const cardData = data.response;
+  const cardData = data || [];
 
   const selectedPet = cardData?.petInfos?.[selectedPetIndex];
   const estimateData =
     selectedPet &&
     (filterType === '미용사' ? selectedPet.groomingEstimates : selectedPet.careEstimates);
+
+  const petInfos = cardData?.petInfos || [];
+  const hasOptions = !!(cardData?.petInfos && cardData.petInfos.length > 0);
 
   const handleNavigate = (path: string) => {
     // 임시 경로
@@ -102,20 +105,20 @@ export default function EstimateList() {
           <Text typo="title1">견적</Text>
         </div>
         <FilterTabs filterType={filterType} onFilterChange={setFilterType} />
-        {cardData?.petInfos && cardData.petInfos.length > 0 ? (
+        {hasOptions && (
           <div>
             <ProfileSelector
-              petInfos={cardData.petInfos}
+              petInfos={petInfos}
               selectedPetIndex={selectedPetIndex}
               onSelectPet={setSelectedPetIndex}
             />
             <OptionSelector />
           </div>
-        ) : null}
+        )}
         {estimateData && estimateData.length > 0 ? (
           <CardList estimateData={estimateData} />
         ) : (
-          <EmptyState />
+          <EmptyState hasOptions={hasOptions} />
         )}
         <GNB menus={MENUS} activePath={PATHS.ESTIMATE} onNavigate={handleNavigate} />
       </div>

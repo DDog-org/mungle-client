@@ -1,9 +1,5 @@
 export interface GetDaengleEstimateListResponse {
-  success: boolean;
-  response: {
-    petInfos?: PetInfo[];
-  };
-  error: null;
+  petInfos?: PetInfo[];
 }
 
 export interface PetInfo {
