@@ -1,4 +1,4 @@
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import {
   wrapper,
   profileImageWrapper,
@@ -14,13 +14,10 @@ import {
   usePostAvailableNicknameMutation,
   usePostUserProfileInfoEditMutation,
 } from '~/queries';
-import { UserProfileInfoEditForm, UserProfileInfoEditFormType } from './interfaces';
+import { UserProfileInfoEditForm } from './interfaces';
 import useValidateUserForm from './hooks/use-validate-user-form';
-import { useUserInfoFormStore } from '~/pages/onboarding/store/user-info-form';
 
 export default function EditProfile() {
-  const { userInfoForm, setUserInfoForm } = useUserInfoFormStore();
-
   const { data: getUserProfileInfo } = useGetUserProfileInfoQuery();
   const { mutateAsync: postAvailableNickname } = usePostAvailableNicknameMutation();
   const { mutateAsync: postUserProfileInfoEdit } = usePostUserProfileInfoEditMutation();
@@ -31,7 +28,6 @@ export default function EditProfile() {
     watch,
     register,
     setError,
-    clearErrors,
     formState: { errors, isValid },
   } = useForm<UserProfileInfoEditForm>({
     mode: 'onChange',
@@ -39,31 +35,19 @@ export default function EditProfile() {
 
   const checkIsAvailableNickname = async () => {
     const nickname = watch('nickname');
-
-    if (!nickname) {
-      setError('nickname', { message: '닉네임을 입력해 주세요' });
-    }
-
-    if (nickname.length < 2 || nickname.length > 10) {
-      setError('nickname', { message: '닉네임은 2글자 이상 10글자 미만으로 작성해 주세요' });
-    }
+    if (!nickname) return;
 
     const response = await postAvailableNickname({ nickname });
+
     if (response.isAvailable) {
-      setError('nickname', { message: '이미 사용중인 닉네임입니다' });
+      console.log('');
     } else {
-      setUserInfoForm({ ...watch(), isAvailableNickname: true });
+      setError('nickname', { message: '이미 사용중인 닉네임입니다' });
     }
   };
 
-  const onSubmit = (data: UserProfileInfoEditForm) => {
-    console.log('UserProfileInfoFormType Data:', data);
-  };
-
-  const handleEditButtonClick = async () => {
-    if (!isValid || !userInfoForm.isAvailableNickname) return;
-
-    await postUserProfileInfoEdit(userInfoForm);
+  const onSubmit = async (data: UserProfileInfoEditForm) => {
+    await postUserProfileInfoEdit(data);
   };
 
   return (
@@ -96,14 +80,7 @@ export default function EditProfile() {
                     </ChipButton>
                   }
                   {...register('nickname', { ...validation.nickname })}
-                  onChange={() => {
-                    setUserInfoForm({ ...watch(), isAvailableNickname: false });
-                    clearErrors();
-                  }}
                   errorMessage={errors.nickname?.message}
-                  confirmMessage={
-                    userInfoForm.isAvailableNickname ? '사용 가능한 닉네임입니다' : ''
-                  }
                 />
               </div>
               <div css={readOnlyTextBox}>
@@ -127,11 +104,7 @@ export default function EditProfile() {
             </section>
           </div>
 
-          <CTAButton
-            type="submit"
-            onClick={handleEditButtonClick}
-            disabled={!isValid || !userInfoForm.isAvailableNickname}
-          >
+          <CTAButton type="submit" disabled={!isValid}>
             수정하기
           </CTAButton>
         </form>
