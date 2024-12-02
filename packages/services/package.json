@@ -27,6 +27,12 @@
     }
   },
   "type": "module",
+  "exports": {
+    "./estimate": {
+      "import": "./src/estimate/index.ts",
+      "require": "./src/estimate/index.ts"
+    }
+  },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit"

@@ -1,6 +1,11 @@
 import { TextButton } from '@daengle/design-system';
 import { wrapper, profileButton, selectedProfileButton } from './index.styles';
-import { PetInfo } from '@services/types/estimate';
+
+interface PetInfo {
+  id: number;
+  name: string;
+  image: string;
+}
 
 interface Props {
   petInfos: PetInfo[];

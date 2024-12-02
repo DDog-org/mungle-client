@@ -12,7 +12,26 @@ import {
   tagsContainer,
   tagButtonStyle,
 } from './index.styles';
-import { CareEstimate, GroomingEstimate } from '@services/types/estimate';
+
+interface GroomingEstimate {
+  id: number;
+  image: string;
+  name: string;
+  daengleMeter: number;
+  shopName?: string | null;
+  reservedDate: string;
+  tags?: string[];
+}
+
+interface CareEstimate {
+  id: number;
+  image: string;
+  name: string;
+  daengleMeter: number;
+  shopName?: string | null;
+  reservedDate: string;
+  tags?: string[];
+}
 
 type UserEstimateContent = GroomingEstimate | CareEstimate;
 
