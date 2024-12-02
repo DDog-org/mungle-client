@@ -7,7 +7,15 @@ import {
   nickNameWrapper,
   readOnlyTextBox,
 } from './index.styles';
-import { AppBar, ChipButton, CTAButton, Input, Layout, Text } from '@daengle/design-system';
+import {
+  AppBar,
+  ChipButton,
+  CTAButton,
+  Input,
+  Layout,
+  Text,
+  TextButton,
+} from '@daengle/design-system';
 import Image from 'next/image';
 import {
   useGetUserProfileInfoQuery,
@@ -61,48 +69,53 @@ export default function EditProfile() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div css={profileImageWrapper}>
             <Image src="/icons/profile_image.svg" alt="프로필 이미지" width={116} height={116} />
-            <button css={profileEditButtonBox}>
+            <TextButton css={profileEditButtonBox}>
               <Text typo="body4" color="gray400">
                 프로필 사진 변경하기
               </Text>
-            </button>
+            </TextButton>
           </div>
-          <div>
-            <section css={inputWrapper}>
-              <div css={nickNameWrapper}>
-                <Input
-                  label="닉네임"
-                  placeholder="닉네임을 입력해 주세요"
-                  maxLength={10}
-                  suffix={
-                    <ChipButton onClick={checkIsAvailableNickname} type="button">
-                      중복검사
-                    </ChipButton>
-                  }
-                  {...register('nickname', { ...validation.nickname })}
-                  errorMessage={errors.nickname?.message}
-                />
-              </div>
-              <div css={readOnlyTextBox}>
-                <Text typo="subtitle3">이름</Text>
-                <Text typo="body3" color="gray400">
-                  {getUserProfileInfo?.username}
-                </Text>
-              </div>
-              <div css={readOnlyTextBox}>
-                <Text typo="subtitle3">휴대폰번호</Text>
-                <Text typo="body3" color="gray400">
-                  {getUserProfileInfo?.phoneNumber}
-                </Text>
-              </div>
-              <div css={readOnlyTextBox}>
-                <Text typo="subtitle3">이메일</Text>
-                <Text typo="body3" color="gray400">
-                  {getUserProfileInfo?.email}
-                </Text>
-              </div>
-            </section>
-          </div>
+
+          <ul css={inputWrapper}>
+            <li css={nickNameWrapper}>
+              <Input
+                label="닉네임"
+                placeholder="닉네임을 입력해 주세요"
+                maxLength={10}
+                suffix={
+                  <ChipButton onClick={checkIsAvailableNickname} type="button">
+                    중복검사
+                  </ChipButton>
+                }
+                {...register('nickname', { ...validation.nickname })}
+                errorMessage={errors.nickname?.message}
+              />
+            </li>
+            <li css={readOnlyTextBox}>
+              <Text tag="h2" typo="subtitle3">
+                이름
+              </Text>
+              <Text typo="body3" color="gray400">
+                {getUserProfileInfo?.username}
+              </Text>
+            </li>
+            <li css={readOnlyTextBox}>
+              <Text tag="h2" typo="subtitle3">
+                휴대폰번호
+              </Text>
+              <Text typo="body3" color="gray400">
+                {getUserProfileInfo?.phoneNumber}
+              </Text>
+            </li>
+            <li css={readOnlyTextBox}>
+              <Text tag="h2" typo="subtitle3">
+                이메일
+              </Text>
+              <Text typo="body3" color="gray400">
+                {getUserProfileInfo?.email}
+              </Text>
+            </li>
+          </ul>
 
           <CTAButton type="submit" disabled={!isValid}>
             수정하기

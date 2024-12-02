@@ -24,10 +24,11 @@ export const profileEditButtonBox = css`
   color: ${colors.gray400};
 `;
 export const inputWrapper = css`
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 32px;
-  margin: 0 0 159px;
 `;
 export const nickNameWrapper = css`
   display: flex;
