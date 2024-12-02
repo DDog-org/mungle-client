@@ -1,4 +1,11 @@
-export interface getUserPetsInfoResponse {
+export interface postUserPetInfoBody {
+  groomerId: number;
+}
+
+export interface postUserPetsInfoResponse {
+  groomerImage: string;
+  groomerName: string;
+  shopName: string;
   userImage: string;
   nickname: string;
   address: string;
