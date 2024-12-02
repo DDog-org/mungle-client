@@ -7,12 +7,12 @@ export const STEPS = {
 export const PET_GENDER = [
   { value: 'MALE', label: '남아' },
   { value: 'FEMALE', label: '여아' },
-];
+] as const;
 
 export const PET_IS_NEUTERED = [
   { value: 'true', label: '했어요' },
   { value: 'false', label: '안했어요' },
-];
+] as const;
 
 export const PET_WEIGHT = [
   {
@@ -30,7 +30,7 @@ export const PET_WEIGHT = [
     label: '대형견',
     description: '15kg 초과',
   },
-];
+] as const;
 
 export const BIRTH_YEAR_OPTIONS = Array.from({ length: 30 }, (_, index) => ({
   value: `${new Date().getFullYear() - index}`,

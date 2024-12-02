@@ -45,4 +45,4 @@ export const ROUTES = {
   MAYPAGE_PET_PROFILE_EDIT: '/mypage/pet-profile/edit',
   MYPAGE_REVIEWS: '/mypage/reviews',
   MYPAGE_FAVORITES: '/mypage/favorites',
-};
+} as const;

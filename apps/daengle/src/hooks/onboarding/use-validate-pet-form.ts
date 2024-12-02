@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-export default function useValidatePetForm() {
+export function useValidatePetForm() {
   return useMemo(
     () => ({
       petName: {

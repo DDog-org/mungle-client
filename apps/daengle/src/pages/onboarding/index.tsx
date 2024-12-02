@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import { AppBar, Layout } from '@daengle/design-system';
-import { ROUTES } from '~/constants/routes';
-import { useFunnel } from '~/hooks/use-funnel';
-import { STEPS } from './constants';
-import { UserInfo, PetInfo, SearchAddress } from './pages';
+import { ROUTES } from '~/constants/commons/routes';
+import { STEPS } from '~/constants/onboarding';
+import { PetInfo, SearchAddress, UserInfo } from '~/components/onboarding';
+import { useFunnel } from '~/hooks/commons/use-funnel';
 
 export default function Onboarding() {
   const router = useRouter();
