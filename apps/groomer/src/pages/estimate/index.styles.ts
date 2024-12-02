@@ -2,21 +2,16 @@ import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
-  height: 100vh;
+  background-color: ${theme.colors.background};
 `;
 
-export const sectionDivider = css`
-  width: 100%;
-  height: 8px;
-  background-color: ${theme.colors.gray100};
-  display: block;
-  margin: 0;
+export const headerContainer = css`
+  padding: 18px;
+  margin-top: 20px;
 `;
 
-export const requestTitle = css`
-  padding: 24px 18px;
-`;
-
-export const button = css`
-  padding: 24px 18px;
+export const listContainer = css`
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 18px 12px 0px;
 `;

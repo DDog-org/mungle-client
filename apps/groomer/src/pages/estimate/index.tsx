@@ -1,57 +1,105 @@
 import { useState } from 'react';
+import { useGroomerEstimateListQuery } from '~/queries';
+import { Tab, Card } from '@daengle/services/estimate';
+import { wrapper, headerContainer, listContainer } from './index.styles';
+import { GNB, Layout, Text } from '@daengle/design-system';
 import {
-  Section,
-  PetDetails,
-  UserProfile,
-  AddInput,
-  DatePick,
-  useGroomerEstimateDetailQuery,
-} from '@daengle/services';
-import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
-import { wrapper, sectionDivider, requestTitle, button } from './index.styles';
+  GnbChattingActive,
+  GnbChattingInactive,
+  GnbHomeActive,
+  GnbHomeInactive,
+  GnbMyActive,
+  GnbMyInactive,
+  GnbReservationActive,
+  GnbReservationInactive,
+  GnbEstimateActive,
+  GnbEstimateInactive,
+} from '@daengle/design-system/icons';
 
-export default function EstimateDetail({ id }: { id: number }) {
-  const [, setSelectedDateTime] = useState<Date | string>();
-  const validId = id || 1;
-  const { data, isLoading, error } = useGroomerEstimateDetailQuery(validId);
+export const PATHS = {
+  ESTIMATE: '/estimate',
+  RESERVATION: '/reservation',
+  HOME: '/',
+  CHATTING: '/chatting',
+  MYPAGE: '/mypage',
+} as const;
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error || !data) return <div>데이터를 불러오지 못했습니다.</div>;
+export const MENUS = [
+  {
+    name: '견적',
+    icon: {
+      active: <GnbEstimateActive width="32px" height="32px" />,
+      inactive: <GnbEstimateInactive width="32px" height="32px" />,
+    },
+    path: PATHS.ESTIMATE,
+  },
+  {
+    name: '예약',
+    icon: {
+      active: <GnbReservationActive width="32px" height="32px" />,
+      inactive: <GnbReservationInactive width="32px" height="32px" />,
+    },
+    path: PATHS.RESERVATION,
+  },
+  {
+    name: '홈',
+    icon: {
+      active: <GnbHomeActive width="32px" height="32px" />,
+      inactive: <GnbHomeInactive width="32px" height="32px" />,
+    },
+    path: PATHS.HOME,
+  },
+  {
+    name: '채팅',
+    icon: {
+      active: <GnbChattingActive width="32px" height="32px" />,
+      inactive: <GnbChattingInactive width="32px" height="32px" />,
+    },
+    path: PATHS.CHATTING,
+  },
+  {
+    name: '마이',
+    icon: {
+      active: <GnbMyActive width="32px" height="32px" />,
+      inactive: <GnbMyInactive width="32px" height="32px" />,
+    },
+    path: PATHS.MYPAGE,
+  },
+];
 
-  const petData = data.response || [];
-  console.log(petData);
-  const petAttributes = [petData.birth, petData.weight, petData.significant];
+export default function EstimateList(): JSX.Element {
+  const [filterType, setFilterType] = useState<'전체' | '지정'>('전체');
+  const { data, isLoading, isError } = useGroomerEstimateListQuery();
+  const [, setActivePath] = useState<string>(PATHS.ESTIMATE);
 
-  const handleDateTimeChange = (dateTime: Date) => {
-    setSelectedDateTime(dateTime);
-  };
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (isError) {
+    return <div>데이터를 가져오는 데 실패했습니다.</div>;
+  }
+
+  const estimateData = data || [];
+  const filteredData =
+    filterType === '전체'
+      ? estimateData
+      : estimateData.filter((data) => data.proposal === 'DESIGNATION');
 
   return (
-    <Layout>
+    <Layout isAppBarExist={false}>
       <div css={wrapper}>
-        <AppBar />
-        <UserProfile userImage={petData.userImage} userName={petData.nickname} />
-        <div css={sectionDivider}></div>
-        <div css={requestTitle}>
-          <Text typo="subtitle1">요청상세</Text>
-        </div>
-        <Section title="지역">{petData.address}</Section>
-        <Section title="시술 희망 날짜 및 시간">
-          <DatePick onChange={handleDateTimeChange} placeholderText={petData.reservedDate} />
-        </Section>
-        <Section title="어떤 아이를 가꿀 예정이신가요?">
-          <PetDetails image={petData.petImage} name={petData.name} attributes={petAttributes} />
-        </Section>
-        <Section title="원하는 미용">{petData.desiredStyle}</Section>
-        <Section title="추가 요청사항">{petData.requirements}</Section>
-        <div css={sectionDivider}></div>
-        <AddInput title="안내 사항" placeholder="추가 안내사항을 입력해주세요." height={120} />
-        <div css={button}>
-          <RoundButton variant="green" size="L" fullWidth>
-            예약받기
-          </RoundButton>
+        <header css={headerContainer}>
+          <Text typo="title1">견적</Text>
+        </header>
+        <Tab filterType={filterType} setFilterType={setFilterType} />
+        <div css={listContainer}>
+          {filteredData.map((data) => (
+            <Card key={data.id} {...data} />
+          ))}
         </div>
       </div>
+      <GNB menus={MENUS} activePath={PATHS.ESTIMATE} onNavigate={(path) => setActivePath(path)} />
     </Layout>
   );
 }
