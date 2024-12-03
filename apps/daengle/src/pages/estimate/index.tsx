@@ -1,7 +1,8 @@
 import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
 import { wrapper, header, section, buttonGroup } from './index.styles';
-import { DesignerInfo, Receipt, useGroomerDetailQuery } from '@daengle/services';
+import { DesignerInfo, Receipt } from '~/components';
 import { useRouter } from 'next/router';
+import { useGroomerDetailQuery } from '~/queries';
 
 export default function Detail() {
   const router = useRouter();

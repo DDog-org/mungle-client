@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 
 export const wrapper = css`
   background-color: #f3f5f8;
+  padding-bottom: 104px;
 `;
 
 export const header = css`
