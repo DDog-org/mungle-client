@@ -1,9 +1,9 @@
 export interface GroomerInfoForm {
-  groomerName: string;
+  name: string;
   phoneNumber: string;
-  storeName: string;
+  shopName: string;
   address: string;
   detailAddress: string;
-  businessLicense: File[];
-  certificate: File[];
+  businessLicenses: File[];
+  licenses: File[];
 }
