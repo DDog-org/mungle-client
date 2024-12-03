@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
-import { ROUTES } from '~/constants/routes';
+import { ROUTES } from '~/constants/commons/routes';
 import DaumPostcode, { Address } from '~/libs/postcode';
-import { useUserInfoFormStore } from '~/pages/onboarding/store/user-info-form';
+import { useUserInfoFormStore } from '~/store/auth/user-info-form';
 import { wrapper } from './index.styles';
 
-export default function SearchAddress() {
+export function SearchAddress() {
   const router = useRouter();
   const { setForm } = useUserInfoFormStore();
 

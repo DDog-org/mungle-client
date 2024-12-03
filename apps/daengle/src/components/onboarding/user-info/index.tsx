@@ -2,19 +2,19 @@ import { ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { ChipButton, CTAButton, Input, RoundButton, Text } from '@daengle/design-system';
-import { ROUTES } from '~/constants/routes';
+import { ROUTES } from '~/constants/commons/routes';
 import { formatPhoneNumber } from '~/utils/format';
 import { usePostAvailableNicknameMutation } from '~/queries';
-import { useUserInfoFormStore } from '~/pages/onboarding/store/user-info-form';
-import { useValidateUserForm } from '~/pages/onboarding/hooks';
+import { useUserInfoFormStore } from '~/store/auth/user-info-form';
+import { useValidateUserForm } from '~/hooks/onboarding';
+import { UserInfoFormFormType } from '~/interfaces/auth';
 import { location, locationButton, section, wrapper } from './index.styles';
-import { UserInfoFormFormType } from '~/pages/onboarding/interfaces';
 
 interface Props {
   onNext?: () => void;
 }
 
-export default function UserInfo({ onNext }: Props) {
+export function UserInfo({ onNext }: Props) {
   const router = useRouter();
   const { userInfoForm, setForm, setUserInfoForm } = useUserInfoFormStore();
   const { mutateAsync: postAvailableNickname } = usePostAvailableNicknameMutation();
