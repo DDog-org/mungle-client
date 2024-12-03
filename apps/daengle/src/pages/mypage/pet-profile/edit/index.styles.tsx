@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { colors } from '@daengle/design-system';
+import { theme } from '@daengle/design-system';
 export const wrapper = css`
   padding: 18px 18px 146px;
 `;
@@ -24,10 +24,10 @@ export const petProfileImageBox = css`
   border-radius: 50%;
   overflow: hidden;
   object-fit: cover;
-  border: 5px solid ${colors.blue200};
+  border: 5px solid ${theme.colors.blue200};
 `;
 export const line = css`
-  background-color: ${colors.gray100};
+  background-color: ${theme.colors.gray100};
   width: 100%;
   height: 7px;
   margin: 31px 0 32px;
@@ -49,7 +49,7 @@ export const profileImageBox = css`
 export const profileEditButtonBox = css`
   margin-top: 12px;
   font-size: 14px;
-  color: ${colors.gray400};
+  color: ${theme.colors.gray400};
 `;
 
 export const inputWrapper = css`
@@ -100,12 +100,12 @@ export const buttonContainer = css`
   gap: 21px;
 `;
 export const detailInput = css`
-  background-color: ${colors.gray100};
+  background-color: ${theme.colors.gray100};
   height: 136px;
   border-radius: 10px;
   padding: 14px;
   ::placeholder {
-    color: ${colors.gray200};
+    color: ${theme.colors.gray200};
   }
 `;
 export const weightWrapper = css`

@@ -29,9 +29,9 @@ import {
   weightWrapper,
 } from './index.styles';
 import Image from 'next/image';
-import { PetProfileEditType } from '../../interfaces';
+import { PetProfileEditType } from '~/pages/mypage/interfaces';
 import { Controller, useForm } from 'react-hook-form';
-import useValidatePetEdit from '../../hooks/use-validate-pet-form';
+import useValidatePetEdit from '~/pages/mypage/hooks/use-validate-pet-form';
 import {
   BIRTH_YEAR_OPTIONS,
   PET_DISLIKEPART,
@@ -39,7 +39,7 @@ import {
   PET_IS_NEUTERED,
   PET_SIGNIFICANTTAG,
   PET_WEIGHT,
-} from '../../constants';
+} from '~/pages/mypage/constants';
 import { useGetBreedListQuery } from '~/queries';
 
 export default function DogEditProfile() {
