@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { colors } from '@daengle/design-system';
 export const wrapper = css`
-  padding: 0 18px 21px;
+  padding: 18px 18px 146px;
 `;
 export const titleBox = css`
   margin: 0 0 40px;
@@ -107,4 +107,12 @@ export const detailInput = css`
   ::placeholder {
     color: ${colors.gray200};
   }
+`;
+export const weightWrapper = css`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 3px;
 `;

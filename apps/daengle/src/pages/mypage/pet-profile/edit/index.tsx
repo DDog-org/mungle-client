@@ -1,6 +1,8 @@
 import {
   AppBar,
+  ChipRadio,
   ChipToggleButton,
+  CTAButton,
   Input,
   Layout,
   RoundButton,
@@ -28,29 +30,47 @@ import {
   chipButtonBox,
   buttonContainer,
   detailInput,
+  weightWrapper,
 } from './index.styles';
 import Image from 'next/image';
 import { useState } from 'react';
-
-const OPTIONS = [
-  { value: '1', label: '2024' },
-  { value: '2', label: '2023' },
-  { value: '3', label: '2022' },
-];
+import { PetProfileEditType } from '../../interfaces';
+import { Controller, useForm } from 'react-hook-form';
+import useValidatePetEdit from '../../hooks/use-validate-pet-form';
+import {
+  BIRTH_YEAR_OPTIONS,
+  PET_DISLIKEPART,
+  PET_GENDER,
+  PET_IS_NEUTERED,
+  PET_SIGNIFICANTTAG,
+  PET_WEIGHT,
+} from '../../constants';
+import { useGetBreedListQuery } from '~/queries';
 
 export default function DogEditProfile() {
-  const [selectedValue, setSelectedValue] = useState<{ value: string; label: string }>();
-  const ITEMS = ['없음', '눈', '코', '입', '귀', '목', '몸통', '다리', '꼬리', '생식기'];
+  const { data: breeds } = useGetBreedListQuery();
 
+  const validation = useValidatePetEdit();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    control,
+    formState: { errors, isValid },
+  } = useForm<PetProfileEditType>({
+    mode: 'onChange',
+  });
   return (
-    <Layout isAppBarExist={false}>
+    <Layout isAppBarExist={true}>
       <AppBar />
       <div css={wrapper}>
         <div css={titleBox}>
-          <Text typo={'title1'}>반려견 프로필 수정</Text>
+          <Text typo="title1">반려견 프로필 수정</Text>
         </div>
         <div css={petProfileWrapper}>
-          <Text typo={'subtitle1'}>내 아이</Text>
+          <Text typo="subtitle1">내 아이</Text>
           <div css={petProfileEditWrapper}>
             <div css={petProfileImageBox}>
               <Image
@@ -79,96 +99,180 @@ export default function DogEditProfile() {
             <Text typo="body4">프로필 사진 변경하기</Text>
           </button>
         </div>
-        <div css={inputWrapper}>
-          <Input label={'이름'} />
-          <section css={formBox}>
-            <Text typo="subtitle3">탄생년도</Text>
-            <Select
-              options={OPTIONS}
-              placeholder="탄생년도(필수)"
-              selectedValue={selectedValue}
-              onChange={(option) => setSelectedValue(option)}
+        <form onSubmit={handleSubmit(onsubmit)}>
+          <div css={inputWrapper}>
+            <Input
+              label="이름"
+              placeholder="이름을 입력해 주세요"
+              maxLength={10}
+              {...register('name', { ...validation.name })}
+              errorMessage={errors.name?.message}
             />
-          </section>
-          <section css={formBox}>
-            <Text typo="subtitle3">성별</Text>
-            <section css={toggleButtonBox}>
-              <ChipToggleButton size="full">남아</ChipToggleButton>
-              <ChipToggleButton size="full">여아</ChipToggleButton>
+            <section css={formBox}>
+              <Text typo="subtitle3" color="black">
+                탄생년도
+              </Text>
+              <Select
+                options={BIRTH_YEAR_OPTIONS}
+                placeholder="탄생년도"
+                value={watch('birth')}
+                {...register('birth', { ...validation.birth })}
+                onChange={(e) =>
+                  setValue('birth', Number(e.target.value), { shouldValidate: true })
+                }
+              />
             </section>
-          </section>
-          <section css={formBox}>
-            <Text typo="subtitle3">중성화</Text>
-            <section css={toggleButtonBox}>
-              <ChipToggleButton size="full">했어요</ChipToggleButton>
-              <ChipToggleButton size="full">안했어요</ChipToggleButton>
-            </section>
-          </section>
-          <section css={formBox}>
-            <Text typo="subtitle3">품종</Text>
-            <Select
-              options={OPTIONS}
-              placeholder="품종"
-              selectedValue={selectedValue}
-              onChange={(option) => setSelectedValue(option)}
-            />
-          </section>
-          <section css={formBox}>
-            <Text typo="subtitle3">몸무게</Text>
-            <section css={chipToggleButtonBox}>
-              <div css={weightButtonBox}>
-                <ChipToggleButton size="full">소형견</ChipToggleButton>
-                <Text typo="body12" color="gray200">
-                  7kg 이하
-                </Text>
-              </div>
-              <div css={weightButtonBox}>
-                <ChipToggleButton size="full">중형견</ChipToggleButton>
-                <Text typo="body12" color="gray200">
-                  7kg 초과 ~ 15kg 이하
-                </Text>
-              </div>
-              <div css={weightButtonBox}>
-                <ChipToggleButton size="full">대형견</ChipToggleButton>
-                <Text typo="body12" color="gray200">
-                  15kg 초과
-                </Text>
-              </div>
-            </section>
-          </section>
-          <section css={formBox}>
-            <Text typo="subtitle3">싫어하는 부위</Text>
-            <section css={selectChipButtonBox}>
-              {ITEMS.map((item) => (
-                <ChipToggleButton key={item} size="fixed">
-                  {item}
-                </ChipToggleButton>
-              ))}
-            </section>
-          </section>
-          <section css={formBox}>
-            <section css={detailformBox}>
-              <Text typo="subtitle3">특이사항</Text>
-              <section css={chipButtonBox}>
-                <ChipToggleButton size="full">피부병</ChipToggleButton>
-                <ChipToggleButton size="full">심장질환</ChipToggleButton>
-                <ChipToggleButton size="full">마킹</ChipToggleButton>
-                <ChipToggleButton size="full">마운팅</ChipToggleButton>
+            <section css={formBox}>
+              <Text typo="subtitle3">성별</Text>
+              <section css={toggleButtonBox}>
+                <Controller
+                  name="gender"
+                  control={control}
+                  rules={validation.gender}
+                  render={({ field }) => (
+                    <>
+                      {PET_GENDER.map((gender) => (
+                        <ChipRadio
+                          key={gender.value}
+                          name={field.name}
+                          value={gender.value}
+                          label={gender.label}
+                          size="full"
+                          isSelected={field.value === gender.value}
+                          onChange={(e) => field.onChange(e.target.value)}
+                        />
+                      ))}
+                    </>
+                  )}
+                />
               </section>
-              <textarea css={detailInput} placeholder="특이사항이 있다면 입력해주세요" />
             </section>
-          </section>
-        </div>
-        <footer css={buttonContainer}>
-          <RoundButton variant="primary" size="L" fullWidth={true}>
+            <section css={formBox}>
+              <Text typo="subtitle3">중성화</Text>
+              <section css={toggleButtonBox}>
+                <Controller
+                  name="isNeutered"
+                  control={control}
+                  rules={validation.isNeutered}
+                  render={({ field }) => (
+                    <>
+                      {PET_IS_NEUTERED.map((item) => (
+                        <ChipRadio
+                          name={field.name}
+                          value={item.value}
+                          label={item.label}
+                          size="full"
+                          isSelected={field.value === item.value}
+                          onChange={(e) => field.onChange(e.target.value)}
+                        />
+                      ))}
+                    </>
+                  )}
+                />
+              </section>
+            </section>
+            <section css={formBox}>
+              <Text typo="subtitle3" color="black">
+                품종
+              </Text>
+              <Select
+                options={
+                  breeds?.map((breed) => ({ value: breed.breed, label: breed.breedName })) ?? []
+                }
+                placeholder="품종"
+                {...register('breed', { ...validation.breed })}
+                value={watch('breed')?.toString()}
+              />
+            </section>
+            <section css={formBox}>
+              <Text typo="subtitle3">몸무게</Text>
+              <section css={chipToggleButtonBox}>
+                <Controller
+                  name="weight"
+                  control={control}
+                  rules={{ required: '몸무게를 선택해 주세요' }}
+                  render={({ field }) => (
+                    <>
+                      {PET_WEIGHT.map((item) => (
+                        <div css={weightWrapper} key={item.label}>
+                          <ChipRadio
+                            name={field.name}
+                            value={item.value}
+                            label={item.label}
+                            size="full"
+                            isSelected={field.value === item.value}
+                            onChange={(e) => field.onChange(e.target.value)}
+                          />
+                          <Text typo="body12" color="gray200">
+                            {item.description}
+                          </Text>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                />
+              </section>
+            </section>
+            <section css={formBox}>
+              <Text typo="subtitle3">싫어하는 부위</Text>
+              <section css={selectChipButtonBox}>
+                <>
+                  <Controller
+                    name="dislikeParts"
+                    control={control}
+                    render={({ field }) => (
+                      <>
+                        {PET_DISLIKEPART.map((item) => (
+                          <ChipToggleButton size="fixed">{item.label}</ChipToggleButton>
+                        ))}
+                      </>
+                    )}
+                  />
+                </>
+              </section>
+            </section>
+            <section css={formBox}>
+              <section css={detailformBox}>
+                <Text typo="subtitle3">특이사항</Text>
+                <section css={chipButtonBox}>
+                  <>
+                    <Controller
+                      name="significantTags"
+                      control={control}
+                      rules={{ required: '특이사항을 선택해 주세요' }}
+                      defaultValue={[]}
+                      render={({ field }) => (
+                        <>
+                          {PET_SIGNIFICANTTAG.map((item) => (
+                            <ChipToggleButton
+                              key={item.value}
+                              size="full"
+                              isSelected={field.value?.includes(item.value)}
+                              onChange={(e) => field.onChange(e.target)}
+                            >
+                              {item.label}
+                            </ChipToggleButton>
+                          ))}
+                        </>
+                      )}
+                    />
+                  </>
+                </section>
+                <textarea css={detailInput} placeholder="특이사항이 있다면 입력해주세요" />
+              </section>
+            </section>
+          </div>
+          <CTAButton
+            type="submit"
+            secondaryButtonLabel="삭제하기"
+            // onSecondaryButtonClick={() =>
+            //   postJoinWithoutPet({ ...userInfoForm.form, role: USER_ROLE, email: EMAIL })
+            // }
+            disabled={!isValid}
+          >
             수정하기
-          </RoundButton>
-          <TextButton>
-            <Text typo="subtitle2" color="gray300">
-              삭제하기
-            </Text>
-          </TextButton>
-        </footer>
+          </CTAButton>
+        </form>
       </div>
     </Layout>
   );
