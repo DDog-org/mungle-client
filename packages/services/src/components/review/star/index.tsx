@@ -12,9 +12,9 @@ export default function ReviewStars({ rating }: Props) {
     <div css={wrapper}>
       {Array.from({ length: totalStars }, (_, index) =>
         index < rating ? (
-          <FilledStar key={index} width={16} height={16} />
+          <FilledStar key={`filled ${index}`} width={14} height={13} />
         ) : (
-          <EmptyStar key={index} width={16} height={16} />
+          <EmptyStar key={`empty ${index}`} width={14} height={13} />
         )
       )}
     </div>
