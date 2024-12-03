@@ -27,7 +27,7 @@ import {
   chipButtonBox,
   detailInput,
   weightWrapper,
-} from './index.styles';
+} from './edit/index.styles';
 import Image from 'next/image';
 import { PetProfileEditType } from '~/pages/mypage/interfaces';
 import { Controller, useForm } from 'react-hook-form';
@@ -42,7 +42,7 @@ import {
 } from '~/pages/mypage/constants';
 import { useGetBreedListQuery } from '~/queries';
 
-export default function PetProfileEdit() {
+export default function PetProfile() {
   const { data: breeds } = useGetBreedListQuery();
 
   const validation = useValidatePetEdit();
