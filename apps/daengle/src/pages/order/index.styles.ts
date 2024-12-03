@@ -94,12 +94,14 @@ export const additionalInfoButton = css`
 export const arrow = css`
   position: absolute;
   right: 18px;
+
+  stroke: ${theme.colors.gray300};
 `;
 
 export const grayLine = css`
   width: 100%;
   height: 1px;
-  background-color: ${theme.colors.gray200};
+  background-color: ${theme.colors.gray100};
 `;
 
 export const visitorInfo = css`
@@ -108,10 +110,12 @@ export const visitorInfo = css`
   gap: 6px;
 `;
 
-export const capsuleButton = css`
-  width: 41px;
-  height: 26px;
-`;
+export const hiddenBlock = ({ isOpen }: { isOpen: boolean }) => ({
+  maxHeight: isOpen ? '200px' : '0',
+  overflow: 'hidden',
+  transition: 'max-height 0.3s ease',
+  opacity: isOpen ? 1 : 0,
+});
 
 export const inputTitle = css`
   margin: 20px 0;

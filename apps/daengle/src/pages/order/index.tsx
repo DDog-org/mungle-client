@@ -18,12 +18,19 @@ import {
   arrow,
   grayLine,
   visitorInfo,
+  hiddenBlock,
   inputTitle,
   input,
 } from './index.styles';
-import { SelectUnfoldInactive } from '@daengle/design-system/icons';
+import { SelectUnfoldActive, SelectUnfoldInactive } from '@daengle/design-system/icons';
+import { useState } from 'react';
 
 export default function Order() {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const handleArrowToggle = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <Layout>
       <AppBar />
@@ -111,15 +118,21 @@ export default function Order() {
                 <Text typo="body5" color="gray600">
                   실제 방문자가 다르신가요?
                 </Text>
-                <SelectUnfoldInactive width={12} css={arrow} />
+                {isOpen ? (
+                  <SelectUnfoldActive width={12} css={arrow} onClick={handleArrowToggle} />
+                ) : (
+                  <SelectUnfoldInactive width={12} css={arrow} onClick={handleArrowToggle} />
+                )}
               </div>
               <div css={grayLine} />
             </div>
-            <Text tag="h3" typo="body4" color="black" css={inputTitle}>
-              실제 방문하실 분의 정보를 입력해주세요
-            </Text>
-            <Input label="방문자" placeholder="방문자 이름을 입력해주세요" css={input} />
-            <Input label="휴대폰번호" placeholder="휴대폰 번호를 입력해주세요" />
+            <div css={hiddenBlock({ isOpen })}>
+              <Text tag="h3" typo="body4" color="black" css={inputTitle}>
+                실제 방문하실 분의 정보를 입력해주세요
+              </Text>
+              <Input label="방문자" placeholder="방문자 이름을 입력해주세요" css={input} />
+              <Input label="휴대폰번호" placeholder="휴대폰 번호를 입력해주세요" />
+            </div>
           </section>
           <CTAButton>예약하기</CTAButton>
         </section>
