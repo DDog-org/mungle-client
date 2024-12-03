@@ -17,6 +17,7 @@ import {
 } from './index.styles';
 import { ROUTES } from '~/constants/commons/routes';
 import { usePostJoinMutation } from '~/queries';
+import { useUploadToS3 } from '@daengle/services/hooks';
 
 // TODO: 임시 이메일
 const EMAIL = 'daengle@daengle.com';
@@ -35,9 +36,14 @@ export default function GroomerInfo() {
     formState: { errors, isValid },
   } = useForm<GroomerInfoForm>({ defaultValues: { ...groomerInfoForm }, mode: 'onChange' });
 
-  const onSubmit = (data: GroomerInfoForm) => {
-    // TODO: aws-sdk-s3를 사용하여 이미지 업로드 로직 추가
-    postJoin({ ...data, businessLicenses: [], licenses: [], email: EMAIL });
+  const { uploadImageToS3 } = useUploadToS3({ targetFolderPath: 'groomer/business-licenses' });
+
+  const onSubmit = async (data: GroomerInfoForm) => {
+    const businessLicenses = await uploadImageToS3(data.businessLicenses);
+    const licenses = await uploadImageToS3(data.licenses);
+
+    if (!businessLicenses || !licenses) return;
+    postJoin({ ...data, businessLicenses, licenses, email: EMAIL });
   };
 
   return (
