@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 
 export const wrapper = css`
   background-color: ${theme.colors.background};
+  padding-bottom: 104px;
 `;
 
 export const headerContainer = css`
