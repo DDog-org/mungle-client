@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
-export const wrapper = css`
-  padding: 18px 18px 104px;
+
+export const filterWrapper = css`
+  padding: 0 18px;
 `;
 export const titleBox = css`
   margin: 0 0 40px;
@@ -27,9 +28,8 @@ export const petProfileImageBox = css`
   border: 5px solid ${theme.colors.blue200};
 `;
 export const line = css`
-  background-color: ${theme.colors.gray100};
+  border: 3.5px solid ${theme.colors.gray100};
   width: 100%;
-  height: 7px;
   margin: 31px 0 32px;
 `;
 export const profileImageWrapper = css`
@@ -53,6 +53,7 @@ export const profileEditButtonBox = css`
 `;
 
 export const inputWrapper = css`
+  padding: 0 18px 104px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -125,4 +126,8 @@ export const weightWrapper = css`
   justify-content: center;
   text-align: center;
   gap: 3px;
+`;
+
+export const ctaButtonWrapper = css`
+  padding: 0 18px;
 `;
