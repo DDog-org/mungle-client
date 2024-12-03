@@ -5,10 +5,8 @@ import {
   CTAButton,
   Input,
   Layout,
-  RoundButton,
   Select,
   Text,
-  TextButton,
 } from '@daengle/design-system';
 import {
   wrapper,
@@ -22,13 +20,11 @@ import {
   profileEditButtonBox,
   inputWrapper,
   formBox,
-  weightButtonBox,
   toggleButtonBox,
   chipToggleButtonBox,
   selectChipButtonBox,
   detailformBox,
   chipButtonBox,
-  buttonContainer,
   detailInput,
   weightWrapper,
 } from './index.styles';
@@ -99,7 +95,7 @@ export default function DogEditProfile() {
             <Text typo="body4">프로필 사진 변경하기</Text>
           </button>
         </div>
-        <form onSubmit={handleSubmit(onsubmit)}>
+        <form>
           <div css={inputWrapper}>
             <Input
               label="이름"
@@ -262,14 +258,7 @@ export default function DogEditProfile() {
               </section>
             </section>
           </div>
-          <CTAButton
-            type="submit"
-            secondaryButtonLabel="삭제하기"
-            // onSecondaryButtonClick={() =>
-            //   postJoinWithoutPet({ ...userInfoForm.form, role: USER_ROLE, email: EMAIL })
-            // }
-            disabled={!isValid}
-          >
+          <CTAButton type="submit" secondaryButtonLabel="삭제하기" disabled={!isValid}>
             수정하기
           </CTAButton>
         </form>
