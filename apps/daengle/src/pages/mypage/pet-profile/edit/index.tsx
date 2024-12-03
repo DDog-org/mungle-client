@@ -20,7 +20,6 @@ import {
   profileEditButtonBox,
   inputWrapper,
   formBox,
-  weightButtonBox,
   toggleButtonBox,
   chipToggleButtonBox,
   selectChipButtonBox,
