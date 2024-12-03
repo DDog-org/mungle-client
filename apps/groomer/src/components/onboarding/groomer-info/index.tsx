@@ -43,7 +43,7 @@ export default function GroomerInfo() {
     const licenses = await uploadImageToS3(data.licenses);
 
     if (!businessLicenses || !licenses) return;
-    postJoin({ ...data, businessLicenses, licenses, email: EMAIL });
+    postJoin({ ...data, email: EMAIL, shopName: data.shopName.trim(), businessLicenses, licenses });
   };
 
   return (
