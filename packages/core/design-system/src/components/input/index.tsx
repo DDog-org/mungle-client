@@ -1,13 +1,6 @@
-import {
-  FocusEvent,
-  forwardRef,
-  InputHTMLAttributes,
-  ReactNode,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import { forwardRef, InputHTMLAttributes, ReactNode, useImperativeHandle, useRef } from 'react';
 import { input, wrapper, label as labelCss, infoTextWrapper, inputWrapper } from './index.styles';
+import { Service } from '../../types';
 import { Text } from '../text';
 
 export interface InputRef {
@@ -20,6 +13,7 @@ export interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'pref
   suffix?: ReactNode;
   confirmMessage?: string;
   errorMessage?: string;
+  service?: Service;
 }
 
 export const Input = forwardRef<InputRef, Props>(
@@ -34,6 +28,7 @@ export const Input = forwardRef<InputRef, Props>(
       suffix,
       confirmMessage,
       errorMessage,
+      service = 'daengle',
       ...props
     },
     ref
@@ -57,7 +52,7 @@ export const Input = forwardRef<InputRef, Props>(
             spellCheck={spellCheck}
             autoComplete={autoComplete}
             disabled={disabled}
-            css={input}
+            css={input({ service, errorMessage })}
             {...props}
           />
           {suffix && suffix}

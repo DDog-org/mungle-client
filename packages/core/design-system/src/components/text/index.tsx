@@ -23,6 +23,7 @@ export function Text({ tag = 'span', color = 'black100', typo, children, ...prop
       css: css`
         color: ${colors[color]};
         ${typography[typo]};
+        white-space: pre-wrap;
       `,
       ...props,
     },
