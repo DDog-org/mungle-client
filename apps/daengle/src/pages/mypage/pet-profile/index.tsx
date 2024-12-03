@@ -9,7 +9,6 @@ import {
   Text,
 } from '@daengle/design-system';
 import {
-  wrapper,
   titleBox,
   petProfileWrapper,
   petProfileEditWrapper,

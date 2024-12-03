@@ -30,7 +30,7 @@ export const petProfileImageBox = css`
 export const line = css`
   border: 3.5px solid ${theme.colors.gray100};
   width: 100%;
-  margin: 31px 0 32px;
+  margin: 32px 0;
 `;
 export const profileImageWrapper = css`
   display: flex;

@@ -43,6 +43,7 @@ export const ROUTES = {
   MYPAGE_USER_INFO_EDIT: '/mypage/user-profile/edit',
   MAYPAGE_PET_PROFILE: '/mypage/pet-profile',
   MAYPAGE_PET_PROFILE_EDIT: '/mypage/pet-profile/edit',
+  MAYPAGE_PET_PROFILE_CREATE: '/mypage/pet-profile/create',
   MYPAGE_REVIEWS: '/mypage/reviews',
   MYPAGE_FAVORITES: '/mypage/favorites',
 } as const;
