@@ -91,7 +91,9 @@ export default function DogEditProfile() {
             />
           </div>
           <button css={profileEditButtonBox}>
-            <Text typo="body4">프로필 사진 변경하기</Text>
+            <Text typo="body4" color="gray400">
+              프로필 사진 변경하기
+            </Text>
           </button>
         </div>
         <form>
