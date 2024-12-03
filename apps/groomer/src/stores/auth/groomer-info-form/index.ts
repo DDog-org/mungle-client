@@ -7,12 +7,17 @@ export interface GroomerInfoFormType {
 }
 
 export const useGroomerInfoFormStore = create<GroomerInfoFormType>((set) => ({
-  groomerInfoForm: <GroomerInfoForm>{
-    groomerName: '',
+  groomerInfoForm: {
+    name: '',
     phoneNumber: '',
-    storeName: '',
-    storeAddress: '',
-    certificates: [],
+    shopName: '',
+    address: '',
+    detailAddress: '',
+    businessLicenses: [],
+    licenses: [],
   },
-  setGroomerInfoForm: (item: Partial<GroomerInfoForm>) => set((prev) => ({ ...prev, ...item })),
+  setGroomerInfoForm: (item: Partial<GroomerInfoForm>) =>
+    set((prev) => ({
+      groomerInfoForm: { ...prev.groomerInfoForm, ...item },
+    })),
 }));

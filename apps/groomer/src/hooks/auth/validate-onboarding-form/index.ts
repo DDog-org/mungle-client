@@ -3,11 +3,12 @@ import { useMemo } from 'react';
 export function useValidateOnboardingForm() {
   return useMemo(
     () => ({
-      groomerName: {
+      name: {
         required: '이름을 입력해 주세요',
-        pattern: {
-          value: /^[a-zA-Zㄱ-ㅎ가-힣]{2,10}$/,
-          message: '한글과 영어만 사용할 수 있어요',
+        validate: (value: string) => {
+          if (/\s/.test(value)) return '공백은 작성할 수 없어요';
+          if (!/^[a-zA-Zㄱ-ㅎ가-힣]{2,10}$/.test(value)) return '한글과 영어만 사용할 수 있어요';
+          return true;
         },
         minLength: { value: 2, message: '최소 2자 이상 입력해 주세요' },
         maxLength: { value: 10, message: '최대 10자까지 입력할 수 있어요' },
@@ -27,10 +28,10 @@ export function useValidateOnboardingForm() {
         },
       },
 
-      storeName: {
+      shopName: {
         required: '매장명을 입력해 주세요',
         pattern: {
-          value: /^[a-zA-Zㄱ-ㅎ가-힣]{1,20}$/,
+          value: /^[a-zA-Zㄱ-ㅎ가-힣 ]{1,20}$/,
           message: '한글, 영어, 숫자만 사용할 수 있어요',
         },
         minLength: { value: 1, message: '최소 1자 이상 입력해 주세요' },
@@ -49,7 +50,7 @@ export function useValidateOnboardingForm() {
         maxLength: { value: 30, message: '최대 30자까지 입력할 수 있어요' },
       },
 
-      businessLicense: {
+      businessLicenses: {
         required: '사업자 등록증 또는 근로소득증명서를 첨부해 주세요',
         validate: {
           minLength: (files: File[]) => files?.length >= 1 || '최소 1장의 증명서를 첨부해 주세요',
@@ -58,7 +59,7 @@ export function useValidateOnboardingForm() {
         },
       },
 
-      certificate: {
+      licenses: {
         required: '자격증을 첨부해 주세요',
         validate: {
           minLength: (files: File[]) => files?.length >= 1 || '최소 1장의 이미지를 첨부해 주세요',

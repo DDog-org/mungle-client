@@ -15,10 +15,17 @@ import {
   store,
   wrapper,
 } from './index.styles';
+import { ROUTES } from '~/constants/commons/routes';
+import { usePostJoinMutation } from '~/queries';
+
+// TODO: 임시 이메일
+const EMAIL = 'daengle@daengle.com';
 
 export default function GroomerInfo() {
   const router = useRouter();
   const { groomerInfoForm, setGroomerInfoForm } = useGroomerInfoFormStore();
+  const { mutate: postJoin } = usePostJoinMutation();
+  const validation = useValidateOnboardingForm();
 
   const {
     register,
@@ -27,10 +34,10 @@ export default function GroomerInfo() {
     setValue,
     formState: { errors, isValid },
   } = useForm<GroomerInfoForm>({ defaultValues: { ...groomerInfoForm }, mode: 'onChange' });
-  const validation = useValidateOnboardingForm();
 
   const onSubmit = (data: GroomerInfoForm) => {
-    setGroomerInfoForm({ ...groomerInfoForm, ...watch() });
+    // TODO: aws-sdk-s3를 사용하여 이미지 업로드 로직 추가
+    postJoin({ ...data, businessLicenses: [], licenses: [], email: EMAIL });
   };
 
   return (
@@ -45,8 +52,8 @@ export default function GroomerInfo() {
           placeholder="이름을 입력해 주세요"
           maxLength={10}
           service="partner"
-          {...register('groomerName', { ...validation.groomerName })}
-          errorMessage={errors.groomerName?.message}
+          {...register('name', { ...validation.name })}
+          errorMessage={errors.name?.message}
         />
 
         <Input
@@ -67,8 +74,8 @@ export default function GroomerInfo() {
             placeholder="매장명을 검색하세요"
             maxLength={20}
             service="partner"
-            {...register('storeName', { ...validation.storeName })}
-            errorMessage={errors.storeName?.message}
+            {...register('shopName', { ...validation.shopName })}
+            errorMessage={errors.shopName?.message}
           />
         </div>
 
@@ -76,14 +83,18 @@ export default function GroomerInfo() {
           <Input
             label="매장 위치"
             placeholder="주소"
-            maxLength={21}
+            maxLength={20}
             service="partner"
+            onClick={() => {
+              setGroomerInfoForm({ ...watch() });
+              router.push(ROUTES.ONBOARDING_SEARCH_ADDRESS);
+            }}
             {...register('address', { ...validation.address })}
             errorMessage={errors.address?.message}
           />
           <Input
             placeholder="상세주소"
-            maxLength={21}
+            maxLength={20}
             {...register('detailAddress', { ...validation.detailAddress })}
             service="partner"
             errorMessage={errors.detailAddress?.message}
@@ -106,8 +117,10 @@ export default function GroomerInfo() {
               <div css={imageInputWrapper}>
                 <ImageInput
                   maxLength={2}
-                  {...register('businessLicense', { ...validation.businessLicense })}
-                  onChange={(files) => setValue('businessLicense', files, { shouldValidate: true })}
+                  {...register('businessLicenses', { ...validation.businessLicenses })}
+                  onChange={(files) =>
+                    setValue('businessLicenses', files, { shouldValidate: true })
+                  }
                 />
               </div>
             </div>
@@ -122,8 +135,8 @@ export default function GroomerInfo() {
               <div css={imageInputWrapper}>
                 <ImageInput
                   maxLength={2}
-                  {...register('certificate', { ...validation.certificate })}
-                  onChange={(files) => setValue('certificate', files, { shouldValidate: true })}
+                  {...register('licenses', { ...validation.licenses })}
+                  onChange={(files) => setValue('licenses', files, { shouldValidate: true })}
                 />
               </div>
             </div>

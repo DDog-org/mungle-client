@@ -5,9 +5,21 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "exports": {
-    ".": {
-      "import": "./src/index.ts",
-      "require": "./src/index.ts"
+    "./apis": {
+      "import": "./src/apis/index.ts",
+      "require": "./src/apis/index.ts"
+    },
+    "./hooks": {
+      "import": "./src/hooks/index.ts",
+      "require": "./src/hooks/index.ts"
+    },
+    "./libs": {
+      "import": "./src/libs/index.ts",
+      "require": "./src/libs/index.ts"
+    },
+    "./providers": {
+      "import": "./src/providers/index.ts",
+      "require": "./src/providers/index.ts"
     },
     "./utils": {
       "import": "./src/utils/index.ts",
