@@ -7,8 +7,8 @@ export interface PetProfileEditType {
   breed: string;
   isNeutered: string;
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
-  groomingExperience: boolean;
-  isBite: boolean;
+  groomingExperience: string;
+  isBite: string;
   dislikeParts: DislikeParts[];
   significantTags: SignificantTags[];
   significants: string;

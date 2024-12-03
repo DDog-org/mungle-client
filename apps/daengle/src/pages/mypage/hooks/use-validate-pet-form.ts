@@ -32,6 +32,12 @@ export default function useValidatePetEdit() {
       weight: {
         required: '몸무게를 선택해 주세요',
       },
+      groomingExperience: {
+        required: '미용 경험 여부를 선택해 주세요',
+      },
+      isBite: {
+        required: '입질 여부를 선택해 주세요',
+      },
     }),
     []
   );

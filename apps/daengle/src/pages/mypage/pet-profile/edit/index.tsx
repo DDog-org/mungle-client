@@ -29,7 +29,6 @@ import {
   weightWrapper,
 } from './index.styles';
 import Image from 'next/image';
-import { useState } from 'react';
 import { PetProfileEditType } from '../../interfaces';
 import { Controller, useForm } from 'react-hook-form';
 import useValidatePetEdit from '../../hooks/use-validate-pet-form';
@@ -203,6 +202,54 @@ export default function DogEditProfile() {
                             {item.description}
                           </Text>
                         </div>
+                      ))}
+                    </>
+                  )}
+                />
+              </section>
+            </section>
+            <section css={formBox}>
+              <Text typo="subtitle3">미용 경험</Text>
+              <section css={toggleButtonBox}>
+                <Controller
+                  name="groomingExperience"
+                  control={control}
+                  rules={validation.groomingExperience}
+                  render={({ field }) => (
+                    <>
+                      {PET_IS_NEUTERED.map((item) => (
+                        <ChipRadio
+                          name={field.name}
+                          value={item.value}
+                          label={item.label}
+                          size="full"
+                          isSelected={field.value === item.value}
+                          onChange={(e) => field.onChange(e.target.value)}
+                        />
+                      ))}
+                    </>
+                  )}
+                />
+              </section>
+            </section>
+            <section css={formBox}>
+              <Text typo="subtitle3">입질</Text>
+              <section css={toggleButtonBox}>
+                <Controller
+                  name="isBite"
+                  control={control}
+                  rules={validation.isBite}
+                  render={({ field }) => (
+                    <>
+                      {PET_IS_NEUTERED.map((item) => (
+                        <ChipRadio
+                          name={field.name}
+                          value={item.value}
+                          label={item.label}
+                          size="full"
+                          isSelected={field.value === item.value}
+                          onChange={(e) => field.onChange(e.target.value)}
+                        />
                       ))}
                     </>
                   )}
