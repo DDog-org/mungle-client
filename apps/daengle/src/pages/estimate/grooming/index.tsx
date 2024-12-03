@@ -247,7 +247,7 @@ export default function EstimateCreate() {
               name="전체 클리핑"
               src="/images/grooming_full_clipping.svg"
               onClick={() => handleDesiredStyleSelect('전체 클리핑')}
-              isSelected={desiredStyle === '전체 클리핑'}
+              isSelxsected={desiredStyle === '전체 클리핑'}
             />
             <EstimateSelectComponent
               name="전체 클리핑 + 얼굴 컷"
