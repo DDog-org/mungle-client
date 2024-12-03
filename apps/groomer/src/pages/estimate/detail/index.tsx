@@ -6,7 +6,8 @@ import { wrapper, sectionDivider, requestTitle, button } from './index.styles';
 import { useGroomerEstimateDetailQuery } from '~/queries';
 
 export default function EstimateDetail({ id }: { id: number }) {
-  const [, setSelectedDateTime] = useState<Date | string>();
+  const [selectedDateTime, setSelectedDateTime] = useState<Date | string>();
+  const [overallOpinion, setOverallOpinion] = useState<string>('');
   const validId = id || 1;
   const { data, isLoading, error } = useGroomerEstimateDetailQuery(validId);
 
@@ -14,11 +15,17 @@ export default function EstimateDetail({ id }: { id: number }) {
   if (error || !data) return <div>데이터를 불러오지 못했습니다.</div>;
 
   const petData = data || [];
-  console.log(petData);
   const petAttributes = [petData.birth, petData.weight, petData.significant];
 
   const handleDateTimeChange = (dateTime: Date) => {
     setSelectedDateTime(dateTime);
+  };
+
+  const handleReservation = () => {
+    if (!selectedDateTime || !overallOpinion) {
+      alert('날짜와 요청 사항을 입력해주세요.');
+      return;
+    }
   };
 
   return (
@@ -40,9 +47,15 @@ export default function EstimateDetail({ id }: { id: number }) {
         <Section title="원하는 미용">{petData.desiredStyle}</Section>
         <Section title="추가 요청사항">{petData.requirements}</Section>
         <div css={sectionDivider}></div>
-        <AddInput title="안내 사항" placeholder="추가 안내사항을 입력해주세요." height={120} />
+        <AddInput
+          title="안내 사항"
+          placeholder="추가 안내사항을 입력해주세요."
+          height={120}
+          value={overallOpinion}
+          onChange={(e) => setOverallOpinion(e.target.value)}
+        />
         <div css={button}>
-          <RoundButton variant="green" size="L" fullWidth>
+          <RoundButton variant="green" size="L" fullWidth onClick={handleReservation}>
             예약받기
           </RoundButton>
         </div>
