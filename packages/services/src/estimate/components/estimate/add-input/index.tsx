@@ -5,9 +5,11 @@ interface Props {
   title: string;
   placeholder: string;
   height?: number;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const AddInput = ({ title, placeholder, height }: Props) => {
+const AddInput = ({ title, placeholder, height, value, onChange }: Props) => {
   return (
     <div>
       <div css={addTitle}>
@@ -19,6 +21,8 @@ const AddInput = ({ title, placeholder, height }: Props) => {
         <textarea
           css={[textarea, height && { minHeight: `${height}px` }]}
           placeholder={placeholder}
+          value={value}
+          onChange={onChange}
         />
       </section>
     </div>
