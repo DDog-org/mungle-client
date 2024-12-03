@@ -10,18 +10,43 @@ import {
   textField,
 } from './index.styles';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
-import EstimateSelectComponent from '~/components/estimate/EstimateSelectComponent';
+import EstimateSelectComponent from '~/components/estimate';
+import { usePostUserPetsInfoMutation } from '~/queries/estimates';
+import { postUserPetsInfoResponse } from '~/models/daengle';
+import { postUserPetsInfo } from '~/apis';
 
 export default function EstimateCreate() {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(dayjs());
+  const [address, setAddress] = useState<string>('');
+
+  const groomerId = 1;
+
+  useEffect(() => {
+    handlePostUserPetsInfo();
+  }, []);
+
+  const { mutateAsync: postUserPetsInfo } = usePostUserPetsInfoMutation();
+
+  const handlePostUserPetsInfo = async () => {
+    try {
+      const response: postUserPetsInfoResponse = await postUserPetsInfo({
+        groomerId,
+      });
+      console.log('response: ', response);
+
+      if (response?.address) setAddress(response.address);
+    } catch (error) {
+      console.error('Error posting user pets info:', error);
+    }
+  };
 
   const handleDateChange = (newValue: Dayjs | null) => {
     setSelectedDate(newValue);
@@ -42,7 +67,7 @@ export default function EstimateCreate() {
             지역
           </Text>
           <Text typo="title2" color="black">
-            서울 강남구 역삼동
+            {address || '주소 불러오는 중..(ᐡ- ﻌ •ᐡ)'}
           </Text>
         </section>
         <section css={section}>

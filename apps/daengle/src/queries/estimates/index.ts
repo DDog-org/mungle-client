@@ -3,11 +3,15 @@ import { QUERY_KEYS } from '../query-keys';
 import { postUserPetsInfo } from '~/apis';
 import { postUserPetInfoBody } from '~/models/daengle';
 
-export const useGetUserPetsInfoMutation = () => {
+export const usePostUserPetsInfoMutation = () => {
   return useMutation({
-    mutationKey: QUERY_KEYS.POST_USER_PETS_INFO,
+    mutationKey: [QUERY_KEYS.POST_USER_PETS_INFO],
     mutationFn: async (body: postUserPetInfoBody) => {
-      return await postUserPetsInfo(body);
+      try {
+        return await postUserPetsInfo(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
     },
   });
 };
