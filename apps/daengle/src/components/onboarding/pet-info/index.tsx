@@ -1,20 +1,20 @@
 import { ChipRadio, CTAButton, Input, Select, Text } from '@daengle/design-system';
 import { Controller, useForm } from 'react-hook-form';
-import { USER_ROLE } from '~/constants/role';
-import {
-  useGetBreedListQuery,
-  usePostJoinWithoutPetMutation,
-  usePostJoinWithPetMutation,
-} from '~/queries';
+import { USER_ROLE } from '~/constants/commons/role';
+import { useValidatePetForm } from '~/hooks/onboarding';
+import { PetInfoFormType } from '~/interfaces/auth';
 import {
   BIRTH_YEAR_OPTIONS,
   PET_GENDER,
   PET_IS_NEUTERED,
   PET_WEIGHT,
-} from '~/pages/onboarding/constants';
-import { useValidatePetForm } from '~/pages/onboarding/hooks';
-import { PetInfoFormType } from '~/pages/onboarding/interfaces';
-import { useUserInfoFormStore } from '~/pages/onboarding/store/user-info-form';
+} from '~/constants/onboarding';
+import {
+  useGetBreedListQuery,
+  usePostJoinWithoutPetMutation,
+  usePostJoinWithPetMutation,
+} from '~/queries';
+import { useUserInfoFormStore } from '~/store/auth/user-info-form';
 import { itemWrapper, radioGroup, section, weightWrapper, wrapper } from './index.styles';
 
 // TODO: 임시 이메일
@@ -24,7 +24,7 @@ interface Props {
   onNext?: () => void;
 }
 
-export default function PetInfo({ onNext }: Props) {
+export function PetInfo({ onNext }: Props) {
   const { userInfoForm } = useUserInfoFormStore();
 
   const { data: breeds } = useGetBreedListQuery();
