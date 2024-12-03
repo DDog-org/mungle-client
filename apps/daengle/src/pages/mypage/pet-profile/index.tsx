@@ -15,9 +15,6 @@ import {
   petProfileEditWrapper,
   petProfileImageBox,
   line,
-  profileImageWrapper,
-  profileImageBox,
-  profileEditButtonBox,
   inputWrapper,
   formBox,
   toggleButtonBox,
@@ -27,6 +24,7 @@ import {
   chipButtonBox,
   detailInput,
   weightWrapper,
+  readOnlyLayer,
 } from './edit/index.styles';
 import Image from 'next/image';
 import { PetProfileEditType } from '~/pages/mypage/interfaces';
@@ -49,7 +47,6 @@ export default function PetProfile() {
 
   const {
     register,
-    handleSubmit,
     watch,
     setValue,
     control,
@@ -57,12 +54,14 @@ export default function PetProfile() {
   } = useForm<PetProfileEditType>({
     mode: 'onChange',
   });
+
+  const handleGoToEdit = () => {};
   return (
     <Layout isAppBarExist={true}>
       <AppBar />
       <div css={wrapper}>
         <div css={titleBox}>
-          <Text typo="title1">반려견 프로필 수정</Text>
+          <Text typo="title1">상세보기</Text>
         </div>
         <div css={petProfileWrapper}>
           <Text typo="subtitle1">내 아이</Text>
@@ -80,23 +79,10 @@ export default function PetProfile() {
             </Text>
           </div>
         </div>
-        <div css={line}></div>
-        <div css={profileImageWrapper}>
-          <div css={profileImageBox}>
-            <Image
-              src="/icons/pet-profile/edit_image.jpeg"
-              alt="펫 프로필 이미지"
-              width={116}
-              height={116}
-            />
-          </div>
-          <button css={profileEditButtonBox}>
-            <Text typo="body4" color="gray400">
-              프로필 사진 변경하기
-            </Text>
-          </button>
-        </div>
+        <div css={line} />
         <div css={inputWrapper}>
+          <div css={readOnlyLayer} />
+
           <Input
             label="이름"
             placeholder="이름을 입력해 주세요"
@@ -304,8 +290,8 @@ export default function PetProfile() {
             </section>
           </section>
         </div>
-        <CTAButton type="submit" secondaryButtonLabel="삭제하기" disabled={!isValid}>
-          수정하기
+        <CTAButton onClick={handleGoToEdit} disabled={isValid}>
+          반려견 프로필 수정
         </CTAButton>
       </div>
     </Layout>
