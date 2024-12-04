@@ -1,15 +1,21 @@
 import { useRouter } from 'next/router';
-import { RoundButton } from '@daengle/design-system';
+import { Text, RoundButton } from '@daengle/design-system';
 import { EmptyStateBone } from '@daengle/design-system/icons';
-import { emptyStateWrapper, emptyText, emptyButton } from './index.styles';
+import { wrapper, emptyButton } from './index.styles';
 
-export default function EmptyState(): JSX.Element {
+interface Props {
+  hasOptions: boolean;
+}
+
+export function EmptyState({ hasOptions }: Props): JSX.Element {
   const router = useRouter();
 
   return (
-    <div css={emptyStateWrapper}>
+    <div css={wrapper(hasOptions)}>
       <EmptyStateBone />
-      <div css={emptyText}>선택한 탭에 대한 견적이 없습니다.</div>
+      <Text typo="subtitle3" color="gray400">
+        견적을 요청해 보세요!
+      </Text>
       <RoundButton
         css={emptyButton}
         size="M"
