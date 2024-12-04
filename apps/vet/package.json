@@ -12,9 +12,12 @@
   "dependencies": {
     "@daengle/design-system": "workspace:*",
     "@emotion/react": "^11.13.5",
+    "@tanstack/react-query": "^5.61.0",
     "next": "14.2.10",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hook-form": "^7.53.2",
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@daengle/eslint-config": "workspace:*",
