@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Layout, AppBar, Text } from '@daengle/design-system';
-import { Tab, ReviewSummary, ReviewCardList } from '@daengle/services/src';
+import { ReviewCardList, ReviewSummary, Tab } from '@daengle/services/review';
 import { wrapper, header } from './index.styles';
 
 export default function ReviewPage() {
@@ -139,8 +139,8 @@ export default function ReviewPage() {
 
   return (
     <Layout>
+      <AppBar isDefaultBackground={false} />
       <div css={wrapper}>
-        <AppBar isDefaultBackground={false} />
         <div css={header}>
           <Text typo="title1">리뷰 관리</Text>
         </div>
