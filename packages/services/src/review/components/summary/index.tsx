@@ -5,7 +5,7 @@ interface Props {
   total: number;
 }
 
-export default function ReviewSummary({ total }: Props) {
+export function ReviewSummary({ total }: Props) {
   return (
     <div css={wrapper}>
       <Text typo="body4">

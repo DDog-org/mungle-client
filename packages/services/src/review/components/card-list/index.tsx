@@ -1,4 +1,4 @@
-import ReviewCard from '../card';
+import { ReviewCard } from '../card';
 import { wrapper } from './index.styles';
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
   flagged?: boolean;
 }
 
-export default function ReviewCardList({ reviews, flagged }: Props) {
+export function ReviewCardList({ reviews, flagged }: Props) {
   return (
     <div css={wrapper}>
       {reviews.map((review) => (

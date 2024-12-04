@@ -14,7 +14,7 @@ import {
   unroll,
   report,
 } from './index.styles';
-import ReviewStars from '../star';
+import { ReviewStars } from '../star';
 import { ButtonDownArrow, ButtonTextButtonArrow } from '@daengle/design-system/icons';
 import { useState } from 'react';
 
@@ -30,7 +30,7 @@ interface Props {
   reportContent?: string;
 }
 
-export default function ReviewCard({
+export function ReviewCard({
   reviewerName,
   profileImage,
   rating,

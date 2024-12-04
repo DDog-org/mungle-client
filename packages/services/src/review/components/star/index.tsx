@@ -5,9 +5,9 @@ interface Props {
   rating: number;
 }
 
-export default function ReviewStars({ rating }: Props) {
-  const totalStars = 5;
+const totalStars = 5;
 
+export function ReviewStars({ rating }: Props) {
   return (
     <div css={wrapper}>
       {Array.from({ length: totalStars }, (_, index) =>
