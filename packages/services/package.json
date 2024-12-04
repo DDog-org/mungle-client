@@ -24,18 +24,16 @@
     "./utils": {
       "import": "./src/utils/index.ts",
       "require": "./src/utils/index.ts"
+    },
+    "./estimate": {
+      "import": "./src/estimate/index.ts",
+      "require": "./src/estimate/index.ts"
     }
   },
   "type": "module",
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit"
-  },
-  "exports": {
-    "./estimate": {
-      "import": "./src/estimate/index.ts",
-      "require": "./src/estimate/index.ts"
-    }
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.703.0",
