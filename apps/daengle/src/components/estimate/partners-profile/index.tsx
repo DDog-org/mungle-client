@@ -41,5 +41,3 @@ export const DesignerInfo = ({ profile }: Props) => {
     </div>
   );
 };
-
-export default DesignerInfo;

@@ -7,7 +7,7 @@ interface Props {
   typo?: 'subtitle3' | 'body4';
 }
 
-const Content = ({ title, receipt, typo = 'subtitle3' }: Props) => {
+export const Content = ({ title, receipt, typo = 'subtitle3' }: Props) => {
   return (
     <section css={content}>
       <Text typo="body4" color="gray400">
@@ -17,5 +17,3 @@ const Content = ({ title, receipt, typo = 'subtitle3' }: Props) => {
     </section>
   );
 };
-
-export default Content;

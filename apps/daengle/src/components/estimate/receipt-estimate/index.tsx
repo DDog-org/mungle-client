@@ -1,5 +1,5 @@
 import { wrapper, zigzagContainer, zigzag, zigzagUpsideDown } from './index.styles';
-import Content from '../receipt-content';
+import { Content } from '../receipt-content';
 
 interface Props {
   items: {
@@ -9,7 +9,7 @@ interface Props {
   }[];
 }
 
-const Receipt = ({ items }: Props) => {
+export const Receipt = ({ items }: Props) => {
   return (
     <div css={wrapper}>
       <div css={zigzagContainer}>
@@ -24,5 +24,3 @@ const Receipt = ({ items }: Props) => {
     </div>
   );
 };
-
-export default Receipt;

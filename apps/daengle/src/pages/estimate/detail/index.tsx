@@ -1,6 +1,6 @@
 import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
 import { wrapper, header, section, buttonGroup } from './index.styles';
-import { DesignerInfo, Receipt } from '~/components';
+import { DesignerInfo, Receipt } from '~/components/estimate';
 import { useRouter } from 'next/router';
 import { useGroomerDetailQuery } from '~/queries';
 
