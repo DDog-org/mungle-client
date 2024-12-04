@@ -1,3 +1,3 @@
 export const QUERY_KEYS = {
-  POST_JOIN: ['POST_JOIN'],
+  POST_VET_JOIN: ['POST_VET_JOIN'],
 };
