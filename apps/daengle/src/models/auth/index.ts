@@ -1,3 +1,5 @@
+import { DislikeParts, SignificantTags } from '~/pages/mypage/interfaces';
+
 export interface PostKakaoRequestBody {
   kakaoAccessToken: string;
 }
@@ -111,3 +113,20 @@ export interface PostUserPetRequestBody {
   significant: string;
 }
 export type PostUserPetResponse = string;
+
+export interface PostUserPetInfoBody {
+  image: string;
+  name: string;
+  birth: number;
+  gender: 'MALE' | 'FEMALE';
+  breed: string;
+  isNeutered: boolean;
+  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
+  groomingExperience: Boolean;
+  isBite: Boolean;
+  dislikeParts: DislikeParts[];
+  significantTags: SignificantTags[];
+  significant: string;
+}
+
+export type PostUserPetInfoResponse = boolean;

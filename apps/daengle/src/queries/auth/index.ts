@@ -10,6 +10,7 @@ import {
   postJoinWithPet,
   postKakao,
   postUserPet,
+  postUserPetInfo,
 } from '~/apis';
 import {
   PatchUserInfoRequestBody,
@@ -17,6 +18,7 @@ import {
   PostJoinWithPetRequestBody,
   PostKakaoRequestBody,
   PostUserPetRequestBody,
+  PostUserPetInfoBody,
 } from '~/models';
 
 export const usePostKakaoMutation = () => {
@@ -117,6 +119,19 @@ export const usePostUserPetMutation = () => {
     mutationFn: async (body: PostUserPetRequestBody) => {
       try {
         return await postUserPet(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
+
+export const usePostUserPetInfoMutation = () => {
+  return useMutation({
+    mutationKey: [QUERY_KEYS.POST_USER_PET_INFO],
+    mutationFn: async (body: PostUserPetInfoBody) => {
+      try {
+        return await postUserPetInfo(body);
       } catch (error) {
         throw new Error(String(error));
       }

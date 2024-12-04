@@ -40,10 +40,11 @@ import {
   PET_SIGNIFICANTTAG,
   PET_WEIGHT,
 } from '~/pages/mypage/constants';
-import { useGetBreedListQuery } from '~/queries';
+import { useGetBreedListQuery, usePostUserPetInfoMutation } from '~/queries';
 
-export default function PetProfileEdit() {
+export default function DogEditProfile() {
   const { data: breeds } = useGetBreedListQuery();
+  const { mutateAsync: postUserPetInfo } = usePostUserPetInfoMutation();
 
   const validation = useValidatePetEdit();
 
@@ -57,6 +58,21 @@ export default function PetProfileEdit() {
   } = useForm<PetProfileEditType>({
     mode: 'onChange',
   });
+
+  const onSubmit = async (formData) => {
+    const body = {
+      ...formData,
+      dislikeParts: formData.dislikeParts || [],
+      significantTags: formData.significantTags || [],
+    };
+    try {
+      await postUserPetInfo(body);
+      alert('프로필이 수정되었습니다.');
+    } catch (error) {
+      console.error(error);
+      alert('수정 중 오류가 발생했습니다.');
+    }
+  };
   return (
     <Layout isAppBarExist={true}>
       <AppBar />
