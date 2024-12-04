@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 
-export const profileContainer = css`
+export const wrapper = css`
   display: flex;
   gap: 8px;
   margin: 18px;

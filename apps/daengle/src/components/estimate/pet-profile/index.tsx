@@ -1,10 +1,10 @@
 import { TextButton } from '@daengle/design-system';
-import { profileContainer, profileButton, selectedProfileButton } from './index.styles';
+import { wrapper, profileButton, selectedProfileButton } from './index.styles';
 
 interface PetInfo {
-  petId: number | null;
-  petName: string;
-  petImage: string;
+  petId: number;
+  name: string;
+  image: string;
 }
 
 interface Props {
@@ -13,23 +13,19 @@ interface Props {
   onSelectPet: (index: number) => void;
 }
 
-export default function ProfileSelector({
-  petInfos,
-  selectedPetIndex,
-  onSelectPet,
-}: Props): JSX.Element {
+export function ProfileSelector({ petInfos, selectedPetIndex, onSelectPet }: Props): JSX.Element {
   return (
-    <div css={profileContainer}>
+    <div css={wrapper}>
       {petInfos.map((pet, index) => (
         <TextButton
           key={pet.petId}
           css={[profileButton, index === selectedPetIndex && selectedProfileButton]}
           onClick={() => onSelectPet(index)}
           icons={{
-            prefix: pet.petImage ? <img src={pet.petImage} alt={`${pet.petName} 프로필`} /> : null,
+            prefix: pet.image ? <img src={pet.image} alt={`${pet.name} 프로필`} /> : null,
           }}
         >
-          {pet.petName}
+          {pet.name}
         </TextButton>
       ))}
     </div>
