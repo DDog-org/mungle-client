@@ -12,7 +12,7 @@ import {
   tagButtonStyle,
 } from './index.styles';
 
-interface UserEstimateContent {
+interface GroomingEstimate {
   id: number;
   image: string;
   name: string;
@@ -21,6 +21,18 @@ interface UserEstimateContent {
   reservedDate: string;
   tags?: string[];
 }
+
+interface CareEstimate {
+  id: number;
+  image: string;
+  name: string;
+  daengleMeter: number;
+  shopName?: string | null;
+  reservedDate: string;
+  tags?: string[];
+}
+
+type UserEstimateContent = GroomingEstimate | CareEstimate;
 
 interface Props {
   estimateData: UserEstimateContent[];
