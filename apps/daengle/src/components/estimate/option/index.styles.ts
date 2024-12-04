@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 
-export const optionContainer = css`
+export const wrapper = css`
   display: flex;
   margin-bottom: 18px;
   padding: 0 22px;

@@ -1,9 +1,10 @@
+import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
   min-height: 100%;
-  margin-bottom: 100px;
-  background-color: #f3f5f8;
+  padding-bottom: 104px;
+  background-color: ${theme.colors.background};
 `;
 
 export const headerContainer = css`
