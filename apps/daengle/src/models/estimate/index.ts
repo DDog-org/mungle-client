@@ -3,7 +3,7 @@ export interface GetDaengleEstimateListResponse {
 }
 
 export interface PetInfo {
-  id: number;
+  petId: number;
   name: string;
   image: string;
   groomingEstimates?: GroomingEstimate[];

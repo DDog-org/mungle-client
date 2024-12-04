@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import {
-  CardList,
-  EmptyState,
-  FilterTabs,
-  OptionSelector,
-  ProfileSelector,
-} from '@daengle/services/estimate';
+import { EmptyState, Tab } from '@daengle/services/estimate';
 import { GNB, Layout, Text } from '@daengle/design-system';
 import {
   GnbChattingActive,
@@ -22,6 +16,7 @@ import {
 } from '@daengle/design-system/icons';
 import { wrapper, headerContainer } from './index.styles';
 import { useDaengleEstimateListQuery } from '~/queries';
+import { CardList, OptionSelector, ProfileSelector } from '~/components/estimate';
 
 export const PATHS = {
   ESTIMATE: '/estimate-list',
@@ -76,7 +71,7 @@ export const MENUS = [
 
 export default function EstimateList() {
   const router = useRouter();
-  const [filterType, setFilterType] = useState<'미용사' | '병원'>('미용사');
+  const [activeTab, setActiveTab] = useState<string>('미용사');
   const [selectedPetIndex, setSelectedPetIndex] = useState(0);
   const { data, isLoading, error } = useDaengleEstimateListQuery();
 
@@ -88,10 +83,14 @@ export default function EstimateList() {
   const selectedPet = cardData?.petInfos?.[selectedPetIndex];
   const estimateData =
     selectedPet &&
-    (filterType === '미용사' ? selectedPet.groomingEstimates : selectedPet.careEstimates);
+    (activeTab === '미용사' ? selectedPet.groomingEstimates : selectedPet.careEstimates);
 
   const petInfos = cardData?.petInfos || [];
   const hasOptions = !!(cardData?.petInfos && cardData.petInfos.length > 0);
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+  };
 
   const handleNavigate = (path: string) => {
     // 임시 경로
@@ -104,7 +103,7 @@ export default function EstimateList() {
         <div css={headerContainer}>
           <Text typo="title1">견적</Text>
         </div>
-        <FilterTabs filterType={filterType} onFilterChange={setFilterType} />
+        <Tab items={['미용사', '병원']} activeItem={activeTab} onChange={handleTabChange} />
         {hasOptions && (
           <div>
             <ProfileSelector
