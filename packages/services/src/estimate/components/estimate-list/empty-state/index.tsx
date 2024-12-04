@@ -7,11 +7,11 @@ interface Props {
   hasOptions: boolean;
 }
 
-export default function EmptyState({ hasOptions }: Props): JSX.Element {
+export function EmptyState({ hasOptions }: Props): JSX.Element {
   const router = useRouter();
 
   return (
-    <div css={[wrapper, { marginTop: hasOptions ? '150px' : '100px' }]}>
+    <div css={wrapper(hasOptions)}>
       <EmptyStateBone />
       <Text typo="subtitle3" color="gray400">
         견적을 요청해 보세요!
