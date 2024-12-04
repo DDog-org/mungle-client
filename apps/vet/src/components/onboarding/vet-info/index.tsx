@@ -88,11 +88,11 @@ export default function VetInfo() {
           </Text>
 
           <Text typo="body12" color="gray300">
-            사업자등록증(또는 근로소득증명서)과 자격증 사진을 첨부해주세요.
+            사업자등록증 사진을 첨부해 주세요.
           </Text>
           <div css={imageInputWrapper}>
             <ImageInput
-              maxLength={3}
+              maxLength={1}
               {...register('licenses', { ...validation.licenses })}
               onChange={(files) => setValue('licenses', files, { shouldValidate: true })}
             />
