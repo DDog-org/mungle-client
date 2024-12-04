@@ -50,7 +50,7 @@ export default function VetInfo() {
 
         <div css={address}>
           <Input
-            label="매장 위치"
+            label="위치"
             placeholder="주소"
             maxLength={20}
             service="partner"
