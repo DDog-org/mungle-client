@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { CTAButton, ImageInput, Input, Text } from '@daengle/design-system';
 import { formatPhoneNumberWithRegionNumber } from '@daengle/services/utils';
-import { ROUTES } from '~/constants/routes';
+import { ROUTES } from '~/constants/commons/routes';
 import { VetInfoForm } from '~/interfaces/auth';
 import { useValidateOnboardingForm } from '~/hooks';
 import { useVetInfoFormStore } from '~/stores/auth';

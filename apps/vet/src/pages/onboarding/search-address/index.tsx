@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { AppBar, Layout } from '@daengle/design-system';
 import { DaumPostcode, Address } from '@daengle/services/libs';
-import { ROUTES } from '~/constants/routes';
+import { ROUTES } from '~/constants/commons/routes';
 import { useVetInfoFormStore } from '~/stores/auth';
 import { wrapper } from './index.styles';
 
