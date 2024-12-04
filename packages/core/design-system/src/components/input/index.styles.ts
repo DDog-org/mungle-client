@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { theme } from '../../foundation';
+import { Service } from '../../types';
 
 export const wrapper = css`
   position: relative;
@@ -18,7 +19,13 @@ export const inputWrapper = css`
   gap: 4px;
 `;
 
-export const input = ({ errorMessage }: { errorMessage?: string }) => css`
+export const input = ({
+  service,
+  errorMessage,
+}: {
+  service?: Service;
+  errorMessage?: string;
+}) => css`
   display: flex;
   text-align: left;
   flex: 1;
@@ -49,7 +56,7 @@ export const input = ({ errorMessage }: { errorMessage?: string }) => css`
     : `1px solid ${theme.colors.gray200}`};
 
   &:focus {
-    border-bottom: 1px solid ${theme.colors.blue200};
+    border-bottom: 1px solid ${service === 'daengle' ? theme.colors.blue200 : theme.colors.green200};
   }
 
   transition: border-bottom 0.2s ease;

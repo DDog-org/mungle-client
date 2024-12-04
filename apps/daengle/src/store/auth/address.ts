@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Address } from '~/libs/postcode';
+import type { Address } from '@daengle/services/libs';
 
 interface SearchAddress {
   address: Address | null;

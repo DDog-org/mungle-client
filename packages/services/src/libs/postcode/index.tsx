@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, CSSProperties, ReactNode } from 'react';
 import { PostcodeConstructor, PostcodeOptions, Address as AddressType } from './index.d';
 
+export type * from './index.d';
+
 export const POSTCODE_SCRIPT_URL =
   'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
 
@@ -58,7 +60,7 @@ const defaultStyle = {
   height: '100%',
 };
 
-export default function DaumPostcode({
+export function DaumPostcode({
   scriptUrl = POSTCODE_SCRIPT_URL,
   errorMessage = defaultErrorMessage,
   autoClose = true,

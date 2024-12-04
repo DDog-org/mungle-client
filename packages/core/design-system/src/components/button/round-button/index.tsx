@@ -1,8 +1,10 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { Size, Variant } from './index.types';
+import { Service } from '../../../types';
 import { wrapper } from './index.styles';
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
+  service?: Service;
   variant?: Variant;
   size?: Size;
   fullWidth?: boolean;
@@ -10,6 +12,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export function RoundButton({
+  service = 'daengle',
   variant = 'primary',
   size = 'M',
   fullWidth = false,
@@ -18,7 +21,7 @@ export function RoundButton({
   ...props
 }: Props) {
   return (
-    <button {...props} css={wrapper({ size, variant, disabled, fullWidth })}>
+    <button {...props} css={wrapper({ service, size, variant, disabled, fullWidth })}>
       {children}
     </button>
   );
