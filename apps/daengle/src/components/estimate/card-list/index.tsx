@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { Text, TextButton } from '@daengle/design-system';
 import {
-  listContainer,
+  wrapper,
   card,
   contentContainer,
   cardHeader,
@@ -13,7 +13,7 @@ import {
   tagButtonStyle,
 } from './index.styles';
 
-interface UserEstimateContent {
+interface GroomingEstimate {
   id: number;
   image: string;
   name: string;
@@ -23,16 +23,28 @@ interface UserEstimateContent {
   tags?: string[];
 }
 
+interface CareEstimate {
+  id: number;
+  image: string;
+  name: string;
+  daengleMeter: number;
+  shopName?: string | null;
+  reservedDate: string;
+  tags?: string[];
+}
+
+type UserEstimateContent = GroomingEstimate | CareEstimate;
+
 interface Props {
   estimateData: UserEstimateContent[];
 }
 
-export default function CardList({ estimateData }: Props): JSX.Element {
+export function CardList({ estimateData }: Props): JSX.Element {
   const router = useRouter();
 
   return (
-    <div css={listContainer}>
-      {estimateData.map((data) => (
+    <div css={wrapper}>
+      {estimateData?.map((data) => (
         <div key={data.id} css={card}>
           <div css={contentContainer} onClick={() => router.push('/temporary-route')}>
             <div css={cardHeader}>
