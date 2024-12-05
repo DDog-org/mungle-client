@@ -3,10 +3,11 @@ import { theme } from '../../foundation';
 import { Service } from '../../types';
 
 export const wrapper = css`
-  position: relative;
-  width: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
+
+  width: 100%;
 `;
 
 export const label = css`
@@ -27,8 +28,11 @@ export const input = ({
   errorMessage?: string;
 }) => css`
   display: flex;
+
   text-align: left;
+
   flex: 1;
+
   padding: 6px 0 10px 6px;
 
   ${theme.typo.body8};
@@ -40,6 +44,7 @@ export const input = ({
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+
     margin: 0;
   }
 
@@ -50,7 +55,6 @@ export const input = ({
   &:disabled {
     color: ${theme.colors.gray300};
   }
-
   border-bottom: ${errorMessage
     ? `1px solid ${theme.colors.red200}`
     : `1px solid ${theme.colors.gray200}`};
@@ -58,13 +62,13 @@ export const input = ({
   &:focus {
     border-bottom: 1px solid ${service === 'daengle' ? theme.colors.blue200 : theme.colors.green200};
   }
-
   transition: border-bottom 0.2s ease;
 `;
 
 export const infoTextWrapper = css`
   position: absolute;
-  left: 2px;
   bottom: -20px;
+  left: 2px;
+
   padding: 0 2px;
 `;

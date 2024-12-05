@@ -21,6 +21,7 @@ export const box = css`
   display: flex;
   align-items: center;
   justify-content: center;
+
   transition: background 0.5s ease;
 `;
 
@@ -81,26 +82,28 @@ export const buttonVariant = ({
 
   ${disabled &&
   css`
-    color: ${theme.colors.white} !important;
     background: ${theme.colors.gray400} !important;
+    color: ${theme.colors.white} !important;
+
     cursor: default;
   `}
 
   ${variant === 'primary' &&
   css`
-    color: ${theme.colors.white};
     background: ${service === 'daengle'
       ? theme.colors.blueGradient100
       : theme.colors.greenGradient100};
+    color: ${theme.colors.white};
   `}
   ${variant === 'ghost' &&
   css`
-    color: ${theme.colors.gray200};
     border: 1px solid ${theme.colors.gray200};
+
+    color: ${theme.colors.gray200};
   `}
   ${variant === 'kakao' &&
   css`
-    color: ${theme.colors.black};
     background: #fee500;
+    color: ${theme.colors.black};
   `}
 `;
