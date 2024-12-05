@@ -2,6 +2,7 @@ import { ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { CTAButton, ImageInput, Input, Text } from '@daengle/design-system';
+import { useS3 } from '@daengle/services/hooks';
 import { formatPhoneNumber } from '@daengle/services/utils';
 import { GroomerInfoForm } from '~/interfaces/auth';
 import { useValidateOnboardingForm } from '~/hooks/auth';
@@ -17,7 +18,6 @@ import {
 } from './index.styles';
 import { ROUTES } from '~/constants/commons/routes';
 import { usePostJoinMutation } from '~/queries';
-import { useUploadToS3 } from '@daengle/services/hooks';
 
 // TODO: 임시 이메일
 const EMAIL = 'daengle@daengle.com';
@@ -36,11 +36,12 @@ export default function GroomerInfo() {
     formState: { errors, isValid },
   } = useForm<GroomerInfoForm>({ defaultValues: { ...groomerInfoForm }, mode: 'onChange' });
 
-  const { uploadImageToS3 } = useUploadToS3({ targetFolderPath: 'groomer/business-licenses' });
+  const { uploadToS3 } = useS3({ targetFolderPath: 'groomer/business-licenses' });
 
   const onSubmit = async (data: GroomerInfoForm) => {
-    const businessLicenses = await uploadImageToS3(data.businessLicenses);
-    const licenses = await uploadImageToS3(data.licenses);
+    const businessLicenses = await uploadToS3(data.businessLicenses);
+    const licenses = await uploadToS3(data.licenses);
+    if (!businessLicenses?.length || !licenses?.length) return;
 
     if (!businessLicenses || !licenses) return;
     postJoin({ ...data, email: EMAIL, shopName: data.shopName.trim(), businessLicenses, licenses });
