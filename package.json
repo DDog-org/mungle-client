@@ -13,7 +13,8 @@
     "admin": "turbo dev --filter admin",
     "daengle": "turbo dev --filter daengle",
     "groomer": "turbo dev --filter groomer",
-    "vet": "turbo dev --filter vet"
+    "vet": "turbo dev --filter vet",
+    "lint:styles": "stylelint \"**/*.styles.ts\""
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
@@ -37,6 +38,10 @@
     "*.{ts,tsx}": [
       "eslint --fix",
       "prettier --config ./.prettierrc --write -u"
+    ],
+    "**/*.styles.ts": [
+      "stylelint --fix",
+      "git add"
     ]
   },
   "packageManager": "pnpm@9.9.0",
