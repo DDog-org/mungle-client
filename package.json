@@ -40,8 +40,7 @@
       "prettier --config ./.prettierrc --write -u"
     ],
     "**/*.styles.ts": [
-      "stylelint --fix",
-      "git add"
+      "stylelint --fix"
     ]
   },
   "packageManager": "pnpm@9.9.0",
