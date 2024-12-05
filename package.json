@@ -38,8 +38,7 @@
     "*.{ts,tsx}": [
       "eslint --fix",
       "prettier --config ./.prettierrc --write -u"
-    ],
-    "**/*.styles.ts": "stylelint --fix"
+    ]
   },
   "packageManager": "pnpm@9.9.0",
   "engines": {
