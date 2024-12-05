@@ -6,7 +6,7 @@ interface Props {
   userName: string;
 }
 
-const UserProfile = ({ userImage, userName }: Props) => {
+export function UserProfile({ userImage, userName }: Props): JSX.Element {
   return (
     <div css={wrapper}>
       <img src={userImage} alt={`${userName} 프로필`} css={image} />
@@ -15,6 +15,4 @@ const UserProfile = ({ userImage, userName }: Props) => {
       </Text>
     </div>
   );
-};
-
-export default UserProfile;
+}

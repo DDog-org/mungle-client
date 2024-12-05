@@ -27,7 +27,7 @@ interface EstimateContent {
   reservedDate: string;
 }
 
-export default function Card({
+export function Card({
   id,
   userImage,
   nickname,

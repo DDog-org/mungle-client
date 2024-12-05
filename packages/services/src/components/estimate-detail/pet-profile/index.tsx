@@ -13,10 +13,10 @@ import {
 interface Props {
   image: string;
   name: string;
-  attributes: (string | number)[];
+  attributes: (string | number | null)[];
 }
 
-const PetDetails = ({ image, name, attributes }: Props) => {
+export function PetDetails({ image, name, attributes }: Props): JSX.Element {
   const labels = ['나이', '몸무게', '특이사항'];
   return (
     <div css={wrapper}>
@@ -49,6 +49,4 @@ const PetDetails = ({ image, name, attributes }: Props) => {
       </div>
     </div>
   );
-};
-
-export default PetDetails;
+}

@@ -1,30 +1,28 @@
 import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
-export const tabContainer = css`
+export const wrapper = css`
   display: flex;
-  padding: 18px 18px 0px 18px;
-  position: relative;
-  border-bottom: 0.5px solid #e6e6e6;
+  justify-content: space-around;
+  align-items: center;
+  padding: 16px 18px 0 18px;
+  border-bottom: 0.5px solid ${theme.colors.gray300};
 `;
 
-export const tab = css`
+export const tabButton = css`
+  padding: 9px 30px;
   ${theme.typo.subtitle3};
-  width: 100%;
-  justify-content: center;
-  padding: 9px 32px;
-  border: none;
-  background: none;
   color: ${theme.colors.gray300};
   cursor: pointer;
-
+  border: none;
+  background: none;
   &:hover {
     color: ${theme.colors.black100};
   }
 `;
 
-export const activeTab = css`
+export const activeTabButton = css`
   color: ${theme.colors.black100};
-  ${theme.typo.subtitle1}
+  ${theme.typo.subtitle1};
   border-bottom: 2px solid ${theme.colors.black100};
 `;

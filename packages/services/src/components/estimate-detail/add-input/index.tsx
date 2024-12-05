@@ -9,7 +9,7 @@ interface Props {
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const AddInput = ({ title, placeholder, height, value, onChange }: Props) => {
+export function AddInput({ title, placeholder, height, value, onChange }: Props): JSX.Element {
   return (
     <div>
       <div css={addTitle}>
@@ -27,6 +27,4 @@ const AddInput = ({ title, placeholder, height, value, onChange }: Props) => {
       </section>
     </div>
   );
-};
-
-export default AddInput;
+}

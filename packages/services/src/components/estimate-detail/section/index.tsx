@@ -7,7 +7,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const Section = ({ title, children }: Props) => {
+export function Section({ title, children }: Props): JSX.Element {
   return (
     <section css={wrapper}>
       <Text typo="body4" color="gray400">
@@ -16,6 +16,4 @@ const Section = ({ title, children }: Props) => {
       <div css={content}>{children}</div>
     </section>
   );
-};
-
-export default Section;
+}
