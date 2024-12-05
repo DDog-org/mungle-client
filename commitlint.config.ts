@@ -4,13 +4,17 @@ const Configuration: UserConfig = {
   extends: ['@commitlint/config-conventional'],
   formatter: '@commitlint/format',
   rules: {
-    'type-enum': [2, 'always', ['feat', 'fix', 'docs', 'style', 'refactor', 'chore', 'design']],
+    'type-enum': [
+      2,
+      'always',
+      ['feat', 'fix', 'docs', 'style', 'refactor', 'chore', 'design', 'story', 'task'],
+    ],
     'type-case': [2, 'always', 'lower-case'],
 
     'scope-enum': [
       1,
       'always',
-      ['admin', 'daengle', 'groomer', 'storybook', 'vet', 'design-system'],
+      ['admin', 'daengle', 'groomer', 'storybook', 'vet', 'design-system', 'services', 'utils'],
     ],
     'scope-case': [2, 'always', 'kebab-case'],
     'scope-empty': [2, 'never'],

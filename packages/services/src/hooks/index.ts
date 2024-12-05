@@ -1,2 +1,2 @@
 export * from './use-funnel';
-export * from './use-upload-to-s3';
+export * from './use-s3';

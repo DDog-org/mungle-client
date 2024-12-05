@@ -3,7 +3,8 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { CTAButton, ImageInput, Input, Text } from '@daengle/design-system';
 import { formatPhoneNumberWithRegionNumber } from '@daengle/services/utils';
-import { ROUTES } from '~/constants/routes';
+import { useS3 } from '@daengle/services/hooks';
+import { ROUTES } from '~/constants/commons/routes';
 import { VetInfoForm } from '~/interfaces/auth';
 import { useValidateOnboardingForm } from '~/hooks';
 import { useVetInfoFormStore } from '~/stores/auth';
@@ -26,10 +27,12 @@ export default function VetInfo() {
     setValue,
     formState: { errors, isValid },
   } = useForm<VetInfoForm>({ defaultValues: { ...vetInfoForm }, mode: 'onChange' });
+  const { uploadToS3 } = useS3({ targetFolderPath: 'vet/licenses' });
 
   const onSubmit = async (data: VetInfoForm) => {
-    // TODO: aws-sdk-s3를 사용하여 이미지 업로드 로직 추가
-    postVetJoin({ ...data, licenses: [''], email: EMAIL });
+    const licenses = await uploadToS3(data.licenses);
+    if (!licenses?.length) return;
+    postVetJoin({ ...data, licenses, email: EMAIL });
   };
 
   return (
