@@ -1,4 +1,4 @@
-import { AppBar, CTAButton, Layout, RoundButton, Text } from '@daengle/design-system';
+import { AppBar, CTAButton, Layout, Text } from '@daengle/design-system';
 import {
   wrapper,
   section,
@@ -17,9 +17,8 @@ import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-picker
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 import EstimateSelectComponent from '~/components/estimate';
-import { usePostUserPetsInfoMutation } from '~/queries/estimates';
+import { usePostGroomingMutation, usePostUserPetsInfoMutation } from '~/queries/estimates';
 import { postUserPetsInfoResponse } from '~/models/daengle';
-import { postUserPetsInfo } from '~/apis';
 
 export default function EstimateCreate() {
   const router = useRouter();
@@ -27,13 +26,20 @@ export default function EstimateCreate() {
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(dayjs());
   const [address, setAddress] = useState<string>('');
 
-  const groomerId = 1;
+  const groomerId = 8; //TODO: 쿼리스트링 값 읽어오기(groomerId 값이 담겨있는지 null인지 쿼리 스트링으로 판단)
+  const petId = 3;
+  // const address = "서울특별시 관악구 봉천동";
+  const reservedDate = '2024-12-05 02:36:00';
+  // const reservedDate = `${selectedDate} ${selectedTime}`;
+  const desiredStyle = '전체 클리핑';
+  const requirements = '없음';
 
   useEffect(() => {
     handlePostUserPetsInfo();
   }, []);
 
   const { mutateAsync: postUserPetsInfo } = usePostUserPetsInfoMutation();
+  const { mutate: postGroomingBody } = usePostGroomingMutation();
 
   const handlePostUserPetsInfo = async () => {
     try {
@@ -48,11 +54,36 @@ export default function EstimateCreate() {
     }
   };
 
+  const formData = {
+    groomerId: groomerId,
+    petId: petId,
+    address: address,
+    reservedDate: reservedDate,
+    desiredStyle: desiredStyle,
+    requirements: requirements,
+  };
+
+  const handleSubmit = () => {
+    postGroomingBody(formData, {
+      onSuccess: (data) => {
+        console.log('data: ', data);
+        router.push({
+          pathname: '/estimate/complete',
+        });
+      },
+      onError: (error) => {
+        console.error('Error submitting form:', error);
+      },
+    });
+  };
+
   const handleDateChange = (newValue: Dayjs | null) => {
     setSelectedDate(newValue);
+    console.log(selectedDate?.toISOString);
   };
   const handleTimeChange = (newValue: Dayjs | null) => {
     setSelectedTime(newValue);
+    console.log(selectedTime);
   };
 
   return (
@@ -167,7 +198,9 @@ export default function EstimateCreate() {
           </Text>
           <textarea placeholder="추가 요청사항을 입력해주세요" css={textField} />
         </section>
-        <CTAButton disabled>요청하기</CTAButton>
+        <CTAButton onClick={handleSubmit} disabled>
+          요청하기
+        </CTAButton>
       </div>
     </Layout>
   );

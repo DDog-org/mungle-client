@@ -12,6 +12,7 @@ export const ROUTES = {
   // Estimates
   ESTIMATE_LIST: (type: string) => `/estimates/${type}`,
   ESTIMATE_DETAIL: (estimateId: number) => `/estimates/${estimateId}`,
+  ESTIMATE_FORM_COMPLETE: '/estimates/complete',
 
   // Groomers
   GROOMER_DETAIL: (groomerId: number) => `/groomers/${groomerId}`,
