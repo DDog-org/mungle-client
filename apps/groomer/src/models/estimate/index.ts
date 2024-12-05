@@ -15,14 +15,16 @@ export interface GroomingEstimateList {
 export interface GetGroomerEstimateDetailResponse {
   userImage: string;
   nickname: string;
+  proposal: 'GENERAL' | 'DESIGNATION';
   address: string;
   reservedDate: string;
   id: number;
   petImage: string;
   name: string;
-  birth: number;
+  age: number;
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
-  significant: string;
+  significant: string | null;
   desiredStyle: string;
   requirements: string;
+  overallOpinion?: string;
 }

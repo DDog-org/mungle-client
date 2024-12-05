@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useGroomerEstimateListQuery } from '~/queries';
-import { Tab, Card } from '@daengle/services/estimate';
+import { Tab, Card } from '@daengle/services/components';
 import { wrapper, headerContainer, listContainer } from './index.styles';
 import { GNB, Layout, Text } from '@daengle/design-system';
 import {
@@ -68,7 +68,7 @@ export const MENUS = [
 ];
 
 export default function EstimateList(): JSX.Element {
-  const [filterType, setFilterType] = useState<'전체' | '지정'>('전체');
+  const [activeTab, setActiveTab] = useState<string>('전체');
   const { data, isLoading, isError } = useGroomerEstimateListQuery();
   const [, setActivePath] = useState<string>(PATHS.ESTIMATE);
 
@@ -80,9 +80,13 @@ export default function EstimateList(): JSX.Element {
     return <div>데이터를 가져오는 데 실패했습니다.</div>;
   }
 
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+  };
+
   const estimateData = data || [];
   const filteredData =
-    filterType === '전체'
+    activeTab === '전체'
       ? estimateData
       : estimateData.filter((data) => data.proposal === 'DESIGNATION');
 
@@ -92,7 +96,7 @@ export default function EstimateList(): JSX.Element {
         <header css={headerContainer}>
           <Text typo="title1">견적</Text>
         </header>
-        <Tab filterType={filterType} setFilterType={setFilterType} />
+        <Tab items={['전체', '지정']} activeItem={activeTab} onChange={handleTabChange} />
         <div css={listContainer}>
           {filteredData.map((data) => (
             <Card key={data.id} {...data} />

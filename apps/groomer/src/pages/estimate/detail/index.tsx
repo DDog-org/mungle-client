@@ -1,23 +1,27 @@
 import { useState } from 'react';
-import { Section, PetDetails, UserProfile, AddInput, DatePick } from '@daengle/services/estimate';
-
+import { Dayjs } from 'dayjs';
+import { AddInput, PetDetails, Section, UserProfile } from '@daengle/services/components';
 import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
 import { wrapper, sectionDivider, requestTitle, button } from './index.styles';
 import { useGroomerEstimateDetailQuery } from '~/queries';
+import { DatePick } from '~/components/estimate';
 
 export default function EstimateDetail({ id }: { id: number }) {
-  const [selectedDateTime, setSelectedDateTime] = useState<Date | string>();
+  const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | string>();
   const [overallOpinion, setOverallOpinion] = useState<string>('');
-  const validId = id || 1;
+  const validId = id || 10;
   const { data, isLoading, error } = useGroomerEstimateDetailQuery(validId);
 
   if (isLoading) return <div>Loading...</div>;
   if (error || !data) return <div>데이터를 불러오지 못했습니다.</div>;
 
   const petData = data || [];
-  const petAttributes = [petData.birth, petData.weight, petData.significant];
+  const significant = petData.significant ?? '없음';
 
-  const handleDateTimeChange = (dateTime: Date) => {
+  const petAttributes = [petData.age, petData.weight, significant];
+  const isEditable = petData.proposal === 'DESIGNATION';
+
+  const handleDateTimeChange = (dateTime: Dayjs) => {
     setSelectedDateTime(dateTime);
   };
 
@@ -30,8 +34,8 @@ export default function EstimateDetail({ id }: { id: number }) {
 
   return (
     <Layout>
+      <AppBar />
       <div css={wrapper}>
-        <AppBar />
         <UserProfile userImage={petData.userImage} userName={petData.nickname} />
         <div css={sectionDivider}></div>
         <div css={requestTitle}>
@@ -39,7 +43,11 @@ export default function EstimateDetail({ id }: { id: number }) {
         </div>
         <Section title="지역">{petData.address}</Section>
         <Section title="시술 희망 날짜 및 시간">
-          <DatePick onChange={handleDateTimeChange} placeholderText={petData.reservedDate} />
+          <DatePick
+            onChange={handleDateTimeChange}
+            placeholderText={petData.reservedDate}
+            isEditable={!isEditable}
+          />
         </Section>
         <Section title="어떤 아이를 가꿀 예정이신가요?">
           <PetDetails image={petData.petImage} name={petData.name} attributes={petAttributes} />
