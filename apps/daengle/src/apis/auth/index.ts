@@ -18,7 +18,7 @@ export const postAvailableNickname = async (body: PostAvailableNicknameRequestBo
 };
 
 export const getBreedList = async () => {
-  return await api.get<GetBreedListResponse>('/user/breed-list');
+  return await api.get<GetBreedListResponse>('/user/breed/list');
 };
 
 export const postJoinWithPet = async (body: PostJoinWithPetRequestBody) => {
