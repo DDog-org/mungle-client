@@ -27,9 +27,7 @@ export default function VetInfo() {
     setValue,
     formState: { errors, isValid },
   } = useForm<VetInfoForm>({ defaultValues: { ...vetInfoForm }, mode: 'onChange' });
-  const { uploadToS3 } = useS3({ targetFolderPath: 'vet/licenses' }) || {
-    uploadToS3: async () => undefined,
-  };
+  const { uploadToS3 } = useS3({ targetFolderPath: 'vet/licenses' });
 
   const onSubmit = async (data: VetInfoForm) => {
     const licenses = await uploadToS3(data.licenses);
