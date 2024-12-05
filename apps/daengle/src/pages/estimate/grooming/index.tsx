@@ -81,11 +81,36 @@ export default function EstimateCreate() {
     }
   };
 
+  const formData = {
+    groomerId: groomerId,
+    petId: petId,
+    address: address,
+    reservedDate: reservedDate,
+    desiredStyle: desiredStyle,
+    requirements: requirements,
+  };
+
+  const handleSubmit = () => {
+    postGroomingBody(formData, {
+      onSuccess: (data) => {
+        console.log('data: ', data);
+        router.push({
+          pathname: '/estimate/complete',
+        });
+      },
+      onError: (error) => {
+        console.error('Error submitting form:', error);
+      },
+    });
+  };
+
   const handleDateChange = (newValue: Dayjs | null) => {
     setSelectedDate(newValue);
+    console.log(selectedDate?.toISOString);
   };
   const handleTimeChange = (newValue: Dayjs | null) => {
     setSelectedTime(newValue);
+    console.log(selectedTime);
   };
 
   const handlePetSelect = (petId: number) => {

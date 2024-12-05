@@ -20,3 +20,16 @@ export interface petInfos {
   birth: number;
   weight: string;
 }
+
+export interface postGroomingBody {
+  groomerId: number;
+  petId: number;
+  address: string;
+  reservedDate: string;
+  desiredStyle: string;
+  requirements: string;
+}
+
+export interface postGroomingResponse {
+  requestResult: string;
+}
