@@ -74,7 +74,6 @@ export const petProfile = css`
   flex-direction: column;
   align-items: center;
   gap: 8px;
-
   cursor: pointer;
 `;
 

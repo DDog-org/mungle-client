@@ -3,22 +3,17 @@ export interface postUserPetInfoBody {
 }
 
 export interface postUserPetsInfoResponse {
-  groomerImage: string;
+  groomerImage: string | null;
   groomerName: string;
   shopName: string;
-  userImage: string;
-  nickname: string;
   address: string;
   petInfos: petInfos[];
 }
 
 export interface petInfos {
-  id: number;
-  image: string;
+  petId: number;
+  image: string | null;
   name: string;
-  significant: string;
-  birth: number;
-  weight: string;
 }
 
 export interface postGroomingBody {

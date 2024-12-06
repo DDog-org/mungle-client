@@ -81,17 +81,40 @@ export default function EstimateCreate() {
     }
   };
 
-  const formData = {
-    groomerId: groomerId,
-    petId: petId,
-    address: address,
-    reservedDate: reservedDate,
-    desiredStyle: desiredStyle,
-    requirements: requirements,
+  const handleDateChange = (newValue: Dayjs | null) => {
+    setSelectedDate(newValue);
+  };
+  const handleTimeChange = (newValue: Dayjs | null) => {
+    setSelectedTime(newValue);
   };
 
+  const handlePetSelect = (petId: number) => {
+    if (petInfos) {
+      if (selectedPetId === petId) setSelectedPetId(0);
+      else setSelectedPetId(petId);
+    }
+  };
+
+  const handleDesiredStyleSelect = (style: string) => {
+    setDesiredStyle((prevStyle) => (prevStyle === style ? '' : style));
+  };
+
+  const handleRequirementsChange = (e) => {
+    setRequirements(e.target.value);
+  };
+
+  // 데이터 전달
   const handleSubmit = () => {
-    postGroomingBody(formData, {
+    const requestBody = {
+      groomerId: groomerId,
+      petId: selectedPetId,
+      address: address,
+      reservedDate: reservedDate,
+      desiredStyle: desiredStyle,
+      requirements: requirements,
+    };
+
+    postGroomingBody(requestBody, {
       onSuccess: (data) => {
         console.log('data: ', data);
         router.push({
@@ -272,7 +295,7 @@ export default function EstimateCreate() {
               name="전체 클리핑"
               src="/images/grooming_full_clipping.svg"
               onClick={() => handleDesiredStyleSelect('전체 클리핑')}
-              isSelxsected={desiredStyle === '전체 클리핑'}
+              isSelected={desiredStyle === '전체 클리핑'}
             />
             <EstimateSelectComponent
               name="전체 클리핑 + 얼굴 컷"
