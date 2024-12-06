@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { EmptyState, Tab } from '@daengle/services/estimate';
+import { EmptyState, Tab } from '@daengle/services/components';
 import { GNB, Layout, Text } from '@daengle/design-system';
 import {
   GnbChattingActive,
@@ -81,9 +81,17 @@ export default function EstimateList() {
   const cardData = data || [];
 
   const selectedPet = cardData?.petInfos?.[selectedPetIndex];
-  const estimateData =
-    selectedPet &&
-    (activeTab === '미용사' ? selectedPet.groomingEstimates : selectedPet.careEstimates);
+  const estimateData = selectedPet
+    ? activeTab === '미용사'
+      ? selectedPet.groomingEstimates?.map((item) => ({
+          ...item,
+          id: item.groomingEstimateId,
+        }))
+      : selectedPet.careEstimates?.map((item) => ({
+          ...item,
+          id: item.careEstimateId,
+        }))
+    : [];
 
   const petInfos = cardData?.petInfos || [];
   const hasOptions = !!(cardData?.petInfos && cardData.petInfos.length > 0);

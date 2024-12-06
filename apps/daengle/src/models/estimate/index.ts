@@ -11,9 +11,10 @@ export interface PetInfo {
 }
 
 export interface GroomingEstimate {
-  id: number;
+  groomingEstimateId: number;
   name: string;
   daengleMeter: number;
+  proposal: 'GENERAL' | 'DESIGNATION';
   image: string;
   shopName?: string | null;
   reservedDate: string;
@@ -21,9 +22,10 @@ export interface GroomingEstimate {
 }
 
 export interface CareEstimate {
-  id: number;
+  careEstimateId: number;
   name: string;
   daengleMeter: number;
+  proposal: 'GENERAL' | 'DESIGNATION';
   image: string;
   shopName?: string | null;
   reservedDate: string;
