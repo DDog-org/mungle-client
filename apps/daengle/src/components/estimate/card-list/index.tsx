@@ -25,9 +25,10 @@ interface UserEstimateContent {
 
 interface Props {
   estimateData: UserEstimateContent[];
+  isDesignation: boolean;
 }
 
-export function CardList({ estimateData }: Props): JSX.Element {
+export function CardList({ estimateData, isDesignation }: Props): JSX.Element {
   const router = useRouter();
 
   return (
@@ -39,7 +40,10 @@ export function CardList({ estimateData }: Props): JSX.Element {
               <Text css={nameStyle} typo="subtitle3">
                 {data.name}
               </Text>
-              <div css={distanceStyle(data.daengleMeter)}>🐾 {data.daengleMeter}m</div>
+              <div css={distanceStyle(data.daengleMeter)}>
+                {/* 상태 확인 데이터 추후 필요한 부분 */}
+                {isDesignation ? `진행 중` : `🐾 ${data.daengleMeter}m`}
+              </div>
             </div>
             <div css={cardContent}>
               <Text typo="body11" color="gray400">
