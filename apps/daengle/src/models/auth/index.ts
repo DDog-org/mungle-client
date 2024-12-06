@@ -115,6 +115,7 @@ export interface PostUserPetRequestBody {
 export type PostUserPetResponse = string;
 
 export interface PostUserPetInfoBody {
+  id: number;
   image: string;
   name: string;
   birth: number;

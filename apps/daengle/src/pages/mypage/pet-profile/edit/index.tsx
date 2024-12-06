@@ -41,6 +41,7 @@ import {
   PET_WEIGHT,
 } from '~/pages/mypage/constants';
 import { useGetBreedListQuery, usePostUserPetInfoMutation } from '~/queries';
+import { useEffect, useState } from 'react';
 
 export default function DogEditProfile() {
   const { data: breeds } = useGetBreedListQuery();
@@ -57,22 +58,45 @@ export default function DogEditProfile() {
     formState: { errors, isValid },
   } = useForm<PetProfileEditType>({
     mode: 'onChange',
+    defaultValues: {
+      significantTags: [],
+      dislikeParts: [],
+    },
   });
 
-  const onSubmit = async (formData) => {
-    const body = {
-      ...formData,
-      dislikeParts: formData.dislikeParts || [],
-      significantTags: formData.significantTags || [],
-    };
-    try {
-      await postUserPetInfo(body);
-      alert('프로필이 수정되었습니다.');
-    } catch (error) {
-      console.error(error);
-      alert('수정 중 오류가 발생했습니다.');
-    }
+  const [selectedParts, setSelectedParts] = useState<string[]>([]);
+
+  const onSubmit = (data: PetProfileEditType) => {
+    console.log('폼 상태:', watch());
+    console.log('제출된 데이터:', data);
   };
+
+  const handleEditButtonClick = async () => {
+    console.log('폼 상태:', watch()); // 폼 상태 확인
+    console.log('isValid==>', isValid);
+    if (!isValid) return;
+    const response = await postUserPetInfo({
+      id: 1,
+      image: '',
+      name: watch('name'),
+      birth: Number(watch('birth')),
+      gender: watch('gender'),
+      breed: watch('breed'),
+      isNeutered: watch('isNeutered') === 'true',
+      weight: watch('weight'),
+      groomingExperience: false,
+      isBite: false,
+      dislikeParts: [],
+      significantTags: [], // 특이사항 태그 (옵션)
+      significant: '', // 기타 특이사항 설명 (필요 시 추가)
+    });
+    console.log('response==>', response);
+  };
+
+  useEffect(() => {
+    console.log(selectedParts);
+  }, [selectedParts]);
+
   return (
     <Layout isAppBarExist={true}>
       <AppBar />

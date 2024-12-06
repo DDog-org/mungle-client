@@ -71,5 +71,5 @@ export const postUserPet = async (body: PostUserPetRequestBody) => {
 };
 
 export const postUserPetInfo = async (body: PostUserPetInfoBody) => {
-  return await api.post<PostUserPetInfoResponse>('/user/pet-info', body);
+  return await api.patch<PostUserPetInfoResponse>('/user/pet-info', body);
 };

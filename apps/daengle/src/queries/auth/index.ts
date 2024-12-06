@@ -130,9 +130,13 @@ export const usePostUserPetInfoMutation = () => {
   return useMutation({
     mutationKey: [QUERY_KEYS.POST_USER_PET_INFO],
     mutationFn: async (body: PostUserPetInfoBody) => {
+      console.log('API 호출 시작:', body);
       try {
-        return await postUserPetInfo(body);
+        const response = await postUserPetInfo(body);
+        console.log('API 호출 성공:', response);
+        return response;
       } catch (error) {
+        console.error('API 호출 실패:', error);
         throw new Error(String(error));
       }
     },
