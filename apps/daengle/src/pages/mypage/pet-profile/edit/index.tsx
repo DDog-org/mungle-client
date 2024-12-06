@@ -65,37 +65,69 @@ export default function DogEditProfile() {
   });
 
   const [selectedParts, setSelectedParts] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  const onSubmit = (data: PetProfileEditType) => {
-    console.log('폼 상태:', watch());
-    console.log('제출된 데이터:', data);
-  };
+  // const handleEditButtonClick = async () => {
+  //   console.log('폼 상태:', watch()); // 폼 상태 확인
+  //   console.log('isValid==>', isValid);
+  //   if (!isValid) return;
+  //   const response = await postUserPetInfo({
+  //     id: 1,
+  //     image: '',
+  //     name: watch('name'),
+  //     birth: Number(watch('birth')),
+  //     gender: watch('gender'),
+  //     breed: watch('breed'),
+  //     isNeutered: watch('isNeutered') === 'true',
+  //     weight: watch('weight'),
+  //     groomingExperience: false,
+  //     isBite: false,
+  //     dislikeParts: setSelectedParts,
+  //     significantTags: setSelectedTags, // 특이사항 태그 (옵션)
+  //     significant: '', // 기타 특이사항 설명 (필요 시 추가)
+  //   });
+  //   console.log('response==>', response);
+  // };
 
-  const handleEditButtonClick = async () => {
-    console.log('폼 상태:', watch()); // 폼 상태 확인
-    console.log('isValid==>', isValid);
+  const onSubmit = async (data: PetProfileEditType) => {
     if (!isValid) return;
-    const response = await postUserPetInfo({
-      id: 1,
-      image: '',
+
+    const payload = {
+      id: 1, // ID는 예시 값으로 사용, 필요시 동적으로 설정
+      image: '', // 이미지 URL
       name: watch('name'),
       birth: Number(watch('birth')),
       gender: watch('gender'),
       breed: watch('breed'),
       isNeutered: watch('isNeutered') === 'true',
       weight: watch('weight'),
-      groomingExperience: false,
-      isBite: false,
-      dislikeParts: [],
-      significantTags: [], // 특이사항 태그 (옵션)
-      significant: '', // 기타 특이사항 설명 (필요 시 추가)
-    });
-    console.log('response==>', response);
+      groomingExperience: false, // 기본값 설정
+      isBite: false, // 기본값 설정
+      dislikeParts: selectedParts, // 상태로 관리 중인 싫어하는 부위
+      significantTags: selectedTags, // 상태로 관리 중인 특이사항 태그
+      significant: '', // 특이사항 입력
+    };
+
+    console.log('보낼 데이터:', payload);
+    try {
+      const response = await postUserPetInfo(payload);
+      console.log('API 응답:', response);
+      alert('프로필이 성공적으로 저장되었습니다!');
+    } catch (error) {
+      console.error('API 호출 중 에러:', error);
+      alert('프로필 저장 중 에러가 발생했습니다. 다시 시도해 주세요.');
+    }
   };
 
+  // useEffect(() => {
+  //   // console.log('싫어하는 부위=>', selectedParts);
+  //   // console.log('특이사항=>', selectedTags);
+  //   console.log('isValid 상태:', isValid);
+  //   console.log('유효성 검사 오류:', errors);
+  // }, [isValid, errors]);
   useEffect(() => {
-    console.log(selectedParts);
-  }, [selectedParts]);
+    console.log('현재 significantTags:', watch('significantTags'));
+  }, [watch('significantTags')]);
 
   return (
     <Layout isAppBarExist={true}>

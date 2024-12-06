@@ -125,8 +125,8 @@ export interface PostUserPetInfoBody {
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
   groomingExperience: Boolean;
   isBite: Boolean;
-  dislikeParts: DislikeParts[];
-  significantTags: SignificantTags[];
+  dislikeParts: string[];
+  significantTags: string[];
   significant: string;
 }
 

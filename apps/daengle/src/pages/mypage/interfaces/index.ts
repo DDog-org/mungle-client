@@ -19,8 +19,8 @@ export interface DislikeParts {
   partName: string;
 }
 export interface SignificantTags {
-  tag: string;
   tagName: string;
+  tag: string;
 }
 
 export interface PetProfileCreateFormType {

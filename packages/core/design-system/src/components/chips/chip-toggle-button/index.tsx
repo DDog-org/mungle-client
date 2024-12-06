@@ -7,6 +7,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   isSelected?: boolean;
   itemValue?: string;
   setSelectedParts?: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedTags?: React.Dispatch<React.SetStateAction<string[]>>;
   children: ReactNode;
 }
 
@@ -16,6 +17,7 @@ export function ChipToggleButton({
   itemValue,
   isSelected = false,
   setSelectedParts,
+  setSelectedTags,
   children,
   ...props
 }: Props) {
@@ -28,6 +30,14 @@ export function ChipToggleButton({
       setSelectedParts((prev) => {
         if (prev.includes(itemValue)) {
           return prev.filter((part) => part !== itemValue);
+        }
+        return [...prev, itemValue];
+      });
+    }
+    if (setSelectedTags && itemValue) {
+      setSelectedTags((prev) => {
+        if (prev.includes(itemValue)) {
+          return prev.filter((tag) => tag !== itemValue);
         }
         return [...prev, itemValue];
       });
