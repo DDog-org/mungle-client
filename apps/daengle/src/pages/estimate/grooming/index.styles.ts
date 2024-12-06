@@ -56,12 +56,10 @@ export const circle = css`
   height: 40px;
   border: 1px solid ${theme.colors.gray200};
   border-radius: 20px;
-
   cursor: pointer;
 
   :hover {
     background-color: ${theme.colors.gray100};
-
     transition: 0.3s;
   }
 `;
@@ -117,7 +115,6 @@ export const selectItem = css`
 
   :hover {
     background-color: ${theme.colors.gray100};
-
     transition: 0.3s;
   }
 `;
