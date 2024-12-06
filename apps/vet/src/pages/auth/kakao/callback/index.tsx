@@ -20,15 +20,22 @@ export default function AuthKakaoCsallback() {
         data: { access_token },
       } = await postOauthToken(code as string);
 
-      const { isOnboarding, email, accessToken } = await postKakao({
+      const { isOnboarding, isPending, email, accessToken } = await postKakao({
         kakaoAccessToken: access_token,
       });
 
-      if (isOnboarding && email) {
+      if (isOnboarding && !isPending && email) {
         setVetInfoForm({ email });
         router.replace(ROUTES.ONBOARDING);
-      } else {
-        localStorage.setItem('accessToken', accessToken ?? '');
+        return;
+      }
+
+      if (!isOnboarding && isPending && email) {
+        router.push(ROUTES.ONBOARDING_PENDING);
+      }
+
+      if (!isOnboarding && !isPending && !email && accessToken) {
+        localStorage.setItem('accessToken', accessToken);
         router.push(ROUTES.HOME);
       }
     };
