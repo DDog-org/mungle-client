@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { EmptyState, Tab } from '@daengle/services/components';
-import { GNB, Layout, Text } from '@daengle/design-system';
+import { GNB, Layout, Text, TextButton } from '@daengle/design-system';
 import {
   GnbChattingActive,
   GnbChattingInactive,
@@ -13,8 +13,16 @@ import {
   GnbReservationInactive,
   GnbEstimateActive,
   GnbEstimateInactive,
+  SelectUnfoldInactive,
 } from '@daengle/design-system/icons';
-import { wrapper, headerContainer } from './index.styles';
+import {
+  wrapper,
+  headerContainer,
+  modalOverlay,
+  modalContent,
+  line,
+  modalItem,
+} from './index.styles';
 import { useDaengleEstimateListQuery } from '~/queries';
 import { CardList, OptionSelector, ProfileSelector } from '~/components/estimate';
 
@@ -72,6 +80,8 @@ export const MENUS = [
 export default function EstimateList() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<string>('미용사');
+  const [isDesignation, setIsDesignation] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPetIndex, setSelectedPetIndex] = useState(0);
   const { data, isLoading, error } = useDaengleEstimateListQuery();
 
@@ -82,24 +92,42 @@ export default function EstimateList() {
 
   const selectedPet = cardData?.petInfos?.[selectedPetIndex];
   const estimateData = selectedPet
-    ? activeTab === '미용사'
-      ? selectedPet.groomingEstimates?.map((item) => ({
-          ...item,
-          id: item.groomingEstimateId,
-        }))
-      : selectedPet.careEstimates?.map((item) => ({
-          ...item,
-          id: item.careEstimateId,
-        }))
+    ? (() => {
+        const groomingData =
+          selectedPet?.groomingEstimates
+            ?.filter((item) => (isDesignation ? item.proposal === 'DESIGNATION' : true))
+            .map((item) => ({
+              ...item,
+              id: item.groomingEstimateId,
+            })) || [];
+
+        const careData =
+          selectedPet?.careEstimates
+            ?.filter((item) => (isDesignation ? item.proposal === 'DESIGNATION' : true))
+            .map((item) => ({
+              ...item,
+              id: item.careEstimateId,
+            })) || [];
+
+        return activeTab === '미용사' ? groomingData : careData;
+      })()
     : [];
 
   const petInfos = cardData?.petInfos || [];
   const hasOptions = !!(cardData?.petInfos && cardData.petInfos.length > 0);
 
+  const handleModal = () => {
+    setIsModalOpen((prev) => !prev);
+  };
+
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
 
+  const handleTogglePage = (isDesignationPage: boolean) => {
+    setIsDesignation(isDesignationPage);
+    handleModal();
+  };
   const handleNavigate = (path: string) => {
     // 임시 경로
     router.push(path);
@@ -108,9 +136,28 @@ export default function EstimateList() {
   return (
     <Layout isAppBarExist={false}>
       <div css={wrapper}>
-        <div css={headerContainer}>
-          <Text typo="title1">견적</Text>
+        <div css={headerContainer} onClick={handleModal}>
+          <Text typo="title1">{isDesignation ? '바로 예약' : '견적'}</Text>
+          <SelectUnfoldInactive width="14px" height="8px" color="black" />
         </div>
+        {isModalOpen && (
+          <>
+            <div css={modalOverlay} onClick={handleModal}></div>
+            <div css={modalContent}>
+              <TextButton onClick={() => handleTogglePage(false)}>
+                <Text typo="subtitle1" css={modalItem(isDesignation === false)}>
+                  견적
+                </Text>
+              </TextButton>
+              <div css={line}></div>
+              <TextButton onClick={() => handleTogglePage(true)}>
+                <Text typo="subtitle1" css={modalItem(isDesignation === true)}>
+                  바로 예약
+                </Text>
+              </TextButton>
+            </div>
+          </>
+        )}
         <Tab items={['미용사', '병원']} activeItem={activeTab} onChange={handleTabChange} />
         {hasOptions && (
           <div>
@@ -123,7 +170,7 @@ export default function EstimateList() {
           </div>
         )}
         {estimateData && estimateData.length > 0 ? (
-          <CardList estimateData={estimateData} />
+          <CardList estimateData={estimateData} isDesignation={isDesignation} />
         ) : (
           <EmptyState hasOptions={hasOptions} />
         )}
