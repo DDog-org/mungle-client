@@ -25,9 +25,9 @@
       "import": "./src/utils/index.ts",
       "require": "./src/utils/index.ts"
     },
-    "./estimate": {
-      "import": "./src/estimate/index.ts",
-      "require": "./src/estimate/index.ts"
+    "./components": {
+      "import": "./src/components/index.ts",
+      "require": "./src/components/index.ts"
     }
   },
   "type": "module",
