@@ -14,3 +14,4 @@ export * from './ImageUploadPlus';
 export * from './RegistrationPending';
 export * from './SelectUnfoldActive';
 export * from './SelectUnfoldInactive';
+export * from './TransmissionComplete';
