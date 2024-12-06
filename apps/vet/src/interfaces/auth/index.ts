@@ -4,4 +4,5 @@ export interface VetInfoForm {
   address: string;
   detailAddress: string;
   licenses: File[];
+  email: string;
 }
