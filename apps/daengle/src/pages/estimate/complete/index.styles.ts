@@ -20,6 +20,5 @@ export const textSection = css`
 `;
 
 export const button = css`
-  font-weight: 400;
   cursor: pointer;
 `;
