@@ -19,9 +19,6 @@ import {
 import { ROUTES } from '~/constants/commons/routes';
 import { usePostJoinMutation } from '~/queries';
 
-// TODO: 임시 이메일
-const EMAIL = 'daengle@daengle.com';
-
 export default function GroomerInfo() {
   const router = useRouter();
   const { groomerInfoForm, setGroomerInfoForm } = useGroomerInfoFormStore();
@@ -44,7 +41,7 @@ export default function GroomerInfo() {
     if (!businessLicenses?.length || !licenses?.length) return;
 
     if (!businessLicenses || !licenses) return;
-    postJoin({ ...data, email: EMAIL, shopName: data.shopName.trim(), businessLicenses, licenses });
+    postJoin({ ...data, shopName: data.shopName.trim(), businessLicenses, licenses });
   };
 
   return (

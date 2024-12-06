@@ -9,15 +9,17 @@ export const wrapper = css`
   align-items: center;
   padding: 0 18px 0;
 `;
-export const logoImageBox = css`
-  width: 183px;
-  height: 47px;
+
+export const logoWrapper = css`
   margin: 0 0 142px;
 `;
-export const buttonBox = css`
-  position: absolute;
-  bottom: 302px;
+
+export const loginWrapper = css`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
+
 export const buttonTextBox = css`
   font-size: 14px;
   font-weight: 500;

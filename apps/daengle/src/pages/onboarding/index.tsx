@@ -8,7 +8,7 @@ import { STEPS } from '~/constants/onboarding';
 export default function Onboarding() {
   const router = useRouter();
 
-  const getCurrentStep = () => router.query.step as string | undefined;
+  const getCurrentStep = () => router.query.step as string;
 
   const onSetStep = (newStep: string) => {
     router.push({

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { api } from '~/apis';
 import {
   GetBreedListResponse,
@@ -7,7 +8,27 @@ import {
   PostJoinWithoutPetResponse,
   PostJoinWithPetRequestBody,
   PostJoinWithPetResponse,
+  PostKakaoRequestBody,
+  PostKakaoResponse,
 } from '~/models';
+
+export const postOauthToken = async (code: string) => {
+  return await axios.post('https://kauth.kakao.com/oauth/token', null, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    params: {
+      grant_type: 'authorization_code',
+      client_id: process.env.NEXT_PUBLIC_REST_API_KEY,
+      redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URI,
+      code: code,
+    },
+  });
+};
+
+export const postKakao = async (body: PostKakaoRequestBody) => {
+  return await api.post<PostKakaoResponse>('/user/kakao', body);
+};
 
 export const postJoinWithoutPet = async (body: PostJoinWithoutPetRequestBody) => {
   return await api.post<PostJoinWithoutPetResponse>('/user/join-without-pet', body);
@@ -18,7 +39,7 @@ export const postAvailableNickname = async (body: PostAvailableNicknameRequestBo
 };
 
 export const getBreedList = async () => {
-  return await api.get<GetBreedListResponse>('/user/breed-list');
+  return await api.get<GetBreedListResponse>('/user/breed/list');
 };
 
 export const postJoinWithPet = async (body: PostJoinWithPetRequestBody) => {

@@ -1,6 +1,6 @@
 import { PostJoinWithoutPetRequestBody } from '~/models';
 
-export type UserInfoFormFormType = Omit<PostJoinWithoutPetRequestBody, 'email' | 'role'>;
+export interface UserInfoFormFormType extends PostJoinWithoutPetRequestBody {}
 
 export interface UserInfoFormType {
   form: UserInfoFormFormType;
