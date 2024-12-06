@@ -16,7 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
-import EstimateSelectComponent from '~/components/estimate';
+import EstimateSelectComponent from '~/components/estimate/EstimateSelectComponent';
 
 export default function EstimateCreate() {
   const router = useRouter();
