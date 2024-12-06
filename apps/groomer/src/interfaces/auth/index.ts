@@ -6,4 +6,5 @@ export interface GroomerInfoForm {
   detailAddress: string;
   businessLicenses: File[];
   licenses: File[];
+  email: string;
 }

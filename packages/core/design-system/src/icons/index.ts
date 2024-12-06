@@ -1,4 +1,5 @@
 export * from './AppBarBack';
+export * from './AuthLogo';
 export * from './ButtonTextButtonArrow';
 export * from './GnbChattingActive';
 export * from './GnbChattingInactive';
