@@ -91,6 +91,7 @@ export default function EstimateList() {
   const cardData = data || [];
 
   const selectedPet = cardData?.petInfos?.[selectedPetIndex];
+  const type = activeTab === '미용사' ? 'grooming' : 'care';
   const estimateData = selectedPet
     ? (() => {
         const groomingData =
@@ -114,7 +115,15 @@ export default function EstimateList() {
     : [];
 
   const petInfos = cardData?.petInfos || [];
-  const hasOptions = !!(cardData?.petInfos && cardData.petInfos.length > 0);
+  const hasOptions = !!(
+    cardData?.petInfos &&
+    cardData.petInfos.length > 0 &&
+    cardData.petInfos.some(
+      (petInfo) =>
+        (petInfo.groomingEstimates && petInfo.groomingEstimates.length > 0) ||
+        (petInfo.careEstimates && petInfo.careEstimates.length > 0)
+    )
+  );
 
   const handleModal = () => {
     setIsModalOpen((prev) => !prev);
@@ -131,6 +140,10 @@ export default function EstimateList() {
   const handleNavigate = (path: string) => {
     // 임시 경로
     router.push(path);
+  };
+
+  const handleCardClick = (itemId: number) => {
+    router.push(`/estimate/detail/${itemId}?type=${type}`);
   };
 
   return (
@@ -159,20 +172,22 @@ export default function EstimateList() {
           </>
         )}
         <Tab items={['미용사', '병원']} activeItem={activeTab} onChange={handleTabChange} />
-        {hasOptions && (
-          <div>
+        {estimateData && estimateData.length > 0 ? (
+          <>
             <ProfileSelector
               petInfos={petInfos}
               selectedPetIndex={selectedPetIndex}
               onSelectPet={setSelectedPetIndex}
             />
             <OptionSelector />
-          </div>
-        )}
-        {estimateData && estimateData.length > 0 ? (
-          <CardList estimateData={estimateData} isDesignation={isDesignation} />
+            <CardList
+              estimateData={estimateData}
+              isDesignation={isDesignation}
+              onCardClick={handleCardClick}
+            />
+          </>
         ) : (
-          <EmptyState hasOptions={hasOptions} />
+          <EmptyState />
         )}
         <GNB menus={MENUS} activePath={PATHS.ESTIMATE} onNavigate={handleNavigate} />
       </div>

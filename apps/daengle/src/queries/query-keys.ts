@@ -6,9 +6,5 @@ export const QUERY_KEYS = {
   POST_AVAILABLE_NICKNAME: ['POST_AVAILABLE_NICKNAME'],
   GET_BREED_LIST: ['GET_BREED_LIST'],
   POST_JOIN_WITH_PET: ['POST_JOIN_WITH_PET'],
-<<<<<<< HEAD
-} as const;
-=======
   GET_DAENGLE_ESTIMATE_LIST: ['GET_DAENGLE_ESTIMATE_LIST'],
-};
->>>>>>> b0dae5e (feature(daengle): 사용자 견적서 리스트 API 연동)
+} as const;
