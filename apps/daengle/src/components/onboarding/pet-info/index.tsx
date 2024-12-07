@@ -1,8 +1,8 @@
 import { ChipRadio, CTAButton, Input, Select, Text } from '@daengle/design-system';
 import { Controller, useForm } from 'react-hook-form';
-import { USER_ROLE } from '~/constants/commons/role';
 import { useValidatePetForm } from '~/hooks/onboarding';
 import { PetInfoFormType } from '~/interfaces/auth';
+import { useUserInfoFormStore } from '~/stores/auth';
 import {
   BIRTH_YEAR_OPTIONS,
   PET_GENDER,
@@ -14,11 +14,7 @@ import {
   usePostJoinWithoutPetMutation,
   usePostJoinWithPetMutation,
 } from '~/queries';
-import { useUserInfoFormStore } from '~/store/auth/user-info-form';
 import { itemWrapper, radioGroup, section, weightWrapper, wrapper } from './index.styles';
-
-// TODO: 임시 이메일
-const EMAIL = 'daengle@daengle.com';
 
 interface Props {
   onNext?: () => void;
@@ -49,8 +45,6 @@ export function PetInfo({ onNext }: Props) {
 
     await postJoinWithPet({
       ...userInfoForm.form,
-      role: USER_ROLE,
-      email: EMAIL,
       ...watch(),
       petBirth: Number(watch('petBirth')),
       isNeutered: watch('isNeutered') === 'true',
@@ -190,9 +184,7 @@ export function PetInfo({ onNext }: Props) {
         <CTAButton
           type="submit"
           secondaryButtonLabel="건너뛰기"
-          onSecondaryButtonClick={() =>
-            postJoinWithoutPet({ ...userInfoForm.form, role: USER_ROLE, email: EMAIL })
-          }
+          onSecondaryButtonClick={() => postJoinWithoutPet({ ...userInfoForm.form })}
           disabled={!isValid}
         >
           시작하기

@@ -15,6 +15,7 @@ export const useGroomerInfoFormStore = create<GroomerInfoFormType>((set) => ({
     detailAddress: '',
     businessLicenses: [],
     licenses: [],
+    email: '',
   },
   setGroomerInfoForm: (item: Partial<GroomerInfoForm>) =>
     set((prev) => ({

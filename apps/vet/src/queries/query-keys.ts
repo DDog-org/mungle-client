@@ -1,3 +1,4 @@
 export const QUERY_KEYS = {
+  POST_KAKAO: ['POST_KAKAO'],
   POST_VET_JOIN: ['POST_VET_JOIN'],
 };

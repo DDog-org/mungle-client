@@ -1,8 +1,16 @@
-type Role = 'DAENGLE' | 'GROOMER' | 'VET' | 'ADMIN';
+export interface PostKakaoRequestBody {
+  kakaoAccessToken: string;
+}
+
+export interface PostKakaoResponse {
+  isOnboarding: boolean;
+  email: string | null;
+  grantType: 'Bearer' | null;
+  accessToken: string | null;
+}
 
 export interface PostJoinWithoutPetRequestBody {
   email: string;
-  role: Role;
   username: string;
   phoneNumber: string;
   nickname: string;

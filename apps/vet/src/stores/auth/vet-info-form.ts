@@ -13,6 +13,7 @@ export const useVetInfoFormStore = create<VetInfoFormType>((set) => ({
     address: '',
     detailAddress: '',
     licenses: [],
+    email: '',
   },
   setVetInfoForm: (item: Partial<VetInfoForm>) =>
     set((prev) => ({
