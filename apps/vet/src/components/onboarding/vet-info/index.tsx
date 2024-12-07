@@ -14,7 +14,7 @@ import { address, certificatesWrapper, imageInputWrapper, section, wrapper } fro
 export default function VetInfo() {
   const router = useRouter();
   const { vetInfoForm, setVetInfoForm } = useVetInfoFormStore();
-  const { mutate: postVetJoin } = usePostVetJoinMutation();
+  const { mutateAsync: postVetJoin } = usePostVetJoinMutation();
   const validation = useValidateOnboardingForm();
 
   const {
@@ -29,7 +29,9 @@ export default function VetInfo() {
   const onSubmit = async (data: VetInfoForm) => {
     const licenses = await uploadToS3(data.licenses);
     if (!licenses?.length) return;
-    postVetJoin({ ...data, licenses });
+
+    await postVetJoin({ ...data, licenses });
+    router.replace(ROUTES.ONBOARDING_PENDING);
   };
 
   return (

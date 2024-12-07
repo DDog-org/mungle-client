@@ -22,7 +22,7 @@ import { usePostJoinMutation } from '~/queries';
 export default function GroomerInfo() {
   const router = useRouter();
   const { groomerInfoForm, setGroomerInfoForm } = useGroomerInfoFormStore();
-  const { mutate: postJoin } = usePostJoinMutation();
+  const { mutateAsync: postJoin } = usePostJoinMutation();
   const validation = useValidateOnboardingForm();
 
   const {
@@ -40,7 +40,8 @@ export default function GroomerInfo() {
 
     if (!businessLicenses?.length || !licenses?.length) return;
 
-    postJoin({ ...data, shopName: data.shopName.trim(), businessLicenses, licenses });
+    await postJoin({ ...data, shopName: data.shopName.trim(), businessLicenses, licenses });
+    router.replace(ROUTES.ONBOARDING_PENDING);
   };
 
   return (
