@@ -10,11 +10,11 @@ export const wrapper = ({ disabled }: { disabled: boolean }) => css`
     cursor: default;
   `}
   padding: 9px 12px;
+  border: 0.7px solid ${disabled ? theme.colors.gray400 : theme.colors.black};
   border-radius: 15px;
 
-  color: ${theme.colors.black};
   background: ${theme.colors.white};
+  color: ${theme.colors.black};
 
-  border: 0.7px solid ${disabled ? theme.colors.gray400 : theme.colors.black};
   ${theme.typo.body12};
 `;

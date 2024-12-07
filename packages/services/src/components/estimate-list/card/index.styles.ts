@@ -5,9 +5,13 @@ export const wrapper = css`
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  padding: 20px 24px;
+
   margin-bottom: 12px;
-  background-color: #ffffff;
+  padding: 20px 24px;
+
+  background-color: #fff;
+
+  cursor: pointer;
   border-top-right-radius: 65.6px;
   border-bottom-right-radius: 65.6px;
 `;
@@ -21,9 +25,9 @@ export const contentContainer = css`
 
 export const detailContainer = css`
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const cardHeader = css`
@@ -52,15 +56,17 @@ export const type = css`
 `;
 
 export const general = css`
+  border: ${theme.colors.green200} solid 0.5px;
+
   background-color: ${theme.colors.green100};
   color: ${theme.colors.green200};
-  border: ${theme.colors.green200} solid 0.5px;
 `;
 
 export const designated = css`
+  border: ${theme.colors.yellow200} solid 0.5px;
+
   background-color: ${theme.colors.yellow100};
   color: ${theme.colors.yellow200};
-  border: ${theme.colors.yellow200} solid 0.5px;
 `;
 
 export const specials = css`

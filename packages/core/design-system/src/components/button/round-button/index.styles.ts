@@ -97,8 +97,8 @@ export const buttonVariant = ({
   `}
   ${variant === 'green' &&
   css`
-    color: ${theme.colors.white};
     background: ${theme.colors.greenGradient100};
+    color: ${theme.colors.white};
   `}
   ${variant === 'ghost' &&
   css`

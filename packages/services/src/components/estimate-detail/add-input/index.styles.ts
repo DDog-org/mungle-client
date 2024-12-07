@@ -8,10 +8,11 @@ export const addTitle = css`
 export const inputSection = css`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 0px 18px;
+  justify-content: center;
+
   margin-bottom: 14px;
+  padding: 0 18px;
 `;
 
 export const textarea = css`
@@ -19,13 +20,16 @@ export const textarea = css`
   min-height: 80px;
   padding: 8px;
   ${theme.typo.body4}
-  background-color: #f0f0f0;
   border-radius: 10px;
+
+  background-color: #f0f0f0;
+
   resize: none;
   outline: none;
 
   &:focus {
     border-color: #2563eb;
-    box-shadow: 0 0 3px rgba(37, 99, 235, 0.5);
+
+    box-shadow: 0 0 3px rgb(37 99 235 / 50%);
   }
 `;
