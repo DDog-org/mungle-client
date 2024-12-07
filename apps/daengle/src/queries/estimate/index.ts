@@ -7,6 +7,8 @@ import {
   postUserEstimateGroomerUserInfo,
   postUserEstimateCare,
   postUserEstimateVetUserInfo,
+  getEstimateGroomingDetail,
+  getEstimateCareDetail,
 } from '~/apis';
 
 import {
@@ -15,6 +17,10 @@ import {
   PostUserEstimateGroomerUserInfoRequestBody,
   PostUserEstimateCareRequestBody,
   PostUserEstimateVetUserInfoRequestBody,
+  GroomerDetailResponse,
+  CareDetailResponse,
+  GetEstimateGroomingDetailParams,
+  GetEstimateCareDetailParams,
 } from '~/models/estimate';
 
 export const useUserEstimateListQuery = () => {
@@ -80,5 +86,35 @@ export const usePostUserEstimateCareMutation = () => {
         throw new Error(String(error));
       }
     },
+  });
+};
+
+export const useEstimateGroomingDetailQuery = (params: GetEstimateGroomingDetailParams) => {
+  return useQuery<GroomerDetailResponse>({
+    queryKey: [QUERY_KEYS.GET_DAENGLE_ESTIMATE_GROOMER_DETAIL, params],
+    queryFn: async () => {
+      try {
+        const data = await getEstimateGroomingDetail(params);
+        return data;
+      } catch (error) {
+        throw new Error('데이터 로딩에 실패했습니다.');
+      }
+    },
+    enabled: !!params,
+  });
+};
+
+export const useEstimateCareDetailQuery = (params: GetEstimateCareDetailParams) => {
+  return useQuery<CareDetailResponse>({
+    queryKey: [QUERY_KEYS.GET_DAENGLE_ESTIMATE_VET_DETAIL, params],
+    queryFn: async () => {
+      try {
+        const data = await getEstimateCareDetail(params);
+        return data;
+      } catch (error) {
+        throw new Error('데이터 로딩에 실패했습니다.');
+      }
+    },
+    enabled: !!params,
   });
 };

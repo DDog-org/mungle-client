@@ -1,21 +1,27 @@
+import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
 `;
 
 export const zigzagContainer = css`
-  margin: 0 14px;
   overflow: hidden;
+
+  margin: 0 14px;
 `;
 
 export const zigzag = css`
+  transform: translateX(-14px);
+
   width: calc(100% + 28px);
   height: 16px;
+
   background-color: white;
   clip-path: polygon(
     0% 100%,
@@ -50,14 +56,17 @@ export const zigzag = css`
     97.1429% 100%,
     100% 100%
   );
-  transform: translateX(-14px);
   box-sizing: border-box;
 `;
 
 export const zigzagUpsideDown = css`
+  transform: translateX(-14px);
+
   width: calc(100% + 28px);
   height: 16px;
+
   background-color: white;
+  box-shadow: 0 4px 10px 0 rgb(0 0 0 / 5%);
   clip-path: polygon(
     0% 0%,
     2.8571% 0%,
@@ -91,7 +100,12 @@ export const zigzagUpsideDown = css`
     97.1429% 0%,
     100% 0%
   );
-  transform: translateX(-14px);
-  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
+`;
+
+export const space = css`
+  margin: 0 14px;
+  padding-bottom: 101px;
+
+  background-color: ${theme.colors.white};
 `;

@@ -10,6 +10,10 @@ import {
   PostUserEstimateCareResponse,
   PostUserEstimateVetUserInfoRequestBody,
   PostUserEstimateVetUserInfoResponse,
+  GroomerDetailResponse,
+  CareDetailResponse,
+  GetEstimateGroomingDetailParams,
+  GetEstimateCareDetailParams,
 } from '~/models/estimate';
 
 export const getUserEstimateList = async () => {
@@ -35,4 +39,12 @@ export const postUserEstimateVetUserInfo = async (body: PostUserEstimateVetUserI
 
 export const postUserEstimateCare = async (body: PostUserEstimateCareRequestBody) => {
   return await api.post<PostUserEstimateCareResponse>('/user/estimate/care', body);
+};
+
+export const getEstimateGroomingDetail = async (params: GetEstimateGroomingDetailParams) => {
+  return await api.get<GroomerDetailResponse>(`/user/estimate/${params}/grooming-detail`);
+};
+
+export const getEstimateCareDetail = async (params: GetEstimateCareDetailParams) => {
+  return await api.get<CareDetailResponse>(`/user/estimate/${params}/care-detail`);
 };
