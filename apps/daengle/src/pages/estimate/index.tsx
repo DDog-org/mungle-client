@@ -91,6 +91,7 @@ export default function EstimateList() {
   const cardData = data || [];
 
   const selectedPet = cardData?.petInfos?.[selectedPetIndex];
+  const type = activeTab === '미용사' ? 'grooming' : 'care';
   const estimateData = selectedPet
     ? (() => {
         const groomingData =
@@ -133,6 +134,10 @@ export default function EstimateList() {
     router.push(path);
   };
 
+  const handleCardClick = (itemId: number) => {
+    router.push(`/estimate/detail/${itemId}?type=${type}`);
+  };
+
   return (
     <Layout isAppBarExist={false}>
       <div css={wrapper}>
@@ -170,7 +175,11 @@ export default function EstimateList() {
           </div>
         )}
         {estimateData && estimateData.length > 0 ? (
-          <CardList estimateData={estimateData} isDesignation={isDesignation} />
+          <CardList
+            estimateData={estimateData}
+            isDesignation={isDesignation}
+            onCardClick={handleCardClick}
+          />
         ) : (
           <EmptyState hasOptions={hasOptions} />
         )}

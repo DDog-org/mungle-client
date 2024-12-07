@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { Text, TextButton } from '@daengle/design-system';
 import {
   wrapper,
@@ -26,16 +25,15 @@ interface UserEstimateContent {
 interface Props {
   estimateData: UserEstimateContent[];
   isDesignation: boolean;
+  onCardClick?: (id: number) => void;
 }
 
-export function CardList({ estimateData, isDesignation }: Props): JSX.Element {
-  const router = useRouter();
-
+export function CardList({ estimateData, isDesignation, onCardClick }: Props): JSX.Element {
   return (
     <div css={wrapper}>
       {estimateData?.map((data) => (
         <div key={data.id} css={card}>
-          <div css={contentContainer} onClick={() => router.push('/temporary-route')}>
+          <div css={contentContainer} onClick={() => onCardClick?.(data.id)}>
             <div css={cardHeader}>
               <Text css={nameStyle} typo="subtitle3">
                 {data.name}
@@ -57,7 +55,7 @@ export function CardList({ estimateData, isDesignation }: Props): JSX.Element {
                   <TextButton
                     key={`${data.id}-${index}`}
                     css={tagButtonStyle}
-                    onClick={() => router.push('/temporary-route')}
+                    onClick={() => onCardClick?.(data.id)}
                   >
                     #{tag}
                   </TextButton>
@@ -69,7 +67,7 @@ export function CardList({ estimateData, isDesignation }: Props): JSX.Element {
             src={data.image}
             alt={`${data.name} 프로필`}
             css={profileImage}
-            onClick={() => router.push('/temporary-route')}
+            onClick={() => onCardClick?.(data.id)}
           />
         </div>
       ))}
