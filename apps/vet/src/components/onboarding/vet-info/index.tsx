@@ -11,13 +11,10 @@ import { useVetInfoFormStore } from '~/stores/auth';
 import { usePostVetJoinMutation } from '~/queries';
 import { address, certificatesWrapper, imageInputWrapper, section, wrapper } from './index.styles';
 
-// TODO: 임시 이메일
-const EMAIL = 'daengle@daengle.com';
-
 export default function VetInfo() {
   const router = useRouter();
   const { vetInfoForm, setVetInfoForm } = useVetInfoFormStore();
-  const { mutate: postVetJoin } = usePostVetJoinMutation();
+  const { mutateAsync: postVetJoin } = usePostVetJoinMutation();
   const validation = useValidateOnboardingForm();
 
   const {
@@ -32,7 +29,9 @@ export default function VetInfo() {
   const onSubmit = async (data: VetInfoForm) => {
     const licenses = await uploadToS3(data.licenses);
     if (!licenses?.length) return;
-    postVetJoin({ ...data, licenses, email: EMAIL });
+
+    await postVetJoin({ ...data, licenses });
+    router.replace(ROUTES.ONBOARDING_PENDING);
   };
 
   return (

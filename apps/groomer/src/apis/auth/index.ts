@@ -22,7 +22,7 @@ export const postOauthToken = async (code: string) => {
 };
 
 export const postKakao = async (body: PostKakaoRequestBody) => {
-  return await api.post<PostKakaoResponse>('/user/kakao', body);
+  return await api.post<PostKakaoResponse>('/groomer/kakao', body);
 };
 
 export const postJoin = async (body: PostJoinRequestBody) => {

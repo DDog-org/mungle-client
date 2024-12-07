@@ -30,7 +30,7 @@ export default function AuthKakaoCallback() {
         return;
       }
 
-      if (!isOnboarding && isPending && email) {
+      if (!isOnboarding && isPending && !email) {
         router.push(ROUTES.ONBOARDING_PENDING);
       }
 

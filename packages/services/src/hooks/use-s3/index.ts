@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import { nanoid } from 'nanoid';
 import dotenv from 'dotenv';
+import { nanoid } from 'nanoid';
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 
 dotenv.config();
@@ -24,32 +23,33 @@ const s3 = new S3Client({
 });
 
 export function useS3({ targetFolderPath }: Props) {
-  const [uploadedURLs, setUploadedURLs] = useState<string[]>([]);
-
   const uploadToS3 = async (files: File[]) => {
     if (!files.length) return;
 
-    files.forEach(async (file) => {
-      const id = nanoid();
+    try {
+      const uploadPromises = files.map(async (file) => {
+        const id = nanoid();
 
-      const params = {
-        Bucket: process.env.AWS_BUCKET,
-        Key: `${targetFolderPath}/${id}`,
-        Body: file,
-        ContentType: file.type,
-      };
+        const params = {
+          Bucket: process.env.AWS_BUCKET,
+          Key: `${targetFolderPath}/${id}`,
+          Body: file,
+          ContentType: file.type,
+        };
 
-      try {
         const command = new PutObjectCommand(params);
         await s3.send(command);
-        const url = `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${`${targetFolderPath}/${id}`}`;
-        setUploadedURLs((prev) => [...prev, url]);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    });
 
-    return uploadedURLs;
+        const url = `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${targetFolderPath}/${id}`;
+        return url;
+      });
+
+      const urls = await Promise.all(uploadPromises);
+
+      return urls;
+    } catch (error) {
+      throw new Error(String(error));
+    }
   };
 
   const deleteFromS3 = async (fileName: string) => {

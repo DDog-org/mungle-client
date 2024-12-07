@@ -22,7 +22,7 @@ import { usePostJoinMutation } from '~/queries';
 export default function GroomerInfo() {
   const router = useRouter();
   const { groomerInfoForm, setGroomerInfoForm } = useGroomerInfoFormStore();
-  const { mutate: postJoin } = usePostJoinMutation();
+  const { mutateAsync: postJoin } = usePostJoinMutation();
   const validation = useValidateOnboardingForm();
 
   const {
@@ -32,16 +32,16 @@ export default function GroomerInfo() {
     setValue,
     formState: { errors, isValid },
   } = useForm<GroomerInfoForm>({ defaultValues: { ...groomerInfoForm }, mode: 'onChange' });
-
   const { uploadToS3 } = useS3({ targetFolderPath: 'groomer/business-licenses' });
 
   const onSubmit = async (data: GroomerInfoForm) => {
     const businessLicenses = await uploadToS3(data.businessLicenses);
     const licenses = await uploadToS3(data.licenses);
+
     if (!businessLicenses?.length || !licenses?.length) return;
 
-    if (!businessLicenses || !licenses) return;
-    postJoin({ ...data, shopName: data.shopName.trim(), businessLicenses, licenses });
+    await postJoin({ ...data, shopName: data.shopName.trim(), businessLicenses, licenses });
+    router.replace(ROUTES.ONBOARDING_PENDING);
   };
 
   return (
