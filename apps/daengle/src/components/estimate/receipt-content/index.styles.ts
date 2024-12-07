@@ -4,17 +4,20 @@ import { css } from '@emotion/react';
 export const wrapper = css`
   display: flex;
   flex-direction: column;
-  padding: 18px;
-  background-color: #ffffff;
   gap: 8px;
+
   margin: -2px 14px;
+  padding: 18px;
+
+  background-color: #fff;
 `;
 
 export const line = css`
-  height: 0.5px;
-  background-color: ${theme.colors.gray200};
   width: 100%;
+  height: 0.5px;
   margin-top: 16px;
+
+  background-color: ${theme.colors.gray200};
 `;
 
 export const subtitle = css`
