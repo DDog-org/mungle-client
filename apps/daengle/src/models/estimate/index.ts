@@ -29,3 +29,11 @@ export interface CareDetailResponse {
   treatment: string;
   tags?: string[];
 }
+
+export interface GetEstimateGroomingDetailParams {
+  groomingEstimateId: number;
+}
+
+export interface GetEstimateCareDetailParams {
+  careEstimateId: number;
+}

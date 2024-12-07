@@ -1,34 +1,39 @@
 import { useQuery } from '@tanstack/react-query';
-import { getGroomingEstimateDetail, getCareEstimateDetail } from '~/apis';
-import { GroomerDetailResponse, CareDetailResponse } from '~/models';
+import { getEstimateGroomingDetail, getEstimateCareDetail } from '~/apis';
+import {
+  GroomerDetailResponse,
+  CareDetailResponse,
+  GetEstimateGroomingDetailParams,
+  GetEstimateCareDetailParams,
+} from '~/models';
 import { QUERY_KEYS } from '~/queries/query-keys';
 
-export const useGroomerDetailQuery = (groomingEstimateId: number) => {
+export const useEstimateGroomingDetailQuery = (params: GetEstimateGroomingDetailParams) => {
   return useQuery<GroomerDetailResponse>({
-    queryKey: [QUERY_KEYS.GET_DAENGLE_ESTIMATE_GROOMER_DETAIL, groomingEstimateId],
+    queryKey: [QUERY_KEYS.GET_DAENGLE_ESTIMATE_GROOMER_DETAIL, params],
     queryFn: async () => {
       try {
-        const data = await getGroomingEstimateDetail(groomingEstimateId);
+        const data = await getEstimateGroomingDetail(params);
         return data;
       } catch (error) {
         throw new Error('데이터 로딩에 실패했습니다.');
       }
     },
-    enabled: !!groomingEstimateId,
+    enabled: !!params,
   });
 };
 
-export const useCareDetailQuery = (careEstimateId: number) => {
+export const useEstimateCareDetailQuery = (params: GetEstimateCareDetailParams) => {
   return useQuery<CareDetailResponse>({
-    queryKey: [QUERY_KEYS.GET_DAENGLE_ESTIMATE_VET_DETAIL, careEstimateId],
+    queryKey: [QUERY_KEYS.GET_DAENGLE_ESTIMATE_VET_DETAIL, params],
     queryFn: async () => {
       try {
-        const data = await getCareEstimateDetail(careEstimateId);
+        const data = await getEstimateCareDetail(params);
         return data;
       } catch (error) {
         throw new Error('데이터 로딩에 실패했습니다.');
       }
     },
-    enabled: !!careEstimateId,
+    enabled: !!params,
   });
 };

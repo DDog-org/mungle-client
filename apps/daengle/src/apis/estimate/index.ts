@@ -1,12 +1,15 @@
 import { api } from '~/apis';
-import { GroomerDetailResponse, CareDetailResponse } from '~/models';
+import {
+  GroomerDetailResponse,
+  CareDetailResponse,
+  GetEstimateGroomingDetailParams,
+  GetEstimateCareDetailParams,
+} from '~/models';
 
-export const getGroomingEstimateDetail = async (groomingEstimateId: number) => {
-  return await api.get<GroomerDetailResponse>(
-    `/user/estimate/${groomingEstimateId}/grooming-detail`
-  );
+export const getEstimateGroomingDetail = async (params: GetEstimateGroomingDetailParams) => {
+  return await api.get<GroomerDetailResponse>(`/user/estimate/${params}/grooming-detail`);
 };
 
-export const getCareEstimateDetail = async (careEstimateId: number) => {
-  return await api.get<CareDetailResponse>(`/user/estimate/${careEstimateId}/care-detail`);
+export const getEstimateCareDetail = async (params: GetEstimateCareDetailParams) => {
+  return await api.get<CareDetailResponse>(`/user/estimate/${params}/care-detail`);
 };
