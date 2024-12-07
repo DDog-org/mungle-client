@@ -114,19 +114,10 @@ export default function EstimateCreate() {
       requirements: requirements,
     };
 
-    postGroomingBody(requestBody, {
+    postEstimateGroomingBody(requestBody, {
       onSuccess: (data) => {
         console.log('data: ', data);
-        // data test
-        console.log('groomerId', groomerId);
-        console.log('petId', selectedPetId);
-        console.log('address', address);
-        console.log('reservedDate', reservedDate);
-        console.log('desiredStyle', desiredStyle);
-        console.log('requirements', requirements);
-        router.push({
-          pathname: '/estimate/complete',
-        });
+        router.push(ROUTES.ESTIMATE_FORM_COMPLETE);
       },
       onError: (error) => {
         console.error('Error submitting form:', error);
