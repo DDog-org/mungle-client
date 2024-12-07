@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 
 export const wrapper = css`
 <<<<<<< HEAD
+<<<<<<< HEAD
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -16,6 +17,14 @@ export const wrapper = css`
   flex-direction: column;
   gap: 32px;
 >>>>>>> 8b7c9de (design(daengle): 사용자 병원 견적 요청서 UI 구현 (#177))
+=======
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  width: 100%;
+  padding: 18px 18px 104px;
+>>>>>>> 6afefe8 (fix(daengle): stylint 적용)
 `;
 
 export const section = css`
@@ -31,6 +40,7 @@ export const box = css`
 
 export const dateSelect = css`
 <<<<<<< HEAD
+<<<<<<< HEAD
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -43,12 +53,21 @@ export const dateSelect = css`
 =======
   width: 100%;
   height: 36px;
+=======
+>>>>>>> 6afefe8 (fix(daengle): stylint 적용)
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   position: relative;
+<<<<<<< HEAD
 >>>>>>> 8b7c9de (design(daengle): 사용자 병원 견적 요청서 UI 구현 (#177))
+=======
+
+  width: 100%;
+  height: 36px;
+
+>>>>>>> 6afefe8 (fix(daengle): stylint 적용)
   cursor: pointer;
 `;
 
@@ -74,10 +93,15 @@ export const circle = css`
   height: 40px;
   border: 1px solid ${theme.colors.gray200};
   border-radius: 20px;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6afefe8 (fix(daengle): stylint 적용)
   cursor: pointer;
 
   :hover {
     background-color: ${theme.colors.gray100};
+
     transition: 0.3s;
   }
 `;

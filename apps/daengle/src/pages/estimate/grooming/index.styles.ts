@@ -60,6 +60,7 @@ export const circle = css`
 
   :hover {
     background-color: ${theme.colors.gray100};
+
     transition: 0.3s;
   }
 `;
@@ -74,6 +75,7 @@ export const petProfile = css`
   flex-direction: column;
   align-items: center;
   gap: 8px;
+
   cursor: pointer;
 `;
 
@@ -114,6 +116,7 @@ export const selectItem = css`
 
   :hover {
     background-color: ${theme.colors.gray100};
+
     transition: 0.3s;
   }
 `;
