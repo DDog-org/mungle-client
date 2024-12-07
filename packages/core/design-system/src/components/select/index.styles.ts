@@ -49,6 +49,6 @@ export const select = css`
   border: none;
   outline: none;
 
-  cursor: pointer;
   ${theme.typo.body10};
+  cursor: pointer;
 `;

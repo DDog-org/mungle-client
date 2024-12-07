@@ -4,6 +4,7 @@ import { theme } from '@daengle/design-system';
 export const wrapper = css`
   display: flex;
   gap: 8px;
+
   margin: 18px;
 
   button {
@@ -13,15 +14,18 @@ export const wrapper = css`
 `;
 
 export const profileButton = css`
-  padding: 4px 14px 4px 4px;
-  border-radius: 28px;
-  border: 1px solid ${theme.colors.gray200};
-  background-color: ${theme.colors.gray200};
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
+
+  padding: 4px 14px 4px 4px;
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: 28px;
+
+  background-color: ${theme.colors.gray200};
   color: ${theme.colors.gray500};
+
+  cursor: pointer;
 
   img {
     width: 32px;

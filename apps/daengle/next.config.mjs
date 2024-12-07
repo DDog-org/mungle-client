@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
   transpilePackages: ['@daengle/design-system', '@daengle/services'],
   env: {
     AWS_REGION: process.env.AWS_REGION,

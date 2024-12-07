@@ -12,6 +12,9 @@ export const wrapper = css`
 
 export const tabButton = css`
   padding: 9px 30px;
+  border: none;
+
+  background: none;
   ${theme.typo.subtitle3};
   border: none;
 
