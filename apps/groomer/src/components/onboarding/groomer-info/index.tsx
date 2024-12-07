@@ -32,15 +32,14 @@ export default function GroomerInfo() {
     setValue,
     formState: { errors, isValid },
   } = useForm<GroomerInfoForm>({ defaultValues: { ...groomerInfoForm }, mode: 'onChange' });
-
   const { uploadToS3 } = useS3({ targetFolderPath: 'groomer/business-licenses' });
 
   const onSubmit = async (data: GroomerInfoForm) => {
     const businessLicenses = await uploadToS3(data.businessLicenses);
     const licenses = await uploadToS3(data.licenses);
+
     if (!businessLicenses?.length || !licenses?.length) return;
 
-    if (!businessLicenses || !licenses) return;
     postJoin({ ...data, shopName: data.shopName.trim(), businessLicenses, licenses });
   };
 
