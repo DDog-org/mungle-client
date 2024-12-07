@@ -25,6 +25,7 @@ interface EstimateContent {
 }
 
 export function Card({
+  id,
   userImage,
   nickname,
   proposal,
@@ -32,14 +33,14 @@ export function Card({
   reservedDate,
 }: EstimateContent): JSX.Element {
   const router = useRouter();
-  const groomerEstimateId = 10;
+  const groomingEstimateId = id;
 
   const handleDetailClick = () => {
-    router.push(`/details?id=${groomerEstimateId}`);
+    router.push(`/estimate/detail/${groomingEstimateId}`);
   };
 
   return (
-    <div css={wrapper}>
+    <div css={wrapper} onClick={handleDetailClick}>
       <div css={contentContainer}>
         <div css={cardHeader}>
           <img src={userImage} alt={`${nickname} 프로필`} css={profileImage} />
