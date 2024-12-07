@@ -13,7 +13,8 @@
     "admin": "turbo dev --filter admin",
     "daengle": "turbo dev --filter daengle",
     "groomer": "turbo dev --filter groomer",
-    "vet": "turbo dev --filter vet"
+    "vet": "turbo dev --filter vet",
+    "lint:styles": "stylelint \"**/*.styles.ts\""
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
@@ -28,6 +29,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
     "prettier": "^3.2.5",
+    "stylelint": "^15.0.0",
     "turbo": "^2.3.0",
     "typescript": "5.5.4",
     "typescript-eslint": "^8.15.0"
@@ -36,7 +38,8 @@
     "*.{ts,tsx}": [
       "eslint --fix",
       "prettier --config ./.prettierrc --write -u"
-    ]
+    ],
+    "**/*.styles.ts": "stylelint --fix"
   },
   "packageManager": "pnpm@9.9.0",
   "engines": {

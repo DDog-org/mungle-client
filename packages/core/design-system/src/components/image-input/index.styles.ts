@@ -3,24 +3,26 @@ import { theme } from '../../foundation';
 
 export const wrapper = css`
   display: flex;
-  align-items: flex-end;
   flex-wrap: nowrap;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  padding: 4px 18px 0 0;
+  align-items: flex-end;
   gap: 8px;
+  overflow: scroll hidden;
+
+  padding: 4px 18px 0 0;
 `;
 
 export const uploadImageButton = css`
-  width: 70px;
-  height: 70px;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  border-radius: 7px;
-  border: 1px solid ${theme.colors.gray200};
   overflow: hidden;
+
+  width: 70px;
+  height: 70px;
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: 7px;
+
   cursor: pointer;
 
   input {
@@ -29,36 +31,42 @@ export const uploadImageButton = css`
 `;
 
 export const thumbnailImage = css`
+  flex-shrink: 0;
+
   width: 70px;
   height: 70px;
-  flex-shrink: 0;
   border-radius: 7px;
+
   background: ${theme.colors.gray100};
   object-fit: cover;
 `;
 
 export const imageWrapper = css`
   position: relative;
+
   width: 70px;
   height: 70px;
 `;
 
 export const deleteImageButton = css`
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 16px;
-  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${theme.colors.black100};
+  position: absolute;
+  top: -4px;
+  right: -4px;
+
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
+
+  background: ${theme.colors.black100};
 
   div {
     width: 8px;
     height: 1px;
-    background: ${theme.colors.white};
     border-radius: 1px;
+
+    background: ${theme.colors.white};
   }
 `;

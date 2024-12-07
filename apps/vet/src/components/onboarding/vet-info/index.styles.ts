@@ -5,6 +5,7 @@ export const wrapper = css`
   display: flex;
   flex-direction: column;
   gap: 40px;
+
   padding: 18px 18px calc(${theme.size.ctaButtonHeight} + 32px) 18px;
 `;
 
@@ -21,15 +22,17 @@ export const address = css`
 `;
 
 export const certificatesWrapper = css`
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  width: 100%;
 `;
 
 export const imageInputWrapper = css`
-  width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 11px 0 0 0;
+
+  width: 100%;
+  margin: 11px 0 0;
 `;
