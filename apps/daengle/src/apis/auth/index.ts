@@ -1,5 +1,3 @@
-import { AxiosResponse } from 'axios';
-
 import axios from 'axios';
 import { api } from '~/apis';
 import {
@@ -52,10 +50,9 @@ export const postJoinWithPet = async (body: PostJoinWithPetRequestBody) => {
 };
 
 export const getUserProfileInfo = async (): Promise<GetUserProfileInfoResponse> => {
-  const response: AxiosResponse<GetUserProfileInfoResponse> = await api.get('/modify-page');
-  return response;
+  return await api.get<GetUserProfileInfoResponse>('/user/info');
 };
 
 export const postUserProfileInfoEdit = async (body: PostUserProfileInfoEditBody) => {
-  return await api.post<PostUserProfileInfoEditResponse>('/modify-info', body);
+  return await api.patch<PostUserProfileInfoEditResponse>('/user/info', body);
 };

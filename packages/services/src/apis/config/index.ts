@@ -14,7 +14,9 @@ export const createHttpClient = ({ baseURL, role }: Props) => {
 
   // TODO: 추후 로그인 로직 변경
   api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('accessToken');
+    // const token = localStorage.getItem('accessToken');
+    // TODO: 추후 토큰 머지 후 수정
+    const token = process.env.NEXT_PUBLIC_TOKEN;
 
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
