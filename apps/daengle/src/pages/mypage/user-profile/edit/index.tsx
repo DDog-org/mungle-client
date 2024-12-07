@@ -2,20 +2,11 @@ import { useForm } from 'react-hook-form';
 import {
   wrapper,
   profileImageWrapper,
-  profileEditButtonBox,
   inputWrapper,
   nickNameWrapper,
   readOnlyTextBox,
 } from './index.styles';
-import {
-  AppBar,
-  ChipButton,
-  CTAButton,
-  Input,
-  Layout,
-  Text,
-  TextButton,
-} from '@daengle/design-system';
+import { AppBar, ChipButton, CTAButton, Input, Layout, Text } from '@daengle/design-system';
 import Image from 'next/image';
 import {
   useGetUserProfileInfoQuery,
@@ -24,18 +15,29 @@ import {
 } from '~/queries';
 import { UserProfileInfoEditForm } from './interfaces';
 import useValidateUserForm from './hooks/use-validate-user-form';
+import { useS3 } from '@daengle/services/hooks';
+import { DefaultImage } from '@daengle/design-system/icons';
+import { ImageInputBox } from '../../../../components/mypage/user-profile/edit';
 
-export default function EditProfile() {
+interface Props {
+  onChange?: (files: File[]) => void;
+  defaultValue?: File[];
+  maxLength?: number;
+}
+
+export default function EditProfile({ onChange, defaultValue = [] }: Props) {
   const { data: getUserProfileInfo } = useGetUserProfileInfoQuery();
   const { mutateAsync: postAvailableNickname } = usePostAvailableNicknameMutation();
-  const { mutateAsync: postUserProfileInfoEdit } = usePostUserProfileInfoEditMutation();
+  const { mutate: postUserProfileInfoEdit } = usePostUserProfileInfoEditMutation();
   const validation = useValidateUserForm();
 
+  const { uploadToS3, deleteFromS3 } = useS3({ targetFolderPath: 'user/profile-images' });
   const {
     handleSubmit,
     watch,
     register,
     setError,
+    setValue,
     formState: { errors, isValid },
   } = useForm<UserProfileInfoEditForm>({
     mode: 'onChange',
@@ -55,7 +57,9 @@ export default function EditProfile() {
   };
 
   const onSubmit = async (data: UserProfileInfoEditForm) => {
-    await postUserProfileInfoEdit(data);
+    const image = await uploadToS3(data.image);
+    if (!image?.length) return;
+    postUserProfileInfoEdit({ ...data, image });
   };
 
   return (
@@ -68,12 +72,15 @@ export default function EditProfile() {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div css={profileImageWrapper}>
-            <Image src="/icons/profile_image.svg" alt="프로필 이미지" width={116} height={116} />
-            <TextButton css={profileEditButtonBox}>
-              <Text typo="body4" color="gray400">
-                프로필 사진 변경하기
-              </Text>
-            </TextButton>
+            <ImageInputBox
+              onChange={(files) => setValue('image', files, { shouldValidate: true })}
+            />
+            {/* <Image src={(data.image===null) ?? DEFAULT_IMAGE_URL} alt="프로필 이미지" width={116} height={116} /> */}
+            {/* <TextButton css={profileEditButtonBox} onClick={handleImageEditClick}>
+                <Text typo="body4" color="gray400">
+                  프로필 사진 변경하기
+                </Text>
+              </TextButton> */}
           </div>
 
           <ul css={inputWrapper}>

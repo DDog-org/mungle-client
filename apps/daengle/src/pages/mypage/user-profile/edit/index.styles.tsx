@@ -1,4 +1,4 @@
-import { colors } from '@daengle/design-system';
+import { colors, theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
@@ -17,6 +17,22 @@ export const profileImageWrapper = css`
   align-items: center;
   justify-content: center;
   margin: 32px 0 40px;
+`;
+export const uploadImageButton = css`
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 7px;
+  border: 1px solid ${theme.colors.gray200};
+  overflow: hidden;
+  cursor: pointer;
+
+  input {
+    display: none;
+  }
 `;
 export const profileEditButtonBox = css`
   margin-top: 12px;

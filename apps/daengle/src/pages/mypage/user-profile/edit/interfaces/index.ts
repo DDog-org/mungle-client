@@ -1,5 +1,5 @@
 export interface UserProfileInfoEditForm {
-  image: string;
+  image: File[];
   nickname: string;
 }
 export interface UserProfileInfoEditFormType {

@@ -62,6 +62,6 @@ export interface GetUserProfileInfoResponse {
 // api 변경 수 수정 필요
 export type PostUserProfileInfoEditResponse = string;
 export interface PostUserProfileInfoEditBody {
-  image: string;
+  image: string[];
   nickname: string;
 }
