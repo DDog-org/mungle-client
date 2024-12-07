@@ -2,7 +2,7 @@ import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
-  padding: 18px 0 104px 0;
+  padding: 18px 0 104px;
 `;
 
 export const section = css`
@@ -20,25 +20,28 @@ export const subtitle = css`
 export const line = css`
   width: 100%;
   height: 8px;
-  background-color: ${theme.colors.gray100};
   margin: 24px 0;
+
+  background-color: ${theme.colors.gray100};
 `;
 
 export const reservationInfo = css`
-  border: 2px solid ${theme.colors.blue200};
-  border-radius: 21px;
-  padding: 18px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 4px;
+
   margin: 14px 0;
+  padding: 18px;
+  border: 2px solid ${theme.colors.blue200};
+  border-radius: 21px;
 `;
 
 export const schedule = css`
   display: flex;
-  margin-top: 12px;
   justify-content: space-between;
+
+  margin-top: 12px;
 `;
 
 export const dateTime = css`
@@ -58,8 +61,9 @@ export const price = css`
 export const thinLine = css`
   width: 100%;
   height: 1px;
-  background-color: ${theme.colors.black};
   margin: 14px 0;
+
+  background-color: ${theme.colors.black};
 `;
 
 export const totalPrice = css`
@@ -72,23 +76,26 @@ export const additionalInfoBox = css`
 `;
 
 export const additionalInfo = css`
-  width: 100%;
-  height: 34px;
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+
+  width: 100%;
+  height: 34px;
 `;
 
 export const additionalInfoButton = css`
-  width: 210px;
-  height: 34px;
-  background-color: ${theme.colors.gray100};
-  border-radius: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
+
+  width: 210px;
+  height: 34px;
+  border-radius: 30px;
+
+  background-color: ${theme.colors.gray100};
 `;
 
 export const arrow = css`
@@ -101,6 +108,7 @@ export const arrow = css`
 export const grayLine = css`
   width: 100%;
   height: 1px;
+
   background-color: ${theme.colors.gray100};
 `;
 
