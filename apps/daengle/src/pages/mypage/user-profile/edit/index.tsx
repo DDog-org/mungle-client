@@ -64,7 +64,6 @@ export default function EditProfile() {
     if (imageString != undefined) {
       postUserProfileInfoEdit({ ...data, image: imageString });
     }
-    console.log('imageString', imageString);
   };
 
   return (

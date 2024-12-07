@@ -21,12 +21,6 @@ export const ImageInputBox = forwardRef(({ onChange, defaultValue }: Props, ref)
     getFile: () => file,
   }));
 
-  useEffect(() => {
-    if (defaultValue && typeof defaultValue === 'string') {
-      console.log('Default value set as:', defaultValue);
-    }
-  }, [defaultValue]);
-
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
 
@@ -38,7 +32,6 @@ export const ImageInputBox = forwardRef(({ onChange, defaultValue }: Props, ref)
     if (inputRef.current) {
       inputRef.current.value = '';
     }
-    console.log('Uploaded file:', uploadedFile);
   };
 
   const openFilePicker = () => {
