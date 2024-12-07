@@ -2,7 +2,7 @@ import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
 import { wrapper, header, section, buttonGroup } from './index.styles';
 import { DesignerInfo, Receipt } from '~/components/estimate';
 import { useRouter } from 'next/router';
-import { useGroomerDetailQuery } from '~/queries';
+import { useCareDetailQuery, useGroomerDetailQuery } from '~/queries';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { CareDetailResponse, GroomerDetailResponse } from '~/models/estimate';
@@ -11,14 +11,36 @@ type DetailResponse = GroomerDetailResponse | CareDetailResponse;
 
 export default function Detail() {
   const router = useRouter();
-  const { id } = router.query;
-  const validId = Number(id) || 10;
+  const { id, type } = router.query;
+  const estimateId = Number(id);
 
-  const { data, isLoading, error } = useGroomerDetailQuery(validId);
-  if (isLoading) return <div>Loading...</div>;
-  if (error || !data) return <div>데이터를 불러오지 못했습니다.</div>;
+  const isGrooming = type === 'grooming';
+  const isCare = type === 'care';
 
-  const detailData = data as DetailResponse;
+  const groomingId = isGrooming ? estimateId : 0;
+  const careId = isCare ? estimateId : 0;
+
+  const {
+    data: groomingData,
+    isLoading: groomerLoading,
+    error: groomerError,
+  } = useGroomerDetailQuery(groomingId);
+
+  const { data: careData, isLoading: careLoading, error: careError } = useCareDetailQuery(careId);
+
+  if ((isGrooming && groomerLoading) || (isCare && careLoading)) return <div>Loading...</div>;
+  if (isGrooming && (groomerError || !groomingData))
+    return <div>데이터를 불러오지 못했습니다.</div>;
+  if (isCare && (careError || !careData)) return <div>데이터를 불러오지 못했습니다.</div>;
+
+  let detailData: DetailResponse;
+  if (isGrooming && groomingData) {
+    detailData = groomingData;
+  } else if (isCare && careData) {
+    detailData = careData;
+  } else {
+    return <div>유효하지 않은 type 입니다.</div>;
+  }
 
   const isGroomingDetail = (data: DetailResponse): data is GroomerDetailResponse =>
     'estimateId' in data;
@@ -26,10 +48,8 @@ export default function Detail() {
   const introduction = detailData.introduction || '소개글 없음';
 
   if (isGroomingDetail(detailData)) {
-    // const detailData = data || [];
-
     const designerData = {
-      id: validId,
+      id: estimateId,
       name: detailData.name,
       shopName: detailData.shopName,
       image: detailData.image,
