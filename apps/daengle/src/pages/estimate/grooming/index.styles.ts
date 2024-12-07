@@ -81,8 +81,12 @@ export const petProfile = css`
 `;
 
 export const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
+  width: 86px;
+  height: 86px;
   border: 4px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
   border-radius: 50px;
+
+  background-color: ${theme.colors.gray200};
 
   transition: border 0.2s ease;
 `;

@@ -1,22 +1,22 @@
-export interface postUserPetInfoBody {
+export interface PostEstimateGroomerUserInfoBody {
   groomerId: number;
 }
 
-export interface postUserPetsInfoResponse {
+export interface PostEstimateGroomerUserInfoResponse {
   groomerImage: string | null;
   groomerName: string;
   shopName: string;
   address: string;
-  petInfos: petInfos[];
+  petInfos: PetInfos[];
 }
 
-export interface petInfos {
+export interface PetInfos {
   petId: number;
   image: string | null;
   name: string;
 }
 
-export interface postGroomingBody {
+export interface PostEstimateGroomingBody {
   groomerId: number;
   petId: number;
   address: string;
@@ -25,6 +25,6 @@ export interface postGroomingBody {
   requirements: string;
 }
 
-export interface postGroomingResponse {
+export interface PostEstimateGroomingResponse {
   requestResult: string;
 }

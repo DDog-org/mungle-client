@@ -21,15 +21,20 @@ import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-picker
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 import EstimateSelectComponent from '~/components/estimate/EstimateSelectComponent';
-import { usePostGroomingMutation, usePostUserPetsInfoMutation } from '~/queries/estimates';
-import { petInfos, postUserPetsInfoResponse } from '~/models/daengle';
+import {
+  usePostEstimateGroomingMutation,
+  usePostEstimateGroomerUserInfoMutation,
+} from '~/queries/estimate';
+import { PetInfos, PostEstimateGroomerUserInfoResponse } from '~/models/estimate';
+import { ROUTES } from '~/constants/commons';
+import { DefaultImage } from '@daengle/design-system/icons';
 
 export default function EstimateCreate() {
   const router = useRouter();
   const [address, setAddress] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(dayjs());
-  const [petInfos, setPetInfos] = useState<petInfos[] | null>(null);
+  const [petInfos, setPetInfos] = useState<PetInfos[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
   const [desiredStyle, setDesiredStyle] = useState<string>('');
   const [requirements, setRequirements] = useState<string>('');
@@ -57,12 +62,12 @@ export default function EstimateCreate() {
     setButtonActive(isFormValid);
   }, [selectedPetId, address, selectedDate, selectedTime, desiredStyle, requirements]);
 
-  const { mutateAsync: postUserPetsInfo } = usePostUserPetsInfoMutation();
-  const { mutate: postGroomingBody } = usePostGroomingMutation();
+  const { mutateAsync: postUserPetsInfo } = usePostEstimateGroomerUserInfoMutation();
+  const { mutate: postEstimateGroomingBody } = usePostEstimateGroomingMutation();
 
   const handlePostUserPetsInfo = async () => {
     try {
-      const response: postUserPetsInfoResponse = await postUserPetsInfo({
+      const response: PostEstimateGroomerUserInfoResponse = await postUserPetsInfo({
         groomerId,
       });
       console.log('response: ', response);
@@ -107,19 +112,10 @@ export default function EstimateCreate() {
       requirements: requirements,
     };
 
-    postGroomingBody(requestBody, {
+    postEstimateGroomingBody(requestBody, {
       onSuccess: (data) => {
         console.log('data: ', data);
-        // data test
-        console.log('groomerId', groomerId);
-        console.log('petId', selectedPetId);
-        console.log('address', address);
-        console.log('reservedDate', reservedDate);
-        console.log('desiredStyle', desiredStyle);
-        console.log('requirements', requirements);
-        router.push({
-          pathname: '/estimate/complete',
-        });
+        router.push(ROUTES.ESTIMATE_FORM_COMPLETE);
       },
       onError: (error) => {
         console.error('Error submitting form:', error);
@@ -199,14 +195,18 @@ export default function EstimateCreate() {
             <div css={petList}>
               {petInfos.map((pet) => (
                 <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
-                  <Image
-                    // src={pet.image}
-                    src="/images/default_image.png"
-                    alt="반려견 프로필"
-                    width={86}
-                    height={86}
-                    css={profileImage({ isSelected: selectedPetId === pet.petId })}
-                  />
+                  {pet.image == null ? (
+                    <Image
+                      src={pet.image}
+                      alt="반려견 프로필"
+                      width={86}
+                      height={86}
+                      css={profileImage({ isSelected: selectedPetId === pet.petId })}
+                    />
+                  ) : (
+                    <DefaultImage css={profileImage({ isSelected: selectedPetId === pet.petId })} />
+                  )}
+
                   <Text
                     typo="body1"
                     color={selectedPetId === pet.petId ? 'blue200' : 'gray400'}
@@ -226,9 +226,7 @@ export default function EstimateCreate() {
                   width={12}
                   height={12}
                   onClick={() => {
-                    router.push({
-                      pathname: '/user/pet',
-                    });
+                    router.push(ROUTES.MYPAGE_PET_PROFILE);
                   }}
                 />
               </div>
