@@ -27,44 +27,27 @@ export const uploadImageButton = css`
     display: none;
   }
 `;
+export const profileImageWrapper = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin: 32px 0 40px;
+`;
+export const profileEditButtonBox = css`
+  margin-top: 12px;
+
+  color: ${theme.colors.gray400};
+  font-size: 14px;
+  text-align: center;
+`;
 
 export const thumbnailImage = css`
   flex-shrink: 0;
 
-  width: 70px;
-  height: 70px;
-  border-radius: 7px;
-
-  background: ${theme.colors.gray100};
-  object-fit: cover;
-`;
-
-export const imageWrapper = css`
-  position: relative;
-
-  width: 70px;
-  height: 70px;
-`;
-
-export const deleteImageButton = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: -4px;
-  right: -4px;
-
-  width: 16px;
-  height: 16px;
+  width: 116px;
+  height: 116px;
   border-radius: 50%;
-
-  background: ${theme.colors.black100};
-
-  div {
-    width: 8px;
-    height: 1px;
-    border-radius: 1px;
-
-    background: ${theme.colors.white};
-  }
+  object-fit: cover;
 `;

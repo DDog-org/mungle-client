@@ -5,18 +5,8 @@ import {
   inputWrapper,
   nickNameWrapper,
   readOnlyTextBox,
-  profileEditButtonBox,
 } from './index.styles';
-import {
-  AppBar,
-  ChipButton,
-  CTAButton,
-  Input,
-  Layout,
-  Text,
-  TextButton,
-} from '@daengle/design-system';
-import Image from 'next/image';
+import { AppBar, ChipButton, CTAButton, Input, Layout, Text } from '@daengle/design-system';
 import {
   useGetUserProfileInfoQuery,
   usePostAvailableNicknameMutation,
@@ -25,7 +15,6 @@ import {
 import { UserProfileInfoEditForm } from './interfaces';
 import useValidateUserForm from './hooks/use-validate-user-form';
 import { useS3 } from '@daengle/services/hooks';
-import { DefaultImage } from '@daengle/design-system/icons';
 import { ImageInputBox } from '../../../../components/mypage/user-profile/edit';
 
 export default function EditProfile() {
@@ -44,6 +33,9 @@ export default function EditProfile() {
     formState: { errors, isValid },
   } = useForm<UserProfileInfoEditForm>({
     mode: 'onChange',
+    defaultValues: {
+      image: null,
+    },
   });
 
   const checkIsAvailableNickname = async () => {
@@ -60,14 +52,19 @@ export default function EditProfile() {
   };
 
   const onSubmit = async (data: UserProfileInfoEditForm) => {
-    const uploadedImages = await uploadToS3(data.image);
-    if (!uploadedImages?.length) return;
-
-    const imageString = uploadedImages[0];
-
+    let imageString = '';
+    if (data.image) {
+      const uploadedImages = await uploadToS3([data.image]);
+      if (uploadedImages && uploadedImages.length > 0) {
+        imageString = uploadedImages[0] ?? '';
+      }
+    } else {
+      imageString = getUserProfileInfo?.image || '';
+    }
     if (imageString != undefined) {
       postUserProfileInfoEdit({ ...data, image: imageString });
     }
+    console.log('imageString', imageString);
   };
 
   return (
@@ -80,25 +77,17 @@ export default function EditProfile() {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div css={profileImageWrapper}>
-            {getUserProfileInfo?.image ? (
-              <ImageInputBox
-                onChange={(files) => setValue('image', files, { shouldValidate: true })}
-              />
-            ) : (
-              <DefaultImage width={116} height={116} />
-            )}
-            <TextButton css={profileEditButtonBox}>
-              <Text typo="body4" color="gray400">
-                프로필 사진 변경하기
-              </Text>
-            </TextButton>
+            <ImageInputBox
+              onChange={(files) => setValue('image', files, { shouldValidate: true })}
+              defaultValue={getUserProfileInfo?.image || ''}
+            />
           </div>
 
           <ul css={inputWrapper}>
             <li css={nickNameWrapper}>
               <Input
                 label="닉네임"
-                placeholder="닉네임을 입력해 주세요"
+                placeholder={getUserProfileInfo?.nickname}
                 maxLength={10}
                 suffix={
                   <ChipButton onClick={checkIsAvailableNickname} type="button">

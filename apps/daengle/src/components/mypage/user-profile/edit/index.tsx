@@ -1,65 +1,73 @@
-import { forwardRef, ChangeEvent, useImperativeHandle, useRef } from 'react';
+import { forwardRef, ChangeEvent, useImperativeHandle, useRef, useEffect, useState } from 'react';
 import {
-  deleteImageButton,
-  imageWrapper,
+  profileEditButtonBox,
+  profileImageWrapper,
   thumbnailImage,
   uploadImageButton,
   wrapper,
 } from './index.styles';
+import { TextButton, Text } from '@daengle/design-system';
 
 interface Props {
-  onChange?: (files: File[]) => void;
-  defaultValue?: File[];
-  maxLength?: number;
+  onChange?: (files: File | null) => void;
+  defaultValue?: string;
 }
 
-export const ImageInputBox = forwardRef(({ onChange, defaultValue = [] }: Props, ref) => {
+export const ImageInputBox = forwardRef(({ onChange, defaultValue }: Props, ref) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const filesRef = useRef<File[]>(defaultValue);
+  const [file, setFile] = useState<File | null>(null);
 
   useImperativeHandle(ref, () => ({
-    getFiles: () => filesRef.current,
+    getFile: () => file,
   }));
 
+  useEffect(() => {
+    if (defaultValue && typeof defaultValue === 'string') {
+      console.log('Default value set as:', defaultValue);
+    }
+  }, [defaultValue]);
+
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
+    if (!e.target.files || e.target.files.length === 0) return;
 
-    const uploadedImages = Array.from(e.target.files);
-    const totalFiles = filesRef.current.length + uploadedImages.length;
-
-    filesRef.current = [...filesRef.current, ...uploadedImages];
-    onChange?.(filesRef.current);
-
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile) {
+      setFile(uploadedFile);
+      onChange?.(uploadedFile);
+    }
     if (inputRef.current) {
       inputRef.current.value = '';
     }
+    console.log('Uploaded file:', uploadedFile);
   };
 
-  const handleRemoveImage = (index: number) => {
-    filesRef.current = filesRef.current.filter((_, idx) => idx !== index);
-    onChange?.(filesRef.current);
+  const openFilePicker = () => {
+    inputRef.current?.click();
   };
+
+  const thumbnailSrc = file
+    ? URL.createObjectURL(file) // 업로드된 파일 미리보기
+    : defaultValue || ''; // 기본값으로 설정된 URL
 
   return (
     <div css={wrapper}>
-      <label css={uploadImageButton}>
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          ref={inputRef}
-          onChange={handleFileInputChange}
-        />
-      </label>
-
-      {/* {filesRef.current.map((file, index) => (
-        <div key={file.name + index} css={imageWrapper}>
-          <button css={deleteImageButton} onClick={() => handleRemoveImage(index)}>
-            <div />
-          </button>
-          <img src={URL.createObjectURL(file)} alt={file.name} css={thumbnailImage} />
-        </div>
-      ))} */}
+      <div css={profileImageWrapper}>
+        <label css={uploadImageButton}>
+          {thumbnailSrc ? (
+            <img src={thumbnailSrc} alt="썸네일" css={thumbnailImage} />
+          ) : (
+            <Text typo="body4" color="gray400">
+              프로필 이미지를 추가하세요
+            </Text>
+          )}
+          <input type="file" accept="image/*" ref={inputRef} onChange={handleFileInputChange} />
+        </label>
+        <TextButton css={profileEditButtonBox} onClick={openFilePicker}>
+          <Text typo="body4" color="gray400">
+            프로필 사진 변경하기
+          </Text>
+        </TextButton>
+      </div>
     </div>
   );
 });
