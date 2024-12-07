@@ -36,19 +36,19 @@ export const contents = css`
 
 export const select = css`
   position: absolute;
+  z-index: 2;
 
   width: 100%;
   height: 100%;
 
-  z-index: 2;
   opacity: 0;
-  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  appearance: none;
 
   border: none;
   outline: none;
 
-  cursor: pointer;
   ${theme.typo.body10};
+  cursor: pointer;
 `;

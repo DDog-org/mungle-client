@@ -6,14 +6,15 @@ export const wrapper = css`
 `;
 
 export const header = css`
-  padding: 18px;
   margin-bottom: 22px;
+  padding: 18px;
 `;
 
 export const footer = css`
-  padding: 18px;
-  width: 100%;
   position: fixed;
   bottom: 0;
+
+  width: 100%;
   max-width: ${theme.size.maxWidth};
+  padding: 18px;
 `;

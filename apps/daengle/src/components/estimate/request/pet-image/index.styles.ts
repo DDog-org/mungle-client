@@ -1,18 +1,20 @@
 import { css } from '@emotion/react';
 
 export const wrapper = css`
-  padding: 0px 18px;
   display: flex;
   flex-direction: column;
+
+  padding: 0 18px;
 `;
 
 export const image = css`
+  margin-bottom: 8px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 8px;
 `;
 
 export const name = css`
-  text-align: center;
   width: 86px;
+
+  text-align: center;
 `;
