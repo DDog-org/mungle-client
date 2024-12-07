@@ -1,14 +1,20 @@
 import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
 import { wrapper, header, footer } from './index.styles';
 import { PetImage, Section } from '~/components/estimate';
+import { useRouter } from 'next/router';
 
 export default function RequestEstimate() {
+  const router = useRouter();
   const handleRequest = () => {
     alert('견적을 그만 받으시겠습니까?');
   };
   return (
     <Layout>
-      <AppBar />
+      <AppBar
+        onBackClick={() => {
+          router.back();
+        }}
+      />
       <div css={wrapper}>
         <div css={header}>
           <Text typo="title1">내가 보낸 요청</Text>
