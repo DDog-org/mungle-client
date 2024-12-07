@@ -6,12 +6,14 @@ export const box = css`
 `;
 
 export const dateSelect = css`
-  width: 100%;
-  height: 36px;
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   position: relative;
+
+  width: 100%;
+  height: 36px;
+
   cursor: pointer;
 `;
