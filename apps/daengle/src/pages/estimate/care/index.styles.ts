@@ -64,6 +64,29 @@ export const circle = css`
   }
 `;
 
+export const petList = css`
+  display: flex;
+  gap: 14px;
+`;
+
+export const petProfile = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+`;
+
+export const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
+  border-radius: 50px;
+  border: 4px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
+  transition: border 0.2s ease;
+`;
+
+export const petName = css`
+  transition: 0.2s ease;
+`;
+
 export const textField = css`
   width: 100%;
   height: 135px;
