@@ -45,16 +45,10 @@ export const profileImage = css`
   object-fit: cover;
 `;
 
-export const name = css`
-  font-size: 14px;
-  font-weight: 600;
-`;
-
 export const type = css`
-  font-size: 9px;
   padding: 2px 7px;
   border-radius: 14.03px;
-  font-weight: bold;
+  ${theme.typo.body2};
 `;
 
 export const general = css`
@@ -77,22 +71,4 @@ export const specials = css`
 export const specialsNot = css`
   ${theme.typo.subtitle1};
   color: ${theme.colors.gray200};
-`;
-
-export const date = css`
-  font-size: 12px;
-  color: #979797;
-  margin: 0;
-`;
-
-export const detailButton = css`
-  font-size: 10px;
-  color: #d9d9d9;
-  background: none;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    color: #000000;
-  }
 `;

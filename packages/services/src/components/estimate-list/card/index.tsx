@@ -5,16 +5,13 @@ import {
   contentContainer,
   cardHeader,
   profileImage,
-  name,
   type,
   general,
   designated,
   cardContent,
   specials,
   specialsNot,
-  date,
   detailContainer,
-  detailButton,
 } from './index.styles';
 import { ButtonTextButtonArrow } from '@daengle/design-system/icons';
 
@@ -28,7 +25,6 @@ interface EstimateContent {
 }
 
 export function Card({
-  id,
   userImage,
   nickname,
   proposal,
@@ -36,15 +32,15 @@ export function Card({
   reservedDate,
 }: EstimateContent): JSX.Element {
   const router = useRouter();
+  const groomerEstimateId = 10;
 
   const handleDetailClick = () => {
-    router.push(`/details?nickname=${encodeURIComponent(nickname)}`);
+    router.push(`/details?id=${groomerEstimateId}`);
   };
 
   return (
     <div css={wrapper}>
       <div css={contentContainer}>
-        {/* Header */}
         <div css={cardHeader}>
           <img src={userImage} alt={`${nickname} 프로필`} css={profileImage} />
           <Text typo="body1">{nickname}</Text>
@@ -53,7 +49,6 @@ export function Card({
           </span>
         </div>
 
-        {/* Content */}
         <div css={cardContent}>
           <p css={[specials, significant === null && specialsNot]}>
             {significant ? significant : '특이사항 없음'}
@@ -64,7 +59,6 @@ export function Card({
         </div>
       </div>
 
-      {/* Detail Button */}
       <div css={detailContainer}>
         <TextButton
           icons={{ suffix: <ButtonTextButtonArrow width="6px" /> }}
