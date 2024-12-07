@@ -35,6 +35,7 @@ export const uploadImageButton = css`
   }
 `;
 export const profileEditButtonBox = css`
+  text-align: center;
   margin-top: 12px;
   font-size: 14px;
   color: ${colors.gray400};

@@ -5,8 +5,17 @@ import {
   inputWrapper,
   nickNameWrapper,
   readOnlyTextBox,
+  profileEditButtonBox,
 } from './index.styles';
-import { AppBar, ChipButton, CTAButton, Input, Layout, Text } from '@daengle/design-system';
+import {
+  AppBar,
+  ChipButton,
+  CTAButton,
+  Input,
+  Layout,
+  Text,
+  TextButton,
+} from '@daengle/design-system';
 import Image from 'next/image';
 import {
   useGetUserProfileInfoQuery,
@@ -71,16 +80,18 @@ export default function EditProfile() {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div css={profileImageWrapper}>
-            <ImageInputBox
-              onChange={(files) => setValue('image', files, { shouldValidate: true })}
-              defaultValue={watch('image') || []}
-            />
-            {/* <Image src={(data.image===null) ?? DEFAULT_IMAGE_URL} alt="프로필 이미지" width={116} height={116} /> */}
-            {/* <TextButton css={profileEditButtonBox} onClick={handleImageEditClick}>
-                <Text typo="body4" color="gray400">
-                  프로필 사진 변경하기
-                </Text>
-              </TextButton> */}
+            {getUserProfileInfo?.image ? (
+              <ImageInputBox
+                onChange={(files) => setValue('image', files, { shouldValidate: true })}
+              />
+            ) : (
+              <DefaultImage width={116} height={116} />
+            )}
+            <TextButton css={profileEditButtonBox}>
+              <Text typo="body4" color="gray400">
+                프로필 사진 변경하기
+              </Text>
+            </TextButton>
           </div>
 
           <ul css={inputWrapper}>
