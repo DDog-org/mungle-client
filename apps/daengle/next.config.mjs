@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
   transpilePackages: ['@daengle/design-system', '@daengle/services'],
   env: {
     AWS_REGION: process.env.AWS_REGION,
@@ -8,8 +7,6 @@ const nextConfig = {
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
     AWS_BUCKET: process.env.AWS_BUCKET,
   },
-  reactStrictMode: true,
-  transpilePackages: ['@daengle/design-system', '@daengle/services'],
 };
 
 export default nextConfig;
