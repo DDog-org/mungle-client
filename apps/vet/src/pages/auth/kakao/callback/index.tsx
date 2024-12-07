@@ -5,7 +5,7 @@ import { ROUTES } from '~/constants/commons';
 import { usePostKakaoMutation } from '~/queries';
 import { useVetInfoFormStore } from '~/stores/auth';
 
-export default function AuthKakaoCsallback() {
+export default function AuthKakaoCallback() {
   const router = useRouter();
   const { code } = router.query || {};
 
