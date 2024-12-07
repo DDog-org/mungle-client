@@ -5,12 +5,15 @@ import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
 import { wrapper, sectionDivider, requestTitle, button } from './index.styles';
 import { useGroomerEstimateDetailQuery } from '~/queries';
 import { DatePick } from '~/components/estimate';
+import { useRouter } from 'next/router';
 
-export default function EstimateDetail({ id }: { id: number }) {
+export default function EstimateDetail() {
+  const router = useRouter();
   const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | string>();
   const [overallOpinion, setOverallOpinion] = useState<string>('');
-  const validId = id || 10;
-  const { data, isLoading, error } = useGroomerEstimateDetailQuery(validId);
+  const { id } = router.query;
+  const groomingEstimateId = Number(id);
+  const { data, isLoading, error } = useGroomerEstimateDetailQuery(groomingEstimateId);
 
   if (isLoading) return <div>Loading...</div>;
   if (error || !data) return <div>데이터를 불러오지 못했습니다.</div>;
@@ -34,7 +37,7 @@ export default function EstimateDetail({ id }: { id: number }) {
 
   return (
     <Layout>
-      <AppBar />
+      <AppBar onBackClick={() => router.back()} />
       <div css={wrapper}>
         <UserProfile userImage={petData.userImage} userName={petData.nickname} />
         <div css={sectionDivider}></div>
@@ -46,7 +49,7 @@ export default function EstimateDetail({ id }: { id: number }) {
           <DatePick
             onChange={handleDateTimeChange}
             placeholderText={petData.reservedDate}
-            isEditable={!isEditable}
+            isEditable={isEditable}
           />
         </Section>
         <Section title="어떤 아이를 가꿀 예정이신가요?">

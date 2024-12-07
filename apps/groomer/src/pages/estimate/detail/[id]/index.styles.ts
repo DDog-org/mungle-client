@@ -6,11 +6,13 @@ export const wrapper = css`
 `;
 
 export const sectionDivider = css`
+  display: block;
+
   width: 100%;
   height: 8px;
-  background-color: ${theme.colors.gray100};
-  display: block;
   margin: 0;
+
+  background-color: ${theme.colors.gray100};
 `;
 
 export const requestTitle = css`
