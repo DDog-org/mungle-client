@@ -20,7 +20,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
-import EstimateSelectComponent from '~/components/estimate';
+import EstimateSelectComponent from '~/components/estimate/EstimateSelectComponent';
 import { usePostGroomingMutation, usePostUserPetsInfoMutation } from '~/queries/estimates';
 import { petInfos, postUserPetsInfoResponse } from '~/models/daengle';
 
@@ -35,7 +35,7 @@ export default function EstimateCreate() {
   const [requirements, setRequirements] = useState<string>('');
   const [ButtonActive, setButtonActive] = useState<boolean>(false);
 
-  const groomerId = 8; //TODO: 쿼리스트링 값 읽어오기(groomerId 값이 담겨있는지 null인지 쿼리 스트링으로 판단)
+  const groomerId = 2; //TODO: 쿼리스트링 값 읽어오기(groomerId 값이 담겨있는지 null인지 쿼리 스트링으로 판단)
 
   const reservedDate = `${selectedDate?.format('YYYY-MM-DD')} ${selectedTime?.format('HH:mm:ss')}`;
 
@@ -110,6 +110,13 @@ export default function EstimateCreate() {
     postGroomingBody(requestBody, {
       onSuccess: (data) => {
         console.log('data: ', data);
+        // data test
+        console.log('groomerId', groomerId);
+        console.log('petId', selectedPetId);
+        console.log('address', address);
+        console.log('reservedDate', reservedDate);
+        console.log('desiredStyle', desiredStyle);
+        console.log('requirements', requirements);
         router.push({
           pathname: '/estimate/complete',
         });
