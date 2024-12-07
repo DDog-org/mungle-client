@@ -117,6 +117,13 @@ export default function EstimateCreate() {
     postGroomingBody(requestBody, {
       onSuccess: (data) => {
         console.log('data: ', data);
+        // data test
+        console.log('groomerId', groomerId);
+        console.log('petId', selectedPetId);
+        console.log('address', address);
+        console.log('reservedDate', reservedDate);
+        console.log('desiredStyle', desiredStyle);
+        console.log('requirements', requirements);
         router.push({
           pathname: '/estimate/complete',
         });
