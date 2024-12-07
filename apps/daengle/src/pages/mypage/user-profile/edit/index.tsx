@@ -19,13 +19,7 @@ import { useS3 } from '@daengle/services/hooks';
 import { DefaultImage } from '@daengle/design-system/icons';
 import { ImageInputBox } from '../../../../components/mypage/user-profile/edit';
 
-interface Props {
-  onChange?: (files: File[]) => void;
-  defaultValue?: File[];
-  maxLength?: number;
-}
-
-export default function EditProfile({ onChange, defaultValue = [] }: Props) {
+export default function EditProfile() {
   const { data: getUserProfileInfo } = useGetUserProfileInfoQuery();
   const { mutateAsync: postAvailableNickname } = usePostAvailableNicknameMutation();
   const { mutate: postUserProfileInfoEdit } = usePostUserProfileInfoEditMutation();
@@ -57,9 +51,14 @@ export default function EditProfile({ onChange, defaultValue = [] }: Props) {
   };
 
   const onSubmit = async (data: UserProfileInfoEditForm) => {
-    const image = await uploadToS3(data.image);
-    if (!image?.length) return;
-    postUserProfileInfoEdit({ ...data, image });
+    const uploadedImages = await uploadToS3(data.image);
+    if (!uploadedImages?.length) return;
+
+    const imageString = uploadedImages[0];
+
+    if (imageString != undefined) {
+      postUserProfileInfoEdit({ ...data, image: imageString });
+    }
   };
 
   return (
@@ -74,6 +73,7 @@ export default function EditProfile({ onChange, defaultValue = [] }: Props) {
           <div css={profileImageWrapper}>
             <ImageInputBox
               onChange={(files) => setValue('image', files, { shouldValidate: true })}
+              defaultValue={watch('image') || []}
             />
             {/* <Image src={(data.image===null) ?? DEFAULT_IMAGE_URL} alt="프로필 이미지" width={116} height={116} /> */}
             {/* <TextButton css={profileEditButtonBox} onClick={handleImageEditClick}>
