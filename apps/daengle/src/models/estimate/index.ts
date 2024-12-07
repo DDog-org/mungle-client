@@ -1,8 +1,11 @@
 export interface GroomerDetailResponse {
+  estimateId: number;
+  groomerId: number;
   image: string;
   name: string;
   shopName?: string | null;
   daengleMeter: number;
+  proposal: 'GENERAL' | 'DESIGNATION';
   introduction: string;
   address: string;
   reservedDate: string;
@@ -13,6 +16,8 @@ export interface GroomerDetailResponse {
 }
 
 export interface CareDetailResponse {
+  careEstimateId: number;
+  vetId: number;
   image: string;
   name: string;
   daengleMeter: number;

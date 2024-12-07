@@ -1,4 +1,4 @@
-import { wrapper, zigzagContainer, zigzag, zigzagUpsideDown } from './index.styles';
+import { wrapper, zigzagContainer, zigzag, zigzagUpsideDown, space } from './index.styles';
 import { Content } from '../receipt-content';
 
 interface Props {
@@ -6,6 +6,8 @@ interface Props {
     title: string;
     receipt: string;
     typo?: 'subtitle3' | 'body4';
+    hasLine?: boolean;
+    addTitle?: string;
   }[];
 }
 
@@ -18,6 +20,7 @@ export const Receipt = ({ items }: Props) => {
       {items.map((item, index) => (
         <Content key={index} {...item} />
       ))}
+      <div css={space}></div>
       <div css={zigzagContainer}>
         <div css={zigzagUpsideDown}></div>
       </div>

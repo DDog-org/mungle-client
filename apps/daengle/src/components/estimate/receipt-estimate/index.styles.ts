@@ -1,3 +1,4 @@
+import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
@@ -94,4 +95,10 @@ export const zigzagUpsideDown = css`
   transform: translateX(-14px);
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
+`;
+
+export const space = css`
+  background-color: ${theme.colors.white};
+  padding-bottom: 101px;
+  margin: 0px 14px;
 `;

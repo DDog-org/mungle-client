@@ -3,7 +3,6 @@ import { css } from '@emotion/react';
 
 export const wrapper = css`
   background-color: ${theme.colors.background};
-  padding-bottom: 104px;
 `;
 
 export const header = css`
@@ -15,7 +14,7 @@ export const header = css`
 export const section = css`
   display: flex;
   flex-direction: column;
-  margin: 18px;
+  margin: 18px 18px 32px;
   gap: 11px;
 `;
 
