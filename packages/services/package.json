@@ -24,6 +24,10 @@
     "./utils": {
       "import": "./src/utils/index.ts",
       "require": "./src/utils/index.ts"
+    },
+    "./components": {
+      "import": "./src/components/index.ts",
+      "require": "./src/components/index.ts"
     }
   },
   "type": "module",
@@ -41,7 +45,6 @@
     "dotenv": "^16.4.7",
     "nanoid": "^5.0.9",
     "react": "^18.3.1",
-    "react-datepicker": "^4.8.0",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.2"
   },

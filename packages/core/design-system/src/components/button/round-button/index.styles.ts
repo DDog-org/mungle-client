@@ -95,6 +95,11 @@ export const buttonVariant = ({
       : theme.colors.greenGradient100};
     color: ${theme.colors.white};
   `}
+  ${variant === 'green' &&
+  css`
+    background: ${theme.colors.greenGradient100};
+    color: ${theme.colors.white};
+  `}
   ${variant === 'ghost' &&
   css`
     border: 1px solid ${theme.colors.gray200};

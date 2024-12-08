@@ -13,13 +13,12 @@ export const wrapper = ({
 }) => css`
   ${size === 'fixed' &&
   css`
-    width: 67px;
-    height: 38px;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
+    width: 67px;
+    height: 38px;
     border-radius: 19px;
     ${theme.typo.body11};
   `}
@@ -33,13 +32,12 @@ export const wrapper = ({
 
    ${size === 'full' &&
   css`
-    width: 100%;
-    padding: 10px 0;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
+    width: 100%;
+    padding: 10px 0;
     border-radius: 28px;
     ${theme.typo.body10};
   `}

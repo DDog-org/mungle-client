@@ -1,52 +1,109 @@
 import { useState } from 'react';
-
+import { useGroomerEstimateListQuery } from '~/queries';
+import { Tab, Card } from '@daengle/services/components';
+import { wrapper, headerContainer, listContainer } from './index.styles';
+import { GNB, Layout, Text } from '@daengle/design-system';
 import {
-  Section,
-  PetDetails,
-  UserProfile,
-  AddInput,
-  AcceptButton,
-  DatePick,
-} from '@daengle/services';
-import { wrapper, header, sectionDivider, backButton, requestTitle } from './index.styles';
+  GnbChattingActive,
+  GnbChattingInactive,
+  GnbHomeActive,
+  GnbHomeInactive,
+  GnbMyActive,
+  GnbMyInactive,
+  GnbReservationActive,
+  GnbReservationInactive,
+  GnbEstimateActive,
+  GnbEstimateInactive,
+} from '@daengle/design-system/icons';
 
-export default function Estimate() {
-  const petData = {
-    image: 'https://via.placeholder.com/80',
-    name: '꼬미',
-    attributes: [
-      { label: '나이', value: '13세' },
-      { label: '몸무게', value: '중형견' },
-      { label: '특이사항', value: '노견, 슬개골 탈구' },
-    ],
+export const PATHS = {
+  ESTIMATE: '/estimate',
+  RESERVATION: '/reservation',
+  HOME: '/',
+  CHATTING: '/chatting',
+  MYPAGE: '/mypage',
+} as const;
+
+export const MENUS = [
+  {
+    name: '견적',
+    icon: {
+      active: <GnbEstimateActive width="32px" height="32px" />,
+      inactive: <GnbEstimateInactive width="32px" height="32px" />,
+    },
+    path: PATHS.ESTIMATE,
+  },
+  {
+    name: '예약',
+    icon: {
+      active: <GnbReservationActive width="32px" height="32px" />,
+      inactive: <GnbReservationInactive width="32px" height="32px" />,
+    },
+    path: PATHS.RESERVATION,
+  },
+  {
+    name: '홈',
+    icon: {
+      active: <GnbHomeActive width="32px" height="32px" />,
+      inactive: <GnbHomeInactive width="32px" height="32px" />,
+    },
+    path: PATHS.HOME,
+  },
+  {
+    name: '채팅',
+    icon: {
+      active: <GnbChattingActive width="32px" height="32px" />,
+      inactive: <GnbChattingInactive width="32px" height="32px" />,
+    },
+    path: PATHS.CHATTING,
+  },
+  {
+    name: '마이',
+    icon: {
+      active: <GnbMyActive width="32px" height="32px" />,
+      inactive: <GnbMyInactive width="32px" height="32px" />,
+    },
+    path: PATHS.MYPAGE,
+  },
+];
+
+export default function EstimateList(): JSX.Element {
+  const [activeTab, setActiveTab] = useState<string>('전체');
+  const { data, isLoading, isError } = useGroomerEstimateListQuery();
+  const [, setActivePath] = useState<string>(PATHS.ESTIMATE);
+
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (isError) {
+    return <div>데이터를 가져오는 데 실패했습니다.</div>;
+  }
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
   };
 
-  const [, setSelectedDateTime] = useState<Date | null>(null);
-
-  const handleDateTimeChange = (dateTime: Date) => {
-    setSelectedDateTime(dateTime);
-  };
+  const estimateData = data || [];
+  const filteredData =
+    activeTab === '전체'
+      ? estimateData
+      : estimateData.filter((data) => data.proposal === 'DESIGNATION');
 
   return (
-    <div css={wrapper}>
-      <header css={header}>
-        <div css={backButton}>{'<'}</div>
-      </header>
-      <UserProfile userImage="https://via.placeholder.com/50" userName="왈왈" />
-      <div css={sectionDivider}></div>
-      <div css={requestTitle}>요청상세</div>
-      <Section title="지역">서울시 강남구 역삼동</Section>
-      <Section title="시술 희망 날짜 및 시간">
-        <DatePick onChange={handleDateTimeChange} />
-      </Section>
-      <Section title="어떤 아이를 가꿀 예정이신가요?">
-        <PetDetails image={petData.image} name={petData.name} attributes={petData.attributes} />
-      </Section>
-      <Section title="원하는 미용">전체 가위컷</Section>
-      <Section title="추가 요청사항">없음</Section>
-      <div css={sectionDivider}></div>
-      <AddInput title="추가 소견" placeholder="추가 안내사항을 입력해주세요." height={120} />
-      <AcceptButton label="예약받기" onClick={() => alert('예약 완료!')} />
-    </div>
+    <Layout isAppBarExist={false}>
+      <div css={wrapper}>
+        <header css={headerContainer}>
+          <Text typo="title1">견적</Text>
+        </header>
+        <Tab items={['전체', '지정']} activeItem={activeTab} onChange={handleTabChange} />
+        <div css={listContainer}>
+          {filteredData.map((data) => (
+            <Card key={data.id} {...data} />
+          ))}
+        </div>
+      </div>
+      <GNB menus={MENUS} activePath={PATHS.ESTIMATE} onNavigate={(path) => setActivePath(path)} />
+    </Layout>
   );
 }
