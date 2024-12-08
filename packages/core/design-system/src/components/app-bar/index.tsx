@@ -8,11 +8,12 @@ interface Props {
   prefix?: ReactNode;
   title?: string;
   suffix?: ReactNode;
+  isDefaultBackground?: boolean;
 }
 
-export function AppBar({ onBackClick, prefix, title, suffix }: Props) {
+export function AppBar({ onBackClick, prefix, title, suffix, isDefaultBackground = true }: Props) {
   return (
-    <header css={wrapper}>
+    <header css={wrapper(isDefaultBackground)}>
       <div css={contents}>
         {prefix ? prefix : <AppBarBack width="8px" cursor="pointer" onClick={onBackClick} />}
         {title && (
