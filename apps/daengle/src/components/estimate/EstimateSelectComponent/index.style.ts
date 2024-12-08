@@ -6,8 +6,8 @@ export const selectBox = css`
   gap: 13px;
 `;
 
-export const selectItem = css`
-  border: 1px solid ${theme.colors.gray200};
+export const selectItem = (isSelected: boolean) => css`
+  border: 1px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
   border-radius: 10px;
   width: 100%;
   height: 195px;
@@ -18,9 +18,11 @@ export const selectItem = css`
   padding: 17px;
   gap: 35px;
   cursor: pointer;
+  background-color: ${isSelected ? theme.colors.blue100 : 'transparent'};
+  transition: background-color 0.2s ease;
 
   :hover {
-    background-color: ${theme.colors.gray100};
+    background-color: ${isSelected ? theme.colors.blue100 : theme.colors.gray100};
     transition: 0.3s;
   }
 `;

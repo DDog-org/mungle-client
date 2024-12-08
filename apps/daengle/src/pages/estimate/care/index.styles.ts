@@ -2,11 +2,12 @@ import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
-  width: 100%;
-  padding: 18px 18px 104px 18px;
   display: flex;
   flex-direction: column;
   gap: 32px;
+
+  width: 100%;
+  padding: 18px 18px 104px;
 `;
 
 export const section = css`
@@ -21,40 +22,46 @@ export const box = css`
 `;
 
 export const dateSelect = css`
-  width: 100%;
-  height: 36px;
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   position: relative;
+
+  width: 100%;
+  height: 36px;
+
   cursor: pointer;
 `;
 
 export const registerPet = css`
-  border: 1px solid ${theme.colors.gray200};
-  border-radius: 10px;
-  width: 100%;
-  height: 109px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   gap: 15px;
+
+  width: 100%;
+  height: 109px;
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: 10px;
 `;
 
 export const circle = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: 40px;
   height: 40px;
   border: 1px solid ${theme.colors.gray200};
   border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
   cursor: pointer;
 
   :hover {
     background-color: ${theme.colors.gray100};
+
     transition: 0.3s;
   }
 `;
@@ -62,10 +69,11 @@ export const circle = css`
 export const textField = css`
   width: 100%;
   height: 135px;
-  background-color: ${theme.colors.gray100};
-  border-radius: 10px;
-  text-align: justify;
   padding: 18px;
+  border-radius: 10px;
+
+  background-color: ${theme.colors.gray100};
+  text-align: justify;
 
   ::placeholder {
     color: ${theme.colors.gray300};
