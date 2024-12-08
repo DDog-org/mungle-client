@@ -28,12 +28,11 @@ export const input = ({
   errorMessage?: string;
 }) => css`
   display: flex;
-
-  text-align: left;
-
   flex: 1;
 
   padding: 6px 0 10px 6px;
+
+  text-align: left;
 
   ${theme.typo.body8};
 

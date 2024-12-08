@@ -15,10 +15,10 @@ export const wrapper = ({ disabled }: { disabled: boolean }) => css`
     cursor: default;
   `}
   padding: 6px 10px;
-
-  color: ${theme.colors.gray600};
-  background: ${theme.colors.gray100};
-
   border-radius: 20px;
+
+  background: ${theme.colors.gray100};
+  color: ${theme.colors.gray600};
+
   ${theme.typo.body5};
 `;
