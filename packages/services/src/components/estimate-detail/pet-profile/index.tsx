@@ -16,8 +16,9 @@ interface Props {
   attributes: (string | number | null)[];
 }
 
+const LABELS = ['나이', '몸무게', '특이사항'];
+
 export function PetDetails({ image, name, attributes }: Props): JSX.Element {
-  const labels = ['나이', '몸무게', '특이사항'];
   return (
     <div css={wrapper}>
       <div css={profile}>
@@ -28,7 +29,7 @@ export function PetDetails({ image, name, attributes }: Props): JSX.Element {
       </div>
       <div css={detail}>
         <div css={labelWrapper}>
-          {labels.map((label, index) => (
+          {LABELS.map((label, index) => (
             <Text typo="body9" color="gray500" key={`label-${index}`}>
               {label}
             </Text>
