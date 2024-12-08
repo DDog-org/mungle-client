@@ -2,19 +2,19 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '~/queries/query-keys';
 import {
   getBreedList,
-  getUserProfileInfo,
+  getUserInfo,
+  patchUserInfo,
   postAvailableNickname,
   postJoinWithoutPet,
   postJoinWithPet,
   postKakao,
-  postUserProfileInfoEdit,
 } from '~/apis';
 import {
+  PatchUserInfoRequestBody,
   PostAvailableNicknameRequestBody,
   PostJoinWithoutPetRequestBody,
   PostJoinWithPetRequestBody,
   PostKakaoRequestBody,
-  PostUserProfileInfoEditBody,
 } from '~/models';
 
 export const usePostKakaoMutation = () => {
@@ -86,16 +86,16 @@ export const usePostJoinWithPetMutation = () => {
 export const useGetUserProfileInfoQuery = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_USER_PROFILE_INFO],
-    queryFn: getUserProfileInfo,
+    queryFn: getUserInfo,
   });
 };
 
-export const usePostUserProfileInfoEditMutation = () => {
+export const usePatchUserInfoMutation = () => {
   return useMutation({
     mutationKey: [QUERY_KEYS.POST_USER_PROFILE_INFO],
-    mutationFn: async (body: PostUserProfileInfoEditBody) => {
+    mutationFn: async (body: PatchUserInfoRequestBody) => {
       try {
-        return await postUserProfileInfoEdit(body);
+        return await patchUserInfo(body);
       } catch (error) {
         throw new Error(String(error));
       }

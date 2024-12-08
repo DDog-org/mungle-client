@@ -10,7 +10,7 @@ import { AppBar, ChipButton, CTAButton, Input, Layout, Text } from '@daengle/des
 import {
   useGetUserProfileInfoQuery,
   usePostAvailableNicknameMutation,
-  usePostUserProfileInfoEditMutation,
+  usePatchUserInfoMutation,
 } from '~/queries';
 import { UserProfileInfoEditForm } from './interfaces';
 import useValidateUserForm from './hooks/use-validate-user-form';
@@ -18,12 +18,12 @@ import { useS3 } from '@daengle/services/hooks';
 import { ImageInputBox } from '../../../../components/mypage/user-profile/edit';
 
 export default function EditProfile() {
-  const { data: getUserProfileInfo } = useGetUserProfileInfoQuery();
+  const { data: getUserInfo } = useGetUserProfileInfoQuery();
   const { mutateAsync: postAvailableNickname } = usePostAvailableNicknameMutation();
-  const { mutate: postUserProfileInfoEdit } = usePostUserProfileInfoEditMutation();
+  const { mutate: patchUserInfo } = usePatchUserInfoMutation();
   const validation = useValidateUserForm();
 
-  const { uploadToS3, deleteFromS3 } = useS3({ targetFolderPath: 'user/profile-images' });
+  const { uploadToS3 } = useS3({ targetFolderPath: 'user/profile-images' });
   const {
     handleSubmit,
     watch,
@@ -59,10 +59,10 @@ export default function EditProfile() {
         imageString = uploadedImages[0] ?? '';
       }
     } else {
-      imageString = getUserProfileInfo?.image || '';
+      imageString = getUserInfo?.image || '';
     }
     if (imageString != undefined) {
-      postUserProfileInfoEdit({ ...data, image: imageString });
+      patchUserInfo({ ...data, image: imageString });
     }
   };
 
@@ -78,7 +78,7 @@ export default function EditProfile() {
           <div css={profileImageWrapper}>
             <ImageInputBox
               onChange={(files) => setValue('image', files, { shouldValidate: true })}
-              defaultValue={getUserProfileInfo?.image || ''}
+              defaultValue={getUserInfo?.image || ''}
             />
           </div>
 
@@ -86,7 +86,7 @@ export default function EditProfile() {
             <li css={nickNameWrapper}>
               <Input
                 label="닉네임"
-                placeholder={getUserProfileInfo?.nickname}
+                placeholder={getUserInfo?.nickname}
                 maxLength={10}
                 suffix={
                   <ChipButton onClick={checkIsAvailableNickname} type="button">
@@ -102,7 +102,7 @@ export default function EditProfile() {
                 이름
               </Text>
               <Text typo="body3" color="gray400">
-                {getUserProfileInfo?.username}
+                {getUserInfo?.username}
               </Text>
             </li>
             <li css={readOnlyTextBox}>
@@ -110,7 +110,7 @@ export default function EditProfile() {
                 휴대폰번호
               </Text>
               <Text typo="body3" color="gray400">
-                {getUserProfileInfo?.phoneNumber}
+                {getUserInfo?.phoneNumber}
               </Text>
             </li>
             <li css={readOnlyTextBox}>
@@ -118,7 +118,7 @@ export default function EditProfile() {
                 이메일
               </Text>
               <Text typo="body3" color="gray400">
-                {getUserProfileInfo?.email}
+                {getUserInfo?.email}
               </Text>
             </li>
           </ul>

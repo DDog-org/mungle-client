@@ -12,6 +12,7 @@ import {
   PostKakaoResponse,
   PatchUserInfoRequestBody,
   PatchUserInfoResponse,
+  GetUserInfoResponse,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -49,7 +50,7 @@ export const postJoinWithPet = async (body: PostJoinWithPetRequestBody) => {
 };
 
 export const getUserInfo = async () => {
-  return await api.get('/user/info');
+  return await api.get<GetUserInfoResponse>('/user/info');
 };
 
 export const patchUserInfo = async (body: PatchUserInfoRequestBody) => {
