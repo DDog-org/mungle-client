@@ -31,11 +31,16 @@ export const ROUTES = {
   RESERVATION_PAYMENT_COMPLETE: '/reservations/payment/complete',
   RESERVATION_PAYMENT_FAILURE: '/reservations/payment/failure',
   RESERVATIONS: '/reservations',
-  PAYMENTS: '/payments',
 
   // Messages
   MESSAGES: '/messages',
   MESSAGES_DETAIL: (messageId: number) => `/messages/${messageId}`,
+
+  //Payment
+  PAYMENTS: '/payments',
+  PAYMENT_ORDER: '/payment/order',
+  PAYMENT_VALIDATE: '/payment/validate',
+  PAYMENT_COMPLETE: '/payment/complete',
 
   // Mypage
   MYPAGE: '/mypage',

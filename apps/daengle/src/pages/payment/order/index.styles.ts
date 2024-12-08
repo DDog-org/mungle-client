@@ -37,7 +37,7 @@ export const reservationInfo = css`
   border-radius: 21px;
 `;
 
-export const schedule = css`
+export const scheduleStyle = css`
   display: flex;
   justify-content: space-between;
 
@@ -53,7 +53,7 @@ export const reservationPrice = css`
   padding: 0 18px;
 `;
 
-export const price = css`
+export const priceStyle = css`
   display: flex;
   justify-content: space-between;
 `;
