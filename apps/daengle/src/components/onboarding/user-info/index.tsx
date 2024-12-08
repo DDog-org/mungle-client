@@ -2,10 +2,10 @@ import { ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { ChipButton, CTAButton, Input, RoundButton, Text } from '@daengle/design-system';
+import { formatPhoneNumber } from '@daengle/services/utils';
 import { ROUTES } from '~/constants/commons/routes';
-import { formatPhoneNumber } from '~/utils/format';
 import { usePostAvailableNicknameMutation } from '~/queries';
-import { useUserInfoFormStore } from '~/store/auth/user-info-form';
+import { useUserInfoFormStore } from '~/stores/auth/user-info-form';
 import { useValidateUserForm } from '~/hooks/onboarding';
 import { UserInfoFormFormType } from '~/interfaces/auth';
 import { location, locationButton, section, wrapper } from './index.styles';
@@ -42,7 +42,7 @@ export function UserInfo({ onNext }: Props) {
     }
 
     const response = await postAvailableNickname({ nickname });
-    if (response.isAvailable) {
+    if (!response.isAvailable) {
       setError('nickname', { message: '이미 사용중인 닉네임입니다' });
     } else {
       setUserInfoForm({ ...watch(), isAvailableNickname: true });

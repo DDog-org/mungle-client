@@ -7,19 +7,22 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "lint:styles": "stylelint \"**/*.styles.ts\""
   },
   "dependencies": {
     "@daengle/design-system": "workspace:*",
     "@emotion/react": "^11.13.5",
+    "axios": "^1.7.7",
     "next": "14.2.10",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
     "@daengle/eslint-config": "workspace:*",
-    "@daengle/services": "workspace:*",
     "@daengle/typescript-config": "workspace:*",
+    "@daengle/stylelint-config": "workspace:*",
+    "@daengle/services": "workspace:*",
     "@types/node": "^20",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",

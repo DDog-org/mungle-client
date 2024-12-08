@@ -4,6 +4,7 @@ export const wrapper = css`
   display: flex;
   flex-direction: column;
   gap: 40px;
+
   padding: 18px;
 `;
 
@@ -20,9 +21,10 @@ export const location = css`
 `;
 
 export const locationButton = css`
-  width: 100%;
-  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  width: 100%;
+  padding: 0 24px;
 `;

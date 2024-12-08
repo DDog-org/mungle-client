@@ -15,9 +15,11 @@ export const wrapper = ({
   css`
     width: 67px;
     height: 38px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     border-radius: 19px;
     ${theme.typo.body11};
   `}
@@ -33,17 +35,20 @@ export const wrapper = ({
   css`
     width: 100%;
     padding: 10px 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     border-radius: 28px;
     ${theme.typo.body10};
   `}
 
   ${disabled
     ? css`
-        color: ${theme.colors.gray400} !important;
         background: ${theme.colors.gray200} !important;
+        color: ${theme.colors.gray400} !important;
+
         cursor: default !important;
       `
     : css`
@@ -52,12 +57,15 @@ export const wrapper = ({
 
   ${isSelected
     ? css`
-        color: ${theme.colors.blue200};
-        background: ${theme.colors.blue100};
         border: 1px solid ${disabled ? theme.colors.gray300 : theme.colors.blue200};
+
+        background: ${theme.colors.blue100};
+        color: ${theme.colors.blue200};
       `
     : css`
         color: ${theme.colors.gray500};
         border: 1px solid ${disabled ? theme.colors.gray300 : theme.colors.gray200};
+
+        color: ${theme.colors.black};
       `}
 `;

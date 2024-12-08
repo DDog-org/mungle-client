@@ -9,6 +9,7 @@ const theme = {
     maxWidth: '480px',
     appBarHeight: '52px',
     gnbHeight: '76px',
+    ctaButtonHeight: '76px',
   },
   zIndex: {
     overlay: 5,

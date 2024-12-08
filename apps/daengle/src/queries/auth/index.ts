@@ -1,15 +1,35 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getBreedList, postAvailableNickname, postJoinWithoutPet, postJoinWithPet } from '~/apis';
+import { QUERY_KEYS } from '~/queries/query-keys';
+import {
+  getBreedList,
+  postAvailableNickname,
+  postJoinWithoutPet,
+  postJoinWithPet,
+  postKakao,
+} from '~/apis';
 import {
   PostAvailableNicknameRequestBody,
   PostJoinWithoutPetRequestBody,
   PostJoinWithPetRequestBody,
+  PostKakaoRequestBody,
 } from '~/models';
-import { QUERY_KEYS } from '~/queries/query-keys';
+
+export const usePostKakaoMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.POST_KAKAO,
+    mutationFn: async (body: PostKakaoRequestBody) => {
+      try {
+        return await postKakao(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
 
 export const usePostJoinWithoutPetMutation = () => {
   return useMutation({
-    mutationKey: [QUERY_KEYS.POST_JOIN_WITHOUT_PET],
+    mutationKey: QUERY_KEYS.POST_JOIN_WITHOUT_PET,
     mutationFn: async (body: PostJoinWithoutPetRequestBody) => {
       try {
         return await postJoinWithoutPet(body);
@@ -22,7 +42,7 @@ export const usePostJoinWithoutPetMutation = () => {
 
 export const usePostAvailableNicknameMutation = () => {
   return useMutation({
-    mutationKey: [QUERY_KEYS.POST_AVAILABLE_NICKNAME],
+    mutationKey: QUERY_KEYS.POST_AVAILABLE_NICKNAME,
     mutationFn: async (body: PostAvailableNicknameRequestBody) => {
       try {
         return await postAvailableNickname(body);
@@ -35,7 +55,7 @@ export const usePostAvailableNicknameMutation = () => {
 
 export const useGetBreedListQuery = () => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_BREED_LIST],
+    queryKey: QUERY_KEYS.GET_BREED_LIST,
     queryFn: async () => {
       try {
         return await getBreedList();
@@ -49,7 +69,7 @@ export const useGetBreedListQuery = () => {
 
 export const usePostJoinWithPetMutation = () => {
   return useMutation({
-    mutationKey: [QUERY_KEYS.POST_JOIN_WITH_PET],
+    mutationKey: QUERY_KEYS.POST_JOIN_WITH_PET,
     mutationFn: async (body: PostJoinWithPetRequestBody) => {
       try {
         return await postJoinWithPet(body);

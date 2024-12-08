@@ -1,24 +1,27 @@
 import { css } from '@emotion/react';
-import { Size, Variant } from './index.types';
 import { theme } from '../../../foundation';
+import { Service } from '../../../types';
+import { Size, Variant } from './index.types';
 
 interface WrapperProps {
   size: Size;
+  service: Service;
   variant: Variant;
   disabled: boolean;
   fullWidth: boolean;
 }
 
-export const wrapper = ({ size, variant, disabled, fullWidth }: WrapperProps) => css`
+export const wrapper = ({ size, service, variant, disabled, fullWidth }: WrapperProps) => css`
   ${box};
   ${buttonSize({ size, fullWidth })};
-  ${buttonVariant({ variant, disabled })};
+  ${buttonVariant({ service, variant, disabled })};
 `;
 
 export const box = css`
   display: flex;
   align-items: center;
   justify-content: center;
+
   transition: background 0.5s ease;
 `;
 
@@ -61,9 +64,11 @@ export const buttonSize = ({ size, fullWidth }: { size: Size; fullWidth: boolean
 `;
 
 export const buttonVariant = ({
+  service,
   variant,
   disabled,
 }: {
+  service: Service;
   variant: Variant;
   disabled: boolean;
 }) => css`
@@ -77,24 +82,28 @@ export const buttonVariant = ({
 
   ${disabled &&
   css`
-    color: ${theme.colors.white} !important;
     background: ${theme.colors.gray400} !important;
+    color: ${theme.colors.white} !important;
+
     cursor: default;
   `}
 
   ${variant === 'primary' &&
   css`
+    background: ${service === 'daengle'
+      ? theme.colors.blueGradient100
+      : theme.colors.greenGradient100};
     color: ${theme.colors.white};
-    background: ${theme.colors.blueGradient100};
   `}
   ${variant === 'ghost' &&
   css`
-    color: ${theme.colors.gray200};
     border: 1px solid ${theme.colors.gray200};
+
+    color: ${theme.colors.gray200};
   `}
   ${variant === 'kakao' &&
   css`
-    color: ${theme.colors.black};
     background: #fee500;
+    color: ${theme.colors.black};
   `}
 `;

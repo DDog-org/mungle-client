@@ -1,11 +1,13 @@
 import { css } from '@emotion/react';
 import { theme } from '../../foundation';
+import { Service } from '../../types';
 
 export const wrapper = css`
-  position: relative;
-  width: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
+
+  width: 100%;
 `;
 
 export const label = css`
@@ -18,10 +20,19 @@ export const inputWrapper = css`
   gap: 4px;
 `;
 
-export const input = ({ errorMessage }: { errorMessage?: string }) => css`
+export const input = ({
+  service,
+  errorMessage,
+}: {
+  service?: Service;
+  errorMessage?: string;
+}) => css`
   display: flex;
+
   text-align: left;
+
   flex: 1;
+
   padding: 6px 0 10px 6px;
 
   ${theme.typo.body8};
@@ -33,6 +44,7 @@ export const input = ({ errorMessage }: { errorMessage?: string }) => css`
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+
     margin: 0;
   }
 
@@ -43,21 +55,20 @@ export const input = ({ errorMessage }: { errorMessage?: string }) => css`
   &:disabled {
     color: ${theme.colors.gray300};
   }
-
   border-bottom: ${errorMessage
     ? `1px solid ${theme.colors.red200}`
     : `1px solid ${theme.colors.gray200}`};
 
   &:focus {
-    border-bottom: 1px solid ${theme.colors.blue200};
+    border-bottom: 1px solid ${service === 'daengle' ? theme.colors.blue200 : theme.colors.green200};
   }
-
   transition: border-bottom 0.2s ease;
 `;
 
 export const infoTextWrapper = css`
   position: absolute;
-  left: 2px;
   bottom: -20px;
+  left: 2px;
+
   padding: 0 2px;
 `;
