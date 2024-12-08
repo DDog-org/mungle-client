@@ -16,8 +16,6 @@ import { UserProfileInfoEditForm } from './interfaces';
 import useValidateUserForm from './hooks/use-validate-user-form';
 import { useS3 } from '@daengle/services/hooks';
 import { ImageInputBox } from '../../../../components/mypage/user-profile/edit/imageInput';
-import { DefaultImageInputBox } from '../../../../components/mypage/user-profile/edit/defaultImageInput';
-import { DefaultImage } from '@daengle/design-system/icons';
 
 export default function EditProfile() {
   const { data: getUserInfo } = useGetUserProfileInfoQuery();
