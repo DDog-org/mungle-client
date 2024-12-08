@@ -22,10 +22,10 @@ import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 import EstimateSelectComponent from '~/components/estimate/EstimateSelectComponent';
 import {
-  usePostEstimateGroomingMutation,
-  usePostEstimateGroomerUserInfoMutation,
+  usePostUserEstimateGroomingMutation,
+  usePostUserEstimateGroomerUserInfoMutation,
 } from '~/queries/estimate';
-import { PetInfos, PostEstimateGroomerUserInfoResponse } from '~/models/estimate';
+import { PetInfos, PostUserEstimateGroomerUserInfoResponse } from '~/models/estimate';
 import { ROUTES } from '~/constants/commons';
 import { DefaultImage } from '@daengle/design-system/icons';
 
@@ -46,7 +46,7 @@ export default function EstimateCreate() {
 
   useEffect(() => {
     // 정보 불러오기
-    handlePostUserPetsInfo();
+    handlePostUserEstimateGroomerUserInfo();
   }, []);
 
   useEffect(() => {
@@ -62,14 +62,16 @@ export default function EstimateCreate() {
     setButtonActive(isFormValid);
   }, [selectedPetId, address, selectedDate, selectedTime, desiredStyle, requirements]);
 
-  const { mutateAsync: postUserPetsInfo } = usePostEstimateGroomerUserInfoMutation();
-  const { mutate: postEstimateGroomingBody } = usePostEstimateGroomingMutation();
+  const { mutateAsync: postUserEstimateGroomerUserInfo } =
+    usePostUserEstimateGroomerUserInfoMutation();
+  const { mutate: postUserEstimateGroomingRequestBody } = usePostUserEstimateGroomingMutation();
 
-  const handlePostUserPetsInfo = async () => {
+  const handlePostUserEstimateGroomerUserInfo = async () => {
     try {
-      const response: PostEstimateGroomerUserInfoResponse = await postUserPetsInfo({
-        groomerId,
-      });
+      const response: PostUserEstimateGroomerUserInfoResponse =
+        await postUserEstimateGroomerUserInfo({
+          groomerId,
+        });
       console.log('response: ', response);
 
       if (response?.address) setAddress(response.address);
@@ -112,7 +114,7 @@ export default function EstimateCreate() {
       requirements: requirements,
     };
 
-    postEstimateGroomingBody(requestBody, {
+    postUserEstimateGroomingRequestBody(requestBody, {
       onSuccess: (data) => {
         console.log('data: ', data);
         router.push(ROUTES.ESTIMATE_FORM_COMPLETE);
@@ -195,7 +197,9 @@ export default function EstimateCreate() {
             <div css={petList}>
               {petInfos.map((pet) => (
                 <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
-                  {pet.image == null ? (
+                  {pet.image == '' ? (
+                    <DefaultImage css={profileImage({ isSelected: selectedPetId === pet.petId })} />
+                  ) : (
                     <Image
                       src={pet.image}
                       alt="반려견 프로필"
@@ -203,8 +207,6 @@ export default function EstimateCreate() {
                       height={86}
                       css={profileImage({ isSelected: selectedPetId === pet.petId })}
                     />
-                  ) : (
-                    <DefaultImage css={profileImage({ isSelected: selectedPetId === pet.petId })} />
                   )}
 
                   <Text
