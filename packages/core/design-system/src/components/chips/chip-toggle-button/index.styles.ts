@@ -6,20 +6,21 @@ export const wrapper = ({
   isSelected,
   size,
   disabled,
+  textColor,
 }: {
   isSelected: boolean;
   size: Size;
   disabled: boolean;
+  textColor: keyof typeof theme.colors;
 }) => css`
   ${size === 'fixed' &&
   css`
-    width: 67px;
-    height: 38px;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
+    width: 67px;
+    height: 38px;
     border-radius: 19px;
     ${theme.typo.body11};
   `}
@@ -33,13 +34,12 @@ export const wrapper = ({
 
    ${size === 'full' &&
   css`
-    width: 100%;
-    padding: 10px 0;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
+    width: 100%;
+    padding: 10px 0;
     border-radius: 28px;
     ${theme.typo.body10};
   `}
@@ -65,6 +65,6 @@ export const wrapper = ({
     : css`
         border: 1px solid ${disabled ? theme.colors.gray300 : theme.colors.gray200};
 
-        color: ${theme.colors.black};
+        color: ${theme.colors[textColor]};
       `}
 `;
