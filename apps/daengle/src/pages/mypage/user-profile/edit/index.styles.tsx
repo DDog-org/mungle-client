@@ -1,4 +1,3 @@
-import { colors, theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`

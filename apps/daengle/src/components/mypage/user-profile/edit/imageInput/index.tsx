@@ -1,5 +1,6 @@
-import { forwardRef, ChangeEvent, useImperativeHandle, useRef, useEffect, useState } from 'react';
+import { forwardRef, ChangeEvent, useImperativeHandle, useRef, useState } from 'react';
 import {
+  defaultImage,
   profileEditButtonBox,
   profileImageWrapper,
   thumbnailImage,
@@ -7,6 +8,7 @@ import {
   wrapper,
 } from './index.styles';
 import { TextButton, Text } from '@daengle/design-system';
+import { DefaultImage } from '@daengle/design-system/icons';
 
 interface Props {
   onChange?: (files: File | null) => void;
@@ -49,9 +51,9 @@ export const ImageInputBox = forwardRef(({ onChange, defaultValue }: Props, ref)
           {thumbnailSrc ? (
             <img src={thumbnailSrc} alt="썸네일" css={thumbnailImage} />
           ) : (
-            <Text typo="body4" color="gray400">
-              프로필 이미지를 추가하세요
-            </Text>
+            <div css={defaultImage}>
+              <DefaultImage width={116} height={116} />
+            </div>
           )}
           <input type="file" accept="image/*" ref={inputRef} onChange={handleFileInputChange} />
         </label>

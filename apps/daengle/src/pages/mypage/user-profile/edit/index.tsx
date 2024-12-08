@@ -15,7 +15,8 @@ import {
 import { UserProfileInfoEditForm } from './interfaces';
 import useValidateUserForm from './hooks/use-validate-user-form';
 import { useS3 } from '@daengle/services/hooks';
-import { ImageInputBox } from '../../../../components/mypage/user-profile/edit';
+import { ImageInputBox } from '../../../../components/mypage/user-profile/edit/imageInput';
+import { DefaultImageInputBox } from '../../../../components/mypage/user-profile/edit/defaultImageInput';
 import { DefaultImage } from '@daengle/design-system/icons';
 
 export default function EditProfile() {
@@ -68,23 +69,19 @@ export default function EditProfile() {
   };
 
   return (
-    <Layout isAppBarExist={false}>
+    <Layout isAppBarExist={true}>
       <AppBar />
       <section css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
-          사용자 정보 등록
+          사용자 프로필 수정
         </Text>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div css={profileImageWrapper}>
-            {getUserInfo?.image === null ? (
-              <DefaultImage />
-            ) : (
-              <ImageInputBox
-                onChange={(files) => setValue('image', files, { shouldValidate: true })}
-                defaultValue={getUserInfo?.image || ''}
-              />
-            )}
+            <ImageInputBox
+              onChange={(files) => setValue('image', files, { shouldValidate: true })}
+              defaultValue={getUserInfo?.image || ''}
+            />
           </div>
 
           <ul css={inputWrapper}>

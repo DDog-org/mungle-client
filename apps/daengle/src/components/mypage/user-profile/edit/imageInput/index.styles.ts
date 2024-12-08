@@ -32,8 +32,6 @@ export const profileImageWrapper = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  margin: 32px 0 40px;
 `;
 export const profileEditButtonBox = css`
   margin-top: 12px;
@@ -50,4 +48,7 @@ export const thumbnailImage = css`
   height: 116px;
   border-radius: 50%;
   object-fit: cover;
+`;
+export const defaultImage = css`
+  background-color: ${theme.colors.gray200};
 `;
