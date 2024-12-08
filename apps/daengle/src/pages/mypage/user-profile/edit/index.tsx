@@ -16,6 +16,7 @@ import { UserProfileInfoEditForm } from './interfaces';
 import useValidateUserForm from './hooks/use-validate-user-form';
 import { useS3 } from '@daengle/services/hooks';
 import { ImageInputBox } from '../../../../components/mypage/user-profile/edit';
+import { DefaultImage } from '@daengle/design-system/icons';
 
 export default function EditProfile() {
   const { data: getUserInfo } = useGetUserProfileInfoQuery();
@@ -76,10 +77,14 @@ export default function EditProfile() {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div css={profileImageWrapper}>
-            <ImageInputBox
-              onChange={(files) => setValue('image', files, { shouldValidate: true })}
-              defaultValue={getUserInfo?.image || ''}
-            />
+            {getUserInfo?.image === null ? (
+              <DefaultImage />
+            ) : (
+              <ImageInputBox
+                onChange={(files) => setValue('image', files, { shouldValidate: true })}
+                defaultValue={getUserInfo?.image || ''}
+              />
+            )}
           </div>
 
           <ul css={inputWrapper}>
