@@ -1,7 +1,17 @@
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 export const wrapper = css`
-  padding: 18px 18px 146px;
+  position: relative;
+  padding: 18px 18px 0;
+`;
+export const readOnlyLayer = css`
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0); // 투명 레이어
+  position: absolute;
+  z-index: ${theme.zIndex.ctaButton - 1};
+  cursor: not-allowed;
+  pointer-events: all;
 `;
 export const titleBox = css`
   margin: 0 0 40px;
@@ -27,10 +37,10 @@ export const petProfileImageBox = css`
   border: 5px solid ${theme.colors.blue200};
 `;
 export const line = css`
-  background-color: ${theme.colors.gray100};
   width: 100%;
+  border: 3.5px solid ${theme.colors.gray100};
   height: 7px;
-  margin: 31px 0 32px;
+  margin: 32px 0;
 `;
 export const profileImageWrapper = css`
   display: flex;
@@ -53,6 +63,9 @@ export const profileEditButtonBox = css`
 `;
 
 export const inputWrapper = css`
+  position: relative;
+
+  padding: 0 18px 104px;
   display: flex;
   flex-direction: column;
   gap: 32px;

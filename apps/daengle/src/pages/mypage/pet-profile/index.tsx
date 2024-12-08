@@ -24,9 +24,8 @@ import {
   detailInput,
   weightWrapper,
   readOnlyLayer,
-  filterWrapper,
-  ctaButtonWrapper,
-} from './edit/index.styles';
+  wrapper,
+} from './index.styles';
 import Image from 'next/image';
 import { PetProfileEditType } from '~/pages/mypage/interfaces';
 import { Controller, useForm } from 'react-hook-form';
@@ -41,7 +40,7 @@ import {
 } from '~/pages/mypage/constants';
 import { useGetBreedListQuery } from '~/queries';
 
-export default function PetProfile() {
+export default function PetProfileDetail() {
   const { data: breeds } = useGetBreedListQuery();
 
   const validation = useValidatePetEdit();
@@ -60,7 +59,7 @@ export default function PetProfile() {
   return (
     <Layout isAppBarExist={true}>
       <AppBar />
-      <section css={filterWrapper}>
+      <div css={wrapper}>
         <div css={titleBox}>
           <Text typo="title1">상세보기</Text>
         </div>
@@ -80,7 +79,7 @@ export default function PetProfile() {
             </Text>
           </div>
         </div>
-      </section>
+      </div>
       <div css={line} />
       <section css={inputWrapper}>
         <div css={readOnlyLayer} />
@@ -288,8 +287,6 @@ export default function PetProfile() {
             <textarea css={detailInput} placeholder="특이사항이 있다면 입력해주세요" />
           </section>
         </section>
-      </section>
-      <section css={ctaButtonWrapper}>
         <CTAButton onClick={handleGoToEdit} disabled={isValid}>
           반려견 프로필 수정
         </CTAButton>
