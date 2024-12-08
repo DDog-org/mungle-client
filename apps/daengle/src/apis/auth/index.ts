@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { api } from '~/apis';
 import {
-  GetUserProfileInfoResponse,
   GetBreedListResponse,
   PostAvailableNicknameRequestBody,
   PostAvailableNicknameResponse,
@@ -11,8 +10,8 @@ import {
   PostJoinWithPetResponse,
   PostKakaoRequestBody,
   PostKakaoResponse,
-  PostUserProfileInfoEditResponse,
-  PostUserProfileInfoEditBody,
+  PatchUserInfoRequestBody,
+  PatchUserInfoResponse,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -49,10 +48,10 @@ export const postJoinWithPet = async (body: PostJoinWithPetRequestBody) => {
   return await api.post<PostJoinWithPetResponse>('/user/join-with-pet', body);
 };
 
-export const getUserProfileInfo = async (): Promise<GetUserProfileInfoResponse> => {
-  return await api.get<GetUserProfileInfoResponse>('/user/info');
+export const getUserInfo = async () => {
+  return await api.get('/user/info');
 };
 
-export const postUserProfileInfoEdit = async (body: PostUserProfileInfoEditBody) => {
-  return await api.patch<PostUserProfileInfoEditResponse>('/user/info', body);
+export const patchUserInfo = async (body: PatchUserInfoRequestBody) => {
+  return await api.patch<PatchUserInfoResponse>('/user/info', body);
 };
