@@ -42,7 +42,8 @@ import {
 } from '~/pages/mypage/constants';
 import { useGetBreedListQuery } from '~/queries';
 
-export default function DogEditProfile() {
+export default function PetProfileEdit() {
+
   const { data: breeds } = useGetBreedListQuery();
 
   const validation = useValidatePetEdit();
