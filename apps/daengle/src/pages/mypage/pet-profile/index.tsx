@@ -38,10 +38,12 @@ import {
   PET_SIGNIFICANTTAG,
   PET_WEIGHT,
 } from '~/pages/mypage/constants';
-import { useGetBreedListQuery } from '~/queries';
+import { useGetBreedListQuery, useGetUserPetInfoQuery } from '~/queries';
+import { useEffect } from 'react';
 
 export default function PetProfileDetail() {
   const { data: breeds } = useGetBreedListQuery();
+  const { data: getUserPetInfo } = useGetUserPetInfoQuery();
 
   const validation = useValidatePetEdit();
 
@@ -55,7 +57,9 @@ export default function PetProfileDetail() {
     mode: 'onChange',
   });
 
-  const handleGoToEdit = () => {};
+  useEffect(() => {
+    console.log('getUserPetInfo-->', getUserPetInfo);
+  }, []);
   return (
     <Layout isAppBarExist={true}>
       <AppBar />
@@ -287,9 +291,7 @@ export default function PetProfileDetail() {
             <textarea css={detailInput} placeholder="특이사항이 있다면 입력해주세요" />
           </section>
         </section>
-        <CTAButton onClick={handleGoToEdit} disabled={isValid}>
-          반려견 프로필 수정
-        </CTAButton>
+        <CTAButton disabled={isValid}>반려견 프로필 수정</CTAButton>
       </section>
     </Layout>
   );

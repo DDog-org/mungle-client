@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '~/queries/query-keys';
 import {
   getBreedList,
+  getUserPetInfo,
   postAvailableNickname,
   postJoinWithoutPet,
   postJoinWithPet,
@@ -73,6 +74,18 @@ export const usePostJoinWithPetMutation = () => {
     mutationFn: async (body: PostJoinWithPetRequestBody) => {
       try {
         return await postJoinWithPet(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
+export const useGetUserPetInfoQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_USER_PETINFO,
+    queryFn: async () => {
+      try {
+        return await getUserPetInfo();
       } catch (error) {
         throw new Error(String(error));
       }

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { api } from '~/apis';
 import {
   GetBreedListResponse,
+  GetUserPetInfoResponse,
   PostAvailableNicknameRequestBody,
   PostAvailableNicknameResponse,
   PostJoinWithoutPetRequestBody,
@@ -44,4 +45,8 @@ export const getBreedList = async () => {
 
 export const postJoinWithPet = async (body: PostJoinWithPetRequestBody) => {
   return await api.post<PostJoinWithPetResponse>('/user/join-with-pet', body);
+};
+
+export const getUserPetInfo = async () => {
+  return await api.get<GetUserPetInfoResponse>('/user/pet-info');
 };
