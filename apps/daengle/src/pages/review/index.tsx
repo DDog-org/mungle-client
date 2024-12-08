@@ -24,20 +24,20 @@ import {
   SelectUnfoldInactive,
 } from '@daengle/design-system/icons';
 
+const TAGS = [
+  '#위생적이에요',
+  '#상담을 잘해줘요',
+  '#맞춤 케어를 잘해줘요',
+  '#노견을 잘 다뤄요',
+  '#섬세한 손길을 가졌어요',
+  '#원하는 스타일로 잘해줘요',
+];
+
 export default function ReviewPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [rating, setRating] = useState<number>(0);
   const [reviewText, setReviewText] = useState<string>('');
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-
-  const tags = [
-    '#위생적이에요',
-    '#상담을 잘해줘요',
-    '#맞춤 케어를 잘해줘요',
-    '#노견을 잘 다뤄요',
-    '#섬세한 손길을 가졌어요',
-    '#원하는 스타일로 잘해줘요',
-  ];
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -97,7 +97,7 @@ export default function ReviewPage() {
               이 곳에 어울리는 키워드를 골라주세요
             </Text>
             <div css={keyword}>
-              {tags.map((tag, index) => {
+              {TAGS.map((tag, index) => {
                 if (!isExpanded && index >= 3) return null;
                 return (
                   <ChipToggleButton
