@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 
-export const filterWrapper = css`
-  padding: 0 18px;
-  `;
 export const wrapper = css`
-  padding: 18px 18px 104px;
+  padding: 0 18px;
 `;
+// export const wrapper = css`
+//   padding: 18px 18px 104px;
+// `;
 export const titleBox = css`
   margin: 0 0 40px;
 `;
@@ -56,7 +56,7 @@ export const profileEditButtonBox = css`
 `;
 
 export const inputWrapper = css`
-  padding: 0 18px 104px;
+  padding: 0 18px 146px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -134,4 +134,3 @@ export const weightWrapper = css`
 export const ctaButtonWrapper = css`
   padding: 0 18px;
 `;
-
