@@ -46,3 +46,10 @@ export const selectedProfileButton = css`
 export const hiddenContainer = css`
   display: none;
 `;
+
+export const defaultImage = css`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
