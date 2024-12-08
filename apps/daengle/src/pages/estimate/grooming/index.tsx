@@ -114,7 +114,7 @@ export default function EstimateCreate() {
       requirements: requirements,
     };
 
-    postEstimateGroomingBody(requestBody, {
+    postUserEstimateGroomingRequestBody(requestBody, {
       onSuccess: (data) => {
         console.log('data: ', data);
         router.push(ROUTES.ESTIMATE_FORM_COMPLETE);
