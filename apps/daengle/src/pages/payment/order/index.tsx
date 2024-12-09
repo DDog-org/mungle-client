@@ -1,28 +1,7 @@
-import { AppBar, CapsuleButton, CTAButton, Input, Layout, Text } from '@daengle/design-system';
-import {
-  wrapper,
-  section,
-  title,
-  subtitle,
-  line,
-  reservationInfo,
-  scheduleStyle,
-  dateTime,
-  reservationPrice,
-  priceStyle,
-  thinLine,
-  totalPrice,
-  additionalInfoBox,
-  additionalInfo,
-  additionalInfoButton,
-  arrow,
-  grayLine,
-  visitorInfo,
-  hiddenBlock,
-  inputTitle,
-  input,
-} from './index.styles';
+import { AppBar, CTAButton, Input, Layout, Text } from '@daengle/design-system';
 import { SelectUnfoldActive, SelectUnfoldInactive } from '@daengle/design-system/icons';
+import { theme } from '@daengle/design-system';
+import { css } from '@emotion/react';
 import { useState } from 'react';
 import { usePostPaymentOrderMutation, usePostPaymentValidateMutation } from '~/queries/payment';
 import { PostPaymentOrderResponse } from '~/models/payment';
@@ -127,7 +106,7 @@ export default function Order() {
             if (validateResponse) {
               //결제 성공
               console.log(response);
-              // router.push(ROUTES.PAYMENT_COMPLETE);
+              router.push(ROUTES.PAYMENT_COMPLETE);
             } else {
               alert('결제 검증에 실패했습니다.');
             }
@@ -250,3 +229,137 @@ export default function Order() {
     </Layout>
   );
 }
+
+//////////// emotion(css) ///////////
+
+const wrapper = css`
+  padding: 18px 0 104px;
+`;
+
+const section = css`
+  padding: 0 18px;
+`;
+
+const title = css`
+  margin-bottom: 24px;
+`;
+
+const subtitle = css`
+  margin: 6px 0;
+`;
+
+const line = css`
+  width: 100%;
+  height: 8px;
+  margin: 24px 0;
+
+  background-color: ${theme.colors.gray100};
+`;
+
+const reservationInfo = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+
+  margin: 14px 0;
+  padding: 18px;
+  border: 2px solid ${theme.colors.blue200};
+  border-radius: 21px;
+`;
+
+const scheduleStyle = css`
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 12px;
+`;
+
+const dateTime = css`
+  display: flex;
+  gap: 11px;
+`;
+
+const reservationPrice = css`
+  padding: 0 18px;
+`;
+
+const priceStyle = css`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const thinLine = css`
+  width: 100%;
+  height: 1px;
+  margin: 14px 0;
+
+  background-color: ${theme.colors.black};
+`;
+
+const totalPrice = css`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const additionalInfoBox = css`
+  margin-top: 32px;
+`;
+
+const additionalInfo = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  width: 100%;
+  height: 34px;
+`;
+
+const additionalInfoButton = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+
+  width: 210px;
+  height: 34px;
+  border-radius: 30px;
+
+  background-color: ${theme.colors.gray100};
+`;
+
+const arrow = css`
+  position: absolute;
+  right: 18px;
+
+  stroke: ${theme.colors.gray300};
+`;
+
+const grayLine = css`
+  width: 100%;
+  height: 1px;
+
+  background-color: ${theme.colors.gray100};
+`;
+
+const visitorInfo = css`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+const hiddenBlock = ({ isOpen }: { isOpen: boolean }) => ({
+  maxHeight: isOpen ? '200px' : '0',
+  overflow: 'hidden',
+  transition: 'max-height 0.3s ease',
+  opacity: isOpen ? 1 : 0,
+});
+
+const inputTitle = css`
+  margin: 20px 0;
+`;
+
+const input = css`
+  margin-bottom: 18px;
+`;
