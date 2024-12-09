@@ -42,6 +42,8 @@ import { useGetBreedListQuery, useGetUserPetInfoQuery } from '~/queries';
 import { useEffect, useState } from 'react';
 import { DefaultImage } from '@daengle/design-system/icons';
 import { PetInfos } from '~/models/auth';
+import router from 'next/router';
+import { ROUTES } from '~/constants/commons';
 
 export default function PetProfileDetail() {
   const [petInfos, setPetInfos] = useState<PetInfos[] | null>(null);
@@ -49,8 +51,14 @@ export default function PetProfileDetail() {
   const { data: breeds } = useGetBreedListQuery();
   const { data: getUserPetInfo, isLoading, error } = useGetUserPetInfoQuery();
 
+  const selectedPet = petInfos?.find((pet) => pet.id === selectedPetId);
+
   const handlePetSelect = (petId: number) => {
     setSelectedPetId(petId);
+  };
+
+  const handleGoToEdit = () => {
+    router.push(ROUTES.MAYPAGE_PET_PROFILE_EDIT);
   };
   useEffect(() => {
     if (getUserPetInfo && getUserPetInfo.petDetails) {
@@ -58,8 +66,6 @@ export default function PetProfileDetail() {
       setSelectedPetId(getUserPetInfo.petDetails[0]?.id || 0); // 기본값으로 첫 번째 반려견 선택
     }
   }, [getUserPetInfo]);
-
-  const selectedPet = petInfos?.find((pet) => pet.id === selectedPetId);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -75,7 +81,7 @@ export default function PetProfileDetail() {
 
   return (
     <Layout isAppBarExist={true}>
-      <AppBar />
+      <AppBar onBackClick={router.back} />
       <div css={wrapper}>
         <div css={titleBox}>
           <Text typo="title1">상세보기</Text>
@@ -254,7 +260,7 @@ export default function PetProfileDetail() {
             />
           </section>
         </section>
-        <CTAButton onClick>반려견 프로필 수정</CTAButton>
+        <CTAButton onClick={handleGoToEdit}>반려견 프로필 수정</CTAButton>
       </section>
     </Layout>
   );
