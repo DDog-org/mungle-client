@@ -1,7 +1,3 @@
-export interface GetDaengleEstimateListResponse {
-  petInfos?: PetInfo[];
-}
-
 export interface PetInfo {
   petId: number;
   name: string;
