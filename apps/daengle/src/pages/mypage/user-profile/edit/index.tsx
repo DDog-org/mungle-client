@@ -40,7 +40,7 @@ export default function EditProfile() {
     defaultValues: {
       image: null,
       nickname: '',
-      isAvailableNickname: false, // 닉네임 중복 검사 결과
+      isAvailableNickname: false,
     },
   });
 
@@ -65,6 +65,7 @@ export default function EditProfile() {
   const onSubmit = async (data: UserProfileInfoEditForm) => {
     let imageString = '';
     if (data.image) {
+      // TODO: 여기에 이미지 삭제 하기 넣기
       const uploadedImages = await uploadToS3([data.image]);
       if (uploadedImages && uploadedImages.length > 0) {
         imageString = uploadedImages[0] ?? '';
@@ -83,9 +84,6 @@ export default function EditProfile() {
   const handleNicknameChange = () => {
     setValue('isAvailableNickname', false);
   };
-  function clearErrors() {
-    throw new Error('Function not implemented.');
-  }
 
   return (
     <Layout isAppBarExist={true}>
