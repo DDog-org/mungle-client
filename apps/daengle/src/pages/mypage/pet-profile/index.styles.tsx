@@ -4,6 +4,67 @@ export const wrapper = css`
   position: relative;
   padding: 18px 18px 0;
 `;
+// pet profile css
+export const section = css`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+export const petList = css`
+  display: flex;
+  gap: 14px;
+`;
+export const petProfile = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  cursor: pointer;
+`;
+export const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
+  width: 86px;
+  height: 86px;
+  border: 4px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
+  border-radius: 50px;
+
+  background-color: ${theme.colors.gray200};
+
+  transition: border 0.2s ease;
+`;
+export const petName = css`
+  transition: 0.2s ease;
+`;
+export const registerPet = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+  width: 100%;
+  height: 109px;
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: 10px;
+`;
+export const circle = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: 20px;
+
+  cursor: pointer;
+
+  :hover {
+    background-color: ${theme.colors.gray100};
+
+    transition: 0.3s;
+  }
+`;
 export const readOnlyLayer = css`
   width: 100%;
   height: 100%;

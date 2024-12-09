@@ -3,23 +3,23 @@ export interface PetProfileEditType {
   image: string;
   name: string;
   birth: number;
-  gender: 'MALE' | 'FEMALE';
+  gender: string;
   breed: string;
-  isNeutered: string;
+  isNeutered: boolean;
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
-  groomingExperience: string;
-  isBite: string;
+  groomingExperience: boolean;
+  isBite: boolean;
   dislikeParts: DislikeParts[];
   significantTags: SignificantTags[];
-  significants: string;
+  significant: string;
 }
 
 export interface DislikeParts {
-  partName: DislikePart[];
+  partName: string;
   part: string;
 }
 export interface SignificantTags {
-  tagName: SignificantTag;
+  tagName: string;
   tag: string;
 }
 

@@ -11,8 +11,6 @@ import {
 import {
   titleBox,
   petProfileWrapper,
-  petProfileEditWrapper,
-  petProfileImageBox,
   line,
   inputWrapper,
   formBox,
@@ -25,6 +23,11 @@ import {
   weightWrapper,
   readOnlyLayer,
   wrapper,
+  section,
+  petList,
+  petProfile,
+  profileImage,
+  petName,
 } from './index.styles';
 import Image from 'next/image';
 import { PetProfileEditType } from '~/pages/mypage/interfaces';
@@ -39,11 +42,15 @@ import {
   PET_WEIGHT,
 } from '~/pages/mypage/constants';
 import { useGetBreedListQuery, useGetUserPetInfoQuery } from '~/queries';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { DefaultImage } from '@daengle/design-system/icons';
+import { PetInfos } from '~/models/auth';
 
 export default function PetProfileDetail() {
+  const [petInfos, setPetInfos] = useState<PetInfos[] | null>(null);
+  const [selectedPetId, setSelectedPetId] = useState<number>(0);
   const { data: breeds } = useGetBreedListQuery();
-  const { data: getUserPetInfo } = useGetUserPetInfoQuery();
+  const { data: getUserPetInfo, isLoading, error } = useGetUserPetInfoQuery();
 
   const validation = useValidatePetEdit();
 
@@ -55,11 +62,74 @@ export default function PetProfileDetail() {
     formState: { errors, isValid },
   } = useForm<PetProfileEditType>({
     mode: 'onChange',
+    defaultValues: {
+      name: '',
+      birth: undefined,
+      gender: '',
+      breed: '',
+      isNeutered: false,
+      weight: undefined,
+      groomingExperience: false,
+      isBite: false,
+      dislikeParts: [],
+      significantTags: [],
+      significant: '',
+    },
   });
 
+  const handlePetSelect = (petId: number) => {
+    if (petInfos) {
+      if (selectedPetId === petId) setSelectedPetId(0);
+      else setSelectedPetId(petId);
+    }
+  };
   useEffect(() => {
-    console.log('getUserPetInfo-->', getUserPetInfo);
-  }, []);
+    if (getUserPetInfo && getUserPetInfo.petDetails) {
+      setPetInfos(getUserPetInfo.petDetails); // petInfos에 데이터 설정
+    }
+  }, [getUserPetInfo]);
+
+  // TODO: 정보 반영 후 삭제 예정
+  useEffect(() => {
+    if (getUserPetInfo) {
+      console.log('API 응답 데이터:', getUserPetInfo);
+    } else {
+      console.log('API 응답 없음');
+    }
+  }, [getUserPetInfo]);
+
+  // 선택된 petId에 따라 데이터 필터링 및 필드 초기화
+  useEffect(() => {
+    if (getUserPetInfo && selectedPetId !== null) {
+      const selectedPet = getUserPetInfo.petDetails.find((pet) => pet.id === selectedPetId);
+      if (selectedPet) {
+        setValue('name', selectedPet.name || '');
+        setValue('birth', selectedPet.birth);
+        setValue('gender', selectedPet.gender || '');
+        setValue('breed', selectedPet.breed || '');
+        setValue('isNeutered', selectedPet.isNeutered || false);
+        setValue('weight', selectedPet.weight || undefined);
+        setValue('groomingExperience', selectedPet.groomingExperience || false);
+        setValue('isBite', selectedPet.isBite || false);
+        setValue('dislikeParts', selectedPet.dislikeParts || []);
+        setValue('significantTags', selectedPet.significantTags || []);
+        setValue('significant', selectedPet.significant || '');
+      }
+    }
+  }, [getUserPetInfo, selectedPetId, setValue]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!getUserPetInfo) {
+    return <div>No pet information available</div>;
+  }
+
+  if (error) {
+    return <div>Error loading pet information</div>;
+  }
+
   return (
     <Layout isAppBarExist={true}>
       <AppBar />
@@ -68,20 +138,45 @@ export default function PetProfileDetail() {
           <Text typo="title1">상세보기</Text>
         </div>
         <div css={petProfileWrapper}>
-          <Text typo="subtitle1">내 아이</Text>
-          <div css={petProfileEditWrapper}>
-            <div css={petProfileImageBox}>
-              <Image
-                src="/icons/pet-profile/edit_image.jpeg"
-                alt="펫 필터링 이미지"
-                width={70}
-                height={70}
-              />
-            </div>
-            <Text typo="body5" color="blue200">
-              가이
+          <section css={section}>
+            <Text tag="h2" typo="subtitle3" color="black">
+              내 아이
             </Text>
-          </div>
+            <div css={petList}>
+              {petInfos && petInfos.length > 0 ? (
+                <div css={petList}>
+                  {petInfos.map((pet) => (
+                    <div key={pet.id} css={petProfile} onClick={() => handlePetSelect(pet.id)}>
+                      {pet.image ? (
+                        <Image
+                          src={pet.image}
+                          alt="반려견 프로필"
+                          width={86}
+                          height={86}
+                          css={profileImage({ isSelected: selectedPetId === pet.id })}
+                        />
+                      ) : (
+                        <DefaultImage
+                          css={profileImage({ isSelected: selectedPetId === pet.id })}
+                        />
+                      )}
+                      <Text
+                        typo="body1"
+                        color={selectedPetId === pet.id ? 'blue200' : 'gray400'}
+                        css={petName}
+                      >
+                        {pet.name}
+                      </Text>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <Text typo="body3" color="gray400">
+                  반려견 정보를 불러오지 못했습니다.
+                </Text>
+              )}
+            </div>
+          </section>
         </div>
       </div>
       <div css={line} />
@@ -89,7 +184,6 @@ export default function PetProfileDetail() {
         <div css={readOnlyLayer} />
         <Input
           label="이름"
-          placeholder="이름을 입력해 주세요"
           maxLength={10}
           {...register('name', { ...validation.name })}
           errorMessage={errors.name?.message}
@@ -142,6 +236,7 @@ export default function PetProfileDetail() {
                 <>
                   {PET_IS_NEUTERED.map((item) => (
                     <ChipRadio
+                      key={item.value}
                       name={field.name}
                       value={item.value}
                       label={item.label}
@@ -253,7 +348,21 @@ export default function PetProfileDetail() {
                 render={({ field }) => (
                   <>
                     {PET_DISLIKEPART.map((item) => (
-                      <ChipToggleButton size="fixed">{item.label}</ChipToggleButton>
+                      <ChipToggleButton
+                        key={item.value}
+                        name={field.name}
+                        value={item.value}
+                        size="fixed"
+                        isSelected={field.value.includes(item.value)}
+                        onChange={() => {
+                          const newValue = field.value.includes(item.value)
+                            ? field.value.filter((v) => v !== item.value)
+                            : [...field.value, item.value];
+                          field.onChange(newValue);
+                        }}
+                      >
+                        {item.label}
+                      </ChipToggleButton>
                     ))}
                   </>
                 )}
@@ -277,8 +386,18 @@ export default function PetProfileDetail() {
                         <ChipToggleButton
                           key={item.value}
                           size="full"
-                          isSelected={field.value?.includes(item.value)}
-                          onChange={(e) => field.onChange(e.target)}
+                          isSelected={field.value.some(
+                            (selectedTag) => selectedTag.tag === item.tag
+                          )} // tag 값 비교하여 선택 상태 설정
+                          onClick={() => {
+                            const exists = field.value.some(
+                              (selectedTag) => selectedTag.tag === item.tag
+                            );
+                            const newValue = exists
+                              ? field.value.filter((selectedTag) => selectedTag.tag !== item.tag) // 선택 해제
+                              : [...field.value, { tag: item.tag, tagName: item.tagName }]; // 선택 추가
+                            field.onChange(newValue);
+                          }}
                         >
                           {item.label}
                         </ChipToggleButton>
@@ -288,7 +407,11 @@ export default function PetProfileDetail() {
                 />
               </>
             </section>
-            <textarea css={detailInput} placeholder="특이사항이 있다면 입력해주세요" />
+            <textarea
+              css={detailInput}
+              placeholder="특이사항이 있다면 입력해주세요"
+              {...register('significant')}
+            />
           </section>
         </section>
         <CTAButton disabled={isValid}>반려견 프로필 수정</CTAButton>

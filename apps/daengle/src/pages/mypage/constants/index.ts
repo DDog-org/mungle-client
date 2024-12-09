@@ -12,8 +12,8 @@ export const PET_GENDER = [
 ] as const;
 
 export const PET_IS_NEUTERED = [
-  { value: 'true', label: '했어요' },
-  { value: 'false', label: '안했어요' },
+  { value: true, label: '했어요' },
+  { value: false, label: '안했어요' },
 ] as const;
 
 export const PET_WEIGHT = [
@@ -34,7 +34,7 @@ export const PET_WEIGHT = [
   },
 ] as const;
 
-export const PET_DISLIKEPART: { value: DislikePart; label: string }[] = [
+export const PET_DISLIKEPART: { value: string; label: string }[] = [
   {
     value: 'NONE',
     label: '없음',

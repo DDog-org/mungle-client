@@ -51,7 +51,7 @@ export interface PostJoinWithPetRequestBody extends PostJoinWithoutPetRequestBod
 // TODO: api 변경 후 수정 필요
 export type PostJoinWithPetResponse = string;
 
-export interface GetUserPetInfoResponse {
+export interface PetInfos {
   id: number;
   image: string;
   name: string;
@@ -63,6 +63,14 @@ export interface GetUserPetInfoResponse {
   groomingExperience: boolean;
   isBite: boolean;
   dislikeParts: string[];
-  significantTags: string[];
+  significantTags: SignificantTag[];
   significant: string;
+}
+
+export interface SignificantTag {
+  tagName: string;
+  tag: string;
+}
+export interface GetUserPetInfoResponse {
+  petDetails: PetInfos[];
 }
