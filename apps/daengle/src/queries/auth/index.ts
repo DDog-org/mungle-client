@@ -85,14 +85,14 @@ export const usePostJoinWithPetMutation = () => {
 
 export const useGetUserProfileInfoQuery = () => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_USER_PROFILE_INFO],
+    queryKey: QUERY_KEYS.GET_USER_PROFILE_INFO,
     queryFn: getUserInfo,
   });
 };
 
 export const usePatchUserInfoMutation = () => {
   return useMutation({
-    mutationKey: [QUERY_KEYS.POST_USER_PROFILE_INFO],
+    mutationKey: QUERY_KEYS.POST_USER_PROFILE_INFO,
     mutationFn: async (body: PatchUserInfoRequestBody) => {
       try {
         return await patchUserInfo(body);

@@ -26,10 +26,12 @@ export default function EditProfile() {
   const validation = useValidateUserForm();
 
   const { uploadToS3 } = useS3({ targetFolderPath: 'user/profile-images' });
+
   const {
     handleSubmit,
     watch,
     register,
+
     setError,
     setValue,
     formState: { errors, isValid },
@@ -41,14 +43,15 @@ export default function EditProfile() {
   });
 
   const checkIsAvailableNickname = async () => {
-    const nickname = watch('nickname');
-    if (!nickname) return;
+    const nickname = watch('nickname'); // 입력한 닉네임 가져오기
+    if (!nickname) {
+      setError('nickname', { message: '닉네임을 입력해주세요.' });
+      return;
+    }
 
     const response = await postAvailableNickname({ nickname });
 
-    if (response.isAvailable) {
-      console.log('');
-    } else {
+    if (!response.isAvailable) {
       setError('nickname', { message: '이미 사용중인 닉네임입니다' });
     }
   };
@@ -71,6 +74,7 @@ export default function EditProfile() {
   const handleGoToClick = () => {
     router.push(ROUTES.MYPAGE);
   };
+  const confirmMessage = watch('nickname') && !errors.nickname ? '사용 가능한 닉네임입니다' : '';
 
   return (
     <Layout isAppBarExist={true}>
@@ -101,6 +105,7 @@ export default function EditProfile() {
                 }
                 {...register('nickname', { ...validation.nickname })}
                 errorMessage={errors.nickname?.message}
+                confirmMessage={confirmMessage}
               />
             </li>
             <li css={readOnlyTextBox}>
@@ -129,7 +134,7 @@ export default function EditProfile() {
             </li>
           </ul>
 
-          <CTAButton type="submit" onClick={handleGoToClick} disabled={!isValid}>
+          <CTAButton type="submit" disabled={!isValid}>
             수정하기
           </CTAButton>
         </form>
