@@ -13,19 +13,20 @@ export default function Order() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [orderUid, setOrderUid] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { mutateAsync: postPaymentOrder } = usePostPaymentOrderMutation();
   const { mutateAsync: postPaymentValidate } = usePostPaymentValidateMutation();
 
   const IMP_UID = process.env.NEXT_PUBLIC_IMP_UID ?? '';
 
-  const estimateId = 12345;
+  const estimateId = 11;
   const serviceType = 'GROOMING';
-  const recipientId = 1;
+  const recipientId = 9;
   const recipientName = '김미용사';
   const shopName = '펫케어샵';
   const schedule = '2024-12-06T14:00:00';
-  const price = 100; // 고정 예약금
+  const price = 1000; // 고정 예약금
   const customerName = '홍길동';
   const customerPhoneNumber = '010-1234-5678';
   const visitorName = '김철수';
@@ -40,6 +41,8 @@ export default function Order() {
 
   // 결제 요청 api 호출
   const handlePostPaymentOrder = async () => {
+    setIsLoading(true);
+
     try {
       const orderResponse: PostPaymentOrderResponse = await postPaymentOrder({
         estimateId,
@@ -56,66 +59,76 @@ export default function Order() {
       });
       console.log('orderResponse:', orderResponse);
       console.log('orderUid:', orderResponse.orderUId);
-      setOrderUid(orderResponse.orderUId);
       console.log(orderUid);
 
       // PG 결제 창 띄우기
-      if (orderResponse) {
+      if (orderResponse && orderResponse.orderUId) {
+        setOrderUid(orderResponse.orderUId);
+
+        if (!IMP_UID) {
+          console.error('IMP_UID 환경 변수가 설정되지 않았습니다.');
+          alert('결제 환경 설정이 올바르지 않습니다. 관리자에게 문의해주세요.');
+          return;
+        }
+
         const { IMP } = window;
         if (IMP) IMP.init(IMP_UID);
-        IMP?.request_pay(
-          {
-            pg: 'html5_inicis',
-            pay_method: 'card', // 결제 수단
-            merchant_uid: orderUid, // 주문 번호
-            name: '주문명: 예약금 결제 테스트',
-            amount: price, // 결제 금액
-            estimate_id: estimateId,
-            service_type: serviceType,
-            recipientId: recipientId,
-            groomer_name: recipientName,
-            shop_name: shopName,
-            schedule: schedule,
-            buyer_name: customerName,
-            buyer_tel: customerPhoneNumber,
-            visitor_name: visitorName,
-            visitor_tel: visitorPhoneNumber,
-            m_redirect_url: '/payment/complete',
-          },
-          async function (response) {
-            //결제 후 호출되는 callback함수
-            if (response.error_code) {
-              console.log('errorCode:', response.error_code);
-              alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
-              return;
-            }
 
-            console.log('paymentUid:', response.imp_uid);
-            console.log('estimateId:', String(estimateId));
-            console.log('orderUid:', orderUid);
+        const IMPRequestData = {
+          pg: 'html5_inicis',
+          pay_method: 'card', // 결제 수단
+          merchant_uid: orderUid, // 주문 번호
+          name: '주문명: 예약금 결제 테스트',
+          amount: price, // 결제 금액
+          estimate_id: estimateId,
+          service_type: serviceType,
+          recipientId: recipientId,
+          groomer_name: recipientName,
+          shop_name: shopName,
+          schedule: schedule,
+          buyer_name: customerName,
+          buyer_tel: customerPhoneNumber,
+          visitor_name: visitorName,
+          visitor_tel: visitorPhoneNumber,
+          m_redirect_url: ROUTES.PAYMENT_COMPLETE,
+        };
 
-            // 결제 검증 api 호출
-            const validateResponse = await postPaymentValidate({
-              paymentUid: response.imp_uid,
-              estimateId: String(estimateId),
-              orderUid: orderUid,
-            });
-
-            console.log('validateResponse:', validateResponse);
-
-            if (validateResponse) {
-              //결제 성공
-              console.log(response);
-              router.push(ROUTES.PAYMENT_COMPLETE);
-            } else {
-              alert('결제 검증에 실패했습니다.');
-            }
+        IMP?.request_pay(IMPRequestData, async function (response) {
+          //결제 후 호출되는 callback함수
+          if (response.error_code) {
+            console.log('errorCode:', response.error_code);
+            console.log('errorCode2:', response.error.code);
+            alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
+            return;
           }
-        );
+
+          console.log('paymentUid:', response.imp_uid);
+          console.log('estimateId:', String(estimateId));
+          console.log('orderUid:', orderUid);
+
+          // 결제 검증 api 호출
+          const validateResponse = await postPaymentValidate({
+            paymentUid: response.imp_uid,
+            estimateId: String(estimateId),
+            orderUid: orderUid,
+          });
+
+          console.log('validateResponse:', validateResponse);
+
+          if (validateResponse) {
+            //결제 성공
+            console.log(response);
+            router.push(ROUTES.PAYMENT_COMPLETE);
+          } else {
+            alert('결제 검증에 실패했습니다.');
+          }
+        });
       }
     } catch (error) {
       console.error('Error:', error);
       alert('결제 요청 중 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -223,7 +236,9 @@ export default function Order() {
               <Input label="휴대폰번호" placeholder="휴대폰 번호를 입력해주세요" />
             </div>
           </section>
-          <CTAButton onClick={handlePostPaymentOrder}>예약하기</CTAButton>
+          <CTAButton onClick={handlePostPaymentOrder} disabled={isLoading}>
+            {isLoading ? '처리중' : '결제하기'}
+          </CTAButton>
         </section>
       </div>
     </Layout>
