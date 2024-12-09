@@ -3,14 +3,14 @@ import { QUERY_KEYS } from '../query-keys';
 import {
   postUserEstimateGrooming,
   postUserEstimateGroomerUserInfo,
-  postCare,
-  postVetUserInfo,
+  postUserEstimateCare,
+  postUserEstimateVetUserInfo,
 } from '~/apis';
 import {
   PostUserEstimateGroomingRequestBody,
   PostUserEstimateGroomerUserInfoRequestBody,
-  postCareBody,
-  postVetUserInfoBody,
+  PostUserEstimateCareRequestBody,
+  PostUserEstimateVetUserInfoRequestBody,
 } from '~/models/estimate';
 
 export const usePostUserEstimateGroomerUserInfoMutation = () => {
@@ -19,19 +19,6 @@ export const usePostUserEstimateGroomerUserInfoMutation = () => {
     mutationFn: async (body: PostUserEstimateGroomerUserInfoRequestBody) => {
       try {
         return await postUserEstimateGroomerUserInfo(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
-  });
-};
-
-export const usePostVetUserInfoMutation = () => {
-  return useMutation({
-    mutationKey: [QUERY_KEYS.POST_VET_USER_INFO],
-    mutationFn: async (body: postVetUserInfoBody) => {
-      try {
-        return await postVetUserInfo(body);
       } catch (error) {
         throw new Error(String(error));
       }
@@ -52,12 +39,25 @@ export const usePostUserEstimateGroomingMutation = () => {
   });
 };
 
-export const usePostCareMutation = () => {
+export const usePostUserEstimateVetUserInfoMutation = () => {
   return useMutation({
-    mutationKey: [QUERY_KEYS.POST_CARE],
-    mutationFn: async (body: postCareBody) => {
+    mutationKey: [QUERY_KEYS.POST_USER_ESTIMATE_VET_USER_INFO],
+    mutationFn: async (body: PostUserEstimateVetUserInfoRequestBody) => {
       try {
-        return await postCare(body);
+        return await postUserEstimateVetUserInfo(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
+
+export const usePostUserEstimateCareMutation = () => {
+  return useMutation({
+    mutationKey: [QUERY_KEYS.POST_USER_ESTIMATE_CARE],
+    mutationFn: async (body: PostUserEstimateCareRequestBody) => {
+      try {
+        return await postUserEstimateCare(body);
       } catch (error) {
         throw new Error(String(error));
       }

@@ -4,10 +4,10 @@ import {
   PostUserEstimateGroomerUserInfoResponse,
   PostUserEstimateGroomingRequestBody,
   PostUserEstimateGroomingResponse,
-  postCareBody,
-  postCareResponse,
-  postVetUserInfoBody,
-  postVetUserInfoResponse,
+  PostUserEstimateCareRequestBody,
+  PostUserEstimateCareResponse,
+  PostUserEstimateVetUserInfoRequestBody,
+  PostUserEstimateVetUserInfoResponse,
 } from '~/models/estimate';
 
 export const postUserEstimateGroomerUserInfo = async (
@@ -21,11 +21,12 @@ export const postUserEstimateGroomerUserInfo = async (
 
 export const postUserEstimateGrooming = async (body: PostUserEstimateGroomingRequestBody) => {
   return await api.post<PostUserEstimateGroomingResponse>('/user/estimate/grooming', body);
-
-export const postVetUserInfo = async (body: postVetUserInfoBody) => {
-  return await api.post<postVetUserInfoResponse>('/user/estimate/vet-user-info', body);
 };
 
-export const postCare = async (body: postCareBody) => {
-  return await api.post<postCareResponse>('/user/estimate/care', body);
+export const postUserEstimateVetUserInfo = async (body: PostUserEstimateVetUserInfoRequestBody) => {
+  return await api.post<PostUserEstimateVetUserInfoResponse>('/user/estimate/vet-user-info', body);
+};
+
+export const postUserEstimateCare = async (body: PostUserEstimateCareRequestBody) => {
+  return await api.post<PostUserEstimateCareResponse>('/user/estimate/care', body);
 };

@@ -1,18 +1,24 @@
 import { AppBar, CTAButton, Layout, Text } from '@daengle/design-system';
 import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
+
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import DatePickerComponent from '~/components/estimate/DatePickerComponent';
-import { usePostCareMutation, usePostVetUserInfoMutation } from '~/queries/estimate';
-import { petInfos, postVetUserInfoResponse } from '~/models/daengle';
+import {
+  usePostUserEstimateCareMutation,
+  usePostUserEstimateVetUserInfoMutation,
+} from '~/queries/estimate';
+import { PetInfos, PostUserEstimateVetUserInfoResponse } from '~/models/estimate';
 import { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
+import { ROUTES } from '~/constants/commons';
+import { DefaultImage } from '@daengle/design-system/icons';
 
 export default function EstimateCare() {
   const router = useRouter();
   const [address, setAddress] = useState<string>('');
-  const [petInfos, setPetInfos] = useState<petInfos[] | null>(null);
+  const [petInfos, setPetInfos] = useState<PetInfos[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(dayjs());
@@ -20,15 +26,17 @@ export default function EstimateCare() {
   const [requirements, setRequirements] = useState<string>('');
   const [ButtonActive, setButtonActive] = useState<boolean>(false);
 
-  const vetId = 9; //TODO: 쿼리스트링 값 읽어오기(groomerId 값이 담겨있는지 null인지 쿼리 스트링으로 판단)
+  const { id } = router.query;
+  const vetId = Number(id);
+
   const reservedDate = `${selectedDate?.format('YYYY-MM-DD')} ${selectedTime?.format('HH:mm:ss')}`;
 
-  const { mutateAsync: postVetUserInfo } = usePostVetUserInfoMutation();
-  const { mutate: postCare } = usePostCareMutation();
+  const { mutateAsync: postUserEstimateVetUserInfo } = usePostUserEstimateVetUserInfoMutation();
+  const { mutate: postUserEstimateCare } = usePostUserEstimateCareMutation();
 
   useEffect(() => {
     // 정보 불러오기
-    handlePostVetUserInfo();
+    handlePostUserEstimateVetUserInfo();
   }, []);
 
   useEffect(() => {
@@ -44,9 +52,9 @@ export default function EstimateCare() {
     setButtonActive(isFormValid);
   }, [selectedPetId, address, selectedDate, selectedTime, symptoms, requirements]);
 
-  const handlePostVetUserInfo = async () => {
+  const handlePostUserEstimateVetUserInfo = async () => {
     try {
-      const response: postVetUserInfoResponse = await postVetUserInfo({
+      const response: PostUserEstimateVetUserInfoResponse = await postUserEstimateVetUserInfo({
         vetId,
       });
       console.log('response: ', response);
@@ -91,18 +99,17 @@ export default function EstimateCare() {
       requirements: requirements,
     };
 
-    postCare(requestBody, {
+    postUserEstimateCare(requestBody, {
       onSuccess: (data) => {
         console.log('data: ', data);
+        // data test
         console.log('vetId:', vetId),
           console.log('petId:', selectedPetId),
           console.log('address:', address),
           console.log('reservedDate:', reservedDate),
           console.log('symptoms:', symptoms),
           console.log('requirements:', requirements),
-          router.push({
-            pathname: '/estimate/complete',
-          });
+          router.push(ROUTES.ESTIMATE_FORM_COMPLETE);
       },
       onError: (error) => {
         console.error('Error submitting form:', error);
@@ -139,14 +146,18 @@ export default function EstimateCare() {
             <div css={petList}>
               {petInfos.map((pet) => (
                 <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
-                  <Image
-                    // src={pet.image} TO DO: null 값인 경우 default Image 사용하도록
-                    src="/images/default_image.png"
-                    alt="반려견 프로필"
-                    width={86}
-                    height={86}
-                    css={profileImage({ isSelected: selectedPetId === pet.petId })}
-                  />
+                  {pet.image == '' ? (
+                    <DefaultImage css={profileImage({ isSelected: selectedPetId === pet.petId })} />
+                  ) : (
+                    <Image
+                      src={pet.image}
+                      alt="반려견 프로필"
+                      width={86}
+                      height={86}
+                      css={profileImage({ isSelected: selectedPetId === pet.petId })}
+                    />
+                  )}
+
                   <Text
                     typo="body1"
                     color={selectedPetId === pet.petId ? 'blue200' : 'gray400'}
@@ -166,9 +177,7 @@ export default function EstimateCare() {
                   width={12}
                   height={12}
                   onClick={() => {
-                    router.push({
-                      pathname: '/user/pet',
-                    });
+                    router.push(ROUTES.MAYPAGE_PET_PROFILE);
                   }}
                 />
               </div>
@@ -184,6 +193,7 @@ export default function EstimateCare() {
           </Text>
           <textarea
             placeholder="증상을 입력해주세요"
+            maxLength={150}
             css={textField}
             value={symptoms}
             onChange={handleSymptomsChange}
@@ -195,6 +205,7 @@ export default function EstimateCare() {
           </Text>
           <textarea
             placeholder="추가 요청사항을 입력해주세요"
+            maxLength={150}
             css={textField}
             value={requirements}
             onChange={handleRequirementsChange}
@@ -265,12 +276,10 @@ const circle = css`
   height: 40px;
   border: 1px solid ${theme.colors.gray200};
   border-radius: 20px;
-
   cursor: pointer;
 
   :hover {
     background-color: ${theme.colors.gray100};
-
     transition: 0.3s;
   }
 `;
@@ -288,4 +297,27 @@ const textField = css`
     color: ${theme.colors.gray300};
     size: ${theme.typo.body9};
   }
+`;
+
+const petList = css`
+  display: flex;
+  gap: 14px;
+`;
+
+const petProfile = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+`;
+
+const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
+  border-radius: 50px;
+  border: 4px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
+  transition: border 0.2s ease;
+`;
+
+const petName = css`
+  transition: 0.2s ease;
 `;
