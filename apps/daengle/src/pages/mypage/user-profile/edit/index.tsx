@@ -15,7 +15,7 @@ import {
 import { UserProfileInfoEditForm } from './interfaces';
 import useValidateUserForm from './hooks/use-validate-user-form';
 import { useS3 } from '@daengle/services/hooks';
-import { ImageInputBox } from '../../../../components/mypage/user-profile/edit/imageInput';
+import { ImageInputBox } from '~/components/mypage/user-profile/edit/imageInput';
 import router from 'next/router';
 import { ROUTES } from '~/constants/commons';
 
