@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { Layout, RoundButton, Text } from '@daengle/design-system';
 import { TransmissionComplete } from '@daengle/design-system/icons';
 import { ROUTES } from '~/constants/commons/routes';
-import { content, subtitle, title, wrapper } from './index.styles';
+import { css } from '@emotion/react';
 
 export default function Pending() {
   const router = useRouter();
@@ -35,3 +35,31 @@ export default function Pending() {
     </Layout>
   );
 }
+
+const wrapper = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+`;
+
+const content = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  text-align: center;
+`;
+
+const title = css`
+  margin: 38px 0 0;
+`;
+
+const subtitle = css`
+  margin: 12px 0 47px;
+`;

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Dayjs } from 'dayjs';
 import { AddInput, PetDetails, Section, UserProfile } from '@daengle/services/components';
-import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
-import { wrapper, sectionDivider, requestTitle, button } from './index.styles';
+import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
 import { useGroomerEstimateDetailQuery } from '~/queries';
 import { DatePick } from '~/components/estimate';
 import { useRouter } from 'next/router';
 import { GetGroomerEstimateDetailParams } from '~/models/estimate';
+import { css } from '@emotion/react';
 
 export default function EstimateDetail() {
   const router = useRouter();
@@ -78,3 +78,25 @@ export default function EstimateDetail() {
     </Layout>
   );
 }
+
+const wrapper = css`
+  height: 100vh;
+`;
+
+const sectionDivider = css`
+  display: block;
+
+  width: 100%;
+  height: 8px;
+  margin: 0;
+
+  background-color: ${theme.colors.gray100};
+`;
+
+const requestTitle = css`
+  padding: 24px 18px;
+`;
+
+const button = css`
+  padding: 24px 18px;
+`;

@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useGroomerEstimateListQuery } from '~/queries';
 import { Tab, Card } from '@daengle/services/components';
-import { wrapper, headerContainer, listContainer } from './index.styles';
-import { GNB, Layout, Text } from '@daengle/design-system';
+import { GNB, Layout, Text, theme } from '@daengle/design-system';
 import {
   GnbChattingActive,
   GnbChattingInactive,
@@ -15,6 +14,7 @@ import {
   GnbEstimateActive,
   GnbEstimateInactive,
 } from '@daengle/design-system/icons';
+import { css } from '@emotion/react';
 
 export const PATHS = {
   ESTIMATE: '/estimate',
@@ -107,3 +107,24 @@ export default function EstimateList(): JSX.Element {
     </Layout>
   );
 }
+
+const wrapper = css`
+  height: 100vh;
+  padding-bottom: 104px;
+
+  background-color: ${theme.colors.background};
+`;
+
+const headerContainer = css`
+  margin-top: 20px;
+  padding: 18px;
+`;
+
+const listContainer = css`
+  flex: 1;
+  overflow-y: auto;
+
+  padding: 18px 18px 104px 0;
+
+  background-color: ${theme.colors.background};
+`;

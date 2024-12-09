@@ -1,6 +1,6 @@
 import { AuthLogo, LoginKakaoLogo } from '@daengle/design-system/icons';
 import { Layout, RoundButton, Text } from '@daengle/design-system';
-import { wrapper, logoWrapper, loginWrapper } from './index.styles';
+import { css } from '@emotion/react';
 
 const REST_API_KEY = process.env.NEXT_PUBLIC_REST_API_KEY;
 const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI;
@@ -29,3 +29,24 @@ export default function Login() {
     </Layout>
   );
 }
+
+const wrapper = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+  padding: 0 18px;
+`;
+
+const logoWrapper = css`
+  margin: 0 0 142px;
+`;
+
+const loginWrapper = css`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;

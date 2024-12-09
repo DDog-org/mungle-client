@@ -3,7 +3,7 @@ import { AppBar, Layout } from '@daengle/design-system';
 import { DaumPostcode, Address } from '@daengle/services/libs';
 import { ROUTES } from '~/constants/commons/routes';
 import { useGroomerInfoFormStore } from '~/stores/auth';
-import { wrapper } from './index.styles';
+import { css } from '@emotion/react';
 
 export default function SearchAddress() {
   const router = useRouter();
@@ -24,3 +24,8 @@ export default function SearchAddress() {
     </Layout>
   );
 }
+
+const wrapper = css`
+  width: 100%;
+  height: 100%;
+`;
