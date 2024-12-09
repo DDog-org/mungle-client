@@ -1,23 +1,9 @@
 import { AppBar, CTAButton, Layout, Text } from '@daengle/design-system';
-import {
-  wrapper,
-  section,
-  box,
-  dateSelect,
-  registerPet,
-  circle,
-  petList,
-  petProfile,
-  profileImage,
-  petName,
-  selectBox,
-  textField,
-} from './index.styles';
+import { theme } from '@daengle/design-system';
+import { css } from '@emotion/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 import EstimateSelectComponent from '~/components/estimate/EstimateSelectComponent';
@@ -28,6 +14,7 @@ import {
 import { PetInfos, PostUserEstimateGroomerUserInfoResponse } from '~/models/estimate';
 import { ROUTES } from '~/constants/commons';
 import { DefaultImage } from '@daengle/design-system/icons';
+import DatePickerComponent from '~/components/estimate/DatePickerComponent';
 
 export default function EstimateCreate() {
   const router = useRouter();
@@ -40,7 +27,8 @@ export default function EstimateCreate() {
   const [requirements, setRequirements] = useState<string>('');
   const [ButtonActive, setButtonActive] = useState<boolean>(false);
 
-  const groomerId = 2; //TODO: 쿼리스트링 값 읽어오기(groomerId 값이 담겨있는지 null인지 쿼리 스트링으로 판단)
+  const { id } = router.query;
+  const groomerId = Number(id);
 
   const reservedDate = `${selectedDate?.format('YYYY-MM-DD')} ${selectedTime?.format('HH:mm:ss')}`;
 
@@ -144,50 +132,7 @@ export default function EstimateCreate() {
           <Text tag="h2" typo="subtitle3" color="black">
             시술 희망 날짜 및 시간
           </Text>
-          <div css={box}>
-            <div css={dateSelect}>
-              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-                <DatePicker
-                  format="YYYY.MM.DD"
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  slotProps={{
-                    textField: {
-                      size: 'small',
-                      InputProps: {
-                        sx: {
-                          borderRadius: '30px',
-                          input: { color: 'black', textAlign: 'center' },
-                          fontSize: '13px',
-                        },
-                      },
-                    },
-                  }}
-                />
-              </LocalizationProvider>
-            </div>
-            <div css={dateSelect}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <TimePicker
-                  value={selectedTime}
-                  onChange={handleTimeChange}
-                  slotProps={{
-                    textField: {
-                      size: 'small',
-                      InputProps: {
-                        sx: {
-                          borderRadius: '30px',
-                          input: { color: 'black', textAlign: 'center' },
-                          fontSize: '13px',
-                        },
-                      },
-                    },
-                  }}
-                  sx={{ borderRadius: '30px' }}
-                />
-              </LocalizationProvider>
-            </div>
-          </div>
+          <DatePickerComponent onDateChange={handleDateChange} onTimeChange={handleTimeChange} />
         </section>
         <section css={section}>
           <Text tag="h2" typo="subtitle3" color="black">
@@ -289,3 +234,141 @@ export default function EstimateCreate() {
     </Layout>
   );
 }
+
+//////////// emotion(css) //////////
+
+const wrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  width: 100%;
+  padding: 18px 18px 104px;
+`;
+
+const section = css`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+const box = css`
+  display: flex;
+  gap: 15px;
+`;
+
+const dateSelect = css`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  width: 100%;
+  height: 36px;
+
+  cursor: pointer;
+`;
+
+const registerPet = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+  width: 100%;
+  height: 109px;
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: 10px;
+`;
+
+const circle = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: 20px;
+
+  cursor: pointer;
+
+  :hover {
+    background-color: ${theme.colors.gray100};
+
+    transition: 0.3s;
+  }
+`;
+
+const petList = css`
+  display: flex;
+  gap: 14px;
+`;
+
+const petProfile = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  cursor: pointer;
+`;
+
+const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
+  width: 86px;
+  height: 86px;
+  border: 4px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
+  border-radius: 50px;
+
+  background-color: ${theme.colors.gray200};
+
+  transition: border 0.2s ease;
+`;
+
+const petName = css`
+  transition: 0.2s ease;
+`;
+
+const selectBox = css`
+  display: flex;
+  gap: 13px;
+`;
+
+const selectItem = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 35px;
+
+  width: 100%;
+  height: 195px;
+  padding: 17px;
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  :hover {
+    background-color: ${theme.colors.gray100};
+
+    transition: 0.3s;
+  }
+`;
+
+const textField = css`
+  width: 100%;
+  height: 135px;
+  padding: 18px;
+  border-radius: 10px;
+
+  background-color: ${theme.colors.gray100};
+  text-align: justify;
+
+  ::placeholder {
+    color: ${theme.colors.gray300};
+    size: ${theme.typo.body9};
+  }
+`;

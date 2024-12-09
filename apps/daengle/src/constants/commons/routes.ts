@@ -10,9 +10,9 @@ export const ROUTES = {
   SEARCH_RESULT: (keyword: string) => `/search?keyword=${keyword}`,
 
   // Estimates
-  ESTIMATE_LIST: (type: string) => `/estimates/${type}`,
-  ESTIMATE_DETAIL: (estimateId: number) => `/estimates/${estimateId}`,
-  ESTIMATE_FORM_COMPLETE: '/estimates/complete',
+  ESTIMATE_LIST: '/estimate',
+  ESTIMATE_DETAIL: (estimateId: number) => `/estimate/${estimateId}`,
+  ESTIMATE_FORM_COMPLETE: '/estimate/complete',
 
   // Groomers
   GROOMER_DETAIL: (groomerId: number) => `/groomers/${groomerId}`,
