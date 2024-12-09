@@ -18,7 +18,7 @@ export const inputSection = css`
 export const textarea = css`
   width: 100%;
   min-height: 80px;
-  padding: 8px;
+  padding: 18px;
   ${theme.typo.body4}
   border-radius: 10px;
 
@@ -26,10 +26,4 @@ export const textarea = css`
 
   resize: none;
   outline: none;
-
-  &:focus {
-    border-color: #2563eb;
-
-    box-shadow: 0 0 3px rgb(37 99 235 / 50%);
-  }
 `;

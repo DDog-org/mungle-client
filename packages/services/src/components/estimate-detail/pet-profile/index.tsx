@@ -34,8 +34,10 @@ export function PetDetails({ image, name, attributes }: Props): JSX.Element {
               {label}
             </Text>
           ))}
-          <TextButton icons={{ suffix: <ButtonTextButtonArrow width={'6px'} /> }}>
-            <Text color="gray200" typo="body9">
+          <TextButton
+            icons={{ suffix: <ButtonTextButtonArrow width={'6px'} strokeColor="#BEBEBE" /> }}
+          >
+            <Text color="gray400" typo="body9">
               자세히보기
             </Text>
           </TextButton>

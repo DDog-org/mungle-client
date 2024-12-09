@@ -62,10 +62,10 @@ export function Card({
 
       <div css={detailContainer}>
         <TextButton
-          icons={{ suffix: <ButtonTextButtonArrow width="6px" /> }}
+          icons={{ suffix: <ButtonTextButtonArrow width="6px" strokeColor="#BEBEBE" /> }}
           onClick={handleDetailClick}
         >
-          <Text typo="body7" color="gray200">
+          <Text typo="body7" color="gray400">
             자세히보기
           </Text>
         </TextButton>
