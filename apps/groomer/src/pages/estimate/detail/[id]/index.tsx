@@ -55,12 +55,11 @@ export default function EstimateDetail() {
       return;
     }
 
-    const formattedDate =
-      selectedDateTime instanceof Date || typeof selectedDateTime === 'string'
-        ? formatDate(new Date(selectedDateTime).toISOString())
-        : formatDate(petData.reservedDate);
+    const formattedDate = selectedDateTime
+      ? formatDate(new Date(selectedDateTime.toString()).toISOString())
+      : formatDate(petData.reservedDate);
 
-    if (isEditable) {
+    if (isEditable && !selectedDateTime) {
       if (!selectedDateTime) {
         alert('날짜를 선택해주세요.');
         return;
@@ -77,7 +76,6 @@ export default function EstimateDetail() {
           if (data.isRegistered) {
             alert('요청 사항이 성공적으로 전송되었습니다.');
           }
-
           queryClient.invalidateQueries({ queryKey: QUERY_KEYS.GET_GROOMER_ESTIMATE_LIST });
 
           router.back();
