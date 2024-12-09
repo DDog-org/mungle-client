@@ -7,6 +7,7 @@ dotenv.config();
 interface Props {
   targetFolderPath:
     | 'user/profile-images'
+    | 'user/review-images'
     | 'groomer/profile-images'
     | 'groomer/business-licenses'
     | 'groomer/licenses'
