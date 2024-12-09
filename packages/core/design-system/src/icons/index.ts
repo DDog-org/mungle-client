@@ -21,7 +21,6 @@ export * from './GnbMyInactive';
 export * from './GnbReservationActive';
 export * from './GnbReservationInactive';
 export * from './ImageUploadPlus';
-export * from './InputImageSection';
 export * from './LoginKakaoLogo';
 export * from './PartnerGnbChattingActive';
 export * from './PartnerGnbEstimateActive';
