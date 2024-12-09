@@ -2,6 +2,7 @@ import axios from 'axios';
 import { api } from '~/apis';
 import {
   GetBreedListResponse,
+  GetUserPetInfoResponse,
   PostAvailableNicknameRequestBody,
   PostAvailableNicknameResponse,
   PostJoinWithoutPetRequestBody,
@@ -55,4 +56,8 @@ export const getUserInfo = async () => {
 
 export const patchUserInfo = async (body: PatchUserInfoRequestBody) => {
   return await api.patch<PatchUserInfoResponse>('/user/info', body);
+};
+
+export const getUserPetInfo = async () => {
+  return await api.get<GetUserPetInfoResponse>('/user/pet-info');
 };

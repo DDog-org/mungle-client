@@ -31,4 +31,5 @@ export const QUERY_KEYS = {
   ...AUTH_QUERY_KEYS,
   ...ESTIMATE_QUERY_KEYS,
   ...REVIEW_QUERY_KEYS,
+  GET_USER_PETINFO: ['GET_USER_PETINFO'],
 } as const;
