@@ -24,6 +24,10 @@
     "./utils": {
       "import": "./src/utils/index.ts",
       "require": "./src/utils/index.ts"
+    },
+    "./components": {
+      "import": "./src/components/index.ts",
+      "require": "./src/components/index.ts"
     }
   },
   "type": "module",
