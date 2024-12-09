@@ -61,3 +61,7 @@ export const patchUserInfo = async (body: PatchUserInfoRequestBody) => {
 export const getUserPetInfo = async () => {
   return await api.get<GetUserPetInfoResponse>('/user/pet-info');
 };
+
+export const getUserPetInfo = async () => {
+  return await api.get<GetUserPetInfoResponse>('/user/pet-info');
+};
