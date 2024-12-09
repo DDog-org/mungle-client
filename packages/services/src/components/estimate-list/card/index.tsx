@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { Text, TextButton } from '@daengle/design-system';
 import {
   wrapper,
@@ -22,6 +21,7 @@ interface EstimateContent {
   proposal: 'GENERAL' | 'DESIGNATION';
   significant: string | null;
   reservedDate: string;
+  onDetailClick: () => void;
 }
 
 export function Card({
@@ -31,16 +31,12 @@ export function Card({
   proposal,
   significant,
   reservedDate,
+  onDetailClick,
 }: EstimateContent): JSX.Element {
-  const router = useRouter();
   const groomingEstimateId = id;
 
-  const handleDetailClick = () => {
-    router.push(`/estimate/detail/${groomingEstimateId}`);
-  };
-
   return (
-    <div css={wrapper} onClick={handleDetailClick}>
+    <div css={wrapper} onClick={onDetailClick}>
       <div css={contentContainer}>
         <div css={cardHeader}>
           <img src={userImage} alt={`${nickname} 프로필`} css={profileImage} />
@@ -63,7 +59,7 @@ export function Card({
       <div css={detailContainer}>
         <TextButton
           icons={{ suffix: <ButtonTextButtonArrow width="6px" strokeColor="#BEBEBE" /> }}
-          onClick={handleDetailClick}
+          onClick={onDetailClick}
         >
           <Text typo="body7" color="gray400">
             자세히보기

@@ -15,6 +15,7 @@ import {
   GnbEstimateInactive,
 } from '@daengle/design-system/icons';
 import { css } from '@emotion/react';
+import { useRouter } from 'next/router';
 
 export const PATHS = {
   ESTIMATE: '/estimate',
@@ -68,6 +69,8 @@ export const MENUS = [
 ];
 
 export default function EstimateList(): JSX.Element {
+  const router = useRouter();
+
   const [activeTab, setActiveTab] = useState<string>('전체');
   const { data, isLoading, isError } = useGroomerEstimateListQuery();
   const [, setActivePath] = useState<string>(PATHS.ESTIMATE);
@@ -99,7 +102,11 @@ export default function EstimateList(): JSX.Element {
         <Tab items={['전체', '지정']} activeItem={activeTab} onChange={handleTabChange} />
         <div css={listContainer}>
           {filteredData.map((data) => (
-            <Card key={data.id} {...data} />
+            <Card
+              key={data.id}
+              onDetailClick={() => router.push(`/estimate/detail/${data.id}`)}
+              {...data}
+            />
           ))}
         </div>
       </div>
