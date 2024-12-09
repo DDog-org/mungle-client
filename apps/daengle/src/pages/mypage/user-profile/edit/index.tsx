@@ -95,7 +95,7 @@ export default function EditProfile() {
       <AppBar />
       <section css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
-          사용자 프로필 수정
+          사용자 프로필
         </Text>
 
         <form onSubmit={handleSubmit(onSubmit)}>
