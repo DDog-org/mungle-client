@@ -1,4 +1,4 @@
-export interface PostPaymentOrderBody {
+export interface PostPaymentOrderRequestBody {
   estimateId: number;
   serviceType: string;
   recipientId: number;
@@ -13,7 +13,21 @@ export interface PostPaymentOrderBody {
 }
 
 export interface PostPaymentOrderResponse {
+  orderId: number;
   accountId: number;
   estimateId: number;
   orderUId: string;
+}
+
+export interface PostPaymentValidateRequestBody {
+  paymentUid: string;
+  estimateId: string;
+  orderUid: string;
+}
+
+export interface PostPaymentValidateResponse {
+  customerId: number;
+  reservationId: number;
+  paymentId: number;
+  price: number;
 }

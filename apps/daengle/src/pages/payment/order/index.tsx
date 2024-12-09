@@ -24,7 +24,7 @@ import {
 } from './index.styles';
 import { SelectUnfoldActive, SelectUnfoldInactive } from '@daengle/design-system/icons';
 import { useState } from 'react';
-import { usePostPaymentOrderMutation } from '~/queries/payment';
+import { usePostPaymentOrderMutation, usePostPaymentValidateMutation } from '~/queries/payment';
 import { PostPaymentOrderResponse } from '~/models/payment';
 import Script from 'next/script';
 import { ROUTES } from '~/constants/commons';
@@ -33,8 +33,10 @@ import { useRouter } from 'next/router';
 export default function Order() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { mutateAsync: postPaymentOrder } = usePostPaymentOrderMutation();
   const [orderUid, setOrderUid] = useState<string>('');
+
+  const { mutateAsync: postPaymentOrder } = usePostPaymentOrderMutation();
+  const { mutateAsync: postPaymentValidate } = usePostPaymentValidateMutation();
 
   const IMP_UID = process.env.NEXT_PUBLIC_IMP_UID ?? '';
 
@@ -44,17 +46,20 @@ export default function Order() {
   const recipientName = '김미용사';
   const shopName = '펫케어샵';
   const schedule = '2024-12-06T14:00:00';
-  const price = 100;
+  const price = 100; // 고정 예약금
   const customerName = '홍길동';
   const customerPhoneNumber = '010-1234-5678';
   const visitorName = '김철수';
   const visitorPhoneNumber = '010-9876-5432';
 
+  const scheduleDate = schedule.substring(0, 10);
+  const scheduleTime = schedule.substring(11, 16);
+
   const handleArrowToggle = () => {
     setIsOpen(!isOpen);
   };
 
-  // 결제 요청
+  // 결제 요청 api 호출
   const handlePostPaymentOrder = async () => {
     try {
       const orderResponse: PostPaymentOrderResponse = await postPaymentOrder({
@@ -71,9 +76,11 @@ export default function Order() {
         visitorPhoneNumber,
       });
       console.log('orderResponse:', orderResponse);
+      console.log('orderUid:', orderResponse.orderUId);
       setOrderUid(orderResponse.orderUId);
+      console.log(orderUid);
 
-      // PG 결제 창
+      // PG 결제 창 띄우기
       if (orderResponse) {
         const { IMP } = window;
         if (IMP) IMP.init(IMP_UID);
@@ -96,24 +103,40 @@ export default function Order() {
             visitor_tel: visitorPhoneNumber,
             m_redirect_url: '/payment/complete',
           },
-          function (response) {
-            // 결제 종료 시 호출되는 콜백 함수
-            // response.imp_uid 값으로 결제 단건조회 API를 호출하여 결제 결과를 확인하고,
-            // 결제 결과를 처리하는 로직을 작성합니다.
-
+          async function (response) {
             //결제 후 호출되는 callback함수
-            if (response.success) {
+            if (response.error_code) {
+              console.log('errorCode:', response.error_code);
+              alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
+              return;
+            }
+
+            console.log('paymentUid:', response.imp_uid);
+            console.log('estimateId:', String(estimateId));
+            console.log('orderUid:', orderUid);
+
+            // 결제 검증 api 호출
+            const validateResponse = await postPaymentValidate({
+              paymentUid: response.imp_uid,
+              estimateId: String(estimateId),
+              orderUid: orderUid,
+            });
+
+            console.log('validateResponse:', validateResponse);
+
+            if (validateResponse) {
               //결제 성공
               console.log(response);
-              router.push(ROUTES.PAYMENT_COMPLETE);
+              // router.push(ROUTES.PAYMENT_COMPLETE);
             } else {
-              alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
+              alert('결제 검증에 실패했습니다.');
             }
           }
         );
       }
     } catch (error) {
       console.error('Error:', error);
+      alert('결제 요청 중 오류가 발생했습니다.');
     }
   };
 
@@ -130,11 +153,11 @@ export default function Order() {
             예약 시 예약금이 결제됩니다.
           </Text>
           <Text tag="h2" typo="subtitle1" color="blue200" css={subtitle}>
-            예약금 20,000원
+            예약금 {price.toLocaleString()}원
           </Text>
           <Text typo="body11" color="gray600">
-            안전한 예약 관리를 위해 예약금 제도를 운영하고 있습니다. <br /> 예약금은 방문 시술 후
-            결제금액에서 차감해드립니다.
+            안전한 예약 관리를 위해 예약금 제도를 운영하고 있습니다. <br />
+            예약금은 방문 시술 후 결제금액에서 차감해드립니다.
           </Text>
         </section>
         <div css={line} />
@@ -144,10 +167,10 @@ export default function Order() {
           </Text>
           <section css={reservationInfo}>
             <Text typo="subtitle1" color="black">
-              문소연 디자이너
+              {recipientName}
             </Text>
             <Text typo="body9" color="gray400">
-              꼬꼬마 관리샵
+              {shopName}
             </Text>
             <div css={scheduleStyle}>
               <Text typo="body4" color="gray400">
@@ -155,10 +178,10 @@ export default function Order() {
               </Text>
               <div css={dateTime}>
                 <Text typo="body4" color="black">
-                  2024. 11. 17(일)
+                  {scheduleDate.replace(/-/g, '.')}
                 </Text>
                 <Text typo="body4" color="black">
-                  14:00
+                  {scheduleTime}
                 </Text>
               </div>
             </div>
@@ -169,7 +192,7 @@ export default function Order() {
                 예약금
               </Text>
               <Text typo="body9" color="black">
-                20,000원
+                {price.toLocaleString()}원
               </Text>
             </div>
             <div css={thinLine} />
@@ -178,7 +201,7 @@ export default function Order() {
                 지금 결제할 금액
               </Text>
               <Text typo="subtitle1" color="red200">
-                20,000원
+                {price.toLocaleString()}원
               </Text>
             </div>
           </section>
@@ -192,10 +215,10 @@ export default function Order() {
 
             <div css={visitorInfo}>
               <Text typo="subtitle3" color="black">
-                고윤정
+                {customerName}
               </Text>
               <Text typo="subtitle3" color="black">
-                010-0000-0000
+                {customerPhoneNumber}
               </Text>
             </div>
           </section>
