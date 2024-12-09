@@ -58,14 +58,21 @@ export const profileEditButtonBox = css`
 `;
 
 export const inputWrapper = css`
+  padding: 0 18px 146px;
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 32px;
-  position: relative;
-
-  padding: 0 18px 146px;
 `;
-
+export const readOnlyLayer = css`
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0); // 투명 레이어
+  position: absolute;
+  z-index: ${theme.zIndex.ctaButton - 1};
+  cursor: not-allowed;
+  pointer-events: all;
+`;
 export const formBox = css`
   display: flex;
   flex-direction: column;
