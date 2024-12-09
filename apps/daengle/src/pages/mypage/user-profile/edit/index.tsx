@@ -25,7 +25,7 @@ export default function EditProfile() {
   const { mutate: patchUserInfo } = usePatchUserInfoMutation();
   const validation = useValidateUserForm();
 
-  const { uploadToS3 } = useS3({ targetFolderPath: 'user/profile-images' });
+  const { uploadToS3, deleteFromS3 } = useS3({ targetFolderPath: 'user/profile-images' });
 
   const {
     handleSubmit,
@@ -39,25 +39,41 @@ export default function EditProfile() {
     mode: 'onChange',
     defaultValues: {
       image: null,
+      nickname: '',
+      isAvailableNickname: false,
     },
   });
 
   const checkIsAvailableNickname = async () => {
-    const nickname = watch('nickname'); // 입력한 닉네임 가져오기
+    const nickname = watch('nickname');
     if (!nickname) {
       setError('nickname', { message: '닉네임을 입력해주세요.' });
+      setValue('isAvailableNickname', false);
       return;
     }
 
     const response = await postAvailableNickname({ nickname });
-
-    if (!response.isAvailable) {
-      setError('nickname', { message: '이미 사용중인 닉네임입니다' });
+    if (response.isAvailable) {
+      setError('nickname', { message: '' });
+      setValue('isAvailableNickname', true);
+    } else {
+      setError('nickname', { message: '이미 사용중인 닉네임입니다.' });
+      setValue('isAvailableNickname', false);
     }
   };
 
   const onSubmit = async (data: UserProfileInfoEditForm) => {
     let imageString = '';
+
+    // 기존 이미지 삭제
+    if (getUserInfo?.image) {
+      const fileName = getUserInfo.image.split('/').pop(); // S3 경로에서 파일 이름 추출
+      if (fileName) {
+        await deleteFromS3(fileName);
+      }
+    }
+
+    // 새 이미지 업로드
     if (data.image) {
       const uploadedImages = await uploadToS3([data.image]);
       if (uploadedImages && uploadedImages.length > 0) {
@@ -66,6 +82,8 @@ export default function EditProfile() {
     } else {
       imageString = getUserInfo?.image || '';
     }
+
+    // 사용자 정보 업데이트
     if (imageString != undefined) {
       patchUserInfo({ ...data, image: imageString });
     }
@@ -74,7 +92,9 @@ export default function EditProfile() {
   const handleGoToClick = () => {
     router.push(ROUTES.MYPAGE);
   };
-  const confirmMessage = watch('nickname') && !errors.nickname ? '사용 가능한 닉네임입니다' : '';
+  const handleNicknameChange = () => {
+    setValue('isAvailableNickname', false);
+  };
 
   return (
     <Layout isAppBarExist={true}>
@@ -103,9 +123,12 @@ export default function EditProfile() {
                     중복검사
                   </ChipButton>
                 }
-                {...register('nickname', { ...validation.nickname })}
+                {...register('nickname', {
+                  ...validation.nickname,
+                  onChange: handleNicknameChange,
+                })}
                 errorMessage={errors.nickname?.message}
-                confirmMessage={confirmMessage}
+                confirmMessage={watch('isAvailableNickname') ? '사용 가능한 닉네임입니다.' : ''}
               />
             </li>
             <li css={readOnlyTextBox}>
@@ -134,7 +157,7 @@ export default function EditProfile() {
             </li>
           </ul>
 
-          <CTAButton type="submit" disabled={!isValid}>
+          <CTAButton type="submit" onClick={handleGoToClick} disabled={!isValid}>
             수정하기
           </CTAButton>
         </form>
