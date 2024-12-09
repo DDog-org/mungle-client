@@ -4,6 +4,7 @@ export * from './AuthLogo';
 export * from './ButtonTextButtonArrow';
 export * from './DefaultProfile';
 export * from './EmptyStateBone';
+export * from './DefaultImage';
 export * from './GnbChattingActive';
 export * from './GnbChattingInactive';
 export * from './GnbEstimateActive';
