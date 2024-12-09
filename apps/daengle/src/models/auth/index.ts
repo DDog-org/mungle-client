@@ -50,3 +50,18 @@ export interface PostJoinWithPetRequestBody extends PostJoinWithoutPetRequestBod
 
 // TODO: api 변경 후 수정 필요
 export type PostJoinWithPetResponse = string;
+
+export interface GetUserInfoResponse {
+  image: string | null;
+  nickname: string;
+  username: string;
+  phoneNumber: string;
+  email: string;
+}
+
+// api 변경 수 수정 필요
+export type PatchUserInfoResponse = string;
+export interface PatchUserInfoRequestBody {
+  image: string;
+  nickname: string;
+}
