@@ -2,8 +2,6 @@ import { AppBar, CTAButton, Layout, Text } from '@daengle/design-system';
 import {
   wrapper,
   section,
-  box,
-  dateSelect,
   registerPet,
   circle,
   petList,
@@ -16,8 +14,6 @@ import {
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 import EstimateSelectComponent from '~/components/estimate/EstimateSelectComponent';
@@ -88,52 +84,6 @@ export default function EstimateCreate() {
   };
   const handleTimeChange = (newValue: Dayjs | null) => {
     setSelectedTime(newValue);
-  };
-
-  const handlePetSelect = (petId: number) => {
-    if (petInfos) {
-      if (selectedPetId === petId) setSelectedPetId(0);
-      else setSelectedPetId(petId);
-    }
-  };
-
-  const handleDesiredStyleSelect = (style: string) => {
-    setDesiredStyle((prevStyle) => (prevStyle === style ? '' : style));
-  };
-
-  const handleRequirementsChange = (e) => {
-    setRequirements(e.target.value);
-  };
-
-  // 데이터 전달
-  const handleSubmit = () => {
-    const requestBody = {
-      groomerId: groomerId,
-      petId: selectedPetId,
-      address: address,
-      reservedDate: reservedDate,
-      desiredStyle: desiredStyle,
-      requirements: requirements,
-    };
-
-    postUserEstimateGroomingRequestBody(requestBody, {
-      onSuccess: (data) => {
-        console.log('data: ', data);
-        router.push(ROUTES.ESTIMATE_FORM_COMPLETE);
-      },
-      onError: (error) => {
-        console.error('Error submitting form:', error);
-      },
-    });
-  };
-
-  const handleDateChange = (newValue: Dayjs | null) => {
-    setSelectedDate(newValue);
-    console.log(selectedDate?.toISOString);
-  };
-  const handleTimeChange = (newValue: Dayjs | null) => {
-    setSelectedTime(newValue);
-    console.log(selectedTime);
   };
 
   const handlePetSelect = (petId: number) => {
