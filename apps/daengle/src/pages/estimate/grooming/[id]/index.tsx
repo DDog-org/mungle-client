@@ -28,6 +28,7 @@ import {
 import { PetInfos, PostUserEstimateGroomerUserInfoResponse } from '~/models/estimate';
 import { ROUTES } from '~/constants/commons';
 import { DefaultImage } from '@daengle/design-system/icons';
+import DatePickerComponent from '~/components/estimate/DatePickerComponent';
 
 export default function EstimateCreate() {
   const router = useRouter();
@@ -40,7 +41,8 @@ export default function EstimateCreate() {
   const [requirements, setRequirements] = useState<string>('');
   const [ButtonActive, setButtonActive] = useState<boolean>(false);
 
-  const groomerId = 2; //TODO: 쿼리스트링 값 읽어오기(groomerId 값이 담겨있는지 null인지 쿼리 스트링으로 판단)
+  const { id } = router.query;
+  const groomerId = Number(id);
 
   const reservedDate = `${selectedDate?.format('YYYY-MM-DD')} ${selectedTime?.format('HH:mm:ss')}`;
 
@@ -190,50 +192,7 @@ export default function EstimateCreate() {
           <Text tag="h2" typo="subtitle3" color="black">
             시술 희망 날짜 및 시간
           </Text>
-          <div css={box}>
-            <div css={dateSelect}>
-              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-                <DatePicker
-                  format="YYYY.MM.DD"
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  slotProps={{
-                    textField: {
-                      size: 'small',
-                      InputProps: {
-                        sx: {
-                          borderRadius: '30px',
-                          input: { color: 'black', textAlign: 'center' },
-                          fontSize: '13px',
-                        },
-                      },
-                    },
-                  }}
-                />
-              </LocalizationProvider>
-            </div>
-            <div css={dateSelect}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <TimePicker
-                  value={selectedTime}
-                  onChange={handleTimeChange}
-                  slotProps={{
-                    textField: {
-                      size: 'small',
-                      InputProps: {
-                        sx: {
-                          borderRadius: '30px',
-                          input: { color: 'black', textAlign: 'center' },
-                          fontSize: '13px',
-                        },
-                      },
-                    },
-                  }}
-                  sx={{ borderRadius: '30px' }}
-                />
-              </LocalizationProvider>
-            </div>
-          </div>
+          <DatePickerComponent onDateChange={handleDateChange} onTimeChange={handleTimeChange} />
         </section>
         <section css={section}>
           <Text tag="h2" typo="subtitle3" color="black">

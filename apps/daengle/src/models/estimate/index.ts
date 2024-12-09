@@ -1,5 +1,5 @@
 export interface PostUserEstimateGroomerUserInfoRequestBody {
-  groomerId: number;
+  groomerId: number | null;
 }
 
 export interface PostUserEstimateGroomerUserInfoResponse {

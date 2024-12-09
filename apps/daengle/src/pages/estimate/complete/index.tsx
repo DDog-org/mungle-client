@@ -2,6 +2,7 @@ import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
 import { wrapper, box, button, textSection } from './index.styles';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { ROUTES } from '~/constants/commons';
 
 export default function EstimateComplete() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function EstimateComplete() {
             variant="primary"
             css={button}
             onClick={() => {
-              router.push({ pathname: '/user/estimate/list' });
+              router.push(ROUTES.ESTIMATE_LIST);
             }}
           >
             돌아가기
