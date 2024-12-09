@@ -111,3 +111,16 @@ export interface GetUserVetReviewList {
   content: string | null;
   imageUrlList: string[] | null;
 }
+export interface PostUserGroomingReviewRequestBody {
+  reservationId: number;
+  starRating: number;
+  groomingKeywordReviewList: string[];
+  content: string;
+  imageUrlList: string[];
+}
+
+export interface PostUserGroomingReviewResponse {
+  reviewId: number;
+  reviewerId: number;
+  revieweeId: number;
+}

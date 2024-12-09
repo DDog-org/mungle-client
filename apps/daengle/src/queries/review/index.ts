@@ -7,8 +7,13 @@ import {
   getUserGroomerReviewList,
   getUserGroomingMyReviewList,
   getUserVetReviewList,
+  postUserGroomingReview,
 } from '~/apis/review';
-import { DeleteUserCareReviewRequestParams, DeleteUserGroomingReviewRequestParams } from '~/models';
+import {
+  DeleteUserCareReviewRequestParams,
+  DeleteUserGroomingReviewRequestParams,
+  PostUserGroomingReviewRequestBody,
+} from '~/models';
 import { QUERY_KEYS } from '../query-keys';
 
 export const getUserGroomingMyReviewListInfiniteQuery = () => {
@@ -77,5 +82,18 @@ export const getUserVetReviewListInfiniteQuery = (vetId: number) => {
       return lastPage.reviewList.length === PAGE_SIZE ? allPages.length + 1 : undefined;
     },
     enabled: !!vetId,
+  });
+};
+
+export const usePostGroomingReviewMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.POST_REVIEW,
+    mutationFn: async (body: PostUserGroomingReviewRequestBody) => {
+      try {
+        return await postUserGroomingReview(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
   });
 };

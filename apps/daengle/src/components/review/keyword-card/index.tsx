@@ -15,6 +15,16 @@ export function KeywordCard({
   isExpanded: boolean;
   toggleExpand: () => void;
 }) {
+  const handleTagToggle = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      onTagToggle(tag);
+    } else if (selectedTags.length < 3) {
+      onTagToggle(tag);
+    } else {
+      alert('키워드는 최대 3개까지만 선택할 수 있습니다.');
+    }
+  };
+
   return (
     <div css={wrapper}>
       <Text typo="subtitle1">어떤 점이 좋았나요?</Text>
@@ -29,7 +39,7 @@ export function KeywordCard({
               key={tag}
               size="full"
               isSelected={selectedTags.includes(tag)}
-              onClick={() => onTagToggle(tag)}
+              onClick={() => handleTagToggle(tag)}
               textColor="gray500"
             >
               {tag}

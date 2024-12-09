@@ -1,5 +1,4 @@
-import { Text } from '@daengle/design-system';
-import { InputImageSection } from '@daengle/design-system/icons';
+import { ImageInput, Text } from '@daengle/design-system';
 import {
   wrapper,
   reviewImage,
@@ -12,15 +11,22 @@ import {
 export function ReviewInputCard({
   reviewText,
   setReviewText,
+  selectedImages,
+  setSelectedImages,
 }: {
   reviewText: string;
   setReviewText: (text: string) => void;
+  selectedImages: File[];
+  setSelectedImages: (images: File[]) => void;
 }) {
+  const handleImageChange = (files: File[]) => {
+    setSelectedImages(files);
+  };
   return (
     <div css={wrapper}>
       <Text typo="subtitle1">리뷰 작성</Text>
       <div css={reviewImage}>
-        <InputImageSection width={70} height={70} />
+        <ImageInput maxLength={10} onChange={handleImageChange} defaultValue={selectedImages} />
       </div>
       <div css={reviewInput}>
         <textarea

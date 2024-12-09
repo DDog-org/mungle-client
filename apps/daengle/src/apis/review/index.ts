@@ -11,6 +11,8 @@ import {
   GetUserGroomingMyReviewListResponse,
   GetUserVetReviewListRequestParams,
   GetUserVetReviewListResponse,
+  PostUserGroomingReviewRequestBody,
+  PostUserGroomingReviewResponse,
 } from '~/models';
 import { api } from '../config';
 
@@ -52,4 +54,8 @@ export const getUserVetReviewList = async ({
   return await api.get<GetUserVetReviewListResponse>(`/user/vet/${vetId}/review/list`, {
     params,
   });
+};
+
+export const postUserGroomingReview = async (body: PostUserGroomingReviewRequestBody) => {
+  return await api.post<PostUserGroomingReviewResponse>('/user/grooming/review', body);
 };
