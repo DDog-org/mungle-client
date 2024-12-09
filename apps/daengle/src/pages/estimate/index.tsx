@@ -15,14 +15,9 @@ import {
   GnbEstimateInactive,
   SelectUnfoldInactive,
 } from '@daengle/design-system/icons';
-import {
-  wrapper,
-  headerContainer,
-  modalOverlay,
-  modalContent,
-  line,
-  modalItem,
-} from './index.styles';
+import { theme } from '@daengle/design-system';
+import { css } from '@emotion/react';
+
 import { useDaengleEstimateListQuery } from '~/queries';
 import { CardList, OptionSelector, ProfileSelector } from '~/components/estimate';
 
@@ -192,3 +187,82 @@ export default function EstimateList() {
     </Layout>
   );
 }
+
+const wrapper = css`
+  min-height: 100%;
+  padding-bottom: 104px;
+
+  background-color: ${theme.colors.background};
+`;
+
+const headerContainer = css`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 4px;
+  padding: 18px 34px;
+
+  cursor: pointer;
+`;
+
+const line = css`
+  width: 100%;
+  height: 1px;
+
+  background: ${theme.colors.gray100};
+`;
+
+const modalItem = (isDesignation: boolean) => css`
+  width: 100%;
+  border: none;
+
+  color: ${isDesignation ? theme.colors.blue200 : theme.colors.gray400};
+  text-align: center;
+
+  cursor: pointer;
+
+  :hover {
+    color: ${theme.colors.blue200};
+  }
+`;
+
+const modalOverlay = css`
+  position: fixed;
+  inset: 0;
+
+  z-index: 100;
+
+  background: ${theme.colors.grayOpacity300};
+`;
+
+const modalContent = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 19px;
+  position: fixed;
+  bottom: 0;
+  z-index: 101;
+
+  width: 100%;
+  max-width: ${theme.size.maxWidth};
+  padding: 21px 18px;
+  border-radius: 20px 20px 0 0;
+
+  background: white;
+
+  animation: slide-up 0.3s ease-in-out;
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+
+    to {
+      transform: translateY(0);
+    }
+  }
+`;
