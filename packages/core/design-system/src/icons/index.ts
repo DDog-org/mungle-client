@@ -13,6 +13,8 @@ export * from './GnbMyActive';
 export * from './GnbMyInactive';
 export * from './GnbReservationActive';
 export * from './GnbReservationInactive';
+export * from './GnbSheetActive';
+export * from './GnbSheetInactive';
 export * from './ImageUploadPlus';
 export * from './LoginKakaoLogo';
 export * from './RegistrationPending';
