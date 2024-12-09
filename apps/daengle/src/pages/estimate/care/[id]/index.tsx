@@ -102,14 +102,7 @@ export default function EstimateCare() {
     postUserEstimateCare(requestBody, {
       onSuccess: (data) => {
         console.log('data: ', data);
-        // data test
-        console.log('vetId:', vetId),
-          console.log('petId:', selectedPetId),
-          console.log('address:', address),
-          console.log('reservedDate:', reservedDate),
-          console.log('symptoms:', symptoms),
-          console.log('requirements:', requirements),
-          router.push(ROUTES.ESTIMATE_FORM_COMPLETE);
+        router.push(ROUTES.ESTIMATE_FORM_COMPLETE);
       },
       onError: (error) => {
         console.error('Error submitting form:', error);
