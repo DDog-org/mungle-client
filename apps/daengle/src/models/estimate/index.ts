@@ -15,6 +15,7 @@ export interface PostUserEstimateGroomerUserInfoResponse {
   address: string;
   petInfos: PetInfo[];
 }
+
 export interface PostUserEstimateGroomingRequestBody {
   groomerId: number;
   petId: number;
@@ -25,5 +26,35 @@ export interface PostUserEstimateGroomingRequestBody {
 }
 
 export interface PostUserEstimateGroomingResponse {
+  requestResult: string;
+}
+
+export interface PetInfos {
+  petId: number;
+  image: string | null;
+  name: string;
+}
+
+export interface PostUserEstimateVetUserInfoRequestBody {
+  vetId: number;
+}
+
+export interface PostUserEstimateVetUserInfoResponse {
+  vetImage: string | null;
+  vetName: string;
+  address: string;
+  petInfos: PetInfos[];
+}
+
+export interface PostUserEstimateCareRequestBody {
+  vetId: number;
+  petId: number;
+  address: string;
+  reservedDate: string;
+  symptoms: string;
+  requirements: string;
+}
+
+export interface PostUserEstimateCareResponse {
   requestResult: string;
 }
