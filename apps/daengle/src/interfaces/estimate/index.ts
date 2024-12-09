@@ -31,7 +31,7 @@ export interface CareEstimateType {
   tags?: string[];
 }
 export interface GroomerDetailResponse {
-  estimateId: number;
+  groomingEstimateId: number;
   groomerId: number;
   image: string;
   name: string;

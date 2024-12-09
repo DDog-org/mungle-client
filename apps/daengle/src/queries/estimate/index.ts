@@ -91,7 +91,10 @@ export const usePostUserEstimateCareMutation = () => {
   });
 };
 
-export const useEstimateGroomingDetailQuery = (params: GetEstimateGroomingDetailParams) => {
+export const useEstimateGroomingDetailQuery = (
+  params: GetEstimateGroomingDetailParams,
+  enabled: boolean
+) => {
   return useQuery<GroomerDetailResponse>({
     queryKey: [QUERY_KEYS.GET_DAENGLE_ESTIMATE_GROOMER_DETAIL, params],
     queryFn: async () => {
@@ -102,11 +105,14 @@ export const useEstimateGroomingDetailQuery = (params: GetEstimateGroomingDetail
         throw new Error('데이터 로딩에 실패했습니다.');
       }
     },
-    enabled: !!params,
+    enabled,
   });
 };
 
-export const useEstimateCareDetailQuery = (params: GetEstimateCareDetailParams) => {
+export const useEstimateCareDetailQuery = (
+  params: GetEstimateCareDetailParams,
+  enabled: boolean
+) => {
   return useQuery<CareDetailResponse>({
     queryKey: [QUERY_KEYS.GET_DAENGLE_ESTIMATE_VET_DETAIL, params],
     queryFn: async () => {
@@ -117,6 +123,6 @@ export const useEstimateCareDetailQuery = (params: GetEstimateCareDetailParams) 
         throw new Error('데이터 로딩에 실패했습니다.');
       }
     },
-    enabled: !!params,
+    enabled,
   });
 };

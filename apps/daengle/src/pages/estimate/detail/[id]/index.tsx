@@ -2,10 +2,15 @@ import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
 import { wrapper, header, section, buttonGroup } from './index.styles';
 import { DesignerInfo, Receipt } from '~/components/estimate';
 import { useRouter } from 'next/router';
-import { useCareDetailQuery, useGroomerDetailQuery } from '~/queries/estimate';
+import { useEstimateCareDetailQuery, useEstimateGroomingDetailQuery } from '~/queries/estimate';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { CareDetailResponse, GroomerDetailResponse } from '~/interfaces/estimate';
+import {
+  CareDetailResponse,
+  GetEstimateCareDetailParams,
+  GetEstimateGroomingDetailParams,
+  GroomerDetailResponse,
+} from '~/interfaces/estimate';
 
 type DetailResponse = GroomerDetailResponse | CareDetailResponse;
 
@@ -17,21 +22,26 @@ export default function Detail() {
   const isGrooming = type === 'grooming';
   const isCare = type === 'care';
 
-  const groomingId = isGrooming ? estimateId : 0;
-  const careId = isCare ? estimateId : 0;
+  const groomingParams: GetEstimateGroomingDetailParams = { groomingEstimateId: estimateId };
+  const careParams: GetEstimateCareDetailParams = { careEstimateId: estimateId };
 
   const {
     data: groomingData,
     isLoading: groomerLoading,
     error: groomerError,
-  } = useGroomerDetailQuery(groomingId);
+  } = useEstimateGroomingDetailQuery(groomingParams, isGrooming);
 
-  const { data: careData, isLoading: careLoading, error: careError } = useCareDetailQuery(careId);
+  const {
+    data: careData,
+    isLoading: careLoading,
+    error: careError,
+  } = useEstimateCareDetailQuery(careParams, isCare);
 
-  if ((isGrooming && groomerLoading) || (isCare && careLoading)) return <div>Loading...</div>;
-  if (isGrooming && (groomerError || !groomingData))
+  if (groomerLoading || careLoading) return <div>Loading...</div>;
+
+  if (groomerError || careError || (!groomingData && !careData)) {
     return <div>데이터를 불러오지 못했습니다.</div>;
-  if (isCare && (careError || !careData)) return <div>데이터를 불러오지 못했습니다.</div>;
+  }
 
   let detailData: DetailResponse;
   if (isGrooming && groomingData) {
@@ -43,7 +53,7 @@ export default function Detail() {
   }
 
   const isGroomingDetail = (data: DetailResponse): data is GroomerDetailResponse =>
-    'estimateId' in data;
+    'groomerId' in data;
   const formattedDate = dayjs(detailData.reservedDate).locale('ko').format('YYYY.MM.DD(ddd) HH:mm');
   const introduction = detailData.introduction || '소개글 없음';
 
