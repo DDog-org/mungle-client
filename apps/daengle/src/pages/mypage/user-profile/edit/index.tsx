@@ -16,6 +16,8 @@ import { UserProfileInfoEditForm } from './interfaces';
 import useValidateUserForm from './hooks/use-validate-user-form';
 import { useS3 } from '@daengle/services/hooks';
 import { ImageInputBox } from '../../../../components/mypage/user-profile/edit/imageInput';
+import router from 'next/router';
+import { ROUTES } from '~/constants/commons';
 
 export default function EditProfile() {
   const { data: getUserInfo } = useGetUserProfileInfoQuery();
@@ -64,6 +66,10 @@ export default function EditProfile() {
     if (imageString != undefined) {
       patchUserInfo({ ...data, image: imageString });
     }
+  };
+
+  const handleGoToClick = () => {
+    router.push(ROUTES.MYPAGE);
   };
 
   return (
@@ -123,7 +129,7 @@ export default function EditProfile() {
             </li>
           </ul>
 
-          <CTAButton type="submit" disabled={!isValid}>
+          <CTAButton type="submit" onClick={handleGoToClick} disabled={!isValid}>
             수정하기
           </CTAButton>
         </form>
