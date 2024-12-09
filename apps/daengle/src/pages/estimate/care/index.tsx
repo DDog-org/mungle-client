@@ -136,30 +136,34 @@ export default function EstimateCare() {
             어떤 아이가 진료를 받을 예정인가요?
           </Text>
           {petInfos ? (
-            <div css={petList}>
-              {petInfos.map((pet) => (
-                <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
-                  {pet.image == '' ? (
-                    <DefaultImage css={profileImage({ isSelected: selectedPetId === pet.petId })} />
-                  ) : (
-                    <Image
-                      src={pet.image}
-                      alt="반려견 프로필"
-                      width={86}
-                      height={86}
-                      css={profileImage({ isSelected: selectedPetId === pet.petId })}
-                    />
-                  )}
+            <div css={listBox}>
+              <div css={petList}>
+                {petInfos.map((pet) => (
+                  <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
+                    {pet.image == '' ? (
+                      <DefaultImage
+                        css={profileImage({ isSelected: selectedPetId === pet.petId })}
+                      />
+                    ) : (
+                      <Image
+                        src={pet.image}
+                        alt="반려견 프로필"
+                        width={86}
+                        height={86}
+                        css={profileImage({ isSelected: selectedPetId === pet.petId })}
+                      />
+                    )}
 
-                  <Text
-                    typo="body1"
-                    color={selectedPetId === pet.petId ? 'blue200' : 'gray400'}
-                    css={petName}
-                  >
-                    {pet.name}
-                  </Text>
-                </div>
-              ))}
+                    <Text
+                      typo="body1"
+                      color={selectedPetId === pet.petId ? 'blue200' : 'gray400'}
+                      css={petName}
+                    >
+                      {pet.name}
+                    </Text>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : (
             <div css={registerPet}>
@@ -276,6 +280,12 @@ const textField = css`
   }
 `;
 
+const listBox = css`
+  overflow: auto;
+
+  width: 100%;
+`;
+
 const petList = css`
   display: flex;
   gap: 14px;
@@ -291,8 +301,12 @@ const petProfile = css`
 `;
 
 const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
+  width: 86px;
+  height: 86px;
   border: 4px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
   border-radius: 50px;
+
+  background-color: ${theme.colors.gray200};
 
   transition: border 0.2s ease;
 `;
