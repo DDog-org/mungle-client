@@ -39,20 +39,26 @@ export default function EditProfile() {
     mode: 'onChange',
     defaultValues: {
       image: null,
+      nickname: '',
+      isAvailableNickname: false, // 닉네임 중복 검사 결과
     },
   });
 
   const checkIsAvailableNickname = async () => {
-    const nickname = watch('nickname'); // 입력한 닉네임 가져오기
+    const nickname = watch('nickname');
     if (!nickname) {
       setError('nickname', { message: '닉네임을 입력해주세요.' });
+      setValue('isAvailableNickname', false);
       return;
     }
 
     const response = await postAvailableNickname({ nickname });
-
-    if (!response.isAvailable) {
-      setError('nickname', { message: '이미 사용중인 닉네임입니다' });
+    if (response.isAvailable) {
+      setError('nickname', { message: '' });
+      setValue('isAvailableNickname', true);
+    } else {
+      setError('nickname', { message: '이미 사용중인 닉네임입니다.' });
+      setValue('isAvailableNickname', false);
     }
   };
 
@@ -74,7 +80,12 @@ export default function EditProfile() {
   const handleGoToClick = () => {
     router.push(ROUTES.MYPAGE);
   };
-  const confirmMessage = watch('nickname') && !errors.nickname ? '사용 가능한 닉네임입니다' : '';
+  const handleNicknameChange = () => {
+    setValue('isAvailableNickname', false);
+  };
+  function clearErrors() {
+    throw new Error('Function not implemented.');
+  }
 
   return (
     <Layout isAppBarExist={true}>
@@ -103,9 +114,12 @@ export default function EditProfile() {
                     중복검사
                   </ChipButton>
                 }
-                {...register('nickname', { ...validation.nickname })}
+                {...register('nickname', {
+                  ...validation.nickname,
+                  onChange: handleNicknameChange,
+                })}
                 errorMessage={errors.nickname?.message}
-                confirmMessage={confirmMessage}
+                confirmMessage={watch('isAvailableNickname') ? '사용 가능한 닉네임입니다.' : ''}
               />
             </li>
             <li css={readOnlyTextBox}>
