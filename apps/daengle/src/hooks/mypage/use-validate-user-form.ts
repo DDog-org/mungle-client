@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-export default function useValidateUserForm() {
+export function useValidateUserForm() {
   return useMemo(
     () => ({
       nickname: {
