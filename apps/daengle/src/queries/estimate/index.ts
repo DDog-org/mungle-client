@@ -17,11 +17,13 @@ import {
   PostUserEstimateGroomerUserInfoRequestBody,
   PostUserEstimateCareRequestBody,
   PostUserEstimateVetUserInfoRequestBody,
+} from '~/models/estimate';
+import {
   GroomerDetailResponse,
   CareDetailResponse,
   GetEstimateGroomingDetailParams,
   GetEstimateCareDetailParams,
-} from '~/models/estimate';
+} from '~/interfaces/estimate';
 
 export const useUserEstimateListQuery = () => {
   return useQuery<GetUserEstimateListResponse>({

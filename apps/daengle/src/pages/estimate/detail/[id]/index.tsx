@@ -2,10 +2,10 @@ import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
 import { wrapper, header, section, buttonGroup } from './index.styles';
 import { DesignerInfo, Receipt } from '~/components/estimate';
 import { useRouter } from 'next/router';
-import { useCareDetailQuery, useGroomerDetailQuery } from '~/queries';
+import { useCareDetailQuery, useGroomerDetailQuery } from '~/queries/estimate';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { CareDetailResponse, GroomerDetailResponse } from '~/models/estimate';
+import { CareDetailResponse, GroomerDetailResponse } from '~/interfaces/estimate';
 
 type DetailResponse = GroomerDetailResponse | CareDetailResponse;
 
