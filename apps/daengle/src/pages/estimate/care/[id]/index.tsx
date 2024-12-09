@@ -177,7 +177,7 @@ export default function EstimateCare() {
                   width={12}
                   height={12}
                   onClick={() => {
-                    router.push(ROUTES.MAYPAGE_PET_PROFILE);
+                    router.push(ROUTES.MYPAGE_PET_PROFILE);
                   }}
                 />
               </div>
@@ -234,24 +234,6 @@ const section = css`
   display: flex;
   flex-direction: column;
   gap: 15px;
-`;
-
-const box = css`
-  display: flex;
-  gap: 15px;
-`;
-
-const dateSelect = css`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-
-  width: 100%;
-  height: 36px;
-
-  cursor: pointer;
 `;
 
 const registerPet = css`
