@@ -3,7 +3,7 @@ import {
   GetGroomerEstimateDetailParams,
   GetGroomerEstimateDetailResponse,
   GetGroomerEstimateListResponse,
-} from '~/interfaces/estimate';
+} from '~/models/estimate';
 
 export const getGroomerEstimateList = async () => {
   return await api.get<GetGroomerEstimateListResponse>('/groomer/estimate/list');

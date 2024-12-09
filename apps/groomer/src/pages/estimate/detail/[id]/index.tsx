@@ -6,7 +6,7 @@ import { wrapper, sectionDivider, requestTitle, button } from './index.styles';
 import { useGroomerEstimateDetailQuery } from '~/queries';
 import { DatePick } from '~/components/estimate';
 import { useRouter } from 'next/router';
-import { GetGroomerEstimateDetailParams } from '~/interfaces/estimate';
+import { GetGroomerEstimateDetailParams } from '~/models/estimate';
 
 export default function EstimateDetail() {
   const router = useRouter();

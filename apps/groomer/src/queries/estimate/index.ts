@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
+import { GroomingEstimateList } from '~/interfaces/estimate';
 import {
   GetGroomerEstimateDetailParams,
   GetGroomerEstimateDetailResponse,
-  GroomingEstimateList,
-} from '~/interfaces/estimate';
+} from '~/models/estimate';
 import { getGroomerEstimateList, getGroomerEstimateDetail } from '~/apis';
 import { QUERY_KEYS } from '~/queries/query-keys';
 
