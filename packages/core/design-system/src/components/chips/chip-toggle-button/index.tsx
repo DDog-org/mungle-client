@@ -16,12 +16,13 @@ export function ChipToggleButton({
   ...props
 }: Props) {
   const [isButtonSelected, setIsButtonSelected] = useState<boolean>(isSelected);
+
   const handleButtonToggle = () => setIsButtonSelected((prev) => !prev);
 
   return (
     <button
       {...props}
-      css={wrapper({ isSelected: isButtonSelected, size, disabled })}
+      css={wrapper({ isSelected: isSelected ?? isButtonSelected, size, disabled })}
       onClick={disabled ? undefined : handleButtonToggle}
     >
       {children}
