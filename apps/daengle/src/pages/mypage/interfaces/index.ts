@@ -3,35 +3,22 @@ export interface PetProfileEditType {
   image: string;
   name: string;
   birth: number;
-  gender: 'MALE' | 'FEMALE';
+  gender: string;
   breed: string;
-  isNeutered: string;
+  isNeutered: boolean;
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
-  groomingExperience: string;
-  isBite: string;
+  groomingExperience: boolean;
+  isBite: boolean;
   dislikeParts: DislikeParts[];
   significantTags: SignificantTags[];
-  significants: string;
+  significant: string;
 }
 
 export interface DislikeParts {
-  partName: DislikePart[];
   part: string;
+  partName: string;
 }
 export interface SignificantTags {
-  tagName: SignificantTag;
   tag: string;
+  tagName: string;
 }
-
-export type SignificantTag = 'SKIN_DISEASES' | 'HEART_DISEASE' | 'MARKING' | 'MOUNTING';
-export type DislikePart =
-  | 'NONE'
-  | 'EYE'
-  | 'NOSE'
-  | 'MOUTH'
-  | 'EAT'
-  | 'NECK'
-  | 'BODY'
-  | 'LEG'
-  | 'TAIL'
-  | 'GENITAL';

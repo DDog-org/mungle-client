@@ -1,11 +1,8 @@
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 
-export const filterWrapper = css`
-  padding: 0 18px;
-  `;
 export const wrapper = css`
-  padding: 18px 18px 104px;
+  padding: 0 18px;
 `;
 export const titleBox = css`
   margin: 0 0 40px;
@@ -56,21 +53,13 @@ export const profileEditButtonBox = css`
 `;
 
 export const inputWrapper = css`
-  padding: 0 18px 104px;
+  padding: 0 18px 146px;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 32px;
 `;
-export const readOnlyLayer = css`
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0); // 투명 레이어
-  position: absolute;
-  z-index: ${theme.zIndex.ctaButton - 1};
-  cursor: not-allowed;
-  pointer-events: all;
-`;
+
 export const formBox = css`
   display: flex;
   flex-direction: column;
@@ -134,4 +123,3 @@ export const weightWrapper = css`
 export const ctaButtonWrapper = css`
   padding: 0 18px;
 `;
-

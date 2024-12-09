@@ -67,3 +67,31 @@ export interface PatchUserInfoRequestBody {
   image: string;
   nickname: string;
 }
+
+export interface PetInfos {
+  id: number;
+  image: string;
+  name: string;
+  birth: number;
+  gender: string;
+  breed: string;
+  isNeutered: boolean;
+  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
+  groomingExperience: boolean;
+  isBite: boolean;
+  dislikeParts: DislikePart[];
+  significantTags: SignificantTag[];
+  significant: string;
+}
+
+export interface DislikePart {
+  part: string;
+  partName: string;
+}
+export interface SignificantTag {
+  tagName: string;
+  tag: string;
+}
+export interface GetUserPetInfoResponse {
+  petDetails: PetInfos[];
+}

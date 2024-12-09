@@ -4,6 +4,7 @@ import {
   getBreedList,
   getUserInfo,
   patchUserInfo,
+  getUserPetInfo,
   postAvailableNickname,
   postJoinWithoutPet,
   postJoinWithPet,
@@ -90,6 +91,18 @@ export const usePatchUserInfoMutation = () => {
     mutationFn: async (body: PatchUserInfoRequestBody) => {
       try {
         return await patchUserInfo(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
+export const useGetUserPetInfoQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_USER_PETINFO,
+    queryFn: async () => {
+      try {
+        return await getUserPetInfo();
       } catch (error) {
         throw new Error(String(error));
       }
