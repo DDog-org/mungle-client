@@ -36,10 +36,12 @@ import {
   PET_SIGNIFICANTTAG,
   PET_WEIGHT,
 } from '~/pages/mypage/constants';
-import { useGetBreedListQuery } from '~/queries';
+import { useGetBreedListQuery, usePostUserPetMutation } from '~/queries';
+import { useEffect } from 'react';
 
 export default function PetProfileCreate() {
   const { data: breeds } = useGetBreedListQuery();
+  const { mutateAsync: postUserPet } = usePostUserPetMutation();
 
   const validation = useValidatePetEdit();
 
