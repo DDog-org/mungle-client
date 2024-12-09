@@ -17,9 +17,15 @@ export default function ReviewPage() {
   const [rating, setRating] = useState<number>(0);
   const [reviewText, setReviewText] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const toggleExpand = () => setIsExpanded((prev) => !prev);
+
+  const handleTagToggle = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
 
   const handleSubmit = () => {
     if (!rating || !reviewText) {
@@ -49,7 +55,7 @@ export default function ReviewPage() {
           <KeywordCard
             tags={TAGS}
             selectedTags={selectedTags}
-            setSelectedTags={setSelectedTags}
+            onTagToggle={handleTagToggle}
             isExpanded={isExpanded}
             toggleExpand={toggleExpand}
           />

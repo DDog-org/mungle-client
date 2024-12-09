@@ -5,13 +5,13 @@ import { wrapper, keyword, unroll } from './index.styles';
 export function KeywordCard({
   tags,
   selectedTags,
-  setSelectedTags,
+  onTagToggle,
   isExpanded,
   toggleExpand,
 }: {
   tags: string[];
   selectedTags: string[];
-  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+  onTagToggle: (tag: string) => void;
   isExpanded: boolean;
   toggleExpand: () => void;
 }) {
@@ -29,8 +29,7 @@ export function KeywordCard({
               key={tag}
               size="full"
               isSelected={selectedTags.includes(tag)}
-              itemValue={tag}
-              setSelectedTags={setSelectedTags}
+              onClick={() => onTagToggle(tag)}
               textColor="gray500"
             >
               {tag}
