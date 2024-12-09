@@ -9,6 +9,8 @@ import {
   postUserEstimateVetUserInfo,
   getEstimateGroomingDetail,
   getEstimateCareDetail,
+  getUserEstimateGroomingDetail,
+  getUserEstimateCareDetail,
 } from '~/apis';
 
 import {
@@ -17,12 +19,16 @@ import {
   PostUserEstimateGroomerUserInfoRequestBody,
   PostUserEstimateCareRequestBody,
   PostUserEstimateVetUserInfoRequestBody,
+  UserEstimateCareDetailRequestParams,
+  UserEstimateGroomingDetailRequestParams,
 } from '~/models/estimate';
 import {
   GroomerDetailResponse,
   CareDetailResponse,
   GetEstimateGroomingDetailParams,
   GetEstimateCareDetailParams,
+  UserEstimateGroomingDetailData,
+  UserEstimateCareDetailData,
 } from '~/interfaces/estimate';
 
 export const useUserEstimateListQuery = () => {
@@ -92,14 +98,14 @@ export const usePostUserEstimateCareMutation = () => {
 };
 
 export const useEstimateGroomingDetailQuery = (
-  params: GetEstimateGroomingDetailParams,
+  params: UserEstimateGroomingDetailRequestParams,
   enabled: boolean
 ) => {
-  return useQuery<GroomerDetailResponse>({
-    queryKey: [QUERY_KEYS.GET_DAENGLE_ESTIMATE_GROOMER_DETAIL, params],
+  return useQuery<UserEstimateGroomingDetailData>({
+    queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_GROOMER_DETAIL, params],
     queryFn: async () => {
       try {
-        const data = await getEstimateGroomingDetail(params);
+        const data = await getUserEstimateGroomingDetail(params);
         return data;
       } catch (error) {
         throw new Error('데이터 로딩에 실패했습니다.');
@@ -110,14 +116,14 @@ export const useEstimateGroomingDetailQuery = (
 };
 
 export const useEstimateCareDetailQuery = (
-  params: GetEstimateCareDetailParams,
+  params: UserEstimateCareDetailRequestParams,
   enabled: boolean
 ) => {
-  return useQuery<CareDetailResponse>({
-    queryKey: [QUERY_KEYS.GET_DAENGLE_ESTIMATE_VET_DETAIL, params],
+  return useQuery<UserEstimateCareDetailData>({
+    queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_VET_DETAIL, params],
     queryFn: async () => {
       try {
-        const data = await getEstimateCareDetail(params);
+        const data = await getUserEstimateCareDetail(params);
         return data;
       } catch (error) {
         throw new Error('데이터 로딩에 실패했습니다.');

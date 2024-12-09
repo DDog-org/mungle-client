@@ -5,14 +5,13 @@ import { useRouter } from 'next/router';
 import { useEstimateCareDetailQuery, useEstimateGroomingDetailQuery } from '~/queries/estimate';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import { UserEstimateCareDetailData, UserEstimateGroomingDetailData } from '~/interfaces/estimate';
 import {
-  CareDetailResponse,
-  GetEstimateCareDetailParams,
-  GetEstimateGroomingDetailParams,
-  GroomerDetailResponse,
-} from '~/interfaces/estimate';
+  UserEstimateCareDetailRequestParams,
+  UserEstimateGroomingDetailRequestParams,
+} from '~/models/estimate';
 
-type DetailResponse = GroomerDetailResponse | CareDetailResponse;
+type DetailData = UserEstimateGroomingDetailData | UserEstimateCareDetailData;
 
 export default function Detail() {
   const router = useRouter();
@@ -22,8 +21,10 @@ export default function Detail() {
   const isGrooming = type === 'grooming';
   const isCare = type === 'care';
 
-  const groomingParams: GetEstimateGroomingDetailParams = { groomingEstimateId: estimateId };
-  const careParams: GetEstimateCareDetailParams = { careEstimateId: estimateId };
+  const groomingParams: UserEstimateGroomingDetailRequestParams = {
+    groomingEstimateId: estimateId,
+  };
+  const careParams: UserEstimateCareDetailRequestParams = { careEstimateId: estimateId };
 
   const {
     data: groomingData,
@@ -43,7 +44,7 @@ export default function Detail() {
     return <div>데이터를 불러오지 못했습니다.</div>;
   }
 
-  let detailData: DetailResponse;
+  let detailData: DetailData;
   if (isGrooming && groomingData) {
     detailData = groomingData;
   } else if (isCare && careData) {
@@ -52,7 +53,7 @@ export default function Detail() {
     return <div>유효하지 않은 type 입니다.</div>;
   }
 
-  const isGroomingDetail = (data: DetailResponse): data is GroomerDetailResponse =>
+  const isGroomingDetail = (data: DetailData): data is UserEstimateGroomingDetailData =>
     'groomerId' in data;
   const formattedDate = dayjs(detailData.reservedDate).locale('ko').format('YYYY.MM.DD(ddd) HH:mm');
   const introduction = detailData.introduction || '소개글 없음';

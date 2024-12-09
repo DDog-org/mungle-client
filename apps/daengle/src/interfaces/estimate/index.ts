@@ -47,7 +47,7 @@ export interface GroomerDetailResponse {
   tags?: string[];
 }
 
-export interface CareDetailResponse {
+export interface UserEstimateCareDetailData {
   careEstimateId: number;
   vetId: number;
   image: string;
@@ -60,12 +60,4 @@ export interface CareDetailResponse {
   cause: string;
   treatment: string;
   tags?: string[];
-}
-
-export interface GetEstimateGroomingDetailParams {
-  groomingEstimateId: number;
-}
-
-export interface GetEstimateCareDetailParams {
-  careEstimateId: number;
 }
