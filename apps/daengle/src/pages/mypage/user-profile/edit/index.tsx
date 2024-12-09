@@ -1,23 +1,17 @@
 import { useForm } from 'react-hook-form';
-import {
-  wrapper,
-  profileImageWrapper,
-  inputWrapper,
-  nickNameWrapper,
-  readOnlyTextBox,
-} from './index.styles';
 import { AppBar, ChipButton, CTAButton, Input, Layout, Text } from '@daengle/design-system';
 import {
   useGetUserProfileInfoQuery,
   usePostAvailableNicknameMutation,
   usePatchUserInfoMutation,
 } from '~/queries';
-import { UserProfileInfoEditForm } from './interfaces';
-import useValidateUserForm from './hooks/use-validate-user-form';
+import { UserProfileInfoEditForm } from '~/interfaces/auth';
+import { useValidateUserForm } from '~/hooks/mypage';
 import { useS3 } from '@daengle/services/hooks';
 import { ImageInputBox } from '~/components/mypage/user-profile/edit/imageInput';
 import router from 'next/router';
 import { ROUTES } from '~/constants/commons';
+import { css } from '@emotion/react';
 
 export default function EditProfile() {
   const { data: getUserInfo } = useGetUserProfileInfoQuery();
@@ -165,3 +159,32 @@ export default function EditProfile() {
     </Layout>
   );
 }
+
+export const wrapper = css`
+  padding: 18px;
+`;
+
+export const profileImageWrapper = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 32px 0 40px;
+`;
+export const inputWrapper = css`
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+`;
+export const nickNameWrapper = css`
+  display: flex;
+  align-items: flex-end;
+`;
+
+export const readOnlyTextBox = css`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
