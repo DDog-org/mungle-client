@@ -25,7 +25,7 @@ export default function EditProfile() {
   const { mutate: patchUserInfo } = usePatchUserInfoMutation();
   const validation = useValidateUserForm();
 
-  const { uploadToS3 } = useS3({ targetFolderPath: 'user/profile-images' });
+  const { uploadToS3, deleteFromS3 } = useS3({ targetFolderPath: 'user/profile-images' });
 
   const {
     handleSubmit,
@@ -64,8 +64,17 @@ export default function EditProfile() {
 
   const onSubmit = async (data: UserProfileInfoEditForm) => {
     let imageString = '';
+
+    // 기존 이미지 삭제
+    if (getUserInfo?.image) {
+      const fileName = getUserInfo.image.split('/').pop(); // S3 경로에서 파일 이름 추출
+      if (fileName) {
+        await deleteFromS3(fileName);
+      }
+    }
+
+    // 새 이미지 업로드
     if (data.image) {
-      // TODO: 여기에 이미지 삭제 하기 넣기
       const uploadedImages = await uploadToS3([data.image]);
       if (uploadedImages && uploadedImages.length > 0) {
         imageString = uploadedImages[0] ?? '';
@@ -73,6 +82,8 @@ export default function EditProfile() {
     } else {
       imageString = getUserInfo?.image || '';
     }
+
+    // 사용자 정보 업데이트
     if (imageString != undefined) {
       patchUserInfo({ ...data, image: imageString });
     }
@@ -146,7 +157,7 @@ export default function EditProfile() {
             </li>
           </ul>
 
-          <CTAButton type="submit" disabled={!isValid}>
+          <CTAButton type="submit" onClick={handleGoToClick} disabled={!isValid}>
             수정하기
           </CTAButton>
         </form>
