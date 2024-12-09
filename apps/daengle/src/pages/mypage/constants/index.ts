@@ -1,5 +1,3 @@
-import { DislikePart, SignificantTag } from '../interfaces';
-
 export const STEPS = {
   USER_INFO: 'user-info',
   SEARCH_ADDRESS: 'search-address',
@@ -78,7 +76,7 @@ export const PET_DISLIKEPART: { value: string; label: string }[] = [
   },
 ] as const;
 
-export const PET_SIGNIFICANTTAG: { value: SignificantTag; label: string }[] = [
+export const PET_SIGNIFICANTTAG: { value: string; label: string }[] = [
   {
     value: 'SKIN_DISEASES',
     label: '피부병',

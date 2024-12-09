@@ -62,11 +62,15 @@ export interface PetInfos {
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
   groomingExperience: boolean;
   isBite: boolean;
-  dislikeParts: string[];
+  dislikeParts: DislikePart[];
   significantTags: SignificantTag[];
   significant: string;
 }
 
+export interface DislikePart {
+  part: string;
+  partName: string;
+}
 export interface SignificantTag {
   tagName: string;
   tag: string;

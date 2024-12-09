@@ -15,23 +15,10 @@ export interface PetProfileEditType {
 }
 
 export interface DislikeParts {
-  partName: string;
   part: string;
+  partName: string;
 }
 export interface SignificantTags {
-  tagName: string;
   tag: string;
+  tagName: string;
 }
-
-export type SignificantTag = 'SKIN_DISEASES' | 'HEART_DISEASE' | 'MARKING' | 'MOUNTING';
-export type DislikePart =
-  | 'NONE'
-  | 'EYE'
-  | 'NOSE'
-  | 'MOUTH'
-  | 'EAT'
-  | 'NECK'
-  | 'BODY'
-  | 'LEG'
-  | 'TAIL'
-  | 'GENITAL';
