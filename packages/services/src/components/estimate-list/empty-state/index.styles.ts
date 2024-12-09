@@ -1,14 +1,14 @@
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 
-export const wrapper = css`
+export const wrapper = (isEmptyEstimates: boolean) => css`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 15px;
 
-  margin-top: 243px;
+  margin-top: ${isEmptyEstimates ? '150px' : '243px'};
 
   text-align: center;
 `;

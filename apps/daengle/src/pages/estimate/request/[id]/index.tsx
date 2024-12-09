@@ -1,7 +1,9 @@
 import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
-import { wrapper, header, footer } from './index.styles';
 import { PetImage, Section } from '~/components/estimate';
 import { useRouter } from 'next/router';
+
+import { theme } from '@daengle/design-system';
+import { css } from '@emotion/react';
 
 export default function RequestEstimate() {
   const router = useRouter();
@@ -52,3 +54,21 @@ export default function RequestEstimate() {
     </Layout>
   );
 }
+
+const wrapper = css`
+  padding-bottom: 104px;
+`;
+
+const header = css`
+  margin-bottom: 22px;
+  padding: 18px;
+`;
+
+const footer = css`
+  position: fixed;
+  bottom: 0;
+
+  width: 100%;
+  max-width: ${theme.size.maxWidth};
+  padding: 18px;
+`;
