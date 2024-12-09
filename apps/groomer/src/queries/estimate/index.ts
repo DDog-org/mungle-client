@@ -1,5 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { GetGroomerEstimateDetailResponse, GroomingEstimateList } from '~/models';
+import {
+  GetGroomerEstimateDetailParams,
+  GetGroomerEstimateDetailResponse,
+  GroomingEstimateList,
+} from '~/interfaces/estimate';
 import { getGroomerEstimateList, getGroomerEstimateDetail } from '~/apis';
 import { QUERY_KEYS } from '~/queries/query-keys';
 
@@ -17,17 +21,17 @@ export const useGroomerEstimateListQuery = () => {
   });
 };
 
-export const useGroomerEstimateDetailQuery = (id: number) => {
+export const useGroomerEstimateDetailQuery = (params: GetGroomerEstimateDetailParams) => {
   return useQuery<GetGroomerEstimateDetailResponse>({
-    queryKey: [QUERY_KEYS.GET_GROOMER_ESTIMATE_DETAIL, id],
+    queryKey: [QUERY_KEYS.GET_GROOMER_ESTIMATE_DETAIL, params],
     queryFn: async () => {
       try {
-        const data = await getGroomerEstimateDetail(id);
+        const data = await getGroomerEstimateDetail(params);
         return data;
       } catch (error) {
         throw new Error('견적 상세 정보를 가져오는 데 실패했습니다.');
       }
     },
-    enabled: !!id,
+    enabled: !!params,
   });
 };

@@ -2,7 +2,6 @@ import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
-  height: 100%;
   padding-bottom: 104px;
 
   background-color: ${theme.colors.background};

@@ -28,3 +28,7 @@ export interface GetGroomerEstimateDetailResponse {
   requirements: string;
   overallOpinion?: string;
 }
+
+export interface GetGroomerEstimateDetailParams {
+  id: number;
+}

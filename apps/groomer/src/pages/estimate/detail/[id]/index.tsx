@@ -6,14 +6,18 @@ import { wrapper, sectionDivider, requestTitle, button } from './index.styles';
 import { useGroomerEstimateDetailQuery } from '~/queries';
 import { DatePick } from '~/components/estimate';
 import { useRouter } from 'next/router';
+import { GetGroomerEstimateDetailParams } from '~/interfaces/estimate';
 
 export default function EstimateDetail() {
   const router = useRouter();
   const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | string>();
   const [overallOpinion, setOverallOpinion] = useState<string>('');
+
   const { id } = router.query;
   const groomingEstimateId = Number(id);
-  const { data, isLoading, error } = useGroomerEstimateDetailQuery(groomingEstimateId);
+
+  const params: GetGroomerEstimateDetailParams = { id: groomingEstimateId };
+  const { data, isLoading, error } = useGroomerEstimateDetailQuery(params);
 
   if (isLoading) return <div>Loading...</div>;
   if (error || !data) return <div>데이터를 불러오지 못했습니다.</div>;
@@ -66,7 +70,7 @@ export default function EstimateDetail() {
           onChange={(e) => setOverallOpinion(e.target.value)}
         />
         <div css={button}>
-          <RoundButton variant="green" size="L" fullWidth onClick={handleReservation}>
+          <RoundButton service="partner" size="L" fullWidth onClick={handleReservation}>
             예약받기
           </RoundButton>
         </div>
