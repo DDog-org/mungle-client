@@ -251,10 +251,12 @@ const circle = css`
   height: 40px;
   border: 1px solid ${theme.colors.gray200};
   border-radius: 20px;
+
   cursor: pointer;
 
   :hover {
     background-color: ${theme.colors.gray100};
+
     transition: 0.3s;
   }
 `;
@@ -284,12 +286,14 @@ const petProfile = css`
   flex-direction: column;
   align-items: center;
   gap: 8px;
+
   cursor: pointer;
 `;
 
 const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
-  border-radius: 50px;
   border: 4px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
+  border-radius: 50px;
+
   transition: border 0.2s ease;
 `;
 
