@@ -51,7 +51,7 @@ export function Card({
         </div>
 
         <div css={cardContent}>
-          <p css={[specials, significant === null && specialsNot]}>
+          <p css={[specials, significant === '' && specialsNot]}>
             {significant ? significant : '특이사항 없음'}
           </p>
           <Text typo="body11" color="gray500">
