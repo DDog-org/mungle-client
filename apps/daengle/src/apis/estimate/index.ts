@@ -1,6 +1,6 @@
 import { api } from '~/apis';
-import { GetDaengleEstimateListResponse } from '~/models';
+import { GetUserEstimateListResponse } from '~/models';
 
-export const getDaengleEstimateList = async () => {
-  return await api.get<GetDaengleEstimateListResponse>('/user/estimate/list');
+export const getUserEstimateList = async () => {
+  return await api.get<GetUserEstimateListResponse>('/user/estimate/list');
 };

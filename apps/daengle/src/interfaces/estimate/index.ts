@@ -2,11 +2,11 @@ export interface PetInfo {
   petId: number;
   name: string;
   image: string;
-  groomingEstimates?: GroomingEstimate[];
-  careEstimates?: CareEstimate[];
+  groomingEstimates?: GroomingEstimateType[];
+  careEstimates?: CareEstimateType[];
 }
 
-export interface GroomingEstimate {
+export interface GroomingEstimateType {
   groomingEstimateId: number;
   name: string;
   daengleMeter: number;
@@ -17,7 +17,7 @@ export interface GroomingEstimate {
   tags?: string[];
 }
 
-export interface CareEstimate {
+export interface CareEstimateType {
   careEstimateId: number;
   name: string;
   daengleMeter: number;

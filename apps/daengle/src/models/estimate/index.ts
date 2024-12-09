@@ -1,5 +1,5 @@
 import { PetInfo } from '~/interfaces/estimate';
 
-export interface GetDaengleEstimateListResponse {
+export interface GetUserEstimateListResponse {
   petInfos?: PetInfo[];
 }

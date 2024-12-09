@@ -18,7 +18,7 @@ import {
 import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
-import { useDaengleEstimateListQuery } from '~/queries';
+import { useUserEstimateListQuery } from '~/queries';
 import { CardList, OptionSelector, ProfileSelector } from '~/components/estimate';
 
 export const PATHS = {
@@ -78,7 +78,7 @@ export default function EstimateList() {
   const [isDesignation, setIsDesignation] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPetIndex, setSelectedPetIndex] = useState(0);
-  const { data, isLoading, error } = useDaengleEstimateListQuery();
+  const { data, isLoading, error } = useUserEstimateListQuery();
 
   if (isLoading) return <div>Loading...</div>;
   if (error || !data) return <div>에러가 발생했습니다.</div>;
