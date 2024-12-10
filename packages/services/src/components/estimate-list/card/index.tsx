@@ -12,7 +12,7 @@ import {
   specialsNot,
   detailContainer,
 } from './index.styles';
-import { ButtonTextButtonArrow } from '@daengle/design-system/icons';
+import { ButtonTextButtonArrow, DefaultProfile } from '@daengle/design-system/icons';
 
 interface EstimateContent {
   id: number;
@@ -39,7 +39,16 @@ export function Card({
     <div css={wrapper} onClick={onDetailClick}>
       <div css={contentContainer}>
         <div css={cardHeader}>
-          <img src={userImage} alt={`${nickname} 프로필`} css={profileImage} />
+          {userImage ? (
+            <img
+              src={userImage}
+              alt={`${nickname} 프로필`}
+              css={profileImage}
+              onError={(e) => (e.currentTarget.src = '')} // onError에서 src 초기화
+            />
+          ) : (
+            <DefaultProfile css={profileImage} />
+          )}
           <Text typo="body1">{nickname}</Text>
           <span css={[type, proposal === 'DESIGNATION' ? designated : general]}>
             {proposal === 'GENERAL' ? '일반' : '지정'}

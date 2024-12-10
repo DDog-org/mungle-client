@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useGroomerEstimateListQuery } from '~/queries';
+import { useGetGroomerEstimateListQuery } from '~/queries';
 import { Tab, Card } from '@daengle/services/components';
 import { GNB, Layout, Text, theme } from '@daengle/design-system';
 import {
@@ -72,7 +72,7 @@ export default function EstimateList(): JSX.Element {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState<string>('전체');
-  const { data, isLoading, isError } = useGroomerEstimateListQuery();
+  const { data, isLoading, isError } = useGetGroomerEstimateListQuery();
   const [, setActivePath] = useState<string>(PATHS.ESTIMATE);
 
   if (isLoading) {
