@@ -25,7 +25,7 @@ export default function Order() {
   const recipientId = 9;
   const recipientName = '김미용사';
   const shopName = '펫케어샵';
-  const schedule = '2024-12-06T14:00:00';
+  const schedule = '2024-12-12T14:00:00';
   const price = 1000; // 고정 예약금
   const customerName = '홍길동';
   const customerPhoneNumber = '010-1234-5678';
@@ -57,14 +57,11 @@ export default function Order() {
         visitorName,
         visitorPhoneNumber,
       });
-      console.log('orderResponse:', orderResponse);
-      console.log('orderUid:', orderResponse.orderUId);
-      console.log(orderUid);
+
+      setOrderUid(orderResponse.orderUId);
 
       // PG 결제 창 띄우기
       if (orderResponse && orderResponse.orderUId) {
-        setOrderUid(orderResponse.orderUId);
-
         if (!IMP_UID) {
           console.error('IMP_UID 환경 변수가 설정되지 않았습니다.');
           alert('결제 환경 설정이 올바르지 않습니다. 관리자에게 문의해주세요.');
