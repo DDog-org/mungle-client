@@ -2,6 +2,7 @@ import { AppBar, Layout, Tabs, Text, theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import { CardList } from '~/components/mypage';
 
+// TODO: 실제 데이터로 변경
 const TABS = [
   {
     id: 'groomer',

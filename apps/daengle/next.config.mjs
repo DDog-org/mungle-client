@@ -2,7 +2,7 @@
 const nextConfig = {
   transpilePackages: ['@daengle/design-system'],
   images: {
-    domains: ['daengle.s3.ap-northeast-2.amazonaws.com', 'i.namu.wiki'],
+    domains: ['daengle.s3.ap-northeast-2.amazonaws.com'],
   },
   env: {
     AWS_REGION: process.env.AWS_REGION,

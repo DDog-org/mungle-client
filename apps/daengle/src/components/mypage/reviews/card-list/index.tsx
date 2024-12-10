@@ -8,23 +8,9 @@ interface Props {
 export function CardList({ cards }: Props) {
   return (
     <div css={wrapper}>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
+      {cards.map((card) => (
+        <Card />
+      ))}
     </div>
   );
 }
