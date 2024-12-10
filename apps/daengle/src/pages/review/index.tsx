@@ -3,9 +3,10 @@ import { AppBar, Layout, Text, RoundButton } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 import { KeywordCard, PartnersCard, RatingCard, ReviewInputCard } from '~/components/review';
-import { usePostGroomingReviewMutation } from '~/queries/review';
+import { useGetUserReservationReviewQuery, usePostGroomingReviewMutation } from '~/queries/review';
 import { useRouter } from 'next/router';
 import { useS3 } from '@daengle/services/hooks';
+import { GetUserReservationReviewParams } from '~/models/review';
 
 const TAGS = [
   '#위생적이에요',
@@ -23,6 +24,33 @@ export default function ReviewPage() {
 
   const { uploadToS3 } = useS3({ targetFolderPath: 'user/review-images' });
   const router = useRouter();
+
+  const { id } = router.query;
+  const reservationId = Number(id) || 3;
+  console.log(reservationId);
+
+  const params: GetUserReservationReviewParams = { reservationId: reservationId };
+  const { data, isLoading, error } = useGetUserReservationReviewQuery(params);
+
+  const partnersCardData = isLoading
+    ? { designerName: '로딩 중...', shopName: '로딩 중...', schedule: { date: '', time: '' } }
+    : error
+      ? { designerName: '에러 발생', shopName: '에러 발생', schedule: { date: '', time: '' } }
+      : {
+          designerName: data?.recipientName || '알 수 없음',
+          shopName: data?.shopName || '알 수 없음',
+          schedule: {
+            date: new Date(data?.schedule || '').toLocaleDateString('ko-KR', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            }),
+            time: new Date(data?.schedule || '').toLocaleTimeString('ko-KR', {
+              hour: '2-digit',
+              minute: '2-digit',
+            }),
+          },
+        };
 
   const toggleExpand = () => setIsExpanded((prev) => !prev);
 
@@ -73,7 +101,9 @@ export default function ReviewPage() {
     };
     console.log('body', body);
     mutation.mutate(body, {
-      onSuccess: () => {
+      onSuccess: (response) => {
+        const { reviewId } = response;
+        localStorage.setItem('reviewId', String(reviewId)); // 로컬 스토리지에 저장
         alert('리뷰가 성공적으로 등록되었습니다!');
         router.push('/reviews');
       },
@@ -88,15 +118,14 @@ export default function ReviewPage() {
       <AppBar />
       <div css={wrapper}>
         <div css={header}>
-          <Text typo="title1">꼬꼬마 관리샵</Text>
+          <Text typo="title1">{partnersCardData.shopName}</Text>
         </div>
         <div css={container}>
           <PartnersCard
-            designerName="문소연 디자이너"
-            shopName="꼬꼬마 관리샵"
-            schedule={{ date: '2024.11.17(일)', time: '14:00' }}
+            designerName={partnersCardData.designerName}
+            shopName={partnersCardData.shopName}
+            schedule={partnersCardData.schedule}
           />
-
           <RatingCard rating={rating} onRatingChange={setRating} />
 
           <KeywordCard

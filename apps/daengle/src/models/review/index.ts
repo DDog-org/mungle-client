@@ -111,6 +111,17 @@ export interface GetUserVetReviewList {
   content: string | null;
   imageUrlList: string[] | null;
 }
+export interface GetUserReservationReviewParams {
+  reservationId: number;
+}
+
+export interface GetUserReservationReviewResponse {
+  reservationId: number;
+  recipientName: string;
+  shopName?: string;
+  schedule: string;
+}
+
 export interface PostUserGroomingReviewRequestBody {
   reservationId: number;
   starRating: number;
@@ -123,4 +134,35 @@ export interface PostUserGroomingReviewResponse {
   reviewId: number;
   reviewerId: number;
   revieweeId: number;
+}
+
+export interface GetUserReviewGroomingParams {
+  reviewId: number;
+}
+
+export interface GetUserReviewGroomingResponse {
+  reviewId: number;
+  reservationName: string;
+  shopName?: string;
+  starRating: number;
+  groomingKeywordReviewList: string[];
+  content: string;
+  imageUrlList: string[];
+}
+
+export interface PatchUserGroomingReviewRequestParams {
+  reviewId: number;
+  body: PatchUserGroomingReviewRequestBody;
+}
+
+export interface PatchUserGroomingReviewRequestBody {
+  reservationId: number;
+  starRating: number;
+  groomingKeywordReviewList: string[];
+  content: string;
+  imageUrlList: string[];
+}
+
+export interface PatchUserGroomingReviewResponse {
+  message: string;
 }

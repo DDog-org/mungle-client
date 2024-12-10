@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { PAGE_SIZE } from '~/constants/review';
 import {
   deleteUserCareReview,
@@ -7,11 +7,19 @@ import {
   getUserGroomerReviewList,
   getUserGroomingMyReviewList,
   getUserVetReviewList,
+  getUserReservationReview,
+  getUserReviewGrooming,
+  patchUserGroomingReview,
   postUserGroomingReview,
 } from '~/apis/review';
 import {
   DeleteUserCareReviewRequestParams,
   DeleteUserGroomingReviewRequestParams,
+  GetUserReservationReviewParams,
+  GetUserReservationReviewResponse,
+  GetUserReviewGroomingParams,
+  GetUserReviewGroomingResponse,
+  PatchUserGroomingReviewRequestParams,
   PostUserGroomingReviewRequestBody,
 } from '~/models';
 import { QUERY_KEYS } from '../query-keys';
@@ -85,12 +93,53 @@ export const getUserVetReviewListInfiniteQuery = (vetId: number) => {
   });
 };
 
+export const useGetUserReservationReviewQuery = (params: GetUserReservationReviewParams) => {
+  return useQuery<GetUserReservationReviewResponse>({
+    queryKey: [QUERY_KEYS.GET_USER_RESERVATION_REVIEW, params],
+    queryFn: async () => {
+      try {
+        return await getUserReservationReview(params);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+    enabled: !!params,
+  });
+};
+
 export const usePostGroomingReviewMutation = () => {
   return useMutation({
-    mutationKey: QUERY_KEYS.POST_REVIEW,
+    mutationKey: QUERY_KEYS.POST_GROOMING_REVIEW,
     mutationFn: async (body: PostUserGroomingReviewRequestBody) => {
       try {
         return await postUserGroomingReview(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
+
+export const useGetUserReviewGroomingQuery = (params: GetUserReviewGroomingParams) => {
+  return useQuery<GetUserReviewGroomingResponse>({
+    queryKey: [QUERY_KEYS.GET_USER_REVIEW_GROOMING, params],
+    queryFn: async () => {
+      try {
+        return await getUserReviewGrooming(params);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+    enabled: !!params,
+  });
+};
+
+export const usePatchUserGroomingReviewMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.PATCH_GROOMING_REVIEW,
+    mutationFn: async (params: PatchUserGroomingReviewRequestParams) => {
+      try {
+        return await patchUserGroomingReview(params);
       } catch (error) {
         throw new Error(String(error));
       }

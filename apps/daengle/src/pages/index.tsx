@@ -1,3 +1,14 @@
+import { RoundButton } from '@daengle/design-system';
+import { useRouter } from 'next/router';
+
 export default function Home() {
-  return <div>Daengle</div>;
+  const router = useRouter();
+  return (
+    <div>
+      Daengle
+      <RoundButton service="partner" size="M" onClick={() => router.push('/review')}>
+        리뷰 쓰러 가기
+      </RoundButton>
+    </div>
+  );
 }

@@ -13,6 +13,12 @@ import {
   GetUserVetReviewListResponse,
   PostUserGroomingReviewRequestBody,
   PostUserGroomingReviewResponse,
+  GetUserReservationReviewParams,
+  GetUserReservationReviewResponse,
+  GetUserReviewGroomingParams,
+  GetUserReviewGroomingResponse,
+  PatchUserGroomingReviewRequestParams,
+  PatchUserGroomingReviewResponse,
 } from '~/models';
 import { api } from '../config';
 
@@ -56,6 +62,23 @@ export const getUserVetReviewList = async ({
   });
 };
 
+export const getUserReservationReview = async (params: GetUserReservationReviewParams) => {
+  return await api.get<GetUserReservationReviewResponse>(
+    `/user/reservation/${params.reservationId}/review`
+  );
+};
+
 export const postUserGroomingReview = async (body: PostUserGroomingReviewRequestBody) => {
   return await api.post<PostUserGroomingReviewResponse>('/user/grooming/review', body);
+};
+
+export const getUserReviewGrooming = async (params: GetUserReviewGroomingParams) => {
+  return await api.get<GetUserReviewGroomingResponse>(`/user/review/grooming/${params.reviewId}`);
+};
+
+export const patchUserGroomingReview = async (params: PatchUserGroomingReviewRequestParams) => {
+  return await api.patch<PatchUserGroomingReviewResponse>(
+    `/user/grooming/review/${params.reviewId}`,
+    params.body
+  );
 };
