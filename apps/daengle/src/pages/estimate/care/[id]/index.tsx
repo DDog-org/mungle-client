@@ -140,16 +140,16 @@ export default function EstimateCare() {
               <div css={petList}>
                 {petInfos.map((pet) => (
                   <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
-                    {pet.image == '' ? (
-                      <DefaultImage
-                        css={profileImage({ isSelected: selectedPetId === pet.petId })}
-                      />
-                    ) : (
+                    {pet.image ? (
                       <Image
                         src={pet.image}
                         alt="반려견 프로필"
                         width={86}
                         height={86}
+                        css={profileImage({ isSelected: selectedPetId === pet.petId })}
+                      />
+                    ) : (
+                      <DefaultImage
                         css={profileImage({ isSelected: selectedPetId === pet.petId })}
                       />
                     )}
