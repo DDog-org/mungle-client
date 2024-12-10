@@ -46,7 +46,13 @@ export default function EditProfile() {
       return;
     }
 
+    if (nickname.length < 2) {
+      setError('nickname', { message: '2글자 이상 입력해 주세요' });
+      return;
+    }
+
     const response = await postAvailableNickname({ nickname });
+
     if (response.isAvailable) {
       setError('nickname', { message: '' });
       setValue('isAvailableNickname', true);
