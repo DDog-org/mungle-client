@@ -6,15 +6,15 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
-import EstimateSelectComponent from '~/components/estimate/EstimateSelectComponent';
+import EstimateSelectComponent from '~/components/estimate/estimate-select-component';
 import {
   usePostUserEstimateGroomingMutation,
   usePostUserEstimateGroomerUserInfoMutation,
 } from '~/queries/estimate';
 import { PetInfos, PostUserEstimateGroomerUserInfoResponse } from '~/models/estimate';
 import { ROUTES } from '~/constants/commons';
-import { DefaultImage } from '@daengle/design-system/icons';
-import DatePickerComponent from '~/components/estimate/DatePickerComponent';
+import { AddButton, DefaultImage } from '@daengle/design-system/icons';
+import DatePickerComponent from '~/components/estimate/date-picker-component';
 
 export default function EstimateCreate() {
   const router = useRouter();
@@ -171,9 +171,7 @@ export default function EstimateCreate() {
           ) : (
             <div css={registerPet}>
               <div css={circle}>
-                <Image
-                  src="/icons/add_button.svg"
-                  alt="등록 버튼"
+                <AddButton
                   width={12}
                   height={12}
                   onClick={() => {

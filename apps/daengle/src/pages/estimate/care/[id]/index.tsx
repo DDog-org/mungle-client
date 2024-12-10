@@ -4,7 +4,7 @@ import { css } from '@emotion/react';
 
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import DatePickerComponent from '~/components/estimate/DatePickerComponent';
+import DatePickerComponent from '~/components/estimate/date-picker-component';
 import {
   usePostUserEstimateCareMutation,
   usePostUserEstimateVetUserInfoMutation,
