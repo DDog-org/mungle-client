@@ -9,7 +9,7 @@ export interface PostUserEstimateGroomerUserInfoRequestBody {
 }
 
 export interface PostUserEstimateGroomerUserInfoResponse {
-  groomerImage: string | null;
+  groomerImage: string;
   groomerName: string;
   shopName: string;
   address: string;
@@ -31,7 +31,7 @@ export interface PostUserEstimateGroomingResponse {
 
 export interface PetInfos {
   petId: number;
-  image: string | null;
+  image: string;
   name: string;
 }
 
@@ -40,7 +40,7 @@ export interface PostUserEstimateVetUserInfoRequestBody {
 }
 
 export interface PostUserEstimateVetUserInfoResponse {
-  vetImage: string | null;
+  vetImage: string;
   vetName: string;
   address: string;
   petInfos: PetInfos[];
