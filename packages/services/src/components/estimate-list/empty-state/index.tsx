@@ -5,13 +5,14 @@ import { wrapper, emptyButton } from './index.styles';
 
 interface Props {
   isEmptyEstimates: boolean;
+  hasOptions: boolean;
 }
 
-export function EmptyState({ isEmptyEstimates }: Props): JSX.Element {
+export function EmptyState({ isEmptyEstimates, hasOptions }: Props): JSX.Element {
   const router = useRouter();
 
   return (
-    <div css={wrapper(isEmptyEstimates)}>
+    <div css={wrapper(hasOptions)}>
       <EmptyStateBone width={42} height={47} />
       {isEmptyEstimates ? (
         <Text typo="subtitle3" color="gray400">

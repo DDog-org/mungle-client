@@ -176,11 +176,11 @@ export default function EstimateList() {
                 onCardClick={handleCardClick}
               />
             ) : (
-              <EmptyState isEmptyEstimates={isEmptyEstimates} />
+              <EmptyState isEmptyEstimates={isEmptyEstimates} hasOptions={hasOptions} />
             )}
           </>
         ) : (
-          <EmptyState isEmptyEstimates={false} />
+          <EmptyState isEmptyEstimates={false} hasOptions={hasOptions} />
         )}
         <GNB menus={MENUS} activePath={PATHS.ESTIMATE} onNavigate={handleNavigate} />
       </div>

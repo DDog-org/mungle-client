@@ -11,6 +11,7 @@ import {
   tagsContainer,
   tagButtonStyle,
 } from './index.styles';
+import { DefaultProfile } from '@daengle/design-system/icons';
 
 interface GroomingEstimate {
   id: number;
@@ -41,6 +42,11 @@ interface Props {
 }
 
 export function CardList({ estimateData, isDesignation, onCardClick }: Props): JSX.Element {
+  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    event.currentTarget.onerror = null;
+    event.currentTarget.src = '';
+  };
+
   return (
     <div css={wrapper}>
       {estimateData?.map((data) => (
@@ -75,12 +81,17 @@ export function CardList({ estimateData, isDesignation, onCardClick }: Props): J
               </div>
             </div>
           </div>
-          <img
-            src={data.image}
-            alt={`${data.name} 프로필`}
-            css={profileImage}
-            onClick={() => onCardClick?.(data.id)}
-          />
+          {data.image ? (
+            <img
+              src={data.image}
+              alt={`${data.name} 프로필`}
+              css={profileImage}
+              onClick={() => onCardClick?.(data.id)}
+              onError={handleImageError}
+            />
+          ) : (
+            <DefaultProfile css={profileImage} onClick={() => onCardClick?.(data.id)} />
+          )}
         </div>
       ))}
     </div>

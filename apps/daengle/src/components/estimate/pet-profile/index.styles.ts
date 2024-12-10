@@ -4,6 +4,7 @@ import { theme } from '@daengle/design-system';
 export const wrapper = css`
   display: flex;
   gap: 8px;
+  overflow-x: auto;
 
   margin: 18px;
 
@@ -24,8 +25,11 @@ export const profileButton = css`
 
   background-color: ${theme.colors.gray200};
   color: ${theme.colors.gray500};
+  white-space: nowrap;
 
   cursor: pointer;
+
+  box-sizing: border-box;
 
   img {
     width: 32px;
