@@ -106,8 +106,8 @@ export interface PostUserPetRequestBody {
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
   groomingExperience: Boolean;
   isBite: Boolean;
-  dislikeParts: string[];
-  significantTags: string[];
+  dislikeParts: DislikePart[];
+  significantTags: SignificantTag[];
   significant: string;
 }
 export type PostUserPetResponse = string;

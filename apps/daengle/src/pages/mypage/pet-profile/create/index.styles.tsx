@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 export const wrapper = css`
-  padding: 18px 18px 146px;
+  padding: 18px 18px 104px;
 `;
 export const titleBox = css`
   margin: 0 0 40px;
@@ -37,7 +37,7 @@ export const profileImageWrapper = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 32px 0 40px;
+  margin: 40px 0 32px;
 `;
 export const profileImageBox = css`
   width: 116px;

@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 
 export const wrapper = css`
-  padding: 0 18px;
+  padding: 18px 18px 0;
 `;
 export const titleBox = css`
   margin: 0 0 40px;
@@ -58,7 +58,7 @@ export const profileEditButtonBox = css`
 `;
 
 export const inputWrapper = css`
-  padding: 0 18px 146px;
+  padding: 0 0 146px;
   position: relative;
   display: flex;
   flex-direction: column;
