@@ -80,11 +80,11 @@ export default function EstimateCare() {
     }
   };
 
-  const handleSymptomsChange = (e) => {
+  const handleSymptomsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setSymptoms(e.target.value);
   };
 
-  const handleRequirementsChange = (e) => {
+  const handleRequirementsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setRequirements(e.target.value);
   };
 

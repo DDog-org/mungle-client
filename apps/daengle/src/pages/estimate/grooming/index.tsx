@@ -87,7 +87,7 @@ export default function EstimateCreate() {
     setDesiredStyle((prevStyle) => (prevStyle === style ? '' : style));
   };
 
-  const handleRequirementsChange = (e) => {
+  const handleRequirementsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setRequirements(e.target.value);
   };
 
