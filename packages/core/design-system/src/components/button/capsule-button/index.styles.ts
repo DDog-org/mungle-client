@@ -14,6 +14,8 @@ export const wrapper = ({ disabled }: { disabled: boolean }) => css`
 
     cursor: default;
   `}
+  width: fit-content;
+  height: fit-content;
   padding: 6px 10px;
   border-radius: 20px;
 
