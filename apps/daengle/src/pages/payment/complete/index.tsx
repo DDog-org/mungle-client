@@ -1,10 +1,13 @@
 import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 
 export default function PaymentComplete() {
-  const router = useRouter();
+  const recipientName = '김미용사';
+  const shopName = '펫케어샵';
+  const schedule = '2024-12-12T14:00:00';
+  const date = schedule.split('T', 1);
+  const time = schedule.substring(11, 16);
 
   return (
     <Layout>
@@ -17,15 +20,15 @@ export default function PaymentComplete() {
           </Text>
         </section>
         <section css={reservationDetail}>
-          <Text typo="title2">문소연 디자이너</Text>
-          <Text typo="body9" color="gray400" css={shopName}>
-            꼬꼬마 관리샵
+          <Text typo="title2">{recipientName}</Text>
+          <Text typo="body9" color="gray400" css={shop}>
+            {shopName}
           </Text>
-          <div css={schedule}>
+          <div css={reservationSchedule}>
             <Text typo="body4" color="gray400">
               일정
             </Text>
-            <Text typo="body4">2024.11.17 • 14:00</Text>
+            <Text typo="body4">{`${date} • ${time}`}</Text>
           </div>
         </section>
         <RoundButton size="S">예약 내역 보기</RoundButton>
@@ -65,11 +68,11 @@ const reservationDetail = css`
   border-radius: 21px;
 `;
 
-const shopName = css`
+const shop = css`
   margin-top: 6px;
 `;
 
-const schedule = css`
+const reservationSchedule = css`
   display: flex;
   gap: 16px;
 
