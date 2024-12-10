@@ -5,7 +5,7 @@ import { initMSW } from '~/mocks/init-msw';
 
 initMSW();
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps }: AppProps & { isAppBarExist?: boolean }) {
   return (
     <QueryProvider>
       <GlobalStyle>
