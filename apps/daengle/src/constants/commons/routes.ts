@@ -38,9 +38,9 @@ export const ROUTES = {
 
   //Payment
   PAYMENTS: '/payments',
-  PAYMENT_ORDER: '/payment/order',
-  PAYMENT_VALIDATE: '/payment/validate',
-  PAYMENT_COMPLETE: '/payment/complete',
+  PAYMENT_ORDER: '/payments/order',
+  PAYMENT_VALIDATE: '/payments/validate',
+  PAYMENT_COMPLETE: '/payments/complete',
 
   // Mypage
   MYPAGE: '/mypage',

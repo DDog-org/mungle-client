@@ -3,21 +3,23 @@ import { SelectUnfoldActive, SelectUnfoldInactive } from '@daengle/design-system
 import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
-import { useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { usePostPaymentOrderMutation, usePostPaymentValidateMutation } from '~/queries/payment';
 import { PostPaymentOrderResponse } from '~/models/payment';
 import Script from 'next/script';
 import { ROUTES } from '~/constants/commons';
 import { useRouter } from 'next/router';
 import { useOrderInfoStore } from '~/stores/payment';
+import { useValidateVisitorForm } from '~/hooks/payment';
+import { useForm } from 'react-hook-form';
+import { VisitorInfoFormType } from '~/interfaces/payment';
+import { formatPhoneNumber } from '@daengle/services/utils';
 
 export default function Order() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [orderUid, setOrderUid] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [visitorName, setVisitorName] = useState<string>('');
-  const [visitorPhoneNumber, setVisitorPhoneNumber] = useState<string>('');
   const {
     estimateId,
     serviceType,
@@ -29,6 +31,18 @@ export default function Order() {
     customerName,
     customerPhoneNumber,
   } = useOrderInfoStore();
+
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<VisitorInfoFormType>({ defaultValues: { username: '', phoneNumber: '' } });
+
+  const visitorName = watch('username');
+  const visitorPhoneNumber = watch('phoneNumber');
+
+  const validation = useValidateVisitorForm();
 
   const { mutateAsync: postPaymentOrder } = usePostPaymentOrderMutation();
   const { mutateAsync: postPaymentValidate } = usePostPaymentValidateMutation();
@@ -51,24 +65,24 @@ export default function Order() {
     m_redirect_url: ROUTES.PAYMENT_COMPLETE,
   };
 
+  useEffect(() => {
+    if (!visitorName && !visitorPhoneNumber) {
+      setValue('username', customerName);
+      setValue('phoneNumber', customerPhoneNumber);
+    }
+  }, [visitorName, visitorPhoneNumber, customerName, customerPhoneNumber, setValue]);
+
   const handleArrowToggle = () => {
     setIsOpen(!isOpen);
   };
-
-  if (visitorName == '' && visitorPhoneNumber == '') {
-    setVisitorName(customerName);
-    setVisitorPhoneNumber(customerPhoneNumber);
-  }
 
   const IMPRequestData = {
     ...paymentInfo,
     buyer_name: customerName,
     buyer_tel: customerPhoneNumber,
-    visitor_name: visitorName,
-    visitor_tel: visitorPhoneNumber,
+    visitor_name: visitorName || customerName,
+    visitor_tel: visitorPhoneNumber || customerPhoneNumber,
   };
-
-  console.log('IMPRequestData:', IMPRequestData);
 
   // 결제 요청 api 호출
   const handlePostPaymentOrder = async () => {
@@ -103,16 +117,11 @@ export default function Order() {
 
         IMP?.request_pay(IMPRequestData, async function (response) {
           //결제 후 호출되는 callback함수
-          // console.log('callback response:', response);
-          // console.log('success:', response.success);
+
           if (response.success == false) {
             alert(`결제에 실패하였습니다.(${response.error_msg})`);
             return;
           }
-
-          // console.log('paymentUid:', response.imp_uid);
-          // console.log('estimateId:', String(estimateId));
-          // console.log('orderUid:', orderUid);
 
           // 결제 검증 api 호출
           const validateResponse = await postPaymentValidate({
@@ -123,9 +132,8 @@ export default function Order() {
 
           if (validateResponse) {
             //결제 성공
-            // console.log('validateResponse:', validateResponse);
-            // console.log(response);
-            router.push(ROUTES.PAYMENT_COMPLETE); // TO DO : 미용사 이름, 샵 이름, 일정(날짜, 시간) 넘기기
+
+            router.push(ROUTES.PAYMENT_COMPLETE);
           } else {
             console.error('결제 검증 실패:', validateResponse);
             alert('결제 검증에 실패했습니다.');
@@ -243,15 +251,21 @@ export default function Order() {
               <Input
                 label="방문자"
                 placeholder="방문자 이름을 입력해주세요"
-                value={visitorName}
-                onChange={(e) => setVisitorName(e.target.value)}
+                maxLength={10}
+                {...register('username', { ...validation.username })}
+                errorMessage={errors.username?.message}
                 css={input}
               />
               <Input
                 label="휴대폰번호"
                 placeholder="휴대폰 번호를 입력해주세요"
-                value={visitorPhoneNumber}
-                onChange={(e) => setVisitorPhoneNumber(e.target.value)}
+                maxLength={13}
+                {...register('phoneNumber', { ...validation.phoneNumber })}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setValue('phoneNumber', formatPhoneNumber(e.target.value))
+                }
+                errorMessage={errors.phoneNumber?.message}
+                css={input}
               />
             </div>
           </section>
@@ -384,7 +398,7 @@ const customerInfo = css`
 `;
 
 const hiddenBlock = ({ isOpen }: { isOpen: boolean }) => ({
-  maxHeight: isOpen ? '200px' : '0',
+  maxHeight: isOpen ? '210px' : '0',
   overflow: 'hidden',
   transition: 'max-height 0.3s ease',
   opacity: isOpen ? 1 : 0,
