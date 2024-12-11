@@ -6,18 +6,14 @@ export const wrapper = css`
   align-items: center;
   justify-content: space-around;
 
-  padding: 16px 18px 0;
+  padding: 0 18px;
   border-bottom: 0.5px solid ${theme.colors.gray300};
 `;
 
 export const tabButton = css`
   padding: 9px 30px;
   border: none;
-
-  background: none;
   ${theme.typo.subtitle3};
-  border: none;
-
   background: none;
   color: ${theme.colors.gray300};
 
