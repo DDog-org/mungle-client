@@ -15,14 +15,14 @@ export const ROUTES = {
 
   // Groomers
   GROOMER_DETAIL: (groomerId: number) => `/groomers/${groomerId}`,
-  GROOMER_REVIEW: (groomerId: number) => `/groomers/${groomerId}/reviews`,
+  GROOMER_REVIEWS: (groomerId: number) => `/groomers/${groomerId}/reviews`,
   GROOMER_ESTIMATE_FORM: '/groomers/estimate-form',
   GROOMER_REVIEW_FORM: (reservationId: number) => `/groomers/review/${reservationId}`,
   GROOMER_REVIEW_FORM_EDIT: (reveiwId: number) => `/groomers/review/${reveiwId}/edit`,
 
   // Vets
   VET_DETAIL: (vetId: number) => `/vets/${vetId}`,
-  VET_REVIEW: (vetId: number) => `/vets/${vetId}/reviews`,
+  VET_REVIEWS: (vetId: number) => `/vets/${vetId}/reviews`,
   VET_ESTIMATE_FORM: '/vets/estimate-form',
   VET_REVIEW_FORM: (reservationId: number) => `/vet/review/${reservationId}`,
   VET_REVIEW_FORM_EDIT: (reviewId: number) => `/vet/review/${reviewId}/edit`,

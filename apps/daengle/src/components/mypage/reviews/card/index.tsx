@@ -53,8 +53,8 @@ export function Card({
           <Rating rate={starRating} />
         </div>
         <div css={buttonWrapper}>
-          <CapsuleButton onClick={onEdit}>수정하기</CapsuleButton>
-          <CapsuleButton onClick={onDelete}>삭제하기</CapsuleButton>
+          {onEdit && <CapsuleButton onClick={onEdit}>수정하기</CapsuleButton>}
+          {onDelete && <CapsuleButton onClick={onDelete}>삭제하기</CapsuleButton>}
         </div>
       </div>
 

@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
-import { Card, Empty } from '~/components/mypage';
+import { Card } from '~/components/mypage';
+import { Empty } from '~/components/reviews';
 import { useIntersectionLoad } from '~/hooks/review';
 import {
   deleteUserGroomingReviewMutation,
@@ -47,7 +48,7 @@ export function GroomerCardList() {
             )
           )
         ) : (
-          <Empty />
+          <Empty title="작성한 리뷰가 없어요" actionLabel="리뷰 작성하기" />
         )
       )}
 

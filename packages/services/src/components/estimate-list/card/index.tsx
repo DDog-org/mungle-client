@@ -1,4 +1,5 @@
 import { Text, TextButton } from '@daengle/design-system';
+import { ButtonTextButtonArrow, DefaultProfile } from '@daengle/design-system/icons';
 import {
   wrapper,
   contentContainer,
@@ -12,7 +13,6 @@ import {
   specialsNot,
   detailContainer,
 } from './index.styles';
-import { ButtonTextButtonArrow, DefaultProfile } from '@daengle/design-system/icons';
 
 interface EstimateContent {
   id: number;
