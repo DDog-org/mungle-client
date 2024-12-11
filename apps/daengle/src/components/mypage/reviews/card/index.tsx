@@ -14,47 +14,75 @@ import {
   wrapper,
 } from './index.styles';
 
-export function Card() {
+interface Props {
+  reviewId: number;
+  revieweeId: number;
+  keywordReviewList: string[];
+  revieweeName: string;
+  starRating: 1 | 2 | 3 | 4 | 5;
+  content: string | null;
+  imageUrlList: string[] | null;
+  onRevieweeNameClick: () => void;
+  onDelete: () => void;
+  onEdit: () => void;
+}
+
+export function Card({
+  keywordReviewList,
+  revieweeName,
+  starRating,
+  content,
+  imageUrlList,
+  onRevieweeNameClick,
+  onDelete,
+  onEdit,
+}: Props) {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   return (
     <div css={wrapper}>
       <div css={top}>
         <div css={groomerInfo}>
-          <div css={groomerText}>
-            <Text typo="subtitle2" color="black">{`문소연 디자이너`}</Text>
+          <div css={groomerText} onClick={onRevieweeNameClick}>
+            <Text typo="subtitle2" color="black">
+              {revieweeName}
+            </Text>
             <ButtonTextButtonArrow width="6px" />
           </div>
 
-          <Rating rate={4} />
+          <Rating rate={starRating} />
         </div>
         <div css={buttonWrapper}>
-          <CapsuleButton>수정하기</CapsuleButton>
-          <CapsuleButton>삭제하기</CapsuleButton>
+          <CapsuleButton onClick={onEdit}>수정하기</CapsuleButton>
+          <CapsuleButton onClick={onDelete}>삭제하기</CapsuleButton>
         </div>
       </div>
 
       <div css={imageWrapper}>
-        <Image src="" alt="리뷰 이미지" width={101} height={101} />
+        {imageUrlList?.map((url) => <Image src={url} alt="리뷰 이미지" width={101} height={101} />)}
       </div>
 
       <div css={tagWrapper}>
         <div css={tag}>
-          <Text typo="body2" color="blue200">{`#맞춤케어를 잘해줘요`}</Text>
+          {keywordReviewList?.map((tag) => (
+            <Text typo="body2" color="blue200">
+              {tag}
+            </Text>
+          ))}
         </div>
       </div>
 
-      <Text
-        tag="p"
-        typo="body11"
-        color="black"
-        css={!isExpanded && clampText}
-      >{`디자이너 최고 어쩌고 저쩌고 정말 마음에 들어요
-        앞으로 여기에 정착할거에요~!~!`}</Text>
+      {content && (
+        <>
+          <Text tag="p" typo="body11" color="black" css={!isExpanded && clampText}>
+            {content}
+          </Text>
 
-      <button onClick={() => setIsExpanded(!isExpanded)}>
-        {isExpanded ? <ReviewFold width="6px" /> : <ReviewUnfold width="6px" />}
-      </button>
+          <button onClick={() => setIsExpanded(!isExpanded)}>
+            {isExpanded ? <ReviewFold width="6px" /> : <ReviewUnfold width="6px" />}
+          </button>
+        </>
+      )}
     </div>
   );
 }

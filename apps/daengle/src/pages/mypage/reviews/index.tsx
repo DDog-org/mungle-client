@@ -1,72 +1,30 @@
-import { AppBar, Layout, Tabs, Text, theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
-import { CardList } from '~/components/mypage';
+import { AppBar, Layout, Tabs, Text, theme } from '@daengle/design-system';
+import { GroomerCardList, VetCardList } from '~/components/mypage';
 
-// TODO: 실제 데이터로 변경
 const TABS = [
   {
     id: 'groomer',
     label: '미용사',
-    content: (
-      <CardList
-        cards={[
-          {
-            groomerName: '문소연',
-            rate: 5,
-            review: '너무 잘해 주셔서 감사합니다!',
-            images: [
-              'https://via.placeholder.com/150',
-              'https://via.placeholder.com/150',
-              'https://via.placeholder.com/150',
-            ],
-          },
-          {
-            groomerName: '김윤일',
-            rate: 5,
-            review: '너무 잘해 주셔서 감사합니다!',
-            images: [
-              'https://via.placeholder.com/150',
-              'https://via.placeholder.com/150',
-              'https://via.placeholder.com/150',
-            ],
-          },
-        ]}
-      />
-    ),
   },
   {
     id: 'vet',
     label: '병원',
-    content: (
-      <CardList
-        cards={[
-          {
-            groomerName: '문소연',
-            rate: 5,
-            review: '너무 잘해 주셔서 감사합니다!',
-            images: [
-              'https://via.placeholder.com/150',
-              'https://via.placeholder.com/150',
-              'https://via.placeholder.com/150',
-            ],
-          },
-          {
-            groomerName: '김윤일',
-            rate: 5,
-            review: '너무 잘해 주셔서 감사합니다!',
-            images: [
-              'https://via.placeholder.com/150',
-              'https://via.placeholder.com/150',
-              'https://via.placeholder.com/150',
-            ],
-          },
-        ]}
-      />
-    ),
   },
 ];
 
 export default function Reviews() {
+  const renderContent = (activeTabId: string) => {
+    switch (activeTabId) {
+      case 'groomer':
+        return <GroomerCardList />;
+      case 'vet':
+        return <VetCardList />;
+      default:
+        return <GroomerCardList />;
+    }
+  };
+
   return (
     <Layout isAppBarExist={false}>
       <AppBar />
@@ -76,7 +34,7 @@ export default function Reviews() {
         </Text>
 
         <div css={content}>
-          <Tabs tabs={TABS} />
+          <Tabs tabs={TABS} renderContent={renderContent} />
         </div>
       </section>
     </Layout>

@@ -3,6 +3,7 @@ export * from './AppBarBack';
 export * from './AuthLogo';
 export * from './ButtonTextButtonArrow';
 export * from './DefaultProfile';
+export * from './EmptyLogo';
 export * from './EmptyStateBone';
 export * from './DefaultImage';
 export * from './GnbChattingActive';

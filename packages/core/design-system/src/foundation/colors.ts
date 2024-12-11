@@ -35,7 +35,7 @@ export const colors = {
 
   whiteGradient100: 'linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 71.19%)',
 
-  blueGradient100: 'linear-gradient(180deg, #5D86FE 100%, #7B9DFF 100%)',
+  blueGradient100: 'linear-gradient(180deg, #5D86FE 0%, #7B9DFF 100%)',
 
   greenGradient100: 'linear-gradient(180deg, #84DACF 0%, #93E1D7 100%)',
 
