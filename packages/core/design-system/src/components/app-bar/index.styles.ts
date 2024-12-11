@@ -11,7 +11,7 @@ export const wrapper = css`
   height: 52px;
   margin: 0 auto;
 
-  background: ${theme.colors.white};
+  background: none;
 `;
 
 export const contents = css`

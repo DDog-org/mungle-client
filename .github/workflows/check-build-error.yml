@@ -39,7 +39,7 @@ jobs:
 
       - name: 🚀 Build Project
         run: |
-          pnpm build # 빌드 명령어
+          pnpm build
 
       - name: 🏁 Finish
         run: |

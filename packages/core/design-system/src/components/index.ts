@@ -6,5 +6,7 @@ export * from './image-input';
 export * from './input';
 export * from './layout';
 export * from './radio-group';
+export * from './rating';
 export * from './select';
+export * from './tabs';
 export * from './text';
