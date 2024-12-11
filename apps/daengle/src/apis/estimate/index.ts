@@ -2,6 +2,8 @@ import { api } from '~/apis';
 import { UserEstimateCareDetailData, UserEstimateGroomingDetailData } from '~/interfaces/estimate';
 
 import {
+  GetUserEstimateRequestGroomingParams,
+  GetUserEstimateRequestGroomingResponse,
   PostUserEstimateGroomerUserInfoRequestBody,
   PostUserEstimateGroomerUserInfoResponse,
   PostUserEstimateGroomingRequestBody,
@@ -94,6 +96,13 @@ export const getUserEstimateDesignationCare = async (
     {
       params: { page, size },
     }
+  );
+};
+export const getUserEstimateRequestGrooming = async (
+  params: GetUserEstimateRequestGroomingParams
+) => {
+  return await api.get<GetUserEstimateRequestGroomingResponse>(
+    `/user/estimate/request/grooming/${params.estimateId}`
   );
 };
 

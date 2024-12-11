@@ -2,6 +2,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../query-keys';
 import {
+  getUserEstimateRequestGrooming,
   postUserEstimateGrooming,
   postUserEstimateGroomerUserInfo,
   postUserEstimateCare,
@@ -19,6 +20,8 @@ import {
 } from '~/apis';
 
 import {
+  GetUserEstimateRequestGroomingParams,
+  GetUserEstimateRequestGroomingResponse,
   PostUserEstimateGroomingRequestBody,
   PostUserEstimateGroomerUserInfoRequestBody,
   PostUserEstimateCareRequestBody,
@@ -128,6 +131,17 @@ export const useUserEstimateDesignationCarePetsQuery = () => {
     queryKey: QUERY_KEYS.GET_USER_ESTIMATE_DESIGNATION_CARE_PETS,
     queryFn: () => {
       return getUserEstimateDesignationCarePets();
+    },
+  });
+};
+
+export const useUerEstimateRequestGroomingQuery = (
+  params: GetUserEstimateRequestGroomingParams
+) => {
+  return useQuery<GetUserEstimateRequestGroomingResponse>({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_REQUEST_GROOMING,
+    queryFn: () => {
+      return getUserEstimateRequestGrooming(params);
     },
   });
 };

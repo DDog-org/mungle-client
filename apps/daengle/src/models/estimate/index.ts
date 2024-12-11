@@ -100,6 +100,22 @@ export interface GetUserEstimateDesignationCareList {
 
 ///////////
 
+export interface GetUserEstimateRequestGroomingParams {
+  estimateId: number;
+}
+
+export interface GetUserEstimateRequestGroomingResponse {
+  id: number;
+  address: string;
+  reservedDate: string;
+  proposal: 'GENERAL' | 'DESIGNATION';
+  petImage: string;
+  petName: string;
+  desiredStyle: string;
+  requirements: string;
+  petInfos?: PetEstimateId[];
+}
+
 export interface PostUserEstimateGroomerUserInfoRequestBody {
   groomerId: number | null;
 }
