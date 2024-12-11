@@ -17,15 +17,15 @@ export const ROUTES = {
   GROOMER_DETAIL: (groomerId: number) => `/groomers/${groomerId}`,
   GROOMER_REVIEW: (groomerId: number) => `/groomers/${groomerId}/reviews`,
   GROOMER_ESTIMATE_FORM: '/groomers/estimate-form',
-  GROOMER_REVIEW_FORM: '/groomers/review-form',
-  GROOMER_REVIEW_FORM_EDIT: '/groomers/review-form/edit',
+  GROOMER_REVIEW_FORM: (reservationId: number) => `/groomers/review/${reservationId}`,
+  GROOMER_REVIEW_FORM_EDIT: (reveiwId: number) => `/groomers/review/${reveiwId}/edit`,
 
   // Vets
   VET_DETAIL: (vetId: number) => `/vets/${vetId}`,
   VET_REVIEW: (vetId: number) => `/vets/${vetId}/reviews`,
   VET_ESTIMATE_FORM: '/vets/estimate-form',
-  VET_REVIEW_FORM: '/vets/review-form',
-  VET_REVIEW_FORM_EDIT: '/vets/review-form/edit',
+  VET_REVIEW_FORM: (reservationId: number) => `/vet/review/${reservationId}`,
+  VET_REVIEW_FORM_EDIT: (reviewId: number) => `/vet/review/${reviewId}/edit`,
 
   RESERVATION_PAYMENT: '/reservations/payment',
   RESERVATION_PAYMENT_COMPLETE: '/reservations/payment/complete',

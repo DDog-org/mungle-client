@@ -1,19 +1,21 @@
-import React, { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tab } from '../tab';
-import { tabContent, tabContentItem, tabHeader, wrapper } from './index.styles';
+import { tabHeader, wrapper, tabContent, tabContentItem } from './index.styles';
 
-interface Props {
-  tabs: Array<{
-    id: string;
-    label: string;
-    content: ReactNode;
-  }>;
+interface Tab {
+  id: string;
+  label: string;
 }
 
-export function Tabs({ tabs }: Props) {
-  const [activeTab, setActiveTab] = useState(tabs?.[0]?.id);
-  const [direction, setDirection] = useState(0);
+interface Props {
+  tabs: Tab[];
+  renderContent: (activeTabId: string) => React.ReactNode;
+}
+
+export function Tabs({ tabs, renderContent }: Props) {
+  const [activeTab, setActiveTab] = useState<string>(tabs[0]?.id ?? '');
+  const [direction, setDirection] = useState<number>(0);
 
   const activeIndex = tabs.findIndex((tab) => tab.id === activeTab);
 
@@ -22,8 +24,6 @@ export function Tabs({ tabs }: Props) {
     setDirection(newIndex > activeIndex ? 1 : -1);
     setActiveTab(id);
   };
-
-  const activeContent = tabs.find((tab) => tab.id === activeTab)?.content;
 
   return (
     <div css={wrapper}>
@@ -49,7 +49,7 @@ export function Tabs({ tabs }: Props) {
             transition={{ duration: 0.4 }}
             css={tabContentItem}
           >
-            {activeContent}
+            {renderContent(activeTab)}
           </motion.div>
         </AnimatePresence>
       </div>
