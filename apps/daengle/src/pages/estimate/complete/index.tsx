@@ -27,7 +27,7 @@ export default function EstimateComplete() {
             variant="primary"
             css={button}
             onClick={() => {
-              router.push(ROUTES.ESTIMATE_LIST);
+              router.push(ROUTES.ESTIMATES);
             }}
           >
             돌아가기

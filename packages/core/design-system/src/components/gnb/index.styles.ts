@@ -12,7 +12,7 @@ export const wrapper = css`
   width: 100%;
   max-width: ${theme.size.maxWidth};
   margin: 0 auto;
-  padding: 12px 0;
+  padding: 4px 0;
 
   background: ${theme.colors.white};
   box-shadow: 0 -4px 10px 0 ${theme.colors.grayOpacity50};
@@ -23,7 +23,6 @@ export const menuItem = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
 
   width: 69px;
 `;

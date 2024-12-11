@@ -21,7 +21,7 @@ export function RoundButton({
   ...props
 }: Props) {
   return (
-    <button {...props} css={wrapper({ service, size, variant, disabled, fullWidth })}>
+    <button type="button" {...props} css={wrapper({ service, size, variant, disabled, fullWidth })}>
       {children}
     </button>
   );

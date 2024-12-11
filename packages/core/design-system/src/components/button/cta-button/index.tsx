@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
-import { Text } from '../../text';
 import { Service } from '../../../types';
+import { Text } from '../../text';
 import { RoundButton } from '../round-button';
 import { TextButton } from '../text-button';
 import { wrapper } from './index.styles';

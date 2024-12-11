@@ -28,8 +28,8 @@ export default function EstimateDetail() {
   const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | string>();
   const [overallOpinion, setOverallOpinion] = useState<string>('');
 
-  const { id } = router.query;
-  const groomingEstimateId = Number(id);
+  const { estimateId } = router.query;
+  const groomingEstimateId = Number(estimateId);
 
   const params: GetGroomerEstimateDetailParams = { id: groomingEstimateId };
   const { data, isLoading, error } = useGetGroomerEstimateDetailQuery(params);
