@@ -17,10 +17,10 @@ import {
   DeleteUserGroomingReviewRequestParams,
   GetUserReservationReviewParams,
   GetUserReservationReviewResponse,
-  GetUserReviewGroomingParams,
-  GetUserReviewGroomingResponse,
+  GetUserGroomingReviewParams,
   PatchUserGroomingReviewRequestParams,
   PostUserGroomingReviewRequestBody,
+  GetUserGroomingReviewResponse,
 } from '~/models';
 import { QUERY_KEYS } from '../query-keys';
 
@@ -120,8 +120,8 @@ export const usePostGroomingReviewMutation = () => {
   });
 };
 
-export const useGetUserReviewGroomingQuery = (params: GetUserReviewGroomingParams) => {
-  return useQuery<GetUserReviewGroomingResponse>({
+export const useGetUserReviewGroomingQuery = (params: GetUserGroomingReviewParams) => {
+  return useQuery<GetUserGroomingReviewResponse>({
     queryKey: [QUERY_KEYS.GET_USER_REVIEW_GROOMING, params],
     queryFn: async () => {
       try {

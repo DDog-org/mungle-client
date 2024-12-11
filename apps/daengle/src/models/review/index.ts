@@ -136,13 +136,13 @@ export interface PostUserGroomingReviewResponse {
   revieweeId: number;
 }
 
-export interface GetUserReviewGroomingParams {
+export interface GetUserGroomingReviewParams {
   reviewId: number;
 }
 
-export interface GetUserReviewGroomingResponse {
+export interface GetUserGroomingReviewResponse {
   reviewId: number;
-  reservationName: string;
+  reviweeName: string;
   shopName?: string;
   starRating: number;
   groomingKeywordReviewList: string[];

@@ -15,8 +15,8 @@ import {
   PostUserGroomingReviewResponse,
   GetUserReservationReviewParams,
   GetUserReservationReviewResponse,
-  GetUserReviewGroomingParams,
-  GetUserReviewGroomingResponse,
+  GetUserGroomingReviewParams,
+  GetUserGroomingReviewResponse,
   PatchUserGroomingReviewRequestParams,
   PatchUserGroomingReviewResponse,
 } from '~/models';
@@ -72,8 +72,8 @@ export const postUserGroomingReview = async (body: PostUserGroomingReviewRequest
   return await api.post<PostUserGroomingReviewResponse>('/user/grooming/review', body);
 };
 
-export const getUserReviewGrooming = async (params: GetUserReviewGroomingParams) => {
-  return await api.get<GetUserReviewGroomingResponse>(`/user/review/grooming/${params.reviewId}`);
+export const getUserReviewGrooming = async (params: GetUserGroomingReviewParams) => {
+  return await api.get<GetUserGroomingReviewResponse>(`/user/grooming/review/${params.reviewId}`);
 };
 
 export const patchUserGroomingReview = async (params: PatchUserGroomingReviewRequestParams) => {

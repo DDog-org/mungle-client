@@ -9,7 +9,7 @@ import {
 } from '~/queries/review';
 import { useRouter } from 'next/router';
 import { useS3 } from '@daengle/services/hooks';
-import { PatchUserGroomingReviewRequestBody } from '~/models/review';
+import { GetUserGroomingReviewParams, PatchUserGroomingReviewRequestBody } from '~/models/review';
 
 const TAGS = [
   '#위생적이에요',
@@ -18,32 +18,60 @@ const TAGS = [
   '#원하는 스타일로 잘해줘요',
 ];
 
+const TAGS_MAP: Record<string, string> = {
+  EXCELLENT_CONSULTATION: '#상담을 잘해줘요',
+  HYGIENIC: '#위생적이에요',
+  CUSTOMIZED_CARE: '#맞춤 케어를 잘해줘요',
+  STYLE_IS_GREAT: '#원하는 스타일로 잘해줘요',
+};
+
 export default function ReviewEditPage() {
   const [rating, setRating] = useState<number>(0);
   const [reviewText, setReviewText] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  const [existingImageUrls, setExistingImageUrls] = useState<string[]>([]);
-
-  const { uploadToS3 } = useS3({ targetFolderPath: 'user/review-images' });
   const router = useRouter();
 
   const { id } = router.query;
   const reviewId = Number(id);
+  const params: GetUserGroomingReviewParams = { reviewId: reviewId };
 
-  const { data, isLoading, error } = useGetUserReviewGroomingQuery({ reviewId });
+  const { data, isLoading, error } = useGetUserReviewGroomingQuery(params);
 
   const mutation = usePatchUserGroomingReviewMutation();
-  const reservationId = 3; //임시 예약 Id
+  const { uploadToS3 } = useS3({ targetFolderPath: 'user/review-images' });
+
+  const reservationId = 3; // 임시 예약 ID
 
   useEffect(() => {
-    if (data) {
-      setRating(data.starRating);
-      setReviewText(data.content);
-      setSelectedTags(data.groomingKeywordReviewList);
-      setExistingImageUrls(data.imageUrlList);
+    const convertUrlsToFiles = async () => {
+      if (!data) return;
+
+      try {
+        const filePromises = data.imageUrlList.map(async (url) => {
+          const response = await fetch(url);
+          const blob = await response.blob();
+          const filename = url.split('/').pop() || 'uploaded-image';
+          return new File([blob], filename, { type: blob.type });
+        });
+
+        const files = await Promise.all(filePromises);
+        setSelectedImages(files);
+      } catch (error) {
+        console.error('이미지 URL을 파일로 변환하는 중 오류 발생:', error);
+      }
+    };
+
+    if (data?.imageUrlList?.length) {
+      convertUrlsToFiles();
     }
+
+    setRating(data?.starRating || 0);
+    setReviewText(data?.content || '');
+    setSelectedTags(
+      data?.groomingKeywordReviewList.map((keyword) => TAGS_MAP[keyword] || keyword) || []
+    );
   }, [data]);
 
   const toggleExpand = () => setIsExpanded((prev) => !prev);
@@ -60,7 +88,7 @@ export default function ReviewEditPage() {
       return;
     }
 
-    let uploadedImageUrls: string[] = existingImageUrls;
+    let uploadedImageUrls: string[] = [];
 
     if (selectedImages.length > 0) {
       const newImageUrls = await uploadToS3(selectedImages);
@@ -68,37 +96,25 @@ export default function ReviewEditPage() {
         alert('이미지 업로드에 실패했습니다.');
         return;
       }
-      uploadedImageUrls = [...existingImageUrls, ...newImageUrls];
+      uploadedImageUrls = newImageUrls;
     }
 
     const body: PatchUserGroomingReviewRequestBody = {
-      reservationId, // 수정할 리뷰 ID
+      reservationId,
       starRating: rating,
-      groomingKeywordReviewList: selectedTags.map((tag) => {
-        switch (tag) {
-          case '#위생적이에요':
-            return 'HYGIENIC';
-          case '#상담을 잘해줘요':
-            return 'EXCELLENT_CONSULTATION';
-          case '#맞춤 케어를 잘해줘요':
-            return 'CUSTOMIZED_CARE';
-          case '#원하는 스타일로 잘해줘요':
-            return 'STYLE_IS_GREAT';
-          default:
-            return '';
-        }
-      }),
+      groomingKeywordReviewList: selectedTags.map(
+        (tag) => Object.entries(TAGS_MAP).find(([, value]) => value === tag)?.[0] || ''
+      ),
       content: reviewText,
       imageUrlList: uploadedImageUrls,
     };
 
-    console.log('body', body);
     mutation.mutate(
-      { reviewId, body }, // reviewId와 body를 함께 전달
+      { reviewId, body },
       {
         onSuccess: () => {
           alert('리뷰가 성공적으로 수정되었습니다!');
-          router.push('/reviews'); // 리뷰 목록 페이지로 이동
+          router.push('/reviews');
         },
         onError: () => {
           alert('리뷰 수정에 실패했습니다.');
@@ -122,7 +138,7 @@ export default function ReviewEditPage() {
           ) : (
             <>
               <PartnersCard
-                designerName={data?.reservationName || '알 수 없음'}
+                designerName={data?.revieweeName || '알 수 없음'}
                 shopName={data?.shopName || '알 수 없음'}
                 schedule={{
                   date: new Date().toLocaleDateString('ko-KR', {
