@@ -1,4 +1,5 @@
-import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
+import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
+import { TransmissionComplete } from '@daengle/design-system/icons';
 import { css } from '@emotion/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -12,7 +13,7 @@ export default function EstimateComplete() {
       <AppBar />
       <div css={wrapper}>
         <div css={box}>
-          <Image src="/icons/check_icon.svg" alt="checkIcon" width={90} height={90} />
+          <TransmissionComplete width={90} height={90} color={theme.colors.blue200} />
           <section css={textSection}>
             <Text tag="h1" typo="title2">
               견적 요청이 완료되었어요!

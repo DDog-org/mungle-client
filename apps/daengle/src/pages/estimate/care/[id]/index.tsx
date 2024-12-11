@@ -1,19 +1,19 @@
-import { AppBar, CTAButton, Layout, Text } from '@daengle/design-system';
-import { theme } from '@daengle/design-system';
+import { AppBar, CTAButton, Layout, Text, theme } from '@daengle/design-system';
+import { AddButton, DefaultProfile } from '@daengle/design-system/icons';
 import { css } from '@emotion/react';
 
 import Image from 'next/image';
+import { ROUTES } from '~/constants/commons';
 import { useRouter } from 'next/router';
-import DatePickerComponent from '~/components/estimate/date-picker-component';
 import {
   usePostUserEstimateCareMutation,
   usePostUserEstimateVetUserInfoMutation,
 } from '~/queries/estimate';
 import { PetInfos, PostUserEstimateVetUserInfoResponse } from '~/models/estimate';
 import { useEffect, useState } from 'react';
+
+import DatePickerComponent from '~/components/estimate/date-picker-component';
 import dayjs, { Dayjs } from 'dayjs';
-import { ROUTES } from '~/constants/commons';
-import { DefaultImage } from '@daengle/design-system/icons';
 
 export default function EstimateCare() {
   const router = useRouter();
@@ -53,17 +53,12 @@ export default function EstimateCare() {
   }, [selectedPetId, address, selectedDate, selectedTime, symptoms, requirements]);
 
   const handlePostUserEstimateVetUserInfo = async () => {
-    try {
-      const response: PostUserEstimateVetUserInfoResponse = await postUserEstimateVetUserInfo({
-        vetId,
-      });
-      console.log('response: ', response);
+    const response: PostUserEstimateVetUserInfoResponse = await postUserEstimateVetUserInfo({
+      vetId,
+    });
 
-      if (response?.address) setAddress(response.address);
-      if (response?.petInfos) setPetInfos(response.petInfos);
-    } catch (error) {
-      console.error('Error posting user pets info:', error);
-    }
+    if (response?.address) setAddress(response.address);
+    if (response?.petInfos) setPetInfos(response.petInfos);
   };
 
   const handleDateChange = (newValue: Dayjs | null) => {
@@ -100,12 +95,8 @@ export default function EstimateCare() {
     };
 
     postUserEstimateCare(requestBody, {
-      onSuccess: (data) => {
-        console.log('data: ', data);
+      onSuccess: () => {
         router.push(ROUTES.ESTIMATE_FORM_COMPLETE);
-      },
-      onError: (error) => {
-        console.error('Error submitting form:', error);
       },
     });
   };
@@ -149,7 +140,7 @@ export default function EstimateCare() {
                         css={profileImage({ isSelected: selectedPetId === pet.petId })}
                       />
                     ) : (
-                      <DefaultImage
+                      <DefaultProfile
                         css={profileImage({ isSelected: selectedPetId === pet.petId })}
                       />
                     )}
@@ -168,9 +159,7 @@ export default function EstimateCare() {
           ) : (
             <div css={registerPet}>
               <div css={circle}>
-                <Image
-                  src="/icons/add_button.svg"
-                  alt="등록 버튼"
+                <AddButton
                   width={12}
                   height={12}
                   onClick={() => {

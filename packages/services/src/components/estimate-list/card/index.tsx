@@ -67,7 +67,7 @@ export function Card({
 
       <div css={detailContainer}>
         <TextButton
-          icons={{ suffix: <ButtonTextButtonArrow width="6px" strokeColor="#BEBEBE" /> }}
+          icons={{ suffix: <ButtonTextButtonArrow width="6px" stroke="#BEBEBE" /> }}
           onClick={onDetailClick}
         >
           <Text typo="body7" color="gray400">

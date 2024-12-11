@@ -1,21 +1,40 @@
 import { Text } from '@daengle/design-system';
 import Image from 'next/image';
 import { selectItem } from './index.style';
+import {
+  GroomingFaceCut,
+  GroomingFullClipping,
+  GroomingFullScissorCut,
+  GroomingSpotting,
+} from '@daengle/design-system/images';
 
 interface Props {
-  name: string;
-  src: string;
+  title: string;
+  componentName: keyof typeof components;
   onClick: () => void;
   isSelected: boolean;
 }
 
-export default function EstimateSelectComponent({ isSelected, onClick, name, src }: Props) {
+const components = {
+  GroomingFullClipping,
+  GroomingFaceCut,
+  GroomingFullScissorCut,
+  GroomingSpotting,
+};
+
+export default function EstimateSelectComponent({
+  title,
+  componentName,
+  isSelected,
+  onClick,
+}: Props) {
+  const SelectedComponent = components[componentName];
   return (
     <div onClick={onClick} css={selectItem(isSelected)}>
       <Text typo="body5" color={isSelected ? 'blue200' : 'gray400'}>
-        {name}
+        {title}
       </Text>
-      <Image src={src} alt={name} width={129} height={107} />
+      <SelectedComponent />
     </div>
   );
 }

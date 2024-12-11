@@ -1,20 +1,21 @@
-import { AppBar, CTAButton, Layout, Text } from '@daengle/design-system';
-import { theme } from '@daengle/design-system';
+import { AppBar, CTAButton, Layout, Text, theme } from '@daengle/design-system';
+import { AddButton, DefaultProfile } from '@daengle/design-system/icons';
 import { css } from '@emotion/react';
+
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { ROUTES } from '~/constants/commons';
 import { useRouter } from 'next/router';
-import dayjs, { Dayjs } from 'dayjs';
-import 'dayjs/locale/ko';
 import EstimateSelectComponent from '~/components/estimate/estimate-select-component';
 import {
   usePostUserEstimateGroomingMutation,
   usePostUserEstimateGroomerUserInfoMutation,
 } from '~/queries/estimate';
 import { PetInfos, PostUserEstimateGroomerUserInfoResponse } from '~/models/estimate';
-import { ROUTES } from '~/constants/commons';
-import { AddButton, DefaultImage } from '@daengle/design-system/icons';
+
 import DatePickerComponent from '~/components/estimate/date-picker-component';
+import dayjs, { Dayjs } from 'dayjs';
+import 'dayjs/locale/ko';
 
 export default function EstimateCreate() {
   const router = useRouter();
@@ -55,18 +56,14 @@ export default function EstimateCreate() {
   const { mutate: postUserEstimateGroomingRequestBody } = usePostUserEstimateGroomingMutation();
 
   const handlePostUserEstimateGroomerUserInfo = async () => {
-    try {
-      const response: PostUserEstimateGroomerUserInfoResponse =
-        await postUserEstimateGroomerUserInfo({
-          groomerId,
-        });
-      console.log('response: ', response);
+    const response: PostUserEstimateGroomerUserInfoResponse = await postUserEstimateGroomerUserInfo(
+      {
+        groomerId,
+      }
+    );
 
-      if (response?.address) setAddress(response.address);
-      if (response?.petInfos) setPetInfos(response.petInfos);
-    } catch (error) {
-      console.error('Error posting user pets info:', error);
-    }
+    if (response?.address) setAddress(response.address);
+    if (response?.petInfos) setPetInfos(response.petInfos);
   };
 
   const handleDateChange = (newValue: Dayjs | null) => {
@@ -103,12 +100,8 @@ export default function EstimateCreate() {
     };
 
     postUserEstimateGroomingRequestBody(requestBody, {
-      onSuccess: (data) => {
-        console.log('data: ', data);
+      onSuccess: () => {
         router.push(ROUTES.ESTIMATE_FORM_COMPLETE);
-      },
-      onError: (error) => {
-        console.error('Error submitting form:', error);
       },
     });
   };
@@ -143,16 +136,16 @@ export default function EstimateCreate() {
               <div css={petList}>
                 {petInfos.map((pet) => (
                   <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
-                    {pet.image == '' ? (
-                      <DefaultImage
-                        css={profileImage({ isSelected: selectedPetId === pet.petId })}
-                      />
-                    ) : (
+                    {pet.image ? (
                       <Image
                         src={pet.image}
                         alt="반려견 프로필"
                         width={86}
                         height={86}
+                        css={profileImage({ isSelected: selectedPetId === pet.petId })}
+                      />
+                    ) : (
+                      <DefaultProfile
                         css={profileImage({ isSelected: selectedPetId === pet.petId })}
                       />
                     )}
@@ -191,28 +184,28 @@ export default function EstimateCreate() {
           </Text>
           <div css={selectBox}>
             <EstimateSelectComponent
-              name="전체 클리핑"
-              src="/images/grooming_full_clipping.svg"
+              title="전체 클리핑"
+              componentName="GroomingFullClipping"
               onClick={() => handleDesiredStyleSelect('전체 클리핑')}
               isSelected={desiredStyle === '전체 클리핑'}
             />
             <EstimateSelectComponent
-              name="전체 클리핑 + 얼굴 컷"
-              src="/images/grooming_face_cut.svg"
+              title="전체 클리핑 + 얼굴 컷"
+              componentName="GroomingFaceCut"
               onClick={() => handleDesiredStyleSelect('전체 클리핑 + 얼굴 컷')}
               isSelected={desiredStyle === '전체 클리핑 + 얼굴 컷'}
             />
           </div>
           <div css={selectBox}>
             <EstimateSelectComponent
-              name="전체 가위컷"
-              src="/images/grooming_full_scissor_cut.svg"
+              title="전체 가위컷"
+              componentName="GroomingFullScissorCut"
               onClick={() => handleDesiredStyleSelect('전체 가위컷')}
               isSelected={desiredStyle === '전체 가위컷'}
             />
             <EstimateSelectComponent
-              name="스포팅 + 얼굴 컷"
-              src="/images/grooming_spotting.svg"
+              title="스포팅 + 얼굴 컷"
+              componentName="GroomingSpotting"
               onClick={() => handleDesiredStyleSelect('스포팅 + 얼굴 컷')}
               isSelected={desiredStyle === '스포팅 + 얼굴 컷'}
             />
