@@ -72,7 +72,7 @@ export const postUserGroomingReview = async (body: PostUserGroomingReviewRequest
   return await api.post<PostUserGroomingReviewResponse>('/user/grooming/review', body);
 };
 
-export const getUserReviewGrooming = async (params: GetUserGroomingReviewParams) => {
+export const getUserGroomingReview = async (params: GetUserGroomingReviewParams) => {
   return await api.get<GetUserGroomingReviewResponse>(`/user/grooming/review/${params.reviewId}`);
 };
 

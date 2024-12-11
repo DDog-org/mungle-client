@@ -7,13 +7,7 @@ import { useGetUserReservationReviewQuery, usePostGroomingReviewMutation } from 
 import { useRouter } from 'next/router';
 import { useS3 } from '@daengle/services/hooks';
 import { GetUserReservationReviewParams } from '~/models/review';
-
-const TAGS = [
-  '#위생적이에요',
-  '#상담을 잘해줘요',
-  '#맞춤 케어를 잘해줘요',
-  '#원하는 스타일로 잘해줘요',
-];
+import { GROOMER_REVIEW_KEYWORDS, TAGS } from '~/constants/review';
 
 export default function ReviewPage() {
   const [rating, setRating] = useState<number>(0);
@@ -27,7 +21,6 @@ export default function ReviewPage() {
 
   const { id } = router.query;
   const reservationId = Number(id) || 3;
-  console.log(reservationId);
 
   const params: GetUserReservationReviewParams = { reservationId: reservationId };
   const { data, isLoading, error } = useGetUserReservationReviewQuery(params);
@@ -82,28 +75,16 @@ export default function ReviewPage() {
     const body = {
       reservationId: 3, // TODO: 예약 ID를 동적으로 설정
       starRating: rating,
-      groomingKeywordReviewList: selectedTags.map((tag) => {
-        switch (tag) {
-          case '#위생적이에요':
-            return 'HYGIENIC';
-          case '#상담을 잘해줘요':
-            return 'EXCELLENT_CONSULTATION';
-          case '#맞춤 케어를 잘해줘요':
-            return 'CUSTOMIZED_CARE';
-          case '#원하는 스타일로 잘해줘요':
-            return 'STYLE_IS_GREAT';
-          default:
-            return '';
-        }
-      }),
+      groomingKeywordReviewList: selectedTags.map(
+        (tag) =>
+          Object.entries(GROOMER_REVIEW_KEYWORDS).find(([, value]) => value === tag)?.[0] || ''
+      ),
       content: reviewText,
       imageUrlList: uploadedImageUrls,
     };
     console.log('body', body);
     mutation.mutate(body, {
-      onSuccess: (response) => {
-        const { reviewId } = response;
-        localStorage.setItem('reviewId', String(reviewId)); // 로컬 스토리지에 저장
+      onSuccess: () => {
         alert('리뷰가 성공적으로 등록되었습니다!');
         router.push('/reviews');
       },

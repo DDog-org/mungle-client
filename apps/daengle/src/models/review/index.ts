@@ -142,7 +142,7 @@ export interface GetUserGroomingReviewParams {
 
 export interface GetUserGroomingReviewResponse {
   reviewId: number;
-  reviweeName: string;
+  revieweeName: string;
   shopName?: string;
   starRating: number;
   groomingKeywordReviewList: string[];

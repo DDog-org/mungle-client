@@ -4,26 +4,15 @@ import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 import { KeywordCard, PartnersCard, RatingCard, ReviewInputCard } from '~/components/review';
 import {
-  useGetUserReviewGroomingQuery,
+  useGetUserGroomingReviewQuery,
   usePatchUserGroomingReviewMutation,
 } from '~/queries/review';
 import { useRouter } from 'next/router';
 import { useS3 } from '@daengle/services/hooks';
 import { GetUserGroomingReviewParams, PatchUserGroomingReviewRequestBody } from '~/models/review';
-
-const TAGS = [
-  '#위생적이에요',
-  '#상담을 잘해줘요',
-  '#맞춤 케어를 잘해줘요',
-  '#원하는 스타일로 잘해줘요',
-];
-
-const TAGS_MAP: Record<string, string> = {
-  EXCELLENT_CONSULTATION: '#상담을 잘해줘요',
-  HYGIENIC: '#위생적이에요',
-  CUSTOMIZED_CARE: '#맞춤 케어를 잘해줘요',
-  STYLE_IS_GREAT: '#원하는 스타일로 잘해줘요',
-};
+import { QUERY_KEYS } from '~/queries/query-keys';
+import { queryClient } from '@daengle/services/providers';
+import { GROOMER_REVIEW_KEYWORDS, TAGS } from '~/constants/review';
 
 export default function ReviewEditPage() {
   const [rating, setRating] = useState<number>(0);
@@ -31,24 +20,23 @@ export default function ReviewEditPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  const router = useRouter();
 
+  const router = useRouter();
   const { id } = router.query;
   const reviewId = Number(id);
+
   const params: GetUserGroomingReviewParams = { reviewId: reviewId };
 
-  const { data, isLoading, error } = useGetUserReviewGroomingQuery(params);
+  const { data, isLoading, error } = useGetUserGroomingReviewQuery(params);
 
-  const mutation = usePatchUserGroomingReviewMutation();
+  const { mutate: patchReview } = usePatchUserGroomingReviewMutation();
   const { uploadToS3 } = useS3({ targetFolderPath: 'user/review-images' });
 
   const reservationId = 3; // 임시 예약 ID
 
   useEffect(() => {
-    const convertUrlsToFiles = async () => {
-      if (!data) return;
-
-      try {
+    if (data) {
+      const convertUrlsToFiles = async () => {
         const filePromises = data.imageUrlList.map(async (url) => {
           const response = await fetch(url);
           const blob = await response.blob();
@@ -58,21 +46,22 @@ export default function ReviewEditPage() {
 
         const files = await Promise.all(filePromises);
         setSelectedImages(files);
-      } catch (error) {
-        console.error('이미지 URL을 파일로 변환하는 중 오류 발생:', error);
-      }
-    };
+      };
+      console.log('이거에요', selectedImages);
 
-    if (data?.imageUrlList?.length) {
       convertUrlsToFiles();
+      setRating(data.starRating);
+      setReviewText(data.content);
+      setSelectedTags(
+        data.groomingKeywordReviewList.map((keyword) => GROOMER_REVIEW_KEYWORDS[keyword] || keyword)
+      );
     }
-
-    setRating(data?.starRating || 0);
-    setReviewText(data?.content || '');
-    setSelectedTags(
-      data?.groomingKeywordReviewList.map((keyword) => TAGS_MAP[keyword] || keyword) || []
-    );
   }, [data]);
+  console.log('Raw keywords:', data?.groomingKeywordReviewList);
+  console.log(
+    'Mapped keywords:',
+    data?.groomingKeywordReviewList.map((keyword) => GROOMER_REVIEW_KEYWORDS[keyword] || keyword)
+  );
 
   const toggleExpand = () => setIsExpanded((prev) => !prev);
 
@@ -103,16 +92,19 @@ export default function ReviewEditPage() {
       reservationId,
       starRating: rating,
       groomingKeywordReviewList: selectedTags.map(
-        (tag) => Object.entries(TAGS_MAP).find(([, value]) => value === tag)?.[0] || ''
+        (tag) =>
+          Object.entries(GROOMER_REVIEW_KEYWORDS).find(([, value]) => value === tag)?.[0] || ''
       ),
       content: reviewText,
       imageUrlList: uploadedImageUrls,
     };
 
-    mutation.mutate(
+    patchReview(
       { reviewId, body },
       {
         onSuccess: () => {
+          queryClient.refetchQueries({ queryKey: QUERY_KEYS.GET_USER_GROOMING_REVIEW });
+
           alert('리뷰가 성공적으로 수정되었습니다!');
           router.push('/reviews');
         },

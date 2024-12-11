@@ -7,8 +7,8 @@ import {
   getUserGroomerReviewList,
   getUserGroomingMyReviewList,
   getUserVetReviewList,
+  getUserGroomingReview,
   getUserReservationReview,
-  getUserReviewGrooming,
   patchUserGroomingReview,
   postUserGroomingReview,
 } from '~/apis/review';
@@ -120,12 +120,12 @@ export const usePostGroomingReviewMutation = () => {
   });
 };
 
-export const useGetUserReviewGroomingQuery = (params: GetUserGroomingReviewParams) => {
+export const useGetUserGroomingReviewQuery = (params: GetUserGroomingReviewParams) => {
   return useQuery<GetUserGroomingReviewResponse>({
-    queryKey: [QUERY_KEYS.GET_USER_REVIEW_GROOMING, params],
+    queryKey: [QUERY_KEYS.GET_USER_GROOMING_REVIEW, params],
     queryFn: async () => {
       try {
-        return await getUserReviewGrooming(params);
+        return await getUserGroomingReview(params);
       } catch (error) {
         throw new Error(String(error));
       }
