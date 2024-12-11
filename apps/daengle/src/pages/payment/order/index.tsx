@@ -2,42 +2,73 @@ import { AppBar, CTAButton, Input, Layout, Text } from '@daengle/design-system';
 import { SelectUnfoldActive, SelectUnfoldInactive } from '@daengle/design-system/icons';
 import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
+
 import { useState } from 'react';
 import { usePostPaymentOrderMutation, usePostPaymentValidateMutation } from '~/queries/payment';
 import { PostPaymentOrderResponse } from '~/models/payment';
 import Script from 'next/script';
 import { ROUTES } from '~/constants/commons';
 import { useRouter } from 'next/router';
+import { useOrderInfoStore } from '~/stores/payment';
 
 export default function Order() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [orderUid, setOrderUid] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [visitorName, setVisitorName] = useState<string>('');
+  const [visitorPhoneNumber, setVisitorPhoneNumber] = useState<string>('');
+  const {
+    estimateId,
+    serviceType,
+    recipientId,
+    recipientName,
+    shopName,
+    schedule,
+    price,
+    customerName,
+    customerPhoneNumber,
+  } = useOrderInfoStore();
 
   const { mutateAsync: postPaymentOrder } = usePostPaymentOrderMutation();
   const { mutateAsync: postPaymentValidate } = usePostPaymentValidateMutation();
 
   const IMP_UID = process.env.NEXT_PUBLIC_IMP_UID ?? '';
-
-  const estimateId = 11;
-  const serviceType = 'GROOMING';
-  const recipientId = 9;
-  const recipientName = '김미용사';
-  const shopName = '펫케어샵';
-  const schedule = '2024-12-12T14:00:00';
-  const price = 1000; // 고정 예약금
-  const customerName = '홍길동';
-  const customerPhoneNumber = '010-1234-5678';
-  const visitorName = '김철수';
-  const visitorPhoneNumber = '010-9876-5432';
-
   const scheduleDate = schedule.substring(0, 10);
   const scheduleTime = schedule.substring(11, 16);
+  const paymentInfo = {
+    pg: 'html5_inicis',
+    pay_method: 'card', // 결제 수단
+    merchant_uid: orderUid, // 주문 번호
+    name: '주문명: 예약금 결제 테스트',
+    amount: price, // 결제 금액
+    estimate_id: estimateId,
+    service_type: serviceType,
+    recipientId: recipientId,
+    groomer_name: recipientName,
+    shop_name: shopName,
+    schedule: schedule,
+    m_redirect_url: ROUTES.PAYMENT_COMPLETE,
+  };
 
   const handleArrowToggle = () => {
     setIsOpen(!isOpen);
   };
+
+  if (visitorName == '' && visitorPhoneNumber == '') {
+    setVisitorName(customerName);
+    setVisitorPhoneNumber(customerPhoneNumber);
+  }
+
+  const IMPRequestData = {
+    ...paymentInfo,
+    buyer_name: customerName,
+    buyer_tel: customerPhoneNumber,
+    visitor_name: visitorName,
+    visitor_tel: visitorPhoneNumber,
+  };
+
+  console.log('IMPRequestData:', IMPRequestData);
 
   // 결제 요청 api 호출
   const handlePostPaymentOrder = async () => {
@@ -63,7 +94,6 @@ export default function Order() {
       // PG 결제 창 띄우기
       if (orderResponse && orderResponse.orderUId) {
         if (!IMP_UID) {
-          console.error('IMP_UID 환경 변수가 설정되지 않았습니다.');
           alert('결제 환경 설정이 올바르지 않습니다. 관리자에게 문의해주세요.');
           return;
         }
@@ -71,36 +101,18 @@ export default function Order() {
         const { IMP } = window;
         if (IMP) IMP.init(IMP_UID);
 
-        const IMPRequestData = {
-          pg: 'html5_inicis',
-          pay_method: 'card', // 결제 수단
-          merchant_uid: orderUid, // 주문 번호
-          name: '주문명: 예약금 결제 테스트',
-          amount: price, // 결제 금액
-          estimate_id: estimateId,
-          service_type: serviceType,
-          recipientId: recipientId,
-          groomer_name: recipientName,
-          shop_name: shopName,
-          schedule: schedule,
-          buyer_name: customerName,
-          buyer_tel: customerPhoneNumber,
-          visitor_name: visitorName,
-          visitor_tel: visitorPhoneNumber,
-          m_redirect_url: ROUTES.PAYMENT_COMPLETE,
-        };
-
         IMP?.request_pay(IMPRequestData, async function (response) {
           //결제 후 호출되는 callback함수
-          if (response.error_code || orderUid == '') {
-            console.log('errorCode:', response.error_code);
-            alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
+          // console.log('callback response:', response);
+          // console.log('success:', response.success);
+          if (response.success == false) {
+            alert(`결제에 실패하였습니다.(${response.error_msg})`);
             return;
           }
 
-          console.log('paymentUid:', response.imp_uid);
-          console.log('estimateId:', String(estimateId));
-          console.log('orderUid:', orderUid);
+          // console.log('paymentUid:', response.imp_uid);
+          // console.log('estimateId:', String(estimateId));
+          // console.log('orderUid:', orderUid);
 
           // 결제 검증 api 호출
           const validateResponse = await postPaymentValidate({
@@ -109,12 +121,11 @@ export default function Order() {
             orderUid: orderUid,
           });
 
-          console.log('validateResponse:', validateResponse);
-
           if (validateResponse) {
             //결제 성공
-            console.log(response);
-            router.push(ROUTES.PAYMENT_COMPLETE);
+            // console.log('validateResponse:', validateResponse);
+            // console.log(response);
+            router.push(ROUTES.PAYMENT_COMPLETE); // TO DO : 미용사 이름, 샵 이름, 일정(날짜, 시간) 넘기기
           } else {
             console.error('결제 검증 실패:', validateResponse);
             alert('결제 검증에 실패했습니다.');
@@ -202,7 +213,7 @@ export default function Order() {
               예약자 정보
             </Text>
 
-            <div css={visitorInfo}>
+            <div css={customerInfo}>
               <Text typo="subtitle3" color="black">
                 {customerName}
               </Text>
@@ -229,8 +240,19 @@ export default function Order() {
               <Text tag="h3" typo="body4" color="black" css={inputTitle}>
                 실제 방문하실 분의 정보를 입력해주세요
               </Text>
-              <Input label="방문자" placeholder="방문자 이름을 입력해주세요" css={input} />
-              <Input label="휴대폰번호" placeholder="휴대폰 번호를 입력해주세요" />
+              <Input
+                label="방문자"
+                placeholder="방문자 이름을 입력해주세요"
+                value={visitorName}
+                onChange={(e) => setVisitorName(e.target.value)}
+                css={input}
+              />
+              <Input
+                label="휴대폰번호"
+                placeholder="휴대폰 번호를 입력해주세요"
+                value={visitorPhoneNumber}
+                onChange={(e) => setVisitorPhoneNumber(e.target.value)}
+              />
             </div>
           </section>
           <CTAButton onClick={handlePostPaymentOrder} disabled={isLoading}>
@@ -355,7 +377,7 @@ const grayLine = css`
   background-color: ${theme.colors.gray100};
 `;
 
-const visitorInfo = css`
+const customerInfo = css`
   display: flex;
   flex-direction: column;
   gap: 6px;

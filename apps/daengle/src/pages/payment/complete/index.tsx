@@ -1,11 +1,11 @@
 import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import Image from 'next/image';
+import { useOrderInfoStore } from '~/stores/payment';
 
 export default function PaymentComplete() {
-  const recipientName = '김미용사';
-  const shopName = '펫케어샵';
-  const schedule = '2024-12-12T14:00:00';
+  const { recipientName, shopName, schedule } = useOrderInfoStore();
+
   const date = schedule.split('T', 1);
   const time = schedule.substring(11, 16);
 
