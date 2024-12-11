@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { AppBar, ChipButton, CTAButton, Input, Layout, Text } from '@daengle/design-system';
 import {
@@ -25,9 +26,9 @@ export default function EditProfile() {
     handleSubmit,
     watch,
     register,
-
     setError,
     setValue,
+    clearErrors,
     formState: { errors, isValid },
   } = useForm<UserProfileInfoEditForm>({
     mode: 'onChange',
@@ -46,9 +47,14 @@ export default function EditProfile() {
       return;
     }
 
+    if (nickname.length < 2 || nickname.length > 10) {
+      setError('nickname', { message: '닉네임은 2글자 이상 10글자 미만으로 작성해 주세요' });
+      setValue('isAvailableNickname', false);
+      return;
+    }
+
     const response = await postAvailableNickname({ nickname });
     if (response.isAvailable) {
-      setError('nickname', { message: '' });
       setValue('isAvailableNickname', true);
     } else {
       setError('nickname', { message: '이미 사용중인 닉네임입니다.' });
@@ -81,13 +87,11 @@ export default function EditProfile() {
     if (imageString != undefined) {
       patchUserInfo({ ...data, image: imageString });
     }
-  };
-
-  const handleGoToClick = () => {
     router.push(ROUTES.MYPAGE);
   };
   const handleNicknameChange = () => {
     setValue('isAvailableNickname', false);
+    clearErrors('nickname');
   };
 
   return (
@@ -151,7 +155,7 @@ export default function EditProfile() {
             </li>
           </ul>
 
-          <CTAButton type="submit" onClick={handleGoToClick} disabled={!isValid}>
+          <CTAButton type="submit" disabled={!isValid || !watch('isAvailableNickname')}>
             수정하기
           </CTAButton>
         </form>
@@ -169,14 +173,16 @@ export const profileImageWrapper = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   margin: 32px 0 40px;
 `;
 export const inputWrapper = css`
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 32px;
+
+  margin: 0;
+  padding: 0;
 `;
 export const nickNameWrapper = css`
   display: flex;

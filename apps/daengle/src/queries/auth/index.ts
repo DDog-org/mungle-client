@@ -46,13 +46,7 @@ export const usePostJoinWithoutPetMutation = () => {
 export const usePostAvailableNicknameMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_AVAILABLE_NICKNAME,
-    mutationFn: async (body: PostAvailableNicknameRequestBody) => {
-      try {
-        return await postAvailableNickname(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: postAvailableNickname,
   });
 };
 
