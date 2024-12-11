@@ -1,13 +1,18 @@
 import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
-import { wrapper, header, section, buttonGroup } from './index.styles';
-import { DesignerInfo, Receipt } from '~/components/estimate';
+import { theme } from '@daengle/design-system';
+import { css } from '@emotion/react';
+import { PartnersInfo, Receipt } from '~/components/estimate';
 import { useRouter } from 'next/router';
-import { useCareDetailQuery, useGroomerDetailQuery } from '~/queries';
+import { useEstimateCareDetailQuery, useEstimateGroomingDetailQuery } from '~/queries/estimate';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { CareDetailResponse, GroomerDetailResponse } from '~/models/estimate';
+import { UserEstimateCareDetailData, UserEstimateGroomingDetailData } from '~/interfaces/estimate';
+import {
+  UserEstimateCareDetailRequestParams,
+  UserEstimateGroomingDetailRequestParams,
+} from '~/models/estimate';
 
-type DetailResponse = GroomerDetailResponse | CareDetailResponse;
+type DetailData = UserEstimateGroomingDetailData | UserEstimateCareDetailData;
 
 export default function Detail() {
   const router = useRouter();
@@ -17,23 +22,30 @@ export default function Detail() {
   const isGrooming = type === 'grooming';
   const isCare = type === 'care';
 
-  const groomingId = isGrooming ? estimateId : 0;
-  const careId = isCare ? estimateId : 0;
+  const groomingParams: UserEstimateGroomingDetailRequestParams = {
+    groomingEstimateId: estimateId,
+  };
+  const careParams: UserEstimateCareDetailRequestParams = { careEstimateId: estimateId };
 
   const {
     data: groomingData,
     isLoading: groomerLoading,
     error: groomerError,
-  } = useGroomerDetailQuery(groomingId);
+  } = useEstimateGroomingDetailQuery(groomingParams, isGrooming);
 
-  const { data: careData, isLoading: careLoading, error: careError } = useCareDetailQuery(careId);
+  const {
+    data: careData,
+    isLoading: careLoading,
+    error: careError,
+  } = useEstimateCareDetailQuery(careParams, isCare);
 
-  if ((isGrooming && groomerLoading) || (isCare && careLoading)) return <div>Loading...</div>;
-  if (isGrooming && (groomerError || !groomingData))
+  if (groomerLoading || careLoading) return <div>Loading...</div>;
+
+  if (groomerError || careError || (!groomingData && !careData)) {
     return <div>데이터를 불러오지 못했습니다.</div>;
-  if (isCare && (careError || !careData)) return <div>데이터를 불러오지 못했습니다.</div>;
+  }
 
-  let detailData: DetailResponse;
+  let detailData: DetailData;
   if (isGrooming && groomingData) {
     detailData = groomingData;
   } else if (isCare && careData) {
@@ -42,8 +54,8 @@ export default function Detail() {
     return <div>유효하지 않은 type 입니다.</div>;
   }
 
-  const isGroomingDetail = (data: DetailResponse): data is GroomerDetailResponse =>
-    'estimateId' in data;
+  const isGroomingDetail = (data: DetailData): data is UserEstimateGroomingDetailData =>
+    'groomerId' in data;
   const formattedDate = dayjs(detailData.reservedDate).locale('ko').format('YYYY.MM.DD(ddd) HH:mm');
   const introduction = detailData.introduction || '소개글 없음';
 
@@ -61,13 +73,13 @@ export default function Detail() {
     const overallOpinion = detailData.overallOpinion || '없음';
 
     return (
-      <Layout>
+      <Layout isAppBarExist={false}>
+        <AppBar />
         <div css={wrapper}>
-          <AppBar isDefaultBackground={false} />
           <div css={header}>
             <Text typo="title1">견적 상세</Text>
           </div>
-          <DesignerInfo profile={designerData} />
+          <PartnersInfo profile={designerData} />
           <section css={section}>
             <Text typo="body1">소개</Text>
             <Text typo="body10" tag="div">
@@ -112,13 +124,13 @@ export default function Detail() {
       tags: detailData?.tags || [],
     };
     return (
-      <Layout>
+      <Layout isAppBarExist={false}>
+        <AppBar />
         <div css={wrapper}>
-          <AppBar isDefaultBackground={false} />
           <div css={header}>
             <Text typo="title1">진료 상세</Text>
           </div>
-          <DesignerInfo profile={vetData} />
+          <PartnersInfo profile={vetData} />
           <section css={section}>
             <Text typo="body1">소개</Text>
             <Text typo="body10" tag="div">
@@ -160,3 +172,32 @@ export default function Detail() {
     );
   }
 }
+
+const wrapper = css`
+  padding-top: ${theme.size.appBarHeight};
+
+  background-color: ${theme.colors.background};
+`;
+
+const header = css`
+  display: flex;
+  align-items: center;
+
+  margin: 18px;
+`;
+
+const section = css`
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+
+  margin: 18px 18px 32px;
+`;
+
+const buttonGroup = css`
+  display: flex;
+  justify-content: center;
+  gap: 13px;
+
+  margin: 32px 18px 18px;
+`;

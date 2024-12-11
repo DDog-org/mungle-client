@@ -7,8 +7,8 @@ import {
   postUserEstimateGroomerUserInfo,
   postUserEstimateCare,
   postUserEstimateVetUserInfo,
-  getEstimateGroomingDetail,
-  getEstimateCareDetail,
+  getUserEstimateGroomingDetail,
+  getUserEstimateCareDetail,
 } from '~/apis';
 
 import {
@@ -17,15 +17,14 @@ import {
   PostUserEstimateGroomerUserInfoRequestBody,
   PostUserEstimateCareRequestBody,
   PostUserEstimateVetUserInfoRequestBody,
-  GroomerDetailResponse,
-  CareDetailResponse,
-  GetEstimateGroomingDetailParams,
-  GetEstimateCareDetailParams,
+  UserEstimateCareDetailRequestParams,
+  UserEstimateGroomingDetailRequestParams,
 } from '~/models/estimate';
+import { UserEstimateGroomingDetailData, UserEstimateCareDetailData } from '~/interfaces/estimate';
 
 export const useUserEstimateListQuery = () => {
   return useQuery<GetUserEstimateListResponse>({
-    queryKey: QUERY_KEYS.GET_DAENGLE_ESTIMATE_LIST,
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_LIST,
     queryFn: async () => {
       try {
         const data = await getUserEstimateList();
@@ -89,32 +88,38 @@ export const usePostUserEstimateCareMutation = () => {
   });
 };
 
-export const useEstimateGroomingDetailQuery = (params: GetEstimateGroomingDetailParams) => {
-  return useQuery<GroomerDetailResponse>({
-    queryKey: [QUERY_KEYS.GET_DAENGLE_ESTIMATE_GROOMER_DETAIL, params],
+export const useEstimateGroomingDetailQuery = (
+  params: UserEstimateGroomingDetailRequestParams,
+  enabled: boolean
+) => {
+  return useQuery<UserEstimateGroomingDetailData>({
+    queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_GROOMER_DETAIL, params],
     queryFn: async () => {
       try {
-        const data = await getEstimateGroomingDetail(params);
+        const data = await getUserEstimateGroomingDetail(params);
         return data;
       } catch (error) {
         throw new Error('데이터 로딩에 실패했습니다.');
       }
     },
-    enabled: !!params,
+    enabled,
   });
 };
 
-export const useEstimateCareDetailQuery = (params: GetEstimateCareDetailParams) => {
-  return useQuery<CareDetailResponse>({
-    queryKey: [QUERY_KEYS.GET_DAENGLE_ESTIMATE_VET_DETAIL, params],
+export const useEstimateCareDetailQuery = (
+  params: UserEstimateCareDetailRequestParams,
+  enabled: boolean
+) => {
+  return useQuery<UserEstimateCareDetailData>({
+    queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_VET_DETAIL, params],
     queryFn: async () => {
       try {
-        const data = await getEstimateCareDetail(params);
+        const data = await getUserEstimateCareDetail(params);
         return data;
       } catch (error) {
         throw new Error('데이터 로딩에 실패했습니다.');
       }
     },
-    enabled: !!params,
+    enabled,
   });
 };

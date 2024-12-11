@@ -1,5 +1,5 @@
 import { Text, TextButton } from '@daengle/design-system';
-import { ButtonTextButtonArrow } from '@daengle/design-system/icons';
+import { ButtonTextButtonArrow, DefaultProfile } from '@daengle/design-system/icons';
 import { wrapper, profileImage, details, tags, tag } from './index.styles';
 
 interface Props {
@@ -13,16 +13,26 @@ interface Props {
   };
 }
 
-export const DesignerInfo = ({ profile }: Props) => {
+export const PartnersInfo = ({ profile }: Props) => {
+  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    event.currentTarget.onerror = null;
+    event.currentTarget.src = '';
+  };
+
   return (
     <div css={wrapper}>
-      <img
-        src={profile.image}
-        width={112}
-        height={112}
-        alt={`${profile.name} 프로필`}
-        css={profileImage}
-      />
+      {profile.image ? (
+        <img
+          src={profile.image}
+          width={112}
+          height={112}
+          alt={`${profile.name} 프로필`}
+          css={profileImage}
+          onError={handleImageError}
+        />
+      ) : (
+        <DefaultProfile width={112} height={112} css={profileImage} />
+      )}
       <div css={details}>
         <Text typo="title2">{profile.name}</Text>
         <TextButton icons={{ suffix: <ButtonTextButtonArrow width={'6px'} /> }}>
