@@ -5,8 +5,12 @@ import {
   DeleteUserGroomingReviewResponse,
   GetUserCareMyReviewListRequestParams,
   GetUserCareMyReviewListResponse,
+  GetUserGroomerReviewListRequestParams,
+  GetUserGroomerReviewListResponse,
   GetUserGroomingMyReviewListRequestParams,
   GetUserGroomingMyReviewListResponse,
+  GetUserVetReviewListRequestParams,
+  GetUserVetReviewListResponse,
 } from '~/models/review';
 import { api } from '../config';
 
@@ -31,4 +35,18 @@ export const deleteUserGroomingReview = async (params: DeleteUserGroomingReviewR
 
 export const deleteUserCareReview = async (params: DeleteUserCareReviewRequestParams) => {
   return await api.delete<DeleteUserCareReviewResponse>(`/user/care/review/${params.reviewId}`);
+};
+
+export const getUserGroomerReviewList = async (params: GetUserGroomerReviewListRequestParams) => {
+  return await api.get<GetUserGroomerReviewListResponse>(
+    `/user/groomer/${params.groomerId}/review/list`,
+    params.params
+  );
+};
+
+export const getUserVetReviewList = async (params: GetUserVetReviewListRequestParams) => {
+  return await api.get<GetUserVetReviewListResponse>(
+    `/user/vet/${params.vetId}/review/list`,
+    params.params
+  );
 };
