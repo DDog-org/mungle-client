@@ -92,9 +92,8 @@ export default function Order() {
 
         IMP?.request_pay(IMPRequestData, async function (response) {
           //결제 후 호출되는 callback함수
-          if (response.error_code) {
+          if (response.error_code || orderUid == '') {
             console.log('errorCode:', response.error_code);
-            console.log('errorCode2:', response.error.code);
             alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
             return;
           }
@@ -117,6 +116,7 @@ export default function Order() {
             console.log(response);
             router.push(ROUTES.PAYMENT_COMPLETE);
           } else {
+            console.error('결제 검증 실패:', validateResponse);
             alert('결제 검증에 실패했습니다.');
           }
         });
