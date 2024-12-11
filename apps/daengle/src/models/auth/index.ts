@@ -18,7 +18,6 @@ export interface PostJoinWithoutPetRequestBody {
 }
 
 export interface PostJoinWithoutPetResponse {
-  isRegistered: boolean;
   accessToken: string;
 }
 
@@ -48,5 +47,23 @@ export interface PostJoinWithPetRequestBody extends PostJoinWithoutPetRequestBod
   petWeight: string;
 }
 
-// TODO: api 변경 후 수정 필요
-export type PostJoinWithPetResponse = string;
+export interface PostJoinWithPetResponse {
+  accessToken: string;
+}
+
+export interface GetUserInfoResponse {
+  image: string | null;
+  nickname: string;
+  username: string;
+  phoneNumber: string;
+  email: string;
+}
+
+export interface PatchUserInfoResponse {
+  requestResult: string;
+}
+
+export interface PatchUserInfoRequestBody {
+  image: string;
+  nickname: string;
+}

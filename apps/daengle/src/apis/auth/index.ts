@@ -10,6 +10,9 @@ import {
   PostJoinWithPetResponse,
   PostKakaoRequestBody,
   PostKakaoResponse,
+  PatchUserInfoRequestBody,
+  PatchUserInfoResponse,
+  GetUserInfoResponse,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -44,4 +47,12 @@ export const getBreedList = async () => {
 
 export const postJoinWithPet = async (body: PostJoinWithPetRequestBody) => {
   return await api.post<PostJoinWithPetResponse>('/user/join-with-pet', body);
+};
+
+export const getUserInfo = async () => {
+  return await api.get<GetUserInfoResponse>('/user/info');
+};
+
+export const patchUserInfo = async (body: PatchUserInfoRequestBody) => {
+  return await api.patch<PatchUserInfoResponse>('/user/info', body);
 };

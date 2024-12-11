@@ -2,12 +2,15 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '~/queries/query-keys';
 import {
   getBreedList,
+  getUserInfo,
+  patchUserInfo,
   postAvailableNickname,
   postJoinWithoutPet,
   postJoinWithPet,
   postKakao,
 } from '~/apis';
 import {
+  PatchUserInfoRequestBody,
   PostAvailableNicknameRequestBody,
   PostJoinWithoutPetRequestBody,
   PostJoinWithPetRequestBody,
@@ -43,13 +46,7 @@ export const usePostJoinWithoutPetMutation = () => {
 export const usePostAvailableNicknameMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_AVAILABLE_NICKNAME,
-    mutationFn: async (body: PostAvailableNicknameRequestBody) => {
-      try {
-        return await postAvailableNickname(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: postAvailableNickname,
   });
 };
 
@@ -73,6 +70,26 @@ export const usePostJoinWithPetMutation = () => {
     mutationFn: async (body: PostJoinWithPetRequestBody) => {
       try {
         return await postJoinWithPet(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
+
+export const useGetUserProfileInfoQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_USER_PROFILE_INFO,
+    queryFn: getUserInfo,
+  });
+};
+
+export const usePatchUserInfoMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.POST_USER_PROFILE_INFO,
+    mutationFn: async (body: PatchUserInfoRequestBody) => {
+      try {
+        return await patchUserInfo(body);
       } catch (error) {
         throw new Error(String(error));
       }
