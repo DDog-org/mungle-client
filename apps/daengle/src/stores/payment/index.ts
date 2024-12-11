@@ -17,6 +17,7 @@ interface OrderInfoStore extends OrderInfo {
 }
 
 export const useOrderInfoStore = create<OrderInfoStore>((set) => ({
+  // 임시 데이터(나중에 소연이가 세팅한 걸로 덮어쓰기)
   estimateId: 11,
   serviceType: 'GROOMING',
   recipientId: 9,
