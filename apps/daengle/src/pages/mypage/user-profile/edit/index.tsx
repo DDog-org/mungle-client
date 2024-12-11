@@ -63,7 +63,6 @@ export default function EditProfile() {
   };
 
   const onSubmit = async (data: UserProfileInfoEditForm) => {
-    if (!isValid) return;
     let imageString = '';
 
     // 기존 이미지 삭제
