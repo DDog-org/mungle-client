@@ -23,11 +23,21 @@ export const contents = css`
 
   width: 100%;
   height: 100%;
-  padding: 0 18px;
+  padding: 0 12px 0 8px;
 
   #title {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
   }
+`;
+
+export const button = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
 `;

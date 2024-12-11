@@ -10,14 +10,7 @@ import {
   PartnerGnbEstimateActive,
   GnbEstimateInactive,
 } from '@daengle/design-system/icons';
-
-export const PATHS = {
-  ESTIMATE: '/estimate',
-  RESERVATION: '/reservation',
-  HOME: '/',
-  CHATTING: '/chatting',
-  MYPAGE: '/mypage',
-} as const;
+import { ROUTES } from '~/constants/commons';
 
 export const MENUS = [
   {
@@ -26,7 +19,7 @@ export const MENUS = [
       active: <PartnerGnbEstimateActive width="32px" height="32px" />,
       inactive: <GnbEstimateInactive width="32px" height="32px" />,
     },
-    path: PATHS.ESTIMATE,
+    path: ROUTES.ESTIMATES,
   },
   {
     name: '예약',
@@ -34,7 +27,7 @@ export const MENUS = [
       active: <PartnerGnbReservationActive width="32px" height="32px" />,
       inactive: <GnbReservationInactive width="32px" height="32px" />,
     },
-    path: PATHS.RESERVATION,
+    path: ROUTES.RESERVATIONS,
   },
   {
     name: '홈',
@@ -42,7 +35,7 @@ export const MENUS = [
       active: <PartnerGnbHomeActive width="32px" height="32px" />,
       inactive: <GnbHomeInactive width="32px" height="32px" />,
     },
-    path: PATHS.HOME,
+    path: ROUTES.HOME,
   },
   {
     name: '채팅',
@@ -50,7 +43,7 @@ export const MENUS = [
       active: <PartnerGnbChattingActive width="32px" height="32px" />,
       inactive: <GnbChattingInactive width="32px" height="32px" />,
     },
-    path: PATHS.CHATTING,
+    path: ROUTES.CHATS,
   },
   {
     name: '마이',
@@ -58,6 +51,6 @@ export const MENUS = [
       active: <PartnerGnbMyActive width="32px" height="32px" />,
       inactive: <GnbMyInactive width="32px" height="32px" />,
     },
-    path: PATHS.MYPAGE,
+    path: ROUTES.MYPAGE,
   },
 ];

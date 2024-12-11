@@ -1,76 +1,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { EmptyState, Tab } from '@daengle/services/components';
-import { GNB, Layout, Text, TextButton } from '@daengle/design-system';
-import {
-  GnbChattingActive,
-  GnbChattingInactive,
-  GnbHomeActive,
-  GnbHomeInactive,
-  GnbMyActive,
-  GnbMyInactive,
-  GnbReservationActive,
-  GnbReservationInactive,
-  GnbEstimateActive,
-  GnbEstimateInactive,
-  SelectUnfoldInactive,
-} from '@daengle/design-system/icons';
+import { Layout, Text, TextButton } from '@daengle/design-system';
+import { SelectUnfoldInactive } from '@daengle/design-system/icons';
 import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
-
 import { useUserEstimateListQuery } from '~/queries';
 import { CardList, OptionSelector, ProfileSelector } from '~/components/estimate';
-
-export const PATHS = {
-  ESTIMATE: '/estimate-list',
-  RESERVATION: '/reservation',
-  HOME: '/',
-  CHATTING: '/chatting',
-  MYPAGE: '/mypage',
-} as const;
-
-export const MENUS = [
-  {
-    name: '견적',
-    icon: {
-      active: <GnbEstimateActive width="32px" height="32px" />,
-      inactive: <GnbEstimateInactive width="32px" height="32px" />,
-    },
-    path: PATHS.ESTIMATE,
-  },
-  {
-    name: '예약',
-    icon: {
-      active: <GnbReservationActive width="32px" height="32px" />,
-      inactive: <GnbReservationInactive width="32px" height="32px" />,
-    },
-    path: PATHS.RESERVATION,
-  },
-  {
-    name: '홈',
-    icon: {
-      active: <GnbHomeActive width="32px" height="32px" />,
-      inactive: <GnbHomeInactive width="32px" height="32px" />,
-    },
-    path: PATHS.HOME,
-  },
-  {
-    name: '채팅',
-    icon: {
-      active: <GnbChattingActive width="32px" height="32px" />,
-      inactive: <GnbChattingInactive width="32px" height="32px" />,
-    },
-    path: PATHS.CHATTING,
-  },
-  {
-    name: '마이',
-    icon: {
-      active: <GnbMyActive width="32px" height="32px" />,
-      inactive: <GnbMyInactive width="32px" height="32px" />,
-    },
-    path: PATHS.MYPAGE,
-  },
-];
+import { GNB } from '~/components/commons';
 
 export default function EstimateList() {
   const router = useRouter();
@@ -182,7 +119,7 @@ export default function EstimateList() {
         ) : (
           <EmptyState isEmptyEstimates={false} hasOptions={hasOptions} />
         )}
-        <GNB menus={MENUS} activePath={PATHS.ESTIMATE} onNavigate={handleNavigate} />
+        <GNB />
       </div>
     </Layout>
   );

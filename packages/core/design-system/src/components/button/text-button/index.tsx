@@ -12,7 +12,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function TextButton({ children, icons, ...props }: Props) {
   return (
-    <button css={wrapper} {...props}>
+    <button type="button" css={wrapper} {...props}>
       {icons?.prefix && icons?.prefix}
       {children}
       {icons?.suffix && icons?.suffix}

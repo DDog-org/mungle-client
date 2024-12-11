@@ -20,6 +20,7 @@ export function ChipToggleButton({
 
   return (
     <button
+      type="button"
       {...props}
       css={wrapper({ isSelected: isButtonSelected, size, disabled })}
       onClick={disabled ? undefined : handleButtonToggle}

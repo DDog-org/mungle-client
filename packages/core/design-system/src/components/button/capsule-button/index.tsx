@@ -7,7 +7,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function CapsuleButton({ disabled = false, children, ...props }: Props) {
   return (
-    <button {...props} css={wrapper({ disabled })}>
+    <button type="button" {...props} css={wrapper({ disabled })}>
       {children}
     </button>
   );

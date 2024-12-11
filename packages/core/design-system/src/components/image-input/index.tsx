@@ -59,10 +59,8 @@ export const ImageInput = forwardRef(({ onChange, defaultValue = [], maxLength }
       </label>
 
       {filesRef.current.map((file, index) => (
-        <div key={file.name + index} css={imageWrapper}>
-          <button css={deleteImageButton} onClick={() => handleRemoveImage(index)}>
-            <div />
-          </button>
+        <div key={file.name} css={imageWrapper}>
+          <button css={deleteImageButton} onClick={() => handleRemoveImage(index)} />
           <img src={URL.createObjectURL(file)} alt={file.name} css={thumbnailImage} />
         </div>
       ))}
