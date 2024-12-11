@@ -3,14 +3,14 @@ export interface PetProfileEditType {
   image: string;
   name: string;
   birth: number;
-  gender: string;
+  gender: 'MALE' | 'FEMALE';
   breed: string;
   isNeutered: boolean;
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
   groomingExperience: boolean;
   isBite: boolean;
-  dislikeParts: DislikeParts[];
-  significantTags: SignificantTags[];
+  dislikeParts: string[];
+  significantTags: string[];
   significant: string;
 }
 

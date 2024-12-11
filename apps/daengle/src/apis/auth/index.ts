@@ -16,8 +16,8 @@ import {
   GetUserInfoResponse,
   PostUserPetRequestBody,
   PostUserPetResponse,
-  PostUserPetInfoBody,
-  PostUserPetInfoResponse,
+  PatchUserPetInfoBody,
+  PatchUserPetInfoResponse,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -70,6 +70,6 @@ export const postUserPet = async (body: PostUserPetRequestBody) => {
   return await api.post<PostUserPetResponse>('/user/pet', body);
 };
 
-export const postUserPetInfo = async (body: PostUserPetInfoBody) => {
-  return await api.patch<PostUserPetInfoResponse>('/user/pet-info', body);
+export const patchUserPetInfo = async (body: PatchUserPetInfoBody) => {
+  return await api.patch<PatchUserPetInfoResponse>('/user/pet-info', body);
 };

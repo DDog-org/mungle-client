@@ -10,7 +10,7 @@ import {
   postJoinWithPet,
   postKakao,
   postUserPet,
-  postUserPetInfo,
+  patchUserPetInfo,
 } from '~/apis';
 import {
   PatchUserInfoRequestBody,
@@ -18,7 +18,7 @@ import {
   PostJoinWithPetRequestBody,
   PostKakaoRequestBody,
   PostUserPetRequestBody,
-  PostUserPetInfoBody,
+  PatchUserPetInfoBody,
 } from '~/models';
 
 export const usePostKakaoMutation = () => {
@@ -126,13 +126,13 @@ export const usePostUserPetMutation = () => {
   });
 };
 
-export const usePostUserPetInfoMutation = () => {
+export const usePatchUserPetInfoMutation = () => {
   return useMutation({
     mutationKey: [QUERY_KEYS.POST_USER_PET_INFO],
-    mutationFn: async (body: PostUserPetInfoBody) => {
+    mutationFn: async (body: PatchUserPetInfoBody) => {
       console.log('API 호출 시작:', body);
       try {
-        const response = await postUserPetInfo(body);
+        const response = await patchUserPetInfo(body);
         console.log('API 호출 성공:', response);
         return response;
       } catch (error) {

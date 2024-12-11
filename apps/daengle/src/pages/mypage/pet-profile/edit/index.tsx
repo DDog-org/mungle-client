@@ -40,12 +40,12 @@ import {
   PET_SIGNIFICANTTAG,
   PET_WEIGHT,
 } from '~/pages/mypage/constants';
-import { useGetBreedListQuery, usePostUserPetInfoMutation } from '~/queries';
+import { useGetBreedListQuery, usePatchUserPetInfoMutation } from '~/queries';
 import { useEffect, useState } from 'react';
 
 export default function DogEditProfile() {
   const { data: breeds } = useGetBreedListQuery();
-  const { mutateAsync: postUserPetInfo } = usePostUserPetInfoMutation();
+  const { mutateAsync: patchUserPetInfo } = usePatchUserPetInfoMutation();
 
   const validation = useValidatePetEdit();
 
@@ -77,10 +77,10 @@ export default function DogEditProfile() {
       birth: Number(watch('birth')),
       gender: watch('gender'),
       breed: watch('breed'),
-      isNeutered: watch('isNeutered') === 'true',
+      isNeutered: watch('isNeutered'),
       weight: watch('weight'),
-      groomingExperience: false,
-      isBite: false,
+      groomingExperience: watch('groomingExperience'),
+      isBite: watch('isBite'),
       dislikeParts: watch('dislikeParts'),
       significantTags: watch('significantTags'),
       significant: '',
@@ -88,7 +88,7 @@ export default function DogEditProfile() {
 
     console.log('보낼 데이터:', payload);
     try {
-      const response = await postUserPetInfo(payload);
+      const response = await patchUserPetInfo(payload);
       console.log('API 응답:', response);
       alert('프로필이 성공적으로 저장되었습니다!');
     } catch (error) {
@@ -202,7 +202,7 @@ export default function DogEditProfile() {
                     <>
                       {PET_IS_NEUTERED.map((item) => (
                         <ChipRadio
-                          key={item.value}
+                          key={item.label}
                           name={field.name}
                           value={item.value}
                           label={item.label}
@@ -270,7 +270,7 @@ export default function DogEditProfile() {
                     <>
                       {PET_IS_NEUTERED.map((item) => (
                         <ChipRadio
-                          key={item.value}
+                          key={item.label}
                           name={field.name}
                           value={item.value}
                           label={item.label}
@@ -295,7 +295,7 @@ export default function DogEditProfile() {
                     <>
                       {PET_IS_NEUTERED.map((item) => (
                         <ChipRadio
-                          key={item.value}
+                          key={item.label}
                           name={field.name}
                           value={item.value}
                           label={item.label}
