@@ -97,7 +97,7 @@ export interface GetUserPetInfoResponse {
 }
 
 export interface PostUserPetRequestBody {
-  image: string;
+  image: string | null;
   name: string;
   birth: number;
   gender: 'MALE' | 'FEMALE';

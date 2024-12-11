@@ -55,18 +55,16 @@ export default function PetProfileEdit() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const onSubmit = async (data: PetProfileCreateFormType) => {
-    if (!isValid) return;
     let imageString = '';
 
     // 새 이미지 업로드
-    if (data.image instanceof File) {
+    if (data.image) {
       // 새 이미지가 File 객체인 경우
       const uploadedImages = await uploadToS3([data.image]);
       if (uploadedImages && uploadedImages.length > 0) {
         imageString = uploadedImages[0] ?? '';
       }
     }
-
     // 사용자 정보 업데이트
     if (imageString != undefined) {
       postUserPet({ ...data, image: imageString });
