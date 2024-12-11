@@ -11,8 +11,6 @@ import {
 import {
   titleBox,
   petProfileWrapper,
-  petProfileEditWrapper,
-  petProfileImageBox,
   line,
   profileImageWrapper,
   profileImageBox,
@@ -54,9 +52,11 @@ import { useEffect, useState } from 'react';
 import { PetInfos } from '~/models';
 import { DefaultImage } from '@daengle/design-system/icons';
 
-export default function DogEditProfile() {
+export default function PetInfoEdit() {
   const [petInfos, setPetInfos] = useState<PetInfos[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
+  const [selectedParts, setSelectedParts] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const { data: getUserPetInfo } = useGetUserPetInfoQuery();
 
   const { data: breeds } = useGetBreedListQuery();
@@ -82,32 +82,48 @@ export default function DogEditProfile() {
   useEffect(() => {
     if (getUserPetInfo && getUserPetInfo.petDetails) {
       setPetInfos(getUserPetInfo.petDetails);
-      setSelectedPetId(getUserPetInfo.petDetails[0]?.id || 0); // 기본값으로 첫 번째 반려견 선택
+      const defaultPet = getUserPetInfo.petDetails[0];
+      if (defaultPet) {
+        setSelectedPetId(defaultPet.id);
+
+        // 기본 데이터 설정
+        setValue('name', defaultPet.name || '');
+        setValue('birth', defaultPet.birth);
+        setValue('gender', defaultPet.gender || '');
+        setValue('breed', defaultPet.breed || '');
+        setValue('isNeutered', defaultPet.isNeutered);
+        setValue('weight', defaultPet.weight || '');
+        setValue('groomingExperience', defaultPet.groomingExperience);
+        setValue('isBite', defaultPet.isBite);
+        setValue('dislikeParts', defaultPet.dislikeParts || []);
+        setValue('significantTags', defaultPet.significantTags || []);
+      }
     }
-  }, [getUserPetInfo]);
+  }, [getUserPetInfo, setValue]);
   const handlePetSelect = (petId: number) => {
     setSelectedPetId(petId);
+
+    const selectedPet = petInfos?.find((pet) => pet.id === petId);
+    if (selectedPet) {
+      setValue('name', selectedPet.name || '');
+      setValue('birth', selectedPet.birth);
+      setValue('gender', selectedPet.gender || '');
+      setValue('breed', selectedPet.breed || '');
+      setValue('isNeutered', selectedPet.isNeutered);
+      setValue('weight', selectedPet.weight || '');
+      setValue('groomingExperience', selectedPet.groomingExperience);
+      setValue('isBite', selectedPet.isBite);
+      setValue('dislikeParts', selectedPet.dislikeParts || []);
+      setValue('significantTags', selectedPet.significantTags || []);
+    }
   };
-  const [selectedParts, setSelectedParts] = useState<string[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const onSubmit = async (data: PetProfileEditType) => {
     if (!isValid) return;
 
     const payload = {
-      id: 1,
-      image: '',
-      name: watch('name'),
-      birth: Number(watch('birth')),
-      gender: watch('gender'),
-      breed: watch('breed'),
-      isNeutered: watch('isNeutered'),
-      weight: watch('weight'),
-      groomingExperience: watch('groomingExperience'),
-      isBite: watch('isBite'),
-      dislikeParts: watch('dislikeParts'),
-      significantTags: watch('significantTags'),
-      significant: '',
+      ...data,
+      id: selectedPetId,
     };
 
     console.log('보낼 데이터:', payload);
@@ -120,14 +136,9 @@ export default function DogEditProfile() {
       alert('프로필 저장 중 에러가 발생했습니다. 다시 시도해 주세요.');
     }
   };
-
-  useEffect(() => {
-    // console.log('싫어하는 부위=>', selectedParts);
-    // console.log('특이사항=>', selectedTags);
-    console.log('isValid 상태:', isValid);
-    console.log('유효성 검사 오류:', errors);
-  }, [isValid, errors]);
-
+  console.log('데이터 나와라', { ...watch() });
+  console.log('에러 나와라 !', errors);
+  // console.log('-----isValid-----', isValid);
   return (
     <Layout isAppBarExist={true}>
       <AppBar />
@@ -178,22 +189,23 @@ export default function DogEditProfile() {
         </div>
       </div>
       <div css={line} />
-      <div css={profileImageWrapper}>
-        <div css={profileImageBox}>
-          <Image
-            src="/icons/pet-profile/edit_image.jpeg"
-            alt="펫 프로필 이미지"
-            width={116}
-            height={116}
-          />
-        </div>
-        <button css={profileEditButtonBox}>
-          <Text typo="body4" color="gray400">
-            프로필 사진 변경하기
-          </Text>
-        </button>
-      </div>
+
       <form onSubmit={handleSubmit(onSubmit)}>
+        <div css={profileImageWrapper}>
+          <div css={profileImageBox}>
+            <Image
+              src="/icons/pet-profile/edit_image.jpeg"
+              alt="펫 프로필 이미지"
+              width={116}
+              height={116}
+            />
+          </div>
+          <button css={profileEditButtonBox}>
+            <Text typo="body4" color="gray400">
+              프로필 사진 변경하기
+            </Text>
+          </button>
+        </div>
         <div css={inputWrapper}>
           <Input
             label="이름"
@@ -220,7 +232,6 @@ export default function DogEditProfile() {
               <Controller
                 name="gender"
                 control={control}
-                rules={validation.gender}
                 render={({ field }) => (
                   <>
                     {PET_GENDER.map((gender) => (
@@ -245,7 +256,6 @@ export default function DogEditProfile() {
               <Controller
                 name="isNeutered"
                 control={control}
-                rules={validation.isNeutered}
                 render={({ field }) => (
                   <>
                     {PET_IS_NEUTERED.map((item) => (
@@ -255,7 +265,7 @@ export default function DogEditProfile() {
                         value={item.value}
                         label={item.label}
                         size="full"
-                        isSelected={field.value === item.value}
+                        isSelected={String(field.value) === item.value}
                         onChange={() => field.onChange(item.value)}
                       />
                     ))}
@@ -283,7 +293,6 @@ export default function DogEditProfile() {
               <Controller
                 name="weight"
                 control={control}
-                rules={{ required: '몸무게를 선택해 주세요' }}
                 render={({ field }) => (
                   <>
                     {PET_WEIGHT.map((item) => (
@@ -313,7 +322,6 @@ export default function DogEditProfile() {
               <Controller
                 name="groomingExperience"
                 control={control}
-                rules={validation.groomingExperience}
                 render={({ field }) => (
                   <>
                     {PET_IS_NEUTERED.map((item) => (
@@ -323,7 +331,7 @@ export default function DogEditProfile() {
                         value={item.value}
                         label={item.label}
                         size="full"
-                        isSelected={field.value === item.value}
+                        isSelected={String(field.value) === item.value}
                         onChange={(e) => field.onChange(e.target.value)}
                       />
                     ))}
@@ -338,7 +346,6 @@ export default function DogEditProfile() {
               <Controller
                 name="isBite"
                 control={control}
-                rules={validation.isBite}
                 render={({ field }) => (
                   <>
                     {PET_IS_NEUTERED.map((item) => (
@@ -348,7 +355,7 @@ export default function DogEditProfile() {
                         value={item.value}
                         label={item.label}
                         size="full"
-                        isSelected={field.value === item.value}
+                        isSelected={String(field.value) === item.value}
                         onChange={(e) => field.onChange(e.target.value)}
                       />
                     ))}
@@ -430,7 +437,7 @@ export default function DogEditProfile() {
               <textarea css={detailInput} placeholder="특이사항이 있다면 입력해주세요" />
             </section>
           </section>
-          <CTAButton type="submit" secondaryButtonLabel="삭제하기" disabled={!isValid}>
+          <CTAButton type="submit" secondaryButtonLabel="삭제하기" disabled={false}>
             수정하기
           </CTAButton>
         </div>

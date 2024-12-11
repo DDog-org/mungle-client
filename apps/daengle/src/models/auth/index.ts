@@ -75,14 +75,14 @@ export interface PetInfos {
   image: string;
   name: string;
   birth: number;
-  gender: string;
+  gender: 'MALE' | 'FEMALE';
   breed: string;
   isNeutered: boolean;
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
   groomingExperience: boolean;
   isBite: boolean;
-  dislikeParts: DislikePart[];
-  significantTags: SignificantTag[];
+  dislikeParts: string[];
+  significantTags: string[];
   significant: string;
 }
 
