@@ -9,7 +9,6 @@ export const wrapper = css`
 
   width: 100%;
   height: 100%;
-  border: 1px solid red;
 `;
 
 export const bottom = css`
@@ -18,6 +17,4 @@ export const bottom = css`
 
   width: 100%;
   height: 18px;
-
-  background: pink;
 `;

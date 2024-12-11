@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
-import { Card } from '~/components/mypage';
+import { Card, Empty } from '~/components/mypage';
 import { useIntersectionLoad } from '~/hooks/review';
 import {
   deleteUserGroomingReviewMutation,
@@ -19,9 +19,9 @@ export function GroomerCardList() {
 
   return (
     <div css={wrapper}>
-      {data?.pages.map((page, idx) => (
-        <div key={idx}>
-          {page.reviewList.map(
+      {data?.pages.map((page) =>
+        page.reviewCount > 0 ? (
+          page.reviewList.map(
             ({
               groomingReviewId,
               groomerId,
@@ -32,6 +32,7 @@ export function GroomerCardList() {
               imageUrlList,
             }) => (
               <Card
+                key={groomingReviewId}
                 reviewId={groomingReviewId}
                 revieweeId={groomerId}
                 keywordReviewList={groomingKeywordReviewList}
@@ -44,9 +45,11 @@ export function GroomerCardList() {
                 onEdit={() => router.push(ROUTES.VET_REVIEW_FORM_EDIT(groomingReviewId))}
               />
             )
-          )}
-        </div>
-      ))}
+          )
+        ) : (
+          <Empty />
+        )
+      )}
 
       <div ref={loadMoreRef} css={bottom} />
     </div>

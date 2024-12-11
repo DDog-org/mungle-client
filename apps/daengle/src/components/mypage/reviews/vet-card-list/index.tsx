@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
-import { Card } from '~/components/mypage';
+import { Card, Empty } from '~/components/mypage';
 import { useIntersectionLoad } from '~/hooks/review';
 import {
   deleteUserCareReviewMutation,
@@ -19,9 +19,9 @@ export function VetCardList() {
 
   return (
     <div css={wrapper}>
-      {data?.pages.map((page, idx) => (
-        <div key={idx}>
-          {page.reviewList.map(
+      {data?.pages.map((page) =>
+        page.reviewCount > 0 ? (
+          page.reviewList.map(
             ({
               careReviewId,
               vetId,
@@ -44,9 +44,11 @@ export function VetCardList() {
                 onEdit={() => router.push(ROUTES.VET_REVIEW_FORM_EDIT(careReviewId))}
               />
             )
-          )}
-        </div>
-      ))}
+          )
+        ) : (
+          <Empty />
+        )
+      )}
 
       <div ref={loadMoreRef} css={bottom} />
     </div>
