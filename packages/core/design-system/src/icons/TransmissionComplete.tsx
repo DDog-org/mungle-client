@@ -1,12 +1,9 @@
 import type { SVGProps } from 'react';
-interface Props extends SVGProps<SVGSVGElement> {
-  color?: string;
-}
-export const TransmissionComplete = ({ color = '#84DACF', ...props }: Props) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={90} height={90} fill="none" {...props}>
-    <circle cx={45} cy={45} r={44} stroke="#84DACF" strokeWidth={2} />
+export const TransmissionComplete = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 90 90" {...props}>
+    <circle cx={45} cy={45} r={44} stroke="currentColor" strokeWidth={2} />
     <path
-      stroke={color}
+      stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}

@@ -2,6 +2,9 @@ export interface PetInfo {
   petId: number;
   name: string;
   image: string;
+}
+
+export interface PetEstimateInfo extends PetInfo {
   groomingEstimates?: GroomingEstimateType[];
   careEstimates?: CareEstimateType[];
 }

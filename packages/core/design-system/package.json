@@ -12,6 +12,10 @@
     "./icons": {
       "import": "./src/icons/index.ts",
       "require": "./src/icons/index.ts"
+    },
+    "./images": {
+      "import": "./src/images/index.ts",
+      "require": "./src/images/index.ts"
     }
   },
   "scripts": {
@@ -19,7 +23,9 @@
     "generate:component": "turbo gen react-component",
     "check-types": "tsc --noEmit",
     "lint:styles": "stylelint \"**/*.styles.ts\"",
-    "svgr": "rm -rf src/icons/* && pnpm dlx @svgr/cli --template svgr.template.js --index-template svgr.index.template.js public/icons --no-dimensions --typescript --out-dir src/icons"
+    "svgr:icons": "rm -rf src/icons/* && pnpm dlx @svgr/cli --template svgr.template.js --index-template svgr.index.template.js public/icons --no-dimensions --typescript --out-dir src/icons",
+    "svgr:images": "rm -rf src/images/* && pnpm dlx @svgr/cli --template svgr.template.js --index-template svgr.index.template.js public/images --no-dimensions --typescript --out-dir src/images",
+    "svgr": "pnpm svgr:icons && pnpm svgr:images"
   },
   "dependencies": {
     "@emotion/react": "^11.13.5",

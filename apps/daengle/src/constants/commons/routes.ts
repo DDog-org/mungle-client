@@ -10,8 +10,9 @@ export const ROUTES = {
   SEARCH_RESULT: (keyword: string) => `/search?keyword=${keyword}`,
 
   // Estimates
-  ESTIMATE_LIST: (type: string) => `/estimates/${type}`,
-  ESTIMATE_DETAIL: (estimateId: number) => `/estimates/${estimateId}`,
+  ESTIMATE_LIST: '/estimate',
+  ESTIMATE_DETAIL: (estimateId: number) => `/estimate/${estimateId}`,
+  ESTIMATE_FORM_COMPLETE: '/estimate/complete',
 
   // Groomers
   GROOMER_DETAIL: (groomerId: number) => `/groomers/${groomerId}`,
@@ -41,8 +42,8 @@ export const ROUTES = {
   MYPAGE: '/mypage',
   MYPAGE_USER_INFO: '/mypage/user-profile',
   MYPAGE_USER_INFO_EDIT: '/mypage/user-profile/edit',
-  MAYPAGE_PET_PROFILE: '/mypage/pet-profile',
-  MAYPAGE_PET_PROFILE_EDIT: '/mypage/pet-profile/edit',
+  MYPAGE_PET_PROFILE: '/mypage/pet-profile',
+  MYPAGE_PET_PROFILE_EDIT: '/mypage/pet-profile/edit',
   MYPAGE_REVIEWS: '/mypage/reviews',
   MYPAGE_FAVORITES: '/mypage/favorites',
 } as const;
