@@ -10,12 +10,14 @@ export interface GetUserGroomingMyReviewListResponse {
   reviewList: GetUserGroomingMyReviewList[];
 }
 
+export type StarRating = 1 | 2 | 3 | 4 | 5;
+
 export interface GetUserGroomingMyReviewList {
   groomingReviewId: number;
   groomerId: number;
   groomingKeywordReviewList: string[];
   revieweeName: string;
-  starRating: 1 | 2 | 3 | 4 | 5;
+  starRating: StarRating;
   content: string | null;
   imageUrlList: string[] | null;
 }
@@ -35,7 +37,7 @@ export interface GetUserCareMyReviewList {
   vetId: number;
   careKeywordReviewList: string[];
   revieweeName: string;
-  starRating: 1 | 2 | 3 | 4 | 5;
+  starRating: StarRating;
   content: string | null;
   imageUrlList: string[] | null;
 }
@@ -80,7 +82,7 @@ export interface GetUserGroomerReviewList {
   groomerId: number;
   groomingKeywordReviewList: (keyof typeof GROOMER_REVIEW_KEYWORDS)[];
   revieweeName: string;
-  starRating: 1 | 2 | 3 | 4 | 5;
+  starRating: StarRating;
   content: string | null;
   imageUrlList: string[] | null;
 }
@@ -105,7 +107,7 @@ export interface GetUserVetReviewList {
   vetId: number;
   careKeywordReviewList: (keyof typeof VET_REVIEW_KEYWORDS)[];
   revieweeName: string;
-  starRating: 1 | 2 | 3 | 4 | 5;
+  starRating: StarRating;
   content: string | null;
   imageUrlList: string[] | null;
 }
