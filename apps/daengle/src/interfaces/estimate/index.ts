@@ -30,7 +30,8 @@ export interface CareEstimateType {
   reservedDate: string;
   tags?: string[];
 }
-export interface GroomerDetailResponse {
+
+export interface UserEstimateGroomingDetailData {
   groomingEstimateId: number;
   groomerId: number;
   image: string;

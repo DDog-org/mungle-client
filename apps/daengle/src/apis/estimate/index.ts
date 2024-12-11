@@ -1,8 +1,8 @@
 import { api } from '~/apis';
 import { UserEstimateGroomingDetailData, UserEstimateCareDetailData } from '~/interfaces/estimate';
-import { GetUserEstimateListResponse } from '~/models';
 
 import {
+  GetUserEstimateListResponse,
   PostUserEstimateGroomerUserInfoRequestBody,
   PostUserEstimateGroomerUserInfoResponse,
   PostUserEstimateGroomingRequestBody,

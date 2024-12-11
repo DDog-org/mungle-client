@@ -13,7 +13,7 @@ interface Props {
   };
 }
 
-export const DesignerInfo = ({ profile }: Props) => {
+export const PartnersInfo = ({ profile }: Props) => {
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
     event.currentTarget.onerror = null;
     event.currentTarget.src = '';

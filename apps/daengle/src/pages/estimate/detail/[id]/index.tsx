@@ -1,6 +1,7 @@
 import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
-import { wrapper, header, section, buttonGroup } from './index.styles';
-import { DesignerInfo, Receipt } from '~/components/estimate';
+import { theme } from '@daengle/design-system';
+import { css } from '@emotion/react';
+import { PartnersInfo, Receipt } from '~/components/estimate';
 import { useRouter } from 'next/router';
 import { useEstimateCareDetailQuery, useEstimateGroomingDetailQuery } from '~/queries/estimate';
 import dayjs from 'dayjs';
@@ -72,13 +73,13 @@ export default function Detail() {
     const overallOpinion = detailData.overallOpinion || '없음';
 
     return (
-      <Layout>
+      <Layout isAppBarExist={false}>
+        <AppBar />
         <div css={wrapper}>
-          <AppBar isDefaultBackground={false} />
           <div css={header}>
             <Text typo="title1">견적 상세</Text>
           </div>
-          <DesignerInfo profile={designerData} />
+          <PartnersInfo profile={designerData} />
           <section css={section}>
             <Text typo="body1">소개</Text>
             <Text typo="body10" tag="div">
@@ -123,13 +124,13 @@ export default function Detail() {
       tags: detailData?.tags || [],
     };
     return (
-      <Layout>
+      <Layout isAppBarExist={false}>
+        <AppBar />
         <div css={wrapper}>
-          <AppBar isDefaultBackground={false} />
           <div css={header}>
             <Text typo="title1">진료 상세</Text>
           </div>
-          <DesignerInfo profile={vetData} />
+          <PartnersInfo profile={vetData} />
           <section css={section}>
             <Text typo="body1">소개</Text>
             <Text typo="body10" tag="div">
@@ -171,3 +172,32 @@ export default function Detail() {
     );
   }
 }
+
+const wrapper = css`
+  padding-top: ${theme.size.appBarHeight};
+
+  background-color: ${theme.colors.background};
+`;
+
+const header = css`
+  display: flex;
+  align-items: center;
+
+  margin: 18px;
+`;
+
+const section = css`
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+
+  margin: 18px 18px 32px;
+`;
+
+const buttonGroup = css`
+  display: flex;
+  justify-content: center;
+  gap: 13px;
+
+  margin: 32px 18px 18px;
+`;

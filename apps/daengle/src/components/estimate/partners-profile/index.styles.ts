@@ -10,6 +10,8 @@ export const wrapper = css`
 
 export const profileImage = css`
   border-radius: 50%;
+
+  background-color: ${theme.colors.gray200};
   object-fit: cover;
 `;
 

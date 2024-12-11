@@ -7,8 +7,6 @@ import {
   postUserEstimateGroomerUserInfo,
   postUserEstimateCare,
   postUserEstimateVetUserInfo,
-  getEstimateGroomingDetail,
-  getEstimateCareDetail,
   getUserEstimateGroomingDetail,
   getUserEstimateCareDetail,
 } from '~/apis';
@@ -22,18 +20,11 @@ import {
   UserEstimateCareDetailRequestParams,
   UserEstimateGroomingDetailRequestParams,
 } from '~/models/estimate';
-import {
-  GroomerDetailResponse,
-  CareDetailResponse,
-  GetEstimateGroomingDetailParams,
-  GetEstimateCareDetailParams,
-  UserEstimateGroomingDetailData,
-  UserEstimateCareDetailData,
-} from '~/interfaces/estimate';
+import { UserEstimateGroomingDetailData, UserEstimateCareDetailData } from '~/interfaces/estimate';
 
 export const useUserEstimateListQuery = () => {
   return useQuery<GetUserEstimateListResponse>({
-    queryKey: QUERY_KEYS.GET_DAENGLE_ESTIMATE_LIST,
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_LIST,
     queryFn: async () => {
       try {
         const data = await getUserEstimateList();
