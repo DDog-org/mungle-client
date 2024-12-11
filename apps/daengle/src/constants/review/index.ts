@@ -18,4 +18,4 @@ export const VET_REVIEW_KEYWORDS = {
   EXCELLENT_CONSULTATION: '상담을 잘해줘요',
   REASONABLE: '가격이 적당해요',
   HYGIENIC: '위생적이에요',
-};
+} as const;
