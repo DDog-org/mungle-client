@@ -65,5 +65,5 @@ export const getUserPetInfo = async () => {
 };
 
 export const postUserPet = async (body: PostUserPetRequestBody) => {
-  return await api.post<PostUserPetResponse>('user/pet', body);
+  return await api.post<PostUserPetResponse>('/user/pet', body);
 };

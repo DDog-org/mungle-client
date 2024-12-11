@@ -15,11 +15,14 @@ export const uploadImageButton = css`
   align-items: center;
   justify-content: center;
   overflow: hidden;
+
   width: 116px;
   height: 116px;
   border: 1px solid ${theme.colors.gray200};
   border-radius: 50%;
+
   cursor: pointer;
+
   input {
     display: none;
   }
@@ -32,6 +35,7 @@ export const profileImageWrapper = css`
 `;
 export const profileEditButtonBox = css`
   margin-top: 12px;
+
   color: ${theme.colors.gray400};
   font-size: 14px;
   text-align: center;
@@ -39,6 +43,7 @@ export const profileEditButtonBox = css`
 
 export const thumbnailImage = css`
   flex-shrink: 0;
+
   width: 116px;
   height: 116px;
   border-radius: 50%;

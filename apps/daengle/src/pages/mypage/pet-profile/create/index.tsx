@@ -25,15 +25,15 @@ import {
 } from '~/pages/mypage/constants';
 import { useGetBreedListQuery, usePostUserPetMutation } from '~/queries';
 import { useState } from 'react';
-import { ImageInputBox } from '~/components/mypage/pet-profile/create/image-input';
-import { ChipToggleButton } from '~/components/mypage/pet-profile/create/chip-toggle-button';
+import { ImageInputBox } from '~/components/mypage/pet-profile/image-input';
+import { ChipToggleButton } from '~/components/mypage/pet-profile/chip-toggle-button';
 import { useS3 } from '@daengle/services/hooks';
 
 export default function PetProfileEdit() {
   const { data: breeds } = useGetBreedListQuery();
   const { mutateAsync: postUserPet } = usePostUserPetMutation();
   const validation = useValidatePetEdit();
-  const { uploadToS3, deleteFromS3 } = useS3({ targetFolderPath: 'user/profile-images' });
+  const { uploadToS3 } = useS3({ targetFolderPath: 'user/profile-images' });
 
   const {
     register,
