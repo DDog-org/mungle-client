@@ -51,18 +51,20 @@ import {
 import { useEffect, useState } from 'react';
 import { PetInfos } from '~/models';
 import { DefaultImage } from '@daengle/design-system/icons';
+import { useS3 } from '@daengle/services/hooks';
+import { ImageInputBox } from '~/components/mypage/user-profile/imageInput';
 
 export default function PetInfoEdit() {
   const [petInfos, setPetInfos] = useState<PetInfos[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
-  const [selectedParts, setSelectedParts] = useState<string[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const { data: getUserPetInfo } = useGetUserPetInfoQuery();
 
+  const { data: getUserPetInfo } = useGetUserPetInfoQuery();
   const { data: breeds } = useGetBreedListQuery();
   const { mutateAsync: patchUserPetInfo } = usePatchUserPetInfoMutation();
 
   const validation = useValidatePetEdit();
+
+  const { uploadToS3, deleteFromS3 } = useS3({ targetFolderPath: 'user/profile-images' });
 
   const {
     register,
@@ -70,10 +72,11 @@ export default function PetInfoEdit() {
     watch,
     setValue,
     control,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<PetProfileEditType>({
     mode: 'onChange',
     defaultValues: {
+      image: null,
       significantTags: [],
       dislikeParts: [],
     },
@@ -81,12 +84,16 @@ export default function PetInfoEdit() {
 
   useEffect(() => {
     if (getUserPetInfo && getUserPetInfo.petDetails) {
-      setPetInfos(getUserPetInfo.petDetails);
       const defaultPet = getUserPetInfo.petDetails[0];
+
+      setPetInfos(getUserPetInfo.petDetails);
+
       if (defaultPet) {
         setSelectedPetId(defaultPet.id);
 
-        // 기본 데이터 설정
+        const dislikeParts = defaultPet.dislikeParts.map((part) => part.part); // `part` 값만 추출
+        const significantTags = defaultPet.significantTags.map((tag) => tag.tag); // `tag` 값만 추출
+
         setValue('name', defaultPet.name || '');
         setValue('birth', defaultPet.birth);
         setValue('gender', defaultPet.gender || '');
@@ -95,15 +102,20 @@ export default function PetInfoEdit() {
         setValue('weight', defaultPet.weight || '');
         setValue('groomingExperience', defaultPet.groomingExperience);
         setValue('isBite', defaultPet.isBite);
-        setValue('dislikeParts', defaultPet.dislikeParts || []);
-        setValue('significantTags', defaultPet.significantTags || []);
+        setValue('dislikeParts', dislikeParts || []);
+        setValue('significantTags', significantTags || []);
       }
     }
   }, [getUserPetInfo, setValue]);
+
   const handlePetSelect = (petId: number) => {
     setSelectedPetId(petId);
 
     const selectedPet = petInfos?.find((pet) => pet.id === petId);
+
+    const dislikeParts = selectedPet?.dislikeParts.map((part) => part.part); // `part` 값만 추출
+    const significantTags = selectedPet?.significantTags.map((tag) => tag.tag); // `tag` 값만 추출
+
     if (selectedPet) {
       setValue('name', selectedPet.name || '');
       setValue('birth', selectedPet.birth);
@@ -113,17 +125,41 @@ export default function PetInfoEdit() {
       setValue('weight', selectedPet.weight || '');
       setValue('groomingExperience', selectedPet.groomingExperience);
       setValue('isBite', selectedPet.isBite);
-      setValue('dislikeParts', selectedPet.dislikeParts || []);
-      setValue('significantTags', selectedPet.significantTags || []);
+      setValue('dislikeParts', dislikeParts || []);
+      setValue('significantTags', significantTags || []);
     }
   };
 
   const onSubmit = async (data: PetProfileEditType) => {
-    if (!isValid) return;
+    let imageString = '';
+
+    // 기존 이미지 삭제
+    if (getUserPetInfo?.image) {
+      const fileName = getUserPetInfo.image.split('/').pop(); // S3 경로에서 파일 이름 추출
+      if (fileName) {
+        await deleteFromS3(fileName);
+      }
+    }
+
+    // 새 이미지 업로드
+    if (data.image) {
+      const uploadedImages = await uploadToS3([data.image]);
+      if (uploadedImages && uploadedImages.length > 0) {
+        imageString = uploadedImages[0] ?? '';
+      }
+    } else {
+      imageString = getUserPetInfo?.image || '';
+    }
+
+    // 사용자 정보 업데이트
+    if (imageString != undefined) {
+      patchUserPetInfo({ ...data, image: imageString });
+    }
 
     const payload = {
       ...data,
       id: selectedPetId,
+      image: imageString,
     };
 
     console.log('보낼 데이터:', payload);
@@ -136,9 +172,7 @@ export default function PetInfoEdit() {
       alert('프로필 저장 중 에러가 발생했습니다. 다시 시도해 주세요.');
     }
   };
-  console.log('데이터 나와라', { ...watch() });
-  console.log('에러 나와라 !', errors);
-  // console.log('-----isValid-----', isValid);
+
   return (
     <Layout isAppBarExist={true}>
       <AppBar />
@@ -192,19 +226,10 @@ export default function PetInfoEdit() {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div css={profileImageWrapper}>
-          <div css={profileImageBox}>
-            <Image
-              src="/icons/pet-profile/edit_image.jpeg"
-              alt="펫 프로필 이미지"
-              width={116}
-              height={116}
-            />
-          </div>
-          <button css={profileEditButtonBox}>
-            <Text typo="body4" color="gray400">
-              프로필 사진 변경하기
-            </Text>
-          </button>
+          <ImageInputBox
+            onChange={(files) => setValue('image', files, { shouldValidate: true })}
+            defaultValue={getUserPetInfo?.image || ''}
+          />
         </div>
         <div css={inputWrapper}>
           <Input
@@ -378,14 +403,14 @@ export default function PetInfoEdit() {
                           <ChipToggleButton
                             key={item.value}
                             size="fixed"
-                            isSelected={selectedParts.includes(item.value)}
-                            itemValue={item.value}
-                            setSelectedParts={(updatedTags: string[]) => {
+                            isSelected={field.value?.includes(item.value)}
+                            onClick={(e) => {
+                              e.preventDefault();
                               const newParts = field.value?.includes(item.value)
-                                ? field.value.filter((t: string) => t !== item.value) // 선택 해제
-                                : [...(field.value || []), item.value]; // 선택 추가
+                                ? field.value.filter((part) => part !== item.value) // 이미 선택된 경우 제거
+                                : [...field.value, item.value]; // 선택되지 않은 경우 추가
 
-                              field.onChange(newParts); // React Hook Form에 값 전달
+                              field.onChange(newParts);
                             }}
                           >
                             {item.label}
@@ -406,8 +431,6 @@ export default function PetInfoEdit() {
                   <Controller
                     name="significantTags"
                     control={control}
-                    rules={{ required: '특이사항을 선택해 주세요' }}
-                    defaultValue={[]}
                     render={({ field }) => (
                       <>
                         {PET_SIGNIFICANTTAG.map((item) => {
@@ -415,12 +438,12 @@ export default function PetInfoEdit() {
                             <ChipToggleButton
                               key={item.value}
                               size="full"
-                              isSelected={selectedTags.includes(item.value)}
-                              itemValue={item.value}
-                              setSelectedTags={(updatedTags: string[]) => {
+                              isSelected={field.value?.includes(item.value)}
+                              onClick={(e) => {
+                                e.preventDefault();
                                 const newTags = field.value?.includes(item.value)
-                                  ? field.value.filter((t: string) => t !== item.value)
-                                  : [...(field.value || []), item.value];
+                                  ? field.value.filter((tag) => tag !== item.value) // 이미 선택된 경우 제거
+                                  : [...field.value, item.value]; // 선택되지 않은 경우 추가
 
                                 field.onChange(newTags);
                               }}
@@ -434,7 +457,20 @@ export default function PetInfoEdit() {
                   />
                 </>
               </section>
-              <textarea css={detailInput} placeholder="특이사항이 있다면 입력해주세요" />
+              <Controller
+                name="significant"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <textarea
+                      css={detailInput}
+                      placeholder="특이사항이 있다면 입력해주세요"
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  </>
+                )}
+              />
             </section>
           </section>
           <CTAButton type="submit" secondaryButtonLabel="삭제하기" disabled={false}>

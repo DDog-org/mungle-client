@@ -1,6 +1,6 @@
 export interface PetProfileEditType {
   id: number;
-  image: string;
+  image: File | null;
   name: string;
   birth: number;
   gender: 'MALE' | 'FEMALE';

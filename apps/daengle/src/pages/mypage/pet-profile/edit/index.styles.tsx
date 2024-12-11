@@ -102,7 +102,7 @@ export const profileImageWrapper = css`
   align-items: center;
   justify-content: center;
 
-  margin: 32px 0 40px;
+  margin: 0 0 32px;
 `;
 export const profileImageBox = css`
   overflow: hidden;

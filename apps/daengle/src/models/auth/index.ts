@@ -96,6 +96,7 @@ export interface SignificantTag {
 }
 export interface GetUserPetInfoResponse {
   petDetails: PetInfos[];
+  image?: string;
 }
 
 export interface PostUserPetRequestBody {
