@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useS3 } from '@daengle/services/hooks';
 import { GetUserReservationReviewParams } from '~/models/review';
 import { GROOMER_REVIEW_KEYWORDS, KEYWORDS } from '~/constants/review';
+import { ROUTES } from '~/constants/commons';
 
 export default function ReviewPage() {
   const [rating, setRating] = useState<number>(0);
@@ -86,7 +87,8 @@ export default function ReviewPage() {
     mutation.mutate(body, {
       onSuccess: () => {
         alert('리뷰가 성공적으로 등록되었습니다!');
-        router.push('/reviews');
+        // TODO: 동적 id값에 따른 groomer || care id 담아주기 (예약에서 가져오기)
+        // router.push(ROUTES.GROOMER_REVIEWS);
       },
       onError: () => {
         alert('리뷰 등록에 실패했습니다.');

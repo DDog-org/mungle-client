@@ -18,10 +18,10 @@ export function KeywordCard({
   const handleTagToggle = (tag: string) => {
     if (selectedTags.includes(tag)) {
       onTagToggle(tag);
-    } else if (selectedTags.length < 3) {
+    } else if (selectedTags.length < 5) {
       onTagToggle(tag);
     } else {
-      alert('키워드는 최대 3개까지만 선택할 수 있습니다.');
+      alert('키워드는 최대 5개까지만 선택할 수 있습니다.');
     }
   };
 
