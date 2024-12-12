@@ -27,11 +27,11 @@ export const tabContent = css`
   height: 100%;
 `;
 
-export const tabContentItem = css`
+export const tabContentItem = (isPadding: boolean) => css`
   position: absolute;
   top: 0;
 
   width: 100%;
   height: 100%;
-  padding: 14px 18px;
+  padding: ${isPadding ? '14px 18px' : '18px 18px 14px 0'};
 `;
