@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 
 export const petTitle = css`
-  padding: 0 18px 0 15px;
+  padding: 0 18px;
 `;
 export const titleBox = css`
   margin: 18px 18px 40px;

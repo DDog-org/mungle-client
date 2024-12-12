@@ -7,6 +7,7 @@ import {
   Layout,
   Select,
   Text,
+  theme,
 } from '@daengle/design-system';
 import {
   titleBox,
@@ -173,7 +174,7 @@ export default function PetInfoEdit() {
 
   return (
     <Layout isAppBarExist={true}>
-      <AppBar />
+      <AppBar backgroundColor={theme.colors.white} />
       <div css={titleBox}>
         <Text typo="title1">반려견 프로필 수정</Text>
       </div>
@@ -215,9 +216,11 @@ export default function PetInfoEdit() {
                 ))}
               </div>
             ) : (
-              <Text typo="body3" color="gray400">
-                반려견 정보를 불러오지 못했습니다.
-              </Text>
+              <div css={petTitle}>
+                <Text typo="body3" color="gray400">
+                  반려견 정보를 불러오지 못했습니다.
+                </Text>
+              </div>
             )}
           </div>
         </section>
