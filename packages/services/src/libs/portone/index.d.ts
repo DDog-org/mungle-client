@@ -1,4 +1,3 @@
-// src/portone.d.ts
 declare global {
   interface Window {
     IMP?: {

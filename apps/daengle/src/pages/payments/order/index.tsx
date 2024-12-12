@@ -66,7 +66,7 @@ export default function Order() {
     groomer_name: recipientName,
     shop_name: shopName,
     schedule: schedule,
-    m_redirect_url: ROUTES.PAYMENT_COMPLETE,
+    m_redirect_url: ROUTES.PAYMENTS_COMPLETE,
   };
 
   useEffect(() => {
@@ -139,7 +139,7 @@ export default function Order() {
           if (validateResponse) {
             //결제 성공
 
-            router.push(ROUTES.PAYMENT_COMPLETE);
+            router.push(ROUTES.PAYMENTS_COMPLETE);
           } else {
             console.error('결제 검증 실패:', validateResponse);
             alert('결제 검증에 실패했습니다.');
