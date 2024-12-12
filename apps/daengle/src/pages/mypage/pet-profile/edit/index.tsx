@@ -170,7 +170,6 @@ export default function PetInfoEdit() {
       id: selectedPetId,
       image: imageString,
     };
-
     await patchUserPetInfo(payload);
   };
 
@@ -480,6 +479,7 @@ export default function PetInfoEdit() {
           </section>
 
           <CTAButton
+            type="submit"
             secondaryButtonLabel="삭제하기"
             onSecondaryButtonClick={handleDeletePet}
             disabled={false}
