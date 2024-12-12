@@ -9,7 +9,7 @@ export const wrapper = css`
   margin: -2px 14px;
   padding: 18px;
 
-  background-color: #fff;
+  background-color: ${theme.colors.white};
 `;
 
 export const line = css`
