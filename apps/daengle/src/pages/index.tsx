@@ -1,5 +1,5 @@
 import { AppBar, Layout, RoundButton, Tabs, Text, theme } from '@daengle/design-system';
-import { AuthLogo, MainLogo, SearchIcon, SelectUnfoldInactive } from '@daengle/design-system/icons';
+import { MainLogo, SearchIcon, SelectUnfoldInactive } from '@daengle/design-system/icons';
 import { DaengleDog } from '@daengle/design-system/images';
 import { css } from '@emotion/react';
 import { GNB } from '~/components/commons';
