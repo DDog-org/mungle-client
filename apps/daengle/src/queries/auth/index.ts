@@ -19,7 +19,8 @@ import {
   PostJoinWithPetRequestBody,
   PostKakaoRequestBody,
   PostUserPetRequestBody,
-  PatchUserPetInfoBody,
+  DeleteUserPetRequestData,
+  PatchUserPetInfoRequestBody,
 } from '~/models';
 
 export const usePostKakaoMutation = () => {
@@ -130,14 +131,10 @@ export const usePostUserPetMutation = () => {
 export const usePatchUserPetInfoMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_USER_PET_INFO,
-    mutationFn: async (body: PatchUserPetInfoBody) => {
-      console.log('API 호출 시작:', body);
+    mutationFn: async (body: PatchUserPetInfoRequestBody) => {
       try {
-        const response = await patchUserPetInfo(body);
-        console.log('API 호출 성공:', response);
-        return response;
+        return await patchUserPetInfo(body);
       } catch (error) {
-        console.error('API 호출 실패:', error);
         throw new Error(String(error));
       }
     },
@@ -147,6 +144,6 @@ export const usePatchUserPetInfoMutation = () => {
 export const useDeleteUserPetMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.DELETE_USER_PET,
-    mutationFn: (petId: number) => deleteUserPet(petId),
+    mutationFn: (petId: DeleteUserPetRequestData) => deleteUserPet(petId),
   });
 };
