@@ -2,6 +2,8 @@ import { useRouter } from 'next/router';
 import { useSearchParams } from 'next/navigation';
 import { css } from '@emotion/react';
 import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
+import { formatPhoneNumber } from '@daengle/services/utils';
+import { ROUTES } from '~/constants/commons';
 import { useGetPaymentHistoryQuery } from '~/queries';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
@@ -9,22 +11,25 @@ import 'dayjs/locale/ko';
 export default function PaymentsDetail() {
   const router = useRouter();
   const params = useSearchParams();
+  const tab = params.get('tab');
+
   const reservationId = Number(router.query.reservationId);
   const { data } = useGetPaymentHistoryQuery(reservationId);
 
-  //   if (!data) return <></>;
+  // TODO: loading, error 처리
+  if (!data) return <></>;
 
-  //   const {
-  //     reservationStatus,
-  //     recipientName,
-  //     shopName,
-  //     schedule,
-  //     deposit,
-  //     customerName,
-  //     customerPhoneNumber,
-  //     visitorName,
-  //     visitorPhoneNumber,
-  //   } = data;
+  const {
+    reservationStatus,
+    recipientName,
+    shopName,
+    schedule,
+    deposit,
+    customerName,
+    customerPhoneNumber,
+    visitorName,
+    visitorPhoneNumber,
+  } = data;
 
   return (
     <Layout>
@@ -37,18 +42,18 @@ export default function PaymentsDetail() {
           <div css={detailInfoWrapper}>
             <div css={detailInfo}>
               <Text typo="title2" color="blue200">
-                {dayjs(data?.schedule).format('YY년 MM월 DD일')}
+                {dayjs(schedule).format('YY년 MM월 DD일')}
               </Text>
               <Text typo="body8" color="gray500">
-                {dayjs(data?.schedule).locale('ko').format('dddd • HH:mm')}
+                {dayjs(schedule).locale('ko').format('dddd • HH:mm')}
               </Text>
             </div>
             <div css={detailInfo}>
               <Text typo="subtitle1" color="black">
-                문소연 디자이너
+                {`${recipientName}${tab === 'groomer' && ' 디자이너'}`}
               </Text>
               <Text typo="body9" color="gray400">
-                꼬꼬마 관리샵
+                {shopName}
               </Text>
             </div>
           </div>
@@ -56,7 +61,10 @@ export default function PaymentsDetail() {
             <Text tag="h2" typo="body11" color="gray300">
               이 날 받은 서비스는 어땠나요? 리뷰를 남겨보세요
             </Text>
-            <RoundButton size="L">리뷰 남기기</RoundButton>
+            {/* TODO: reservationStatus 값에 따라 버튼 활성화 여부 설정 */}
+            <RoundButton size="L" onClick={() => router.push(ROUTES.MYPAGE_REVIEWS)}>
+              리뷰 남기기
+            </RoundButton>
           </div>
         </section>
 
@@ -71,7 +79,7 @@ export default function PaymentsDetail() {
               예약금
             </Text>
             <Text typo="subtitle1" color="black">
-              20,000원
+              {deposit.toLocaleString()}원
             </Text>
           </div>
         </section>
@@ -84,18 +92,18 @@ export default function PaymentsDetail() {
           </Text>
           <div css={reserverInfo}>
             <Text typo="subtitle3" color="black">
-              고윤정
+              {customerName}
             </Text>
             <Text typo="body8" color="black">
-              010-0000-0000
+              {formatPhoneNumber(customerPhoneNumber)}
             </Text>
           </div>
           <div css={reserverInfo}>
             <Text typo="subtitle3" color="black">
-              고윤정
+              {visitorName}
             </Text>
             <Text typo="body8" color="black">
-              010-0000-0000
+              {formatPhoneNumber(visitorPhoneNumber)}
             </Text>
           </div>
         </section>

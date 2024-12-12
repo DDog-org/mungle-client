@@ -8,6 +8,7 @@ import { GroomerPaymentHistoryItem } from '~/interfaces/payment';
 import { infoWrapper, top, wrapper } from './index.styles';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import { useSearchParams } from 'next/navigation';
 
 interface Props {
   item: GroomerPaymentHistoryItem;
@@ -17,9 +18,18 @@ export function PaymentListItem({
   item: { reservationId, recipientImageUrl, recipientName, shopName, paymentDate, status },
 }: Props) {
   const router = useRouter();
+  const params = useSearchParams();
 
   return (
-    <div css={wrapper} onClick={() => router.push(ROUTES.MYPAGE_PAYMENTS_DETAIL(reservationId))}>
+    <div
+      css={wrapper}
+      onClick={() =>
+        router.push({
+          pathname: ROUTES.MYPAGE_PAYMENTS_DETAIL(reservationId),
+          query: { tab: params.get('tab') },
+        })
+      }
+    >
       <div css={infoWrapper}>
         <div css={top}>
           <Text typo="subtitle1" color="black">
