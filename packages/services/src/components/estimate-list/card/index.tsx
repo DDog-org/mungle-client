@@ -16,9 +16,9 @@ import {
 
 interface EstimateContent {
   id: number;
-  userImage: string;
+  userImage: string | null;
   nickname: string;
-  proposal: 'GENERAL' | 'DESIGNATION';
+  proposal: string;
   significant: string | null;
   reservedDate: string;
   onDetailClick: () => void;
@@ -33,7 +33,10 @@ export function Card({
   reservedDate,
   onDetailClick,
 }: EstimateContent): JSX.Element {
-  const groomingEstimateId = id;
+  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    event.currentTarget.onerror = null;
+    event.currentTarget.src = '';
+  };
 
   return (
     <div css={wrapper} onClick={onDetailClick}>
@@ -44,14 +47,14 @@ export function Card({
               src={userImage}
               alt={`${nickname} 프로필`}
               css={profileImage}
-              onError={(e) => (e.currentTarget.src = '')} // onError에서 src 초기화
+              onError={handleImageError}
             />
           ) : (
-            <DefaultProfile css={profileImage} />
+            <DefaultProfile width={30} height={30} css={profileImage} />
           )}
           <Text typo="body1">{nickname}</Text>
           <span css={[type, proposal === 'DESIGNATION' ? designated : general]}>
-            {proposal === 'GENERAL' ? '일반' : '지정'}
+            {proposal === 'GENERAL' ? '일반 견적서' : '지정 견적서'}
           </span>
         </div>
 
