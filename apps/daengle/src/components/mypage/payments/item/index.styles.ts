@@ -1,0 +1,30 @@
+import { css } from '@emotion/react';
+import { theme } from '@daengle/design-system';
+
+export const wrapper = css`
+  display: flex;
+
+  width: 100%;
+  padding: 12px;
+  border-radius: 0 65px 65px 0;
+
+  background: ${theme.colors.white};
+
+  cursor: pointer;
+`;
+
+export const infoWrapper = css`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  gap: 4px;
+
+  width: 100%;
+`;
+
+export const top = css`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;

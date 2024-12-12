@@ -28,11 +28,11 @@ export const ROUTES = {
   VET_REVIEW_FORM: (reservationId: number) => `/vet/review/${reservationId}`,
   VET_REVIEW_FORM_EDIT: (reviewId: number) => `/vet/review/${reviewId}/edit`,
 
-  RESERVATION_PAYMENT: '/reservations/payment',
-  RESERVATION_PAYMENT_COMPLETE: '/reservations/payment/complete',
-  RESERVATION_PAYMENT_FAILURE: '/reservations/payment/failure',
+  // Reservations
   RESERVATIONS: '/reservations',
-  PAYMENTS: '/payments',
+
+  // Payments
+  PAYMENTS_ORDER: '/payments/order',
 
   // Messages
   MESSAGES: '/messages',
@@ -46,6 +46,8 @@ export const ROUTES = {
   MYPAGE_PET_PROFILE_EDIT: '/mypage/pet-profile/edit',
   MYPAGE_REVIEWS: '/mypage/reviews',
   MYPAGE_FAVORITES: '/mypage/favorites',
+  MYPAGE_PAYMENTS: '/mypage/payments',
+  MYPAGE_PAYMENTS_DETAIL: (paymentId: number) => `/mypage/payments/${paymentId}`,
 
   // Chat
   CHATS: '/chats',
