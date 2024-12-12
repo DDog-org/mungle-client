@@ -3,6 +3,7 @@ export * from './AppBarBack';
 export * from './AppBarHome';
 export * from './AuthLogo';
 export * from './ButtonTextButtonArrow';
+export * from './ChatItemMenu';
 export * from './DefaultImage';
 export * from './DefaultProfile';
 export * from './EmptyLogo';
