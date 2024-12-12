@@ -137,7 +137,9 @@ export default function PetInfoEdit() {
     if (!confirm('정말로 이 반려견 정보를 삭제하시겠습니까?')) {
       return;
     }
-    await deleteUserPet(selectedPetId);
+    await deleteUserPet({
+      petId: selectedPetId,
+    });
 
     setPetInfos((prev) => prev?.filter((pet) => pet.id !== selectedPetId) || []);
 

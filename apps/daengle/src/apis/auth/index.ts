@@ -76,6 +76,6 @@ export const patchUserPetInfo = async (body: PatchUserPetInfoRequestBody) => {
   return await api.patch<PatchUserPetInfoResponse>('/user/pet-info', body);
 };
 
-export const deleteUserPet = async (petId: DeleteUserPetRequestData) => {
-  return await api.delete<DeleteUserPetResponse>('/user/pet', { data: { petId } });
+export const deleteUserPet = async (data: DeleteUserPetRequestData) => {
+  return await api.delete<DeleteUserPetResponse>('/user/pet', { data });
 };

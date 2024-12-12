@@ -144,6 +144,6 @@ export const usePatchUserPetInfoMutation = () => {
 export const useDeleteUserPetMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.DELETE_USER_PET,
-    mutationFn: (petId: DeleteUserPetRequestData) => deleteUserPet(petId),
+    mutationFn: (data: DeleteUserPetRequestData) => deleteUserPet(data),
   });
 };
