@@ -25,6 +25,8 @@ import { useState } from 'react';
 import { ImageInputBox } from '~/components/mypage/pet-profile/image-input';
 import { ChipToggleButton } from '~/components/mypage/pet-profile/chip-toggle-button';
 import { useS3 } from '@daengle/services/hooks';
+import { ROUTES } from '~/constants/commons';
+import router from 'next/router';
 
 export default function PetProfileEdit() {
   const { data: breeds } = useGetBreedListQuery();
@@ -54,15 +56,12 @@ export default function PetProfileEdit() {
   const onSubmit = async (data: PetProfileCreateFormType) => {
     let imageString = '';
 
-    // 새 이미지 업로드
     if (data.image) {
-      // 새 이미지가 File 객체인 경우
       const uploadedImages = await uploadToS3([data.image]);
       if (uploadedImages && uploadedImages.length > 0) {
         imageString = uploadedImages[0] ?? '';
       }
     }
-    // 사용자 정보 업데이트
     if (imageString != undefined) {
       postUserPet({ ...data, image: imageString });
     }
@@ -83,11 +82,12 @@ export default function PetProfileEdit() {
     };
 
     await postUserPet(body);
+    router.push(ROUTES.MYPAGE);
   };
 
   return (
     <Layout isAppBarExist={true}>
-      <AppBar />
+      <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
       <div css={wrapper}>
         <Text typo="title1">반려견 프로필 등록하기</Text>
         <form onSubmit={handleSubmit(onSubmit)}>

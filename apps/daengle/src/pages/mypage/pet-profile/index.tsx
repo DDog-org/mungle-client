@@ -34,7 +34,6 @@ export default function PetProfileDetail() {
 
   const selectedPet = petInfos?.find((pet) => pet.id === selectedPetId);
 
-  console.log('selectedPet', selectedPet);
   const handlePetSelect = (petId: number) => {
     setSelectedPetId(petId);
   };

@@ -33,6 +33,7 @@ import { ImageInputBox } from '~/components/mypage/user-profile/imageInput';
 import { useS3 } from '@daengle/services/hooks';
 import { DefaultImage } from '@daengle/design-system/icons';
 import { PetProfileEditType } from '~/interfaces/auth';
+import router from 'next/router';
 
 export default function PetInfoEdit() {
   const [petInfos, setPetInfos] = useState<PetProfile[] | null>(null);
@@ -154,7 +155,7 @@ export default function PetInfoEdit() {
 
   return (
     <Layout isAppBarExist={true}>
-      <AppBar backgroundColor={theme.colors.white} />
+      <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
       <div css={titleBox}>
         <Text typo="title1">반려견 프로필 수정</Text>
       </div>
