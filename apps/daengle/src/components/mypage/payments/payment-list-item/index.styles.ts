@@ -5,12 +5,16 @@ export const wrapper = css`
   display: flex;
 
   width: 100%;
-  padding: 12px;
+  padding: 12px 12px 12px 18px;
   border-radius: 0 65px 65px 0;
 
   background: ${theme.colors.white};
 
   cursor: pointer;
+
+  img {
+    border-radius: 50%;
+  }
 `;
 
 export const infoWrapper = css`

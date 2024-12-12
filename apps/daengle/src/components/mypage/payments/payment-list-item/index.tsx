@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Tag, Text } from '@daengle/design-system';
+import { DefaultImage } from '@daengle/design-system/icons';
 import { ROUTES } from '~/constants/commons';
 import { GROOMER_PAYMENT_STATUS } from '~/constants/payment';
 import { GroomerPaymentHistoryItem } from '~/interfaces/payment';
@@ -44,7 +45,7 @@ export function PaymentListItem({
       {recipientImageUrl ? (
         <Image src={recipientImageUrl} alt="recipient" width={70} height={70} />
       ) : (
-        <Image src="/images/default-profile.png" alt="recipient" width={70} height={70} />
+        <DefaultImage width={70} height={70} />
       )}
     </div>
   );
