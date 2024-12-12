@@ -13,7 +13,6 @@ import {
 } from '~/apis';
 import {
   PatchUserInfoRequestBody,
-  PostAvailableNicknameRequestBody,
   PostJoinWithoutPetRequestBody,
   PostJoinWithPetRequestBody,
   PostKakaoRequestBody,
@@ -101,7 +100,7 @@ export const usePatchUserInfoMutation = () => {
 };
 export const useGetUserPetInfoQuery = () => {
   return useQuery({
-    queryKey: QUERY_KEYS.GET_USER_PETINFO,
+    queryKey: QUERY_KEYS.GET_USER_PET_INFO,
     queryFn: async () => {
       try {
         return await getUserPetInfo();
