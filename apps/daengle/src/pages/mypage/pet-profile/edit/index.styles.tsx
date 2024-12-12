@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 
 export const wrapper = css`
-  padding: 0 18px;
+  padding: 18px 18px 0;
 `;
 export const titleBox = css`
   margin: 0 0 40px;
@@ -13,53 +13,66 @@ export const petProfileWrapper = css`
   gap: 15px;
 `;
 export const petProfileEditWrapper = css`
-  width: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
+
+  width: fit-content;
 `;
 export const petProfileImageBox = css`
+  overflow: hidden;
+
   width: 70px;
   height: 70px;
-  border-radius: 50%;
-  overflow: hidden;
-  object-fit: cover;
   border: 5px solid ${theme.colors.blue200};
+  border-radius: 50%;
+  object-fit: cover;
 `;
 export const line = css`
-  border: 3.5px solid ${theme.colors.gray100};
   width: 100%;
   margin: 32px 0;
+  border: 3.5px solid ${theme.colors.gray100};
 `;
 export const profileImageWrapper = css`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   margin: 32px 0 40px;
 `;
 export const profileImageBox = css`
+  overflow: hidden;
+
   width: 116px;
   height: 116px;
   border-radius: 50%;
-  overflow: hidden;
   object-fit: cover;
 `;
 export const profileEditButtonBox = css`
   margin-top: 12px;
-  font-size: 14px;
+
   color: ${theme.colors.gray400};
+  font-size: 14px;
 `;
 
 export const inputWrapper = css`
-  padding: 0 18px 146px;
+  padding: 0 0 146px;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 32px;
 `;
-
+export const readOnlyLayer = css`
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0); // 투명 레이어
+  position: absolute;
+  z-index: ${theme.zIndex.ctaButton - 1};
+  cursor: not-allowed;
+  pointer-events: all;
+`;
 export const formBox = css`
   display: flex;
   flex-direction: column;
@@ -70,6 +83,7 @@ export const weightButtonBox = css`
   flex-direction: column;
   align-items: center;
   gap: 3px;
+
   width: 100%;
 `;
 export const toggleButtonBox = css`
@@ -95,29 +109,33 @@ export const chipButtonBox = css`
   gap: 7px;
 `;
 export const buttonContainer = css`
-  margin: 32px 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 21px;
+
+  margin: 32px 0 0;
 `;
 export const detailInput = css`
-  background-color: ${theme.colors.gray100};
   height: 136px;
-  border-radius: 10px;
   padding: 14px;
+  border-radius: 10px;
+
+  background-color: ${theme.colors.gray100};
+
   ::placeholder {
     color: ${theme.colors.gray200};
   }
 `;
 export const weightWrapper = css`
-  flex: 1;
   display: flex;
   flex-direction: column;
+  flex: 1;
   justify-content: center;
-  text-align: center;
   gap: 3px;
+
+  text-align: center;
 `;
 
 export const ctaButtonWrapper = css`

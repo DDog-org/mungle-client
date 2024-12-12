@@ -157,7 +157,7 @@ export default function PetProfileEdit() {
                       value={item.value}
                       label={item.label}
                       size="full"
-                      isSelected={field.value === item.value}
+                      isSelected={String(field.value) === item.value}
                       onChange={(e) => field.onChange(e.target.value)}
                     />
                   ))}
@@ -221,7 +221,7 @@ export default function PetProfileEdit() {
                       value={item.value}
                       label={item.label}
                       size="full"
-                      isSelected={field.value === item.value}
+                      isSelected={String(field.value) === item.value}
                       onChange={(e) => field.onChange(e.target.value)}
                     />
                   ))}
@@ -245,7 +245,7 @@ export default function PetProfileEdit() {
                       value={item.value}
                       label={item.label}
                       size="full"
-                      isSelected={field.value === item.value}
+                      isSelected={String(field.value) === item.value}
                       onChange={(e) => field.onChange(e.target.value)}
                     />
                   ))}

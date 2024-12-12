@@ -95,3 +95,19 @@ export interface SignificantTag {
 export interface GetUserPetInfoResponse {
   petDetails: PetInfos[];
 }
+
+export interface PostUserPetRequestBody {
+  image: string | null;
+  name: string;
+  birth: number;
+  gender: 'MALE' | 'FEMALE';
+  breed: string;
+  isNeutered: boolean;
+  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
+  groomingExperience: Boolean;
+  isBite: Boolean;
+  dislikeParts: DislikePart[];
+  significantTags: SignificantTag[];
+  significant: string;
+}
+export type PostUserPetResponse = string;

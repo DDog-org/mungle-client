@@ -38,6 +38,9 @@ export default function useValidatePetEdit() {
       isBite: {
         required: '입질 여부를 선택해 주세요',
       },
+      dislikeParts: {
+        required: '싫어하는 부위를 선택해 주세요',
+      },
     }),
     []
   );
