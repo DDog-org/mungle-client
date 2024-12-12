@@ -30,6 +30,7 @@ export interface PaymentHistory {
 }
 
 export interface GetPaymentHistoryDetailResponse {}
+
 export interface PostPaymentOrderRequestBody {
   estimateId: number;
   petId: number;
