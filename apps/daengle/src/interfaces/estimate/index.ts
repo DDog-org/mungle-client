@@ -1,13 +1,17 @@
 export interface PetInfo {
   petId: number;
   name: string;
-  image: string;
+  imageURL: string;
 }
 
-export interface PetEstimateInfo extends PetInfo {
-  groomingEstimates?: GroomingEstimateType[];
-  careEstimates?: CareEstimateType[];
+export interface PetEstimateId extends PetInfo {
+  estimateId: number;
 }
+
+// export interface PetEstimateInfo extends PetInfo {
+//   groomingEstimates?: GroomingEstimateType[];
+//   careEstimates?: CareEstimateType[];
+// }
 
 export interface GroomingEstimateType {
   groomingEstimateId: number;

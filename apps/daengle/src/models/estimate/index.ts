@@ -1,7 +1,30 @@
-import { PetInfo, PetEstimateInfo } from '~/interfaces/estimate';
+import { PetInfo, PetEstimateId } from '~/interfaces/estimate';
 
-export interface GetUserEstimateListResponse {
-  petInfos?: PetEstimateInfo[];
+export interface GetUserEstimateGeneralGroomingPetsResponse {
+  petInfos?: PetEstimateId[];
+}
+
+export interface GetUserEstimateGeneralGroomingRequestParams {
+  petId: number;
+  params: {
+    page: number;
+    size: number;
+  };
+}
+
+export interface GetUserEstimateGeneralGroomingResponse {
+  estimates?: GetUserEstimateGeneralGroomingList[];
+}
+
+export interface GetUserEstimateGeneralGroomingList {
+  id: number;
+  name: string;
+  daengleMeter: number;
+  imageUrl: string;
+  shopName: string;
+  keywords: string[];
+  reservedDate: string;
+  tags?: string[];
 }
 
 export interface PostUserEstimateGroomerUserInfoRequestBody {
@@ -29,12 +52,6 @@ export interface PostUserEstimateGroomingResponse {
   requestResult: string;
 }
 
-export interface PetInfos {
-  petId: number;
-  image: string;
-  name: string;
-}
-
 export interface PostUserEstimateVetUserInfoRequestBody {
   vetId: number;
 }
@@ -43,7 +60,7 @@ export interface PostUserEstimateVetUserInfoResponse {
   vetImage: string;
   vetName: string;
   address: string;
-  petInfos: PetInfos[];
+  petInfos: PetInfo[];
 }
 
 export interface PostUserEstimateCareRequestBody {

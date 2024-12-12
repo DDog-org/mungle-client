@@ -1,35 +1,80 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../query-keys';
 import {
-  getUserEstimateList,
+  // getUserEstimateList,
   postUserEstimateGrooming,
   postUserEstimateGroomerUserInfo,
   postUserEstimateCare,
   postUserEstimateVetUserInfo,
+  getUserEstimateGeneralGroomingPets,
+  getUserEstimateGeneralGrooming,
 } from '~/apis';
 
 import {
-  GetUserEstimateListResponse,
+  // GetUserEstimateListResponse,
   PostUserEstimateGroomingRequestBody,
   PostUserEstimateGroomerUserInfoRequestBody,
   PostUserEstimateCareRequestBody,
   PostUserEstimateVetUserInfoRequestBody,
+  GetUserEstimateGeneralGroomingPetsResponse,
+  GetUserEstimateGeneralGroomingResponse,
 } from '~/models/estimate';
+import { PAGE_SIZE } from '~/constants/review';
 
-export const useUserEstimateListQuery = () => {
-  return useQuery<GetUserEstimateListResponse>({
-    queryKey: QUERY_KEYS.GET_DAENGLE_ESTIMATE_LIST,
-    queryFn: async () => {
-      try {
-        const data = await getUserEstimateList();
-        return data;
-      } catch (error) {
-        throw new Error('견적 리스트를 가져오는 데 실패했습니다.');
-      }
+// export const useUserEstimateListQuery = () => {
+//   return useQuery<GetUserEstimateListResponse>({
+//     queryKey: QUERY_KEYS.GET_DAENGLE_ESTIMATE_LIST,
+//     queryFn: async () => {
+//       try {
+//         const data = await getUserEstimateList();
+//         return data;
+//       } catch (error) {
+//         throw new Error('견적 리스트를 가져오는 데 실패했습니다.');
+//       }
+//     },
+//   });
+// };
+
+export const useUserEstimateGeneralGroomingPetsQuery = () => {
+  return useQuery<GetUserEstimateGeneralGroomingPetsResponse>({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_GROOMING_PETS,
+    queryFn: () => {
+      return getUserEstimateGeneralGroomingPets();
     },
   });
 };
+
+export const useUserEstimateGeneralGroomingQuery = (petId: number) => {
+  return useInfiniteQuery({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_GROOMING,
+    initialPageParam: 1,
+    queryFn: ({ pageParam = 1 }) => {
+      return getUserEstimateGeneralGrooming({
+        petId,
+        params: {
+          page: pageParam,
+          size: PAGE_SIZE,
+        },
+      });
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.estimates?.length === PAGE_SIZE ? allPages.length + 1 : undefined;
+    },
+    enabled: !!petId,
+  });
+};
+
+// export const useUserEstimateGeneralGroomingQuery = () => {
+//   return useQuery<GetUserEstimateGeneralGroomingResponse>({
+//     queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_GROOMING_PETS,
+//     queryFn: () => {
+//       return getUserEstimateGeneralGrooming(params);
+//     }
+//   })
+// }
+
+///////////////////////
 
 export const usePostUserEstimateGroomerUserInfoMutation = () => {
   return useMutation({

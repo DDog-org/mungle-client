@@ -2,12 +2,7 @@ import { TextButton } from '@daengle/design-system';
 import { wrapper, profileButton, selectedProfileButton, defaultImage } from './index.styles';
 import { useState } from 'react';
 import { DefaultProfile } from '@daengle/design-system/icons';
-
-interface PetInfo {
-  petId: number;
-  name: string;
-  image: string;
-}
+import { PetInfo } from '~/interfaces/estimate';
 
 interface Props {
   petInfos: PetInfo[];
@@ -31,11 +26,11 @@ export function ProfileSelector({ petInfos, selectedPetIndex, onSelectPet }: Pro
           onClick={() => onSelectPet(index)}
           icons={{
             prefix:
-              !pet.image || failedImages[index] ? (
+              !pet.imageURL || failedImages[index] ? (
                 <DefaultProfile css={defaultImage} />
               ) : (
                 <img
-                  src={pet.image}
+                  src={pet.imageURL}
                   alt={`${pet.name} 프로필`}
                   onError={() => handleImageError(index)}
                 />
