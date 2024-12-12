@@ -11,6 +11,7 @@ import {
   postKakao,
   postUserPet,
   patchUserPetInfo,
+  deleteUserPet,
 } from '~/apis';
 import {
   PatchUserInfoRequestBody,
@@ -128,7 +129,7 @@ export const usePostUserPetMutation = () => {
 
 export const usePatchUserPetInfoMutation = () => {
   return useMutation({
-    mutationKey: [QUERY_KEYS.POST_USER_PET_INFO],
+    mutationKey: QUERY_KEYS.POST_USER_PET_INFO,
     mutationFn: async (body: PatchUserPetInfoBody) => {
       console.log('API 호출 시작:', body);
       try {
@@ -140,5 +141,12 @@ export const usePatchUserPetInfoMutation = () => {
         throw new Error(String(error));
       }
     },
+  });
+};
+
+export const useDeleteUserPetMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.DELETE_USER_PET,
+    mutationFn: (petId: number) => deleteUserPet(petId),
   });
 };

@@ -1,13 +1,11 @@
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 
-export const wrapper = css`
-  position: relative;
-
-  padding: 18px 18px 0;
+export const petTitle = css`
+  padding: 0 18px 0 15px;
 `;
 export const titleBox = css`
-  margin: 0 0 40px;
+  margin: 18px 18px 40px;
 `;
 export const petProfileWrapper = css`
   display: flex;
@@ -22,6 +20,7 @@ export const section = css`
 export const petList = css`
   display: flex;
   gap: 14px;
+  overflow-x: scroll;
 `;
 export const petProfile = css`
   display: flex;
@@ -30,6 +29,10 @@ export const petProfile = css`
   gap: 8px;
 
   cursor: pointer;
+`;
+export const petItemStyle = (index: number, length: number) => css`
+  ${index === 0 && 'padding: 0 0 0 18px;'}
+  ${index === length - 1 && 'padding: 0 18px 0 0;'}
 `;
 export const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
   width: 86px;
@@ -44,53 +47,6 @@ export const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
 export const petName = css`
   transition: 0.2s ease;
 `;
-export const registerPet = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-
-  width: 100%;
-  height: 109px;
-  border: 1px solid ${theme.colors.gray200};
-  border-radius: 10px;
-`;
-export const circle = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 40px;
-  height: 40px;
-  border: 1px solid ${theme.colors.gray200};
-  border-radius: 20px;
-
-  cursor: pointer;
-
-  :hover {
-    background-color: ${theme.colors.gray100};
-
-    transition: 0.3s;
-  }
-`;
-export const petProfileEditWrapper = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-
-  width: fit-content;
-`;
-export const petProfileImageBox = css`
-  overflow: hidden;
-
-  width: 70px;
-  height: 70px;
-  border: 5px solid ${theme.colors.blue200};
-  border-radius: 50%;
-  object-fit: cover;
-`;
 export const line = css`
   width: 100%;
   margin: 32px 0;
@@ -104,21 +60,6 @@ export const profileImageWrapper = css`
 
   margin: 0 0 32px;
 `;
-export const profileImageBox = css`
-  overflow: hidden;
-
-  width: 116px;
-  height: 116px;
-  border-radius: 50%;
-  object-fit: cover;
-`;
-export const profileEditButtonBox = css`
-  margin-top: 12px;
-
-  color: ${theme.colors.gray400};
-  font-size: 14px;
-`;
-
 export const inputWrapper = css`
   padding: 0 18px 146px;
   position: relative;

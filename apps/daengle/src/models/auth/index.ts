@@ -1,5 +1,3 @@
-import { DislikeParts, SignificantTags } from '~/pages/mypage/interfaces';
-
 export interface PostKakaoRequestBody {
   kakaoAccessToken: string;
 }
@@ -81,8 +79,8 @@ export interface PetInfos {
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
   groomingExperience: boolean;
   isBite: boolean;
-  dislikeParts: string[];
-  significantTags: string[];
+  dislikeParts: DislikePart[];
+  significantTags: SignificantTag[];
   significant: string;
 }
 
@@ -148,3 +146,7 @@ export interface PatchUserPetInfoBody {
 }
 
 export type PatchUserPetInfoResponse = boolean;
+
+export interface DeleteUserPetResponse {
+  requestResult: string;
+}

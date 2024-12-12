@@ -30,3 +30,28 @@ export interface PetProfileInfoCreateFormType {
   image: File | null;
   nickname: string;
 }
+
+export interface PetProfileEditType {
+  id: number;
+  image: File | null;
+  name: string;
+  birth: number;
+  gender: 'MALE' | 'FEMALE';
+  breed: string;
+  isNeutered: boolean;
+  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
+  groomingExperience: boolean;
+  isBite: boolean;
+  dislikeParts: string[];
+  significantTags: string[];
+  significant: string;
+}
+
+export interface DislikeParts {
+  part: string;
+  partName: string;
+}
+export interface SignificantTags {
+  tagName: string;
+  tag: string;
+}

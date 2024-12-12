@@ -14,7 +14,7 @@ import {
 } from './index.styles';
 import { DislikeParts, PetProfileCreateFormType, SignificantTags } from '~/pages/mypage/interfaces';
 import { Controller, useForm } from 'react-hook-form';
-import useValidatePetEdit from '~/pages/mypage/hooks/use-validate-pet-form';
+import useValidatePetEdit from '~/hooks/mypage/use-validate-pet-form';
 import {
   BIRTH_YEAR_OPTIONS,
   PET_DISLIKEPART,
@@ -22,7 +22,7 @@ import {
   PET_IS_NEUTERED,
   PET_SIGNIFICANTTAG,
   PET_WEIGHT,
-} from '~/pages/mypage/constants';
+} from '~/constants/mypage';
 import { useGetBreedListQuery, usePostUserPetMutation } from '~/queries';
 import { useState } from 'react';
 import { ImageInputBox } from '~/components/mypage/pet-profile/image-input';

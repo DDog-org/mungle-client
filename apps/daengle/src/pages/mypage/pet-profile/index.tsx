@@ -37,7 +37,7 @@ import {
   PET_IS_NEUTERED,
   PET_SIGNIFICANTTAG,
   PET_WEIGHT,
-} from '~/pages/mypage/constants';
+} from '~/constants/mypage';
 import { useGetBreedListQuery, useGetUserPetInfoQuery } from '~/queries';
 import { useEffect, useState } from 'react';
 import { DefaultImage } from '@daengle/design-system/icons';

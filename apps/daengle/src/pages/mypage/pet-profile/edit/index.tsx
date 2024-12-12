@@ -13,8 +13,6 @@ import {
   petProfileWrapper,
   line,
   profileImageWrapper,
-  profileImageBox,
-  profileEditButtonBox,
   inputWrapper,
   formBox,
   toggleButtonBox,
@@ -24,17 +22,14 @@ import {
   chipButtonBox,
   detailInput,
   weightWrapper,
-  wrapper,
   section,
   petList,
   petProfile,
   petName,
   profileImage,
+  petTitle,
+  petItemStyle,
 } from './index.styles';
-import Image from 'next/image';
-import { PetProfileEditType } from '~/pages/mypage/interfaces';
-import { Controller, useForm } from 'react-hook-form';
-import useValidatePetEdit from '~/pages/mypage/hooks/use-validate-pet-form';
 import {
   BIRTH_YEAR_OPTIONS,
   PET_DISLIKEPART,
@@ -42,25 +37,31 @@ import {
   PET_IS_NEUTERED,
   PET_SIGNIFICANTTAG,
   PET_WEIGHT,
-} from '~/pages/mypage/constants';
+} from '~/constants/mypage';
 import {
+  useDeleteUserPetMutation,
   useGetBreedListQuery,
   useGetUserPetInfoQuery,
   usePatchUserPetInfoMutation,
 } from '~/queries';
+import Image from 'next/image';
+import { Controller, useForm } from 'react-hook-form';
+import useValidatePetEdit from '~/hooks/mypage/use-validate-pet-form';
 import { useEffect, useState } from 'react';
 import { PetInfos } from '~/models';
-import { DefaultImage } from '@daengle/design-system/icons';
-import { useS3 } from '@daengle/services/hooks';
 import { ImageInputBox } from '~/components/mypage/user-profile/imageInput';
+import { useS3 } from '@daengle/services/hooks';
+import { DefaultImage } from '@daengle/design-system/icons';
+import { PetProfileEditType } from '~/interfaces/auth';
 
 export default function PetInfoEdit() {
   const [petInfos, setPetInfos] = useState<PetInfos[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
 
-  const { data: getUserPetInfo } = useGetUserPetInfoQuery();
   const { data: breeds } = useGetBreedListQuery();
+  const { data: getUserPetInfo } = useGetUserPetInfoQuery();
   const { mutateAsync: patchUserPetInfo } = usePatchUserPetInfoMutation();
+  const { mutateAsync: deleteUserPet } = useDeleteUserPetMutation();
 
   const validation = useValidatePetEdit();
 
@@ -91,8 +92,8 @@ export default function PetInfoEdit() {
       if (defaultPet) {
         setSelectedPetId(defaultPet.id);
 
-        const dislikeParts = defaultPet.dislikeParts.map((part) => part.part); // `part` 값만 추출
-        const significantTags = defaultPet.significantTags.map((tag) => tag.tag); // `tag` 값만 추출
+        const dislikeParts = defaultPet.dislikeParts.map((part) => part.part);
+        const significantTags = defaultPet.significantTags.map((tag) => tag.tag);
 
         setValue('name', defaultPet.name || '');
         setValue('birth', defaultPet.birth);
@@ -113,8 +114,8 @@ export default function PetInfoEdit() {
 
     const selectedPet = petInfos?.find((pet) => pet.id === petId);
 
-    const dislikeParts = selectedPet?.dislikeParts.map((part) => part.part); // `part` 값만 추출
-    const significantTags = selectedPet?.significantTags.map((tag) => tag.tag); // `tag` 값만 추출
+    const dislikeParts = selectedPet?.dislikeParts.map((part) => part.part);
+    const significantTags = selectedPet?.significantTags.map((tag) => tag.tag);
 
     if (selectedPet) {
       setValue('name', selectedPet.name || '');
@@ -130,18 +131,28 @@ export default function PetInfoEdit() {
     }
   };
 
+  const handleDeletePet = async () => {
+    // TODO : 모달창으로 수정
+    if (!confirm('정말로 이 반려견 정보를 삭제하시겠습니까?')) {
+      return;
+    }
+    await deleteUserPet(selectedPetId);
+
+    setPetInfos((prev) => prev?.filter((pet) => pet.id !== selectedPetId) || []);
+
+    setSelectedPetId(0);
+  };
+
   const onSubmit = async (data: PetProfileEditType) => {
     let imageString = '';
 
-    // 기존 이미지 삭제
     if (getUserPetInfo?.image) {
-      const fileName = getUserPetInfo.image.split('/').pop(); // S3 경로에서 파일 이름 추출
+      const fileName = getUserPetInfo.image.split('/').pop();
       if (fileName) {
         await deleteFromS3(fileName);
       }
     }
 
-    // 새 이미지 업로드
     if (data.image) {
       const uploadedImages = await uploadToS3([data.image]);
       if (uploadedImages && uploadedImages.length > 0) {
@@ -151,76 +162,65 @@ export default function PetInfoEdit() {
       imageString = getUserPetInfo?.image || '';
     }
 
-    // 사용자 정보 업데이트
-    if (imageString != undefined) {
-      patchUserPetInfo({ ...data, image: imageString });
-    }
-
     const payload = {
       ...data,
       id: selectedPetId,
       image: imageString,
     };
 
-    console.log('보낼 데이터:', payload);
-    try {
-      const response = await patchUserPetInfo(payload);
-      console.log('API 응답:', response);
-      alert('프로필이 성공적으로 저장되었습니다!');
-    } catch (error) {
-      console.error('API 호출 중 에러:', error);
-      alert('프로필 저장 중 에러가 발생했습니다. 다시 시도해 주세요.');
-    }
+    await patchUserPetInfo(payload);
   };
 
   return (
     <Layout isAppBarExist={true}>
       <AppBar />
-      <div css={wrapper}>
-        <div css={titleBox}>
-          <Text typo="title1">반려견 프로필 수정</Text>
-        </div>
-        <div css={petProfileWrapper}>
-          <section css={section}>
+      <div css={titleBox}>
+        <Text typo="title1">반려견 프로필 수정</Text>
+      </div>
+      <div css={petProfileWrapper}>
+        <section css={section}>
+          <div css={petTitle}>
             <Text tag="h2" typo="subtitle3" color="black">
               내 아이
             </Text>
-            <div css={petList}>
-              {petInfos && petInfos.length > 0 ? (
-                <div css={petList}>
-                  {petInfos.map((pet) => (
-                    <div key={pet.id} css={petProfile} onClick={() => handlePetSelect(pet.id)}>
-                      {pet.image ? (
-                        <Image
-                          src={pet.image}
-                          alt="반려견 프로필"
-                          width={86}
-                          height={86}
-                          css={profileImage({ isSelected: selectedPetId === pet.id })}
-                        />
-                      ) : (
-                        <DefaultImage
-                          css={profileImage({ isSelected: selectedPetId === pet.id })}
-                        />
-                      )}
-                      <Text
-                        typo="body1"
-                        color={selectedPetId === pet.id ? 'blue200' : 'gray400'}
-                        css={petName}
-                      >
-                        {pet.name}
-                      </Text>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <Text typo="body3" color="gray400">
-                  반려견 정보를 불러오지 못했습니다.
-                </Text>
-              )}
-            </div>
-          </section>
-        </div>
+          </div>
+          <div css={petList}>
+            {petInfos && petInfos.length > 0 ? (
+              <div css={petList}>
+                {petInfos.map((pet, index) => (
+                  <div
+                    key={pet.id}
+                    css={[petProfile, petItemStyle(index, petInfos.length)]}
+                    onClick={() => handlePetSelect(pet.id)}
+                  >
+                    {pet.image ? (
+                      <Image
+                        src={pet.image}
+                        alt="반려견 프로필"
+                        width={86}
+                        height={86}
+                        css={profileImage({ isSelected: selectedPetId === pet.id })}
+                      />
+                    ) : (
+                      <DefaultImage css={profileImage({ isSelected: selectedPetId === pet.id })} />
+                    )}
+                    <Text
+                      typo="body1"
+                      color={selectedPetId === pet.id ? 'blue200' : 'gray400'}
+                      css={petName}
+                    >
+                      {pet.name}
+                    </Text>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <Text typo="body3" color="gray400">
+                반려견 정보를 불러오지 못했습니다.
+              </Text>
+            )}
+          </div>
+        </section>
       </div>
       <div css={line} />
 
@@ -228,7 +228,7 @@ export default function PetInfoEdit() {
         <div css={profileImageWrapper}>
           <ImageInputBox
             onChange={(files) => setValue('image', files, { shouldValidate: true })}
-            defaultValue={getUserPetInfo?.image || ''}
+            defaultValue={petInfos?.find((pet) => pet.id === selectedPetId)?.image || ''}
           />
         </div>
         <div css={inputWrapper}>
@@ -407,8 +407,8 @@ export default function PetInfoEdit() {
                             onClick={(e) => {
                               e.preventDefault();
                               const newParts = field.value?.includes(item.value)
-                                ? field.value.filter((part) => part !== item.value) // 이미 선택된 경우 제거
-                                : [...field.value, item.value]; // 선택되지 않은 경우 추가
+                                ? field.value.filter((part: string) => part !== item.value)
+                                : [...field.value, item.value];
 
                               field.onChange(newParts);
                             }}
@@ -442,8 +442,8 @@ export default function PetInfoEdit() {
                               onClick={(e) => {
                                 e.preventDefault();
                                 const newTags = field.value?.includes(item.value)
-                                  ? field.value.filter((tag) => tag !== item.value) // 이미 선택된 경우 제거
-                                  : [...field.value, item.value]; // 선택되지 않은 경우 추가
+                                  ? field.value.filter((tag: string) => tag !== item.value)
+                                  : [...field.value, item.value];
 
                                 field.onChange(newTags);
                               }}
@@ -473,7 +473,13 @@ export default function PetInfoEdit() {
               />
             </section>
           </section>
-          <CTAButton type="submit" secondaryButtonLabel="삭제하기" disabled={false}>
+
+          <CTAButton
+            // onSubmit={handleSubmit(onSubmit)}
+            secondaryButtonLabel="삭제하기"
+            onSecondaryButtonClick={handleDeletePet}
+            disabled={false}
+          >
             수정하기
           </CTAButton>
         </div>
