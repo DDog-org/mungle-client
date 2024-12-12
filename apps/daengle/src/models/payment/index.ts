@@ -30,3 +30,19 @@ export interface PaymentHistory {
 }
 
 export interface GetPaymentHistoryDetailResponse {}
+export interface GetPaymentHistoryRequestParams {
+  reservationId: number;
+}
+
+export interface GetPaymentHistoryResponse {
+  reservationId: number;
+  reservationStatus: string;
+  recipientName: string;
+  shopName: string;
+  schedule: string;
+  deposit: number;
+  customerName: string;
+  customerPhoneNumber: string;
+  visitorName: string;
+  visitorPhoneNumber: string;
+}

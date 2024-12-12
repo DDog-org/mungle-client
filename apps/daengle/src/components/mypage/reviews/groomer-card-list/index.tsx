@@ -6,7 +6,7 @@ import { useIntersectionLoad } from '~/hooks/review';
 import {
   deleteUserGroomingReviewMutation,
   getUserGroomingMyReviewListInfiniteQuery,
-} from '~/queries/review';
+} from '~/queries';
 import { bottom, wrapper } from './index.styles';
 
 export function GroomerCardList() {

@@ -5,7 +5,7 @@ import { AppBar, Layout, Text, theme } from '@daengle/design-system';
 import { Card, Empty } from '~/components/reviews';
 import { GROOMER_REVIEW_KEYWORDS } from '~/constants/review';
 import { useIntersectionLoad } from '~/hooks';
-import { getUserGroomerReviewListInfiniteQuery } from '~/queries/review';
+import { getUserGroomerReviewListInfiniteQuery } from '~/queries';
 
 export default function GroomerReviews() {
   const router = useRouter();

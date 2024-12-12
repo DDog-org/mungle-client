@@ -3,6 +3,8 @@ import {
   GetPaymentCareHistoryListResponse,
   GetPaymentGroomingHistoryListRequestParams,
   GetPaymentGroomingHistoryListResponse,
+  GetPaymentHistoryRequestParams,
+  GetPaymentHistoryResponse,
 } from '~/models';
 import { api } from '../config';
 
@@ -18,4 +20,8 @@ export const getPaymentCareHistoryList = async (params: GetPaymentCareHistoryLis
   return await api.get<GetPaymentCareHistoryListResponse>(`/payment/care/history/list`, {
     params,
   });
+};
+
+export const getPaymentHistory = async ({ reservationId }: GetPaymentHistoryRequestParams) => {
+  return await api.get<GetPaymentHistoryResponse>(`/api/payment/${reservationId}`);
 };

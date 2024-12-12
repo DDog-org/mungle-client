@@ -1,5 +1,9 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { getPaymentCareHistoryList, getPaymentGroomingHistoryList } from '~/apis';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import {
+  getPaymentCareHistoryList,
+  getPaymentGroomingHistoryList,
+  getPaymentHistory,
+} from '~/apis';
 import { PAGE_SIZE } from '~/constants/review';
 import { QUERY_KEYS } from '../query-keys';
 
@@ -26,5 +30,13 @@ export const useGetPaymentCareHistoryListInfiniteQuery = () => {
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.paymentHistoryList.length === PAGE_SIZE ? allPages.length + 1 : undefined;
     },
+  });
+};
+
+export const useGetPaymentHistoryQuery = (reservationId: number) => {
+  return useQuery({
+    queryKey: QUERY_KEYS.DELETE_USER_CARE_REVIEW,
+    queryFn: () => getPaymentHistory({ reservationId }),
+    enabled: !!reservationId,
   });
 };

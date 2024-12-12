@@ -5,7 +5,7 @@ import { AppBar, Layout, Text, theme } from '@daengle/design-system';
 import { Card, Empty } from '~/components/reviews';
 import { VET_REVIEW_KEYWORDS } from '~/constants/review';
 import { useIntersectionLoad } from '~/hooks';
-import { getUserVetReviewListInfiniteQuery } from '~/queries/review';
+import { getUserVetReviewListInfiniteQuery } from '~/queries';
 
 export default function VetReviews() {
   const router = useRouter();
