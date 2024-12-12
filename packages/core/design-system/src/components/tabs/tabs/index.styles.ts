@@ -26,7 +26,7 @@ export const tabContent = css`
   height: 100%;
 `;
 
-export const tabContentItem = css`
+export const tabContentItem = (isPadding: boolean) => css`
   position: absolute;
   top: 0;
 

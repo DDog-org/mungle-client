@@ -11,9 +11,10 @@ interface Tab {
 interface Props {
   tabs: Tab[];
   renderContent: (activeTabId: string) => React.ReactNode;
+  isPadding?: boolean;
 }
 
-export function Tabs({ tabs, renderContent }: Props) {
+export function Tabs({ tabs, renderContent, isPadding = true }: Props) {
   const [activeTab, setActiveTab] = useState<string>(tabs[0]?.id ?? '');
   const [direction, setDirection] = useState<number>(0);
 
@@ -47,7 +48,7 @@ export function Tabs({ tabs, renderContent }: Props) {
             initial={{ x: direction === 1 ? 100 : -100 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.4 }}
-            css={tabContentItem}
+            css={tabContentItem(isPadding)}
           >
             {renderContent(activeTab)}
           </motion.div>
