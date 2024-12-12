@@ -68,7 +68,7 @@ export interface PatchUserInfoRequestBody {
   nickname: string;
 }
 
-export interface PetInfos {
+export interface PetProfile {
   id: number;
   image: string;
   name: string;
@@ -93,7 +93,7 @@ export interface SignificantTag {
   tag: string;
 }
 export interface GetUserPetInfoResponse {
-  petDetails: PetInfos[];
+  petDetails: PetProfile[];
   image?: string;
 }
 

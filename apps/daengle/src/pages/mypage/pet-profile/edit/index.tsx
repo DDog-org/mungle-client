@@ -49,14 +49,14 @@ import Image from 'next/image';
 import { Controller, useForm } from 'react-hook-form';
 import useValidatePetEdit from '~/hooks/mypage/use-validate-pet-form';
 import { useEffect, useState } from 'react';
-import { PetInfos } from '~/models';
+import { PetProfile } from '~/models/auth';
 import { ImageInputBox } from '~/components/mypage/user-profile/imageInput';
 import { useS3 } from '@daengle/services/hooks';
 import { DefaultImage } from '@daengle/design-system/icons';
 import { PetProfileEditType } from '~/interfaces/auth';
 
 export default function PetInfoEdit() {
-  const [petInfos, setPetInfos] = useState<PetInfos[] | null>(null);
+  const [petInfos, setPetInfos] = useState<PetProfile[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
 
   const { data: breeds } = useGetBreedListQuery();
@@ -480,7 +480,6 @@ export default function PetInfoEdit() {
           </section>
 
           <CTAButton
-            // onSubmit={handleSubmit(onSubmit)}
             secondaryButtonLabel="삭제하기"
             onSecondaryButtonClick={handleDeletePet}
             disabled={false}

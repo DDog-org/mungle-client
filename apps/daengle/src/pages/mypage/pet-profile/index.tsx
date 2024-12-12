@@ -41,12 +41,12 @@ import {
 import { useGetBreedListQuery, useGetUserPetInfoQuery } from '~/queries';
 import { useEffect, useState } from 'react';
 import { DefaultImage } from '@daengle/design-system/icons';
-import { PetInfos } from '~/models/auth';
+import { PetProfile } from '~/models/auth';
 import router from 'next/router';
 import { ROUTES } from '~/constants/commons';
 
 export default function PetProfileDetail() {
-  const [petInfos, setPetInfos] = useState<PetInfos[] | null>(null);
+  const [petInfos, setPetInfos] = useState<PetProfile[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
   const { data: breeds } = useGetBreedListQuery();
   const { data: getUserPetInfo, isLoading, error } = useGetUserPetInfoQuery();
@@ -58,12 +58,12 @@ export default function PetProfileDetail() {
   };
 
   const handleGoToEdit = () => {
-    router.push(ROUTES.MAYPAGE_PET_PROFILE_EDIT);
+    router.push(ROUTES.MYPAGE_PET_PROFILE_EDIT);
   };
   useEffect(() => {
     if (getUserPetInfo && getUserPetInfo.petDetails) {
       setPetInfos(getUserPetInfo.petDetails);
-      setSelectedPetId(getUserPetInfo.petDetails[0]?.id || 0); // 기본값으로 첫 번째 반려견 선택
+      setSelectedPetId(getUserPetInfo.petDetails[0]?.id || 0);
     }
   }, [getUserPetInfo]);
 
@@ -161,7 +161,7 @@ export default function PetProfileDetail() {
                 value={item.value}
                 label={item.label}
                 size="full"
-                isSelected={selectedPet?.isNeutered === item.value}
+                isSelected={`${selectedPet?.isNeutered}` === item.value}
               />
             ))}
           </section>
@@ -204,7 +204,7 @@ export default function PetProfileDetail() {
                 value={item.value}
                 label={item.label}
                 size="full"
-                isSelected={selectedPet?.groomingExperience === item.value}
+                isSelected={`${selectedPet?.groomingExperience}` === item.value}
               />
             ))}
           </section>
@@ -218,7 +218,7 @@ export default function PetProfileDetail() {
                 value={item.value}
                 label={item.label}
                 size="full"
-                isSelected={selectedPet?.isBite === item.value}
+                isSelected={`${selectedPet?.isBite}` === item.value}
               />
             ))}
           </section>
@@ -227,7 +227,9 @@ export default function PetProfileDetail() {
           <Text typo="subtitle3">싫어하는 부위</Text>
           <section css={selectChipButtonBox}>
             {PET_DISLIKEPART.map((item) => {
-              const selectedParts = selectedPet?.dislikeParts?.map((partItem) => partItem.part);
+              const selectedParts = selectedPet?.dislikeParts?.map(
+                (partItem: { part: string }) => partItem.part
+              );
               const isSelected = selectedParts?.includes(item.value);
 
               return (
@@ -246,7 +248,9 @@ export default function PetProfileDetail() {
                 <ChipToggleButton
                   key={item.value}
                   size="full"
-                  isSelected={selectedPet?.significantTags.some((tag) => tag.tag === item.value)}
+                  isSelected={selectedPet?.significantTags.some(
+                    (tag: { tag: string }) => tag.tag === item.value
+                  )}
                 >
                   {item.label}
                 </ChipToggleButton>

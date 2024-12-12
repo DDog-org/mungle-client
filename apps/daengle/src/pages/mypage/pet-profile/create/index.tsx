@@ -12,7 +12,7 @@ import {
   detailInput,
   weightWrapper,
 } from './index.styles';
-import { DislikeParts, PetProfileCreateFormType, SignificantTags } from '~/pages/mypage/interfaces';
+import { DislikeParts, PetProfileCreateFormType, SignificantTags } from '~/interfaces/auth';
 import { Controller, useForm } from 'react-hook-form';
 import useValidatePetEdit from '~/hooks/mypage/use-validate-pet-form';
 import {
