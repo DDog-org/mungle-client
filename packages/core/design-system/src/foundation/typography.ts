@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 
-// TODO: 변수명 변경
 const typography = {
   title1: css`
     font-size: 24px;

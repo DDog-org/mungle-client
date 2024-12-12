@@ -47,6 +47,23 @@ export interface PostPaymentOrderRequestBody {
   visitorPhoneNumber: string;
 }
 
+export interface GetPaymentHistoryRequestParams {
+  reservationId: number;
+}
+
+export interface GetPaymentHistoryResponse {
+  reservationId: number;
+  reservationStatus: string;
+  recipientName: string;
+  shopName: string;
+  schedule: string;
+  deposit: number;
+  customerName: string;
+  customerPhoneNumber: string;
+  visitorName: string;
+  visitorPhoneNumber: string;
+}
+
 export interface PostPaymentOrderResponse {
   orderId: number;
   accountId: number;

@@ -1,5 +1,9 @@
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
-import { getPaymentCareHistoryList, getPaymentGroomingHistoryList } from '~/apis';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import {
+  getPaymentCareHistoryList,
+  getPaymentGroomingHistoryList,
+  getPaymentHistory,
+} from '~/apis';
 import { PAGE_SIZE } from '~/constants/review';
 import { PostPaymentOrderRequestBody, PostPaymentValidateRequestBody } from '~/models/payment';
 import { postPaymentOrder, postPaymentValidate } from '~/apis/payment';
@@ -46,5 +50,13 @@ export const usePostPaymentValidateMutation = () => {
     mutationFn: (body: PostPaymentValidateRequestBody) => {
       return postPaymentValidate(body);
     },
+  });
+};
+
+export const useGetPaymentHistoryQuery = (reservationId: number) => {
+  return useQuery({
+    queryKey: QUERY_KEYS.DELETE_USER_CARE_REVIEW,
+    queryFn: () => getPaymentHistory({ reservationId }),
+    enabled: !!reservationId,
   });
 };

@@ -3,10 +3,7 @@ import { ROUTES } from '~/constants/commons';
 import { Card } from '~/components/mypage';
 import { Empty } from '~/components/reviews';
 import { useIntersectionLoad } from '~/hooks/review';
-import {
-  deleteUserCareReviewMutation,
-  getUserCareMyReviewListInfiniteQuery,
-} from '~/queries/review';
+import { deleteUserCareReviewMutation, getUserCareMyReviewListInfiniteQuery } from '~/queries';
 import { bottom, wrapper } from './index.styles';
 
 export function VetCardList() {

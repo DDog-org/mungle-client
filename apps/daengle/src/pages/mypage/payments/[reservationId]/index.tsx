@@ -1,0 +1,189 @@
+import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
+import { css } from '@emotion/react';
+import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
+import { useGetPaymentHistoryQuery } from '~/queries';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+
+export default function PaymentsDetail() {
+  const router = useRouter();
+  const params = useSearchParams();
+  const reservationId = Number(router.query.reservationId);
+  const { data } = useGetPaymentHistoryQuery(reservationId);
+
+  //   if (!data) return <></>;
+
+  //   const {
+  //     reservationStatus,
+  //     recipientName,
+  //     shopName,
+  //     schedule,
+  //     deposit,
+  //     customerName,
+  //     customerPhoneNumber,
+  //     visitorName,
+  //     visitorPhoneNumber,
+  //   } = data;
+
+  return (
+    <Layout>
+      <AppBar />
+      <div css={wrapper}>
+        <section css={top}>
+          <Text tag="h1" typo="title1" color="black">
+            결제 상세 내역
+          </Text>
+          <div css={detailInfoWrapper}>
+            <div css={detailInfo}>
+              <Text typo="title2" color="blue200">
+                {dayjs(data?.schedule).format('YY년 MM월 DD일')}
+              </Text>
+              <Text typo="body8" color="gray500">
+                {dayjs(data?.schedule).locale('ko').format('dddd • HH:mm')}
+              </Text>
+            </div>
+            <div css={detailInfo}>
+              <Text typo="subtitle1" color="black">
+                문소연 디자이너
+              </Text>
+              <Text typo="body9" color="gray400">
+                꼬꼬마 관리샵
+              </Text>
+            </div>
+          </div>
+          <div css={buttonWrapper}>
+            <Text tag="h2" typo="body11" color="gray300">
+              이 날 받은 서비스는 어땠나요? 리뷰를 남겨보세요
+            </Text>
+            <RoundButton size="L">리뷰 남기기</RoundButton>
+          </div>
+        </section>
+
+        <hr css={border} />
+
+        <section css={paymentInfoWrapper}>
+          <Text tag="h2" typo="title2" color="black">
+            결제 정보
+          </Text>
+          <div css={paymentInfo}>
+            <Text typo="subtitle3" color="black">
+              예약금
+            </Text>
+            <Text typo="subtitle1" color="black">
+              20,000원
+            </Text>
+          </div>
+        </section>
+
+        <hr css={border} />
+
+        <section css={reserverInfoWrapper}>
+          <Text tag="h2" typo="title2" color="black">
+            예약자 정보
+          </Text>
+          <div css={reserverInfo}>
+            <Text typo="subtitle3" color="black">
+              고윤정
+            </Text>
+            <Text typo="body8" color="black">
+              010-0000-0000
+            </Text>
+          </div>
+          <div css={reserverInfo}>
+            <Text typo="subtitle3" color="black">
+              고윤정
+            </Text>
+            <Text typo="body8" color="black">
+              010-0000-0000
+            </Text>
+          </div>
+        </section>
+      </div>
+    </Layout>
+  );
+}
+
+const wrapper = css`
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+`;
+
+const top = css`
+  width: 100%;
+  padding: 18px;
+`;
+
+const detailInfoWrapper = css`
+  display: flex;
+  align-items: center;
+
+  margin: 28px 0 0;
+`;
+
+const detailInfo = css`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  padding: 5px 0;
+
+  & + & {
+    margin-left: 18px;
+    padding: 5px 18px;
+    border-left: 1px solid ${theme.colors.gray400};
+  }
+`;
+
+const buttonWrapper = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+
+  margin: 35px 0 6px;
+`;
+
+const border = css`
+  width: 100%;
+  height: 8px;
+
+  background: ${theme.colors.gray100};
+`;
+
+const paymentInfoWrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  width: 100%;
+  padding: 32px 18px;
+`;
+
+const paymentInfo = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+`;
+
+const reserverInfoWrapper = css`
+  width: 100%;
+  padding: 32px 18px 0;
+`;
+
+const reserverInfo = css`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  width: 100%;
+  padding: 24px 0;
+
+  & + & {
+    border-top: 0.5px solid ${theme.colors.gray200};
+  }
+`;
