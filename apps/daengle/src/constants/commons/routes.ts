@@ -34,9 +34,9 @@ export const ROUTES = {
   // Payments
   PAYMENTS_ORDER: '/payments/order',
 
-  // Messages
-  MESSAGES: '/messages',
-  MESSAGES_DETAIL: (messageId: number) => `/messages/${messageId}`,
+  // Chat
+  CHATS: '/chats',
+  CHATS_DETAIL: (chatId: number) => `/chats/${chatId}`,
 
   // Mypage
   MYPAGE: '/mypage',
@@ -48,8 +48,4 @@ export const ROUTES = {
   MYPAGE_FAVORITES: '/mypage/favorites',
   MYPAGE_PAYMENTS: '/mypage/payments',
   MYPAGE_PAYMENTS_DETAIL: (paymentId: number) => `/mypage/payments/${paymentId}`,
-
-  // Chat
-  CHATS: '/chats',
-  CHAT_DETAIL: (chatId: number) => `/chats/${chatId}`,
 } as const;

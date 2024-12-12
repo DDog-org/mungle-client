@@ -1,4 +1,4 @@
-import { Item } from '~/components/mypage';
+import { PaymentListItem } from '~/components/mypage';
 import { Empty } from '~/components/reviews';
 import { useIntersectionLoad } from '~/hooks';
 import { useGetPaymentGroomingHistoryListInfiniteQuery } from '~/queries/payment';
@@ -14,7 +14,7 @@ export function GroomerList() {
       {data ? (
         data?.pages.map((page, index) =>
           page.paymentHistoryList.length > 0 || index > 0 ? (
-            page.paymentHistoryList.map((item) => <Item item={item} />)
+            page.paymentHistoryList.map((item) => <PaymentListItem item={item} />)
           ) : (
             <Empty title="결제한 내역이 없어요" />
           )

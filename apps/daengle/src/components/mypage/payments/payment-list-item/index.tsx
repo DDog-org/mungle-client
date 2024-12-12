@@ -12,7 +12,7 @@ interface Props {
   item: GroomerPaymentHistoryItem;
 }
 
-export function Item({
+export function PaymentListItem({
   item: { reservationId, recipientImageUrl, recipientName, shopName, paymentDate, status },
 }: Props) {
   const router = useRouter();
