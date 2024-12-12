@@ -26,7 +26,7 @@ export function VetCardList() {
             ({
               careReviewId,
               vetId,
-              careKeywordReviewList,
+              careKeywordList,
               revieweeName,
               starRating,
               content,
@@ -35,7 +35,7 @@ export function VetCardList() {
               <Card
                 reviewId={careReviewId}
                 revieweeId={vetId}
-                keywordReviewList={careKeywordReviewList}
+                keywordReviewList={careKeywordList}
                 revieweeName={revieweeName}
                 starRating={starRating}
                 content={content}

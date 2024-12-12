@@ -15,7 +15,7 @@ export type StarRating = 1 | 2 | 3 | 4 | 5;
 export interface GetUserGroomingMyReviewList {
   groomingReviewId: number;
   groomerId: number;
-  groomingKeywordReviewList: string[];
+  groomingKeywordList: string[];
   revieweeName: string;
   starRating: StarRating;
   content: string | null;
@@ -35,7 +35,7 @@ export interface GetUserCareMyReviewListResponse {
 export interface GetUserCareMyReviewList {
   careReviewId: number;
   vetId: number;
-  careKeywordReviewList: string[];
+  careKeywordList: string[];
   revieweeName: string;
   starRating: StarRating;
   content: string | null;
@@ -80,7 +80,7 @@ export interface GetUserGroomerReviewList {
   reviewerImageUrl: string | null;
   groomingReviewId: number;
   groomerId: number;
-  groomingKeywordReviewList: (keyof typeof GROOMER_REVIEW_KEYWORDS)[];
+  groomingKeywordList: (keyof typeof GROOMER_REVIEW_KEYWORDS)[];
   revieweeName: string;
   starRating: StarRating;
   content: string | null;
@@ -105,7 +105,7 @@ export interface GetUserVetReviewList {
   reviewerImageUrl: string | null;
   careReviewId: number;
   vetId: number;
-  careKeywordReviewList: (keyof typeof VET_REVIEW_KEYWORDS)[];
+  careKeywordList: (keyof typeof VET_REVIEW_KEYWORDS)[];
   revieweeName: string;
   starRating: StarRating;
   content: string | null;
@@ -125,7 +125,7 @@ export interface GetUserReservationReviewResponse {
 export interface PostUserGroomingReviewRequestBody {
   reservationId: number;
   starRating: number;
-  groomingKeywordReviewList: string[];
+  groomingKeywordList: string[];
   content: string;
   imageUrlList: string[];
 }
@@ -145,7 +145,7 @@ export interface GetUserGroomingReviewResponse {
   revieweeName: string;
   shopName?: string;
   starRating: number;
-  groomingKeywordReviewList: string[];
+  groomingKeywordList: string[];
   content: string;
   imageUrlList: string[];
 }
@@ -158,7 +158,7 @@ export interface PatchUserGroomingReviewRequestParams {
 export interface PatchUserGroomingReviewRequestBody {
   reservationId: number;
   starRating: number;
-  groomingKeywordReviewList: string[];
+  groomingKeywordList: string[];
   content: string;
   imageUrlList: string[];
 }

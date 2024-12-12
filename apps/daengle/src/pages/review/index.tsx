@@ -7,7 +7,7 @@ import { useGetUserReservationReviewQuery, usePostGroomingReviewMutation } from 
 import { useRouter } from 'next/router';
 import { useS3 } from '@daengle/services/hooks';
 import { GetUserReservationReviewParams } from '~/models/review';
-import { GROOMER_REVIEW_KEYWORDS, TAGS } from '~/constants/review';
+import { GROOMER_REVIEW_KEYWORDS, KEYWORDS } from '~/constants/review';
 
 export default function ReviewPage() {
   const [rating, setRating] = useState<number>(0);
@@ -20,7 +20,7 @@ export default function ReviewPage() {
   const router = useRouter();
 
   const { id } = router.query;
-  const reservationId = Number(id) || 3;
+  const reservationId = Number(id) || 1;
 
   const params: GetUserReservationReviewParams = { reservationId: reservationId };
   const { data, isLoading, error } = useGetUserReservationReviewQuery(params);
@@ -73,16 +73,16 @@ export default function ReviewPage() {
     }
 
     const body = {
-      reservationId: 3, // TODO: 예약 ID를 동적으로 설정
+      reservationId: 1, // TODO: 예약 ID를 동적으로 설정
       starRating: rating,
-      groomingKeywordReviewList: selectedTags.map(
+      groomingKeywordList: selectedTags.map(
         (tag) =>
           Object.entries(GROOMER_REVIEW_KEYWORDS).find(([, value]) => value === tag)?.[0] || ''
       ),
       content: reviewText,
       imageUrlList: uploadedImageUrls,
     };
-    console.log('body', body);
+
     mutation.mutate(body, {
       onSuccess: () => {
         alert('리뷰가 성공적으로 등록되었습니다!');
@@ -110,7 +110,7 @@ export default function ReviewPage() {
           <RatingCard rating={rating} onRatingChange={setRating} />
 
           <KeywordCard
-            tags={TAGS}
+            tags={KEYWORDS}
             selectedTags={selectedTags}
             onTagToggle={handleTagToggle}
             isExpanded={isExpanded}

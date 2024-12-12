@@ -12,7 +12,7 @@ import { useS3 } from '@daengle/services/hooks';
 import { GetUserGroomingReviewParams, PatchUserGroomingReviewRequestBody } from '~/models/review';
 import { QUERY_KEYS } from '~/queries/query-keys';
 import { queryClient } from '@daengle/services/providers';
-import { GROOMER_REVIEW_KEYWORDS, TAGS } from '~/constants/review';
+import { GROOMER_REVIEW_KEYWORDS, KEYWORDS } from '~/constants/review';
 
 export default function ReviewEditPage() {
   const [rating, setRating] = useState<number>(0);
@@ -47,21 +47,15 @@ export default function ReviewEditPage() {
         const files = await Promise.all(filePromises);
         setSelectedImages(files);
       };
-      console.log('이거에요', selectedImages);
 
       convertUrlsToFiles();
       setRating(data.starRating);
       setReviewText(data.content);
       setSelectedTags(
-        data.groomingKeywordReviewList.map((keyword) => GROOMER_REVIEW_KEYWORDS[keyword] || keyword)
+        data.groomingKeywordList.map((keyword) => GROOMER_REVIEW_KEYWORDS[keyword] || keyword)
       );
     }
   }, [data]);
-  console.log('Raw keywords:', data?.groomingKeywordReviewList);
-  console.log(
-    'Mapped keywords:',
-    data?.groomingKeywordReviewList.map((keyword) => GROOMER_REVIEW_KEYWORDS[keyword] || keyword)
-  );
 
   const toggleExpand = () => setIsExpanded((prev) => !prev);
 
@@ -91,7 +85,7 @@ export default function ReviewEditPage() {
     const body: PatchUserGroomingReviewRequestBody = {
       reservationId,
       starRating: rating,
-      groomingKeywordReviewList: selectedTags.map(
+      groomingKeywordList: selectedTags.map(
         (tag) =>
           Object.entries(GROOMER_REVIEW_KEYWORDS).find(([, value]) => value === tag)?.[0] || ''
       ),
@@ -117,7 +111,7 @@ export default function ReviewEditPage() {
 
   return (
     <Layout>
-      <AppBar isDefaultBackground={false} />
+      <AppBar />
       <div css={wrapper}>
         <div css={header}>
           <Text typo="title1">{data?.shopName || '알 수 없음'}</Text>
@@ -148,7 +142,7 @@ export default function ReviewEditPage() {
               <RatingCard rating={rating} onRatingChange={setRating} />
 
               <KeywordCard
-                tags={TAGS}
+                tags={KEYWORDS}
                 selectedTags={selectedTags}
                 onTagToggle={handleTagToggle}
                 isExpanded={isExpanded}
