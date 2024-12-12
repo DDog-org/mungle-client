@@ -6,21 +6,20 @@ export const wrapper = css`
 
   width: 100%;
   height: 100%;
-  padding-bottom: 18px;
+  padding: 0 0 36px;
 `;
 
 export const tabHeader = css`
   display: flex;
 
-  border-bottom: 0.5px solid ${theme.colors.gray300};
-
   cursor: pointer;
+
+  border-bottom: 0.5px solid ${theme.colors.gray300};
 `;
 
 export const tabContent = css`
-  flex: 1;
+  display: flex;
   position: relative;
-  overflow: hidden;
   overflow-y: auto;
 
   width: 100%;
@@ -33,5 +32,5 @@ export const tabContentItem = css`
 
   width: 100%;
   height: 100%;
-  padding: 14px 18px;
+  padding: 0 0 18px;
 `;

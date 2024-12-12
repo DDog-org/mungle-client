@@ -8,10 +8,7 @@ import {
   getUserGroomingMyReviewList,
   getUserVetReviewList,
 } from '~/apis/review';
-import {
-  DeleteUserCareReviewRequestParams,
-  DeleteUserGroomingReviewRequestParams,
-} from '~/models/review';
+import { DeleteUserCareReviewRequestParams, DeleteUserGroomingReviewRequestParams } from '~/models';
 import { QUERY_KEYS } from '../query-keys';
 
 export const getUserGroomingMyReviewListInfiniteQuery = () => {
