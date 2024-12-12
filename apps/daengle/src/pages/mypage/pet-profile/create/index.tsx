@@ -28,7 +28,7 @@ import { useS3 } from '@daengle/services/hooks';
 import { ROUTES } from '~/constants/commons';
 import router from 'next/router';
 
-export default function PetProfileEdit() {
+export default function PetProfileCreate() {
   const { data: breeds } = useGetBreedListQuery();
   const { mutateAsync: postUserPet } = usePostUserPetMutation();
   const validation = useValidatePetEdit();
