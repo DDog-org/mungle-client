@@ -50,7 +50,7 @@ export const PET_DISLIKEPART: { value: string; label: string }[] = [
     label: '입',
   },
   {
-    value: 'EAT',
+    value: 'EAR',
     label: '귀',
   },
 

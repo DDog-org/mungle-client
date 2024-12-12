@@ -16,6 +16,10 @@ import {
   GetUserInfoResponse,
   PostUserPetRequestBody,
   PostUserPetResponse,
+  PatchUserPetInfoRequestBody,
+  PatchUserPetInfoResponse,
+  DeleteUserPetResponse,
+  DeleteUserPetRequestData,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -66,4 +70,12 @@ export const getUserPetInfo = async () => {
 
 export const postUserPet = async (body: PostUserPetRequestBody) => {
   return await api.post<PostUserPetResponse>('/user/pet', body);
+};
+
+export const patchUserPetInfo = async (body: PatchUserPetInfoRequestBody) => {
+  return await api.patch<PatchUserPetInfoResponse>('/user/pet-info', body);
+};
+
+export const deleteUserPet = async (data: DeleteUserPetRequestData) => {
+  return await api.delete<DeleteUserPetResponse>('/user/pet', { data });
 };

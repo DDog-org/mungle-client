@@ -73,7 +73,7 @@ export interface PetInfos {
   image: string;
   name: string;
   birth: number;
-  gender: string;
+  gender: 'MALE' | 'FEMALE';
   breed: string;
   isNeutered: boolean;
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
@@ -94,6 +94,7 @@ export interface SignificantTag {
 }
 export interface GetUserPetInfoResponse {
   petDetails: PetInfos[];
+  image?: string;
 }
 
 export interface PostUserPetRequestBody {
@@ -110,4 +111,73 @@ export interface PostUserPetRequestBody {
   significantTags: SignificantTag[];
   significant: string;
 }
+export interface PostUserPetRequestBody {
+  image: string | null;
+  name: string;
+  birth: number;
+  gender: 'MALE' | 'FEMALE';
+  breed: string;
+  isNeutered: boolean;
+  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
+  groomingExperience: Boolean;
+  isBite: Boolean;
+  dislikeParts: DislikePart[];
+  significantTags: SignificantTag[];
+  significant: string;
+}
+
+export interface PostUserPetRequestBody {
+  image: string | null;
+  name: string;
+  birth: number;
+  gender: 'MALE' | 'FEMALE';
+  breed: string;
+  isNeutered: boolean;
+  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
+  groomingExperience: Boolean;
+  isBite: Boolean;
+  dislikeParts: DislikePart[];
+  significantTags: SignificantTag[];
+  significant: string;
+}
+export interface PostUserPetRequestBody {
+  image: string | null;
+  name: string;
+  birth: number;
+  gender: 'MALE' | 'FEMALE';
+  breed: string;
+  isNeutered: boolean;
+  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
+  groomingExperience: Boolean;
+  isBite: Boolean;
+  dislikeParts: DislikePart[];
+  significantTags: SignificantTag[];
+  significant: string;
+}
 export type PostUserPetResponse = string;
+
+export interface PatchUserPetInfoRequestBody {
+  id: number;
+  image: string;
+  name: string;
+  birth: number;
+  gender: 'MALE' | 'FEMALE';
+  breed: string;
+  isNeutered: boolean;
+  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
+  groomingExperience: Boolean;
+  isBite: Boolean;
+  dislikeParts: string[];
+  significantTags: string[];
+  significant: string;
+}
+
+export type PatchUserPetInfoResponse = boolean;
+
+export interface DeleteUserPetResponse {
+  requestResult: string;
+}
+
+export interface DeleteUserPetRequestData {
+  petId: number;
+}

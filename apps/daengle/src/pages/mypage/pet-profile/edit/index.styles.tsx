@@ -1,33 +1,51 @@
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 
-export const wrapper = css`
-  padding: 18px 18px 0;
+export const petTitle = css`
+  padding: 0 18px;
 `;
 export const titleBox = css`
-  margin: 0 0 40px;
+  margin: 18px 18px 40px;
 `;
 export const petProfileWrapper = css`
   display: flex;
   flex-direction: column;
   gap: 15px;
 `;
-export const petProfileEditWrapper = css`
+export const section = css`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+export const petList = css`
+  display: flex;
+  gap: 14px;
+  overflow-x: scroll;
+`;
+export const petProfile = css`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
 
-  width: fit-content;
+  cursor: pointer;
 `;
-export const petProfileImageBox = css`
-  overflow: hidden;
+export const petItemStyle = (index: number, length: number) => css`
+  ${index === 0 && 'padding: 0 0 0 18px;'}
+  ${index === length - 1 && 'padding: 0 18px 0 0;'}
+`;
+export const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
+  width: 86px;
+  height: 86px;
+  border: 4px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
+  border-radius: 50px;
 
-  width: 70px;
-  height: 70px;
-  border: 5px solid ${theme.colors.blue200};
-  border-radius: 50%;
-  object-fit: cover;
+  background-color: ${theme.colors.gray200};
+
+  transition: border 0.2s ease;
+`;
+export const petName = css`
+  transition: 0.2s ease;
 `;
 export const line = css`
   width: 100%;
@@ -40,29 +58,17 @@ export const profileImageWrapper = css`
   align-items: center;
   justify-content: center;
 
-  margin: 32px 0 40px;
+  margin: 0 0 32px;
 `;
-export const profileImageBox = css`
-  overflow: hidden;
-
-  width: 116px;
-  height: 116px;
-  border-radius: 50%;
-  object-fit: cover;
-`;
-export const profileEditButtonBox = css`
-  margin-top: 12px;
-
-  color: ${theme.colors.gray400};
-  font-size: 14px;
-`;
-
 export const inputWrapper = css`
-  padding: 0 0 146px;
+  padding: 0 18px 146px;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 32px;
+  position: relative;
+
+  padding: 0 18px 146px;
 `;
 export const readOnlyLayer = css`
   width: 100%;

@@ -10,6 +10,8 @@ import {
   postJoinWithPet,
   postKakao,
   postUserPet,
+  patchUserPetInfo,
+  deleteUserPet,
 } from '~/apis';
 import {
   PatchUserInfoRequestBody,
@@ -17,6 +19,8 @@ import {
   PostJoinWithPetRequestBody,
   PostKakaoRequestBody,
   PostUserPetRequestBody,
+  DeleteUserPetRequestData,
+  PatchUserPetInfoRequestBody,
 } from '~/models';
 
 export const usePostKakaoMutation = () => {
@@ -121,5 +125,25 @@ export const usePostUserPetMutation = () => {
         throw new Error(String(error));
       }
     },
+  });
+};
+
+export const usePatchUserPetInfoMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.POST_USER_PET_INFO,
+    mutationFn: async (body: PatchUserPetInfoRequestBody) => {
+      try {
+        return await patchUserPetInfo(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
+
+export const useDeleteUserPetMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.DELETE_USER_PET,
+    mutationFn: (data: DeleteUserPetRequestData) => deleteUserPet(data),
   });
 };
