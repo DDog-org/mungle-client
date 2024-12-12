@@ -1,18 +1,6 @@
-import {
-  wrapper,
-  profileImageWrapper,
-  profileEditButtonBox,
-  inputWrapper,
-  readOnlyTextBox,
-  textareaWrapper,
-  line,
-  detailInput,
-  licenseWrapper,
-  licenseBox,
-  license,
-  footerWrapper,
-} from './index.styles';
 import { AppBar, CTAButton, Layout, Text } from '@daengle/design-system';
+import { theme } from '@daengle/design-system';
+import { css } from '@emotion/react';
 import Image from 'next/image';
 
 export default function EditProfile() {
@@ -85,3 +73,80 @@ export default function EditProfile() {
     </Layout>
   );
 }
+
+const wrapper = css`
+  height: auto;
+  padding: 18px 18px;
+`;
+const footerWrapper = css`
+  padding: 18px 18px 141px;
+`;
+const profileImageWrapper = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 32px 0 40px;
+`;
+const profileEditButtonBox = css`
+  margin-top: 12px;
+  font-size: 14px;
+  color: ${theme.colors.gray400};
+`;
+const inputWrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+`;
+
+const readOnlyTextBox = css`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+const textareaWrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+const line = css`
+  border: 3.5px solid ${theme.colors.gray100};
+  width: 100%;
+  background-color: ${theme.colors.gray100};
+  margin: 32px 0;
+`;
+
+const detailInput = css`
+  background-color: ${theme.colors.gray100};
+  height: 136px;
+  border-radius: 10px;
+  padding: 14px;
+  ::placeholder {
+    color: ${theme.colors.black};
+    font-size: ${theme.typo.body9};
+  }
+`;
+const licenseWrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+const licenseBox = css`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+const license = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px;
+  background-color: ${theme.colors.green100};
+  border: 1px solid ${theme.colors.green200};
+  border-radius: 12px;
+  ::placeholder {
+    color: ${theme.colors.black};
+    font-size: ${theme.typo.body9};
+  }
+`;

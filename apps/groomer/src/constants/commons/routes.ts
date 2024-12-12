@@ -18,4 +18,5 @@ export const ROUTES = {
 
   // Mypage
   MYPAGE: '/mypage',
+  MYPAGE_PROFILE: '/mypage/profile',
 } as const;
