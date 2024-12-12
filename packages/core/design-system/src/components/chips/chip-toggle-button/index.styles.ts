@@ -1,15 +1,17 @@
 import { css } from '@emotion/react';
-import { theme } from '../../../foundation';
+import { colors, theme } from '../../../foundation';
 import { Size } from './index.types';
 
 export const wrapper = ({
   isSelected,
   size,
   disabled,
+  textColor,
 }: {
   isSelected: boolean;
   size: Size;
   disabled: boolean;
+  textColor: keyof typeof colors;
 }) => css`
   ${size === 'fixed' &&
   css`
@@ -61,7 +63,6 @@ export const wrapper = ({
         color: ${theme.colors.blue200};
       `
     : css`
-        color: ${theme.colors.gray500};
         border: 1px solid ${disabled ? theme.colors.gray300 : theme.colors.gray200};
 
         color: ${theme.colors.gray500};

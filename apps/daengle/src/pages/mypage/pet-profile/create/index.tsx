@@ -1,17 +1,14 @@
-import { AppBar, ChipRadio, CTAButton, Input, Layout, Select, Text } from '@daengle/design-system';
 import {
-  wrapper,
-  profileImageWrapper,
-  inputWrapper,
-  formBox,
-  toggleButtonBox,
-  chipToggleButtonBox,
-  selectChipButtonBox,
-  detailformBox,
-  chipButtonBox,
-  detailInput,
-  weightWrapper,
-} from './index.styles';
+  AppBar,
+  ChipRadio,
+  CTAButton,
+  Input,
+  Layout,
+  Select,
+  Text,
+  theme,
+} from '@daengle/design-system';
+import { css } from '@emotion/react';
 import { DislikeParts, PetProfileCreateFormType, SignificantTags } from '~/interfaces/auth';
 import { Controller, useForm } from 'react-hook-form';
 import useValidatePetEdit from '~/hooks/mypage/use-validate-pet-form';
@@ -368,3 +365,64 @@ export default function PetProfileEdit() {
     </Layout>
   );
 }
+
+const wrapper = css`
+  padding: 18px 18px 104px;
+`;
+const profileImageWrapper = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 40px 0 32px;
+`;
+
+const inputWrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+`;
+const formBox = css`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+const toggleButtonBox = css`
+  display: flex;
+  gap: 13px;
+`;
+const chipToggleButtonBox = css`
+  display: flex;
+  gap: 10px;
+`;
+const selectChipButtonBox = css`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+`;
+const detailformBox = css`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+const chipButtonBox = css`
+  display: flex;
+  gap: 7px;
+`;
+const detailInput = css`
+  background-color: ${theme.colors.gray100};
+  height: 136px;
+  border-radius: 10px;
+  padding: 14px;
+  ::placeholder {
+    color: ${theme.colors.gray200};
+  }
+`;
+const weightWrapper = css`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 3px;
+`;

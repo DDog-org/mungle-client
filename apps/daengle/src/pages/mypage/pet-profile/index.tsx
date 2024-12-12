@@ -9,27 +9,7 @@ import {
   Text,
   theme,
 } from '@daengle/design-system';
-import {
-  titleBox,
-  petProfileWrapper,
-  line,
-  inputWrapper,
-  formBox,
-  toggleButtonBox,
-  chipToggleButtonBox,
-  selectChipButtonBox,
-  detailformBox,
-  chipButtonBox,
-  detailInput,
-  weightWrapper,
-  readOnlyLayer,
-  wrapper,
-  section,
-  petList,
-  petProfile,
-  profileImage,
-  petName,
-} from './index.styles';
+import { css } from '@emotion/react';
 import Image from 'next/image';
 import {
   BIRTH_YEAR_OPTIONS,
@@ -271,3 +251,120 @@ export default function PetProfileDetail() {
     </Layout>
   );
 }
+const wrapper = css`
+  position: relative;
+
+  padding: 18px 18px 0;
+`;
+// pet profile css
+const section = css`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+const petList = css`
+  display: flex;
+  gap: 14px;
+`;
+const petProfile = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  cursor: pointer;
+`;
+const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
+  width: 86px;
+  height: 86px;
+  border: 4px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
+  border-radius: 50px;
+
+  background-color: ${theme.colors.gray200};
+
+  transition: border 0.2s ease;
+`;
+const petName = css`
+  transition: 0.2s ease;
+`;
+const readOnlyLayer = css`
+  position: absolute;
+  z-index: ${theme.zIndex.ctaButton - 1};
+
+  width: 100%;
+  height: 100%;
+
+  background-color: transparent;
+
+  cursor: not-allowed;
+  pointer-events: all;
+`;
+const titleBox = css`
+  margin: 0 0 40px;
+`;
+const petProfileWrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+const line = css`
+  width: 100%;
+  height: 7px;
+  margin: 32px 0;
+  border: 3.5px solid ${theme.colors.gray100};
+`;
+const inputWrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  position: relative;
+
+  padding: 0 18px 104px;
+`;
+const formBox = css`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+const toggleButtonBox = css`
+  display: flex;
+  gap: 13px;
+`;
+const chipToggleButtonBox = css`
+  display: flex;
+  gap: 10px;
+`;
+const selectChipButtonBox = css`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+`;
+const detailformBox = css`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+const chipButtonBox = css`
+  display: flex;
+  gap: 7px;
+`;
+const detailInput = css`
+  height: 136px;
+  padding: 14px;
+  border-radius: 10px;
+
+  background-color: ${theme.colors.gray100};
+
+  ::placeholder {
+    color: ${theme.colors.gray200};
+  }
+`;
+const weightWrapper = css`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  gap: 3px;
+
+  text-align: center;
+`;
