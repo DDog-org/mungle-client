@@ -7,6 +7,7 @@ import {
   Layout,
   Select,
   Text,
+  theme,
 } from '@daengle/design-system';
 import {
   titleBox,
@@ -53,6 +54,7 @@ export default function PetProfileDetail() {
 
   const selectedPet = petInfos?.find((pet) => pet.id === selectedPetId);
 
+  console.log('selectedPet', selectedPet);
   const handlePetSelect = (petId: number) => {
     setSelectedPetId(petId);
   };
@@ -81,7 +83,7 @@ export default function PetProfileDetail() {
 
   return (
     <Layout isAppBarExist={true}>
-      <AppBar onBackClick={router.back} />
+      <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
       <div css={wrapper}>
         <div css={titleBox}>
           <Text typo="title1">상세보기</Text>
@@ -161,7 +163,7 @@ export default function PetProfileDetail() {
                 value={item.value}
                 label={item.label}
                 size="full"
-                isSelected={`${selectedPet?.isNeutered}` === item.value}
+                isSelected={String(selectedPet?.isNeutered) === item.value}
               />
             ))}
           </section>
@@ -204,7 +206,7 @@ export default function PetProfileDetail() {
                 value={item.value}
                 label={item.label}
                 size="full"
-                isSelected={`${selectedPet?.groomingExperience}` === item.value}
+                isSelected={String(selectedPet?.groomingExperience) === item.value}
               />
             ))}
           </section>
@@ -218,7 +220,7 @@ export default function PetProfileDetail() {
                 value={item.value}
                 label={item.label}
                 size="full"
-                isSelected={`${selectedPet?.isBite}` === item.value}
+                isSelected={String(selectedPet?.isBite) === item.value}
               />
             ))}
           </section>
