@@ -29,6 +29,7 @@ export const buttonSize = ({ size, fullWidth }: { size: Size; fullWidth: boolean
   ${size === 'XL' &&
   css`
     width: 100%;
+    height: 70px;
     padding: 27px 0;
     border-radius: 35px;
     ${theme.typo.title2};
