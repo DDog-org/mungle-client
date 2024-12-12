@@ -111,8 +111,35 @@ export interface PostUserPetRequestBody {
   significantTags: SignificantTag[];
   significant: string;
 }
-export type PostUserPetResponse = string;
+export interface PostUserPetRequestBody {
+  image: string | null;
+  name: string;
+  birth: number;
+  gender: 'MALE' | 'FEMALE';
+  breed: string;
+  isNeutered: boolean;
+  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
+  groomingExperience: Boolean;
+  isBite: Boolean;
+  dislikeParts: DislikePart[];
+  significantTags: SignificantTag[];
+  significant: string;
+}
 
+export interface PostUserPetRequestBody {
+  image: string | null;
+  name: string;
+  birth: number;
+  gender: 'MALE' | 'FEMALE';
+  breed: string;
+  isNeutered: boolean;
+  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
+  groomingExperience: Boolean;
+  isBite: Boolean;
+  dislikeParts: DislikePart[];
+  significantTags: SignificantTag[];
+  significant: string;
+}
 export interface PostUserPetRequestBody {
   image: string | null;
   name: string;
@@ -129,7 +156,7 @@ export interface PostUserPetRequestBody {
 }
 export type PostUserPetResponse = string;
 
-export interface PatchUserPetInfoBody {
+export interface PatchUserPetInfoRequestBody {
   id: number;
   image: string;
   name: string;
@@ -149,4 +176,8 @@ export type PatchUserPetInfoResponse = boolean;
 
 export interface DeleteUserPetResponse {
   requestResult: string;
+}
+
+export interface DeleteUserPetRequestData {
+  petId: number;
 }

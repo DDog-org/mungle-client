@@ -16,9 +16,10 @@ import {
   GetUserInfoResponse,
   PostUserPetRequestBody,
   PostUserPetResponse,
-  PatchUserPetInfoBody,
+  PatchUserPetInfoRequestBody,
   PatchUserPetInfoResponse,
   DeleteUserPetResponse,
+  DeleteUserPetRequestData,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -71,10 +72,10 @@ export const postUserPet = async (body: PostUserPetRequestBody) => {
   return await api.post<PostUserPetResponse>('/user/pet', body);
 };
 
-export const patchUserPetInfo = async (body: PatchUserPetInfoBody) => {
+export const patchUserPetInfo = async (body: PatchUserPetInfoRequestBody) => {
   return await api.patch<PatchUserPetInfoResponse>('/user/pet-info', body);
 };
 
-export const deleteUserPet = async (petId: number) => {
+export const deleteUserPet = async (petId: DeleteUserPetRequestData) => {
   return await api.delete<DeleteUserPetResponse>('/user/pet', { data: { petId } });
 };
