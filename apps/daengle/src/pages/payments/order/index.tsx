@@ -22,8 +22,10 @@ export default function Order() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     estimateId,
+    petId,
     serviceType,
     recipientId,
+    recipientImageUrl,
     recipientName,
     shopName,
     schedule,
@@ -57,8 +59,10 @@ export default function Order() {
     name: '주문명: 예약금 결제 테스트',
     amount: price, // 결제 금액
     estimate_id: estimateId,
+    petId: petId,
     service_type: serviceType,
     recipientId: recipientId,
+    recipientImageUrl: recipientImageUrl,
     groomer_name: recipientName,
     shop_name: shopName,
     schedule: schedule,
@@ -91,8 +95,10 @@ export default function Order() {
     try {
       const orderResponse: PostPaymentOrderResponse = await postPaymentOrder({
         estimateId,
+        petId,
         serviceType,
         recipientId,
+        recipientImageUrl,
         recipientName,
         shopName,
         schedule,

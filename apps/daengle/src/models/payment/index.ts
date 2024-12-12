@@ -1,7 +1,9 @@
 export interface PostPaymentOrderRequestBody {
   estimateId: number;
+  petId: number;
   serviceType: string;
   recipientId: number;
+  recipientImageUrl: string;
   recipientName: string;
   shopName: string;
   schedule: string;
