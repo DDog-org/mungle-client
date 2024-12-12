@@ -10,8 +10,8 @@ export const PET_GENDER = [
 ] as const;
 
 export const PET_IS_NEUTERED = [
-  { value: true, label: '했어요' },
-  { value: false, label: '안했어요' },
+  { value: 'true', label: '했어요' },
+  { value: 'false', label: '안했어요' },
 ] as const;
 
 export const PET_WEIGHT = [

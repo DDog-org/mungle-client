@@ -25,3 +25,8 @@ export interface UserProfileInfoEditFormType {
   form: UserProfileInfoEditForm;
   isAvailableNickname: boolean;
 }
+
+export interface PetProfileInfoCreateFormType {
+  image: File | null;
+  nickname: string;
+}
