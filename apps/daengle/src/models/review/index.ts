@@ -166,3 +166,48 @@ export interface PatchUserGroomingReviewRequestBody {
 export interface PatchUserGroomingReviewResponse {
   message: string;
 }
+
+export interface PostUserCareReviewRequestBody {
+  reservationId: number;
+  starRating: number;
+  careKeywordList: string[];
+  content: string;
+  imageUrlList: string[];
+}
+
+export interface PostUserCareReviewResponse {
+  reviewId: number;
+  reviewerId: number;
+  revieweeId: number;
+}
+
+export interface GetUserCareReviewParams {
+  reviewId: number;
+}
+
+export interface GetUserCareReviewResponse {
+  reviewId: number;
+  revieweeName: string;
+  shopName?: string;
+  starRating: number;
+  careKeywordList: string[];
+  content: string;
+  imageUrlList: string[];
+}
+
+export interface PatchUserCareReviewRequestParams {
+  reviewId: number;
+  body: PatchUserCareReviewRequestBody;
+}
+
+export interface PatchUserCareReviewRequestBody {
+  reservationId: number;
+  starRating: number;
+  careKeywordList: string[];
+  content: string;
+  imageUrlList: string[];
+}
+
+export interface PatchUserCareReviewResponse {
+  message: string;
+}

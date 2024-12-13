@@ -3,12 +3,30 @@ import { AppBar, Layout, Text, RoundButton } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 import { KeywordCard, PartnersCard, RatingCard, ReviewInputCard } from '~/components/review';
-import { useGetUserReservationReviewQuery, usePostGroomingReviewMutation } from '~/queries/review';
+import {
+  useGetUserReservationReviewQuery,
+  usePostCareReviewMutation,
+  usePostGroomingReviewMutation,
+} from '~/queries/review';
 import { useRouter } from 'next/router';
 import { useS3 } from '@daengle/services/hooks';
-import { GetUserReservationReviewParams } from '~/models/review';
-import { GROOMER_REVIEW_KEYWORDS, KEYWORDS } from '~/constants/review';
+import {
+  GetUserReservationReviewParams,
+  PostUserCareReviewRequestBody,
+  PostUserGroomingReviewRequestBody,
+} from '~/models/review';
+import { GROOMER_REVIEW_KEYWORDS, VET_REVIEW_KEYWORDS } from '~/constants/review';
 import { ROUTES } from '~/constants/commons';
+
+const getKeywordsByService = (service: string | undefined): string[] => {
+  if (service === 'groomer') {
+    return Object.values(GROOMER_REVIEW_KEYWORDS);
+  } else if (service === 'vet') {
+    return Object.values(VET_REVIEW_KEYWORDS);
+  } else {
+    return [];
+  }
+};
 
 export default function ReviewPage() {
   const [rating, setRating] = useState<number>(0);
@@ -20,19 +38,20 @@ export default function ReviewPage() {
   const { uploadToS3 } = useS3({ targetFolderPath: 'user/review-images' });
   const router = useRouter();
 
-  const { id } = router.query;
-  const reservationId = Number(id) || 1;
+  const { id, service } = router.query;
+  const reservationId = Number(id) || 3;
+  const keywords = getKeywordsByService(service as string);
 
   const params: GetUserReservationReviewParams = { reservationId: reservationId };
   const { data, isLoading, error } = useGetUserReservationReviewQuery(params);
 
   const partnersCardData = isLoading
-    ? { designerName: '로딩 중...', shopName: '로딩 중...', schedule: { date: '', time: '' } }
+    ? { partnerName: '로딩 중...', shopName: '로딩 중...', schedule: { date: '', time: '' } }
     : error
-      ? { designerName: '에러 발생', shopName: '에러 발생', schedule: { date: '', time: '' } }
+      ? { partnerName: '에러 발생', shopName: '에러 발생', schedule: { date: '', time: '' } }
       : {
-          designerName: data?.recipientName || '알 수 없음',
-          shopName: data?.shopName || '알 수 없음',
+          partnerName: data?.recipientName || '알 수 없음',
+          shopName: data?.shopName || '',
           schedule: {
             date: new Date(data?.schedule || '').toLocaleDateString('ko-KR', {
               year: 'numeric',
@@ -54,7 +73,8 @@ export default function ReviewPage() {
     );
   };
 
-  const mutation = usePostGroomingReviewMutation();
+  const postGroomingReview = usePostGroomingReviewMutation();
+  const postCareReview = usePostCareReviewMutation();
 
   const handleSubmit = async () => {
     if (!rating || !reviewText) {
@@ -73,27 +93,50 @@ export default function ReviewPage() {
       }
     }
 
-    const body = {
-      reservationId: 1, // TODO: 예약 ID를 동적으로 설정
-      starRating: rating,
-      groomingKeywordList: selectedTags.map(
-        (tag) =>
-          Object.entries(GROOMER_REVIEW_KEYWORDS).find(([, value]) => value === tag)?.[0] || ''
-      ),
-      content: reviewText,
-      imageUrlList: uploadedImageUrls,
-    };
+    if (service === 'groomer') {
+      const body: PostUserGroomingReviewRequestBody = {
+        reservationId,
+        starRating: rating,
+        groomingKeywordList: selectedTags.map(
+          (tag) =>
+            Object.entries(GROOMER_REVIEW_KEYWORDS).find(([, value]) => value === tag)?.[0] || ''
+        ),
+        content: reviewText,
+        imageUrlList: uploadedImageUrls,
+      };
 
-    mutation.mutate(body, {
-      onSuccess: () => {
-        alert('리뷰가 성공적으로 등록되었습니다!');
-        // TODO: 동적 id값에 따른 groomer || care id 담아주기 (예약에서 가져오기)
-        // router.push(ROUTES.GROOMER_REVIEWS);
-      },
-      onError: () => {
-        alert('리뷰 등록에 실패했습니다.');
-      },
-    });
+      postGroomingReview.mutate(body, {
+        onSuccess: (response) => {
+          alert('리뷰가 성공적으로 등록되었습니다!');
+          router.push(ROUTES.GROOMER_REVIEWS(response.revieweeId));
+        },
+        onError: () => {
+          alert('리뷰 등록에 실패했습니다.');
+        },
+      });
+    } else if (service === 'vet') {
+      const body: PostUserCareReviewRequestBody = {
+        reservationId,
+        starRating: rating,
+        careKeywordList: selectedTags.map(
+          (tag) => Object.entries(VET_REVIEW_KEYWORDS).find(([, value]) => value === tag)?.[0] || ''
+        ),
+        content: reviewText,
+        imageUrlList: uploadedImageUrls,
+      };
+
+      postCareReview.mutate(body, {
+        onSuccess: (response) => {
+          alert('리뷰가 성공적으로 등록되었습니다!');
+          router.push(ROUTES.VET_REVIEWS(response.revieweeId));
+        },
+        onError: () => {
+          alert('리뷰 등록에 실패했습니다.');
+        },
+      });
+    } else {
+      alert('알 수 없는 서비스 타입입니다.');
+    }
   };
 
   return (
@@ -101,18 +144,20 @@ export default function ReviewPage() {
       <AppBar />
       <div css={wrapper}>
         <div css={header}>
-          <Text typo="title1">{partnersCardData.shopName}</Text>
+          <Text typo="title1">
+            {service === 'vet' ? partnersCardData.partnerName : partnersCardData.shopName}
+          </Text>
         </div>
         <div css={container}>
           <PartnersCard
-            designerName={partnersCardData.designerName}
+            partnerName={partnersCardData.partnerName}
             shopName={partnersCardData.shopName}
             schedule={partnersCardData.schedule}
           />
           <RatingCard rating={rating} onRatingChange={setRating} />
 
           <KeywordCard
-            tags={KEYWORDS}
+            tags={keywords}
             selectedTags={selectedTags}
             onTagToggle={handleTagToggle}
             isExpanded={isExpanded}

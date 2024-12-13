@@ -11,6 +11,9 @@ import {
   getUserReservationReview,
   patchUserGroomingReview,
   postUserGroomingReview,
+  postUserCareReview,
+  getUserCareReview,
+  patchUserCareReview,
 } from '~/apis/review';
 import {
   DeleteUserCareReviewRequestParams,
@@ -21,6 +24,10 @@ import {
   PatchUserGroomingReviewRequestParams,
   PostUserGroomingReviewRequestBody,
   GetUserGroomingReviewResponse,
+  PostUserCareReviewRequestBody,
+  GetUserCareReviewParams,
+  GetUserCareReviewResponse,
+  PatchUserCareReviewRequestParams,
 } from '~/models';
 import { QUERY_KEYS } from '../query-keys';
 
@@ -140,6 +147,46 @@ export const usePatchUserGroomingReviewMutation = () => {
     mutationFn: async (params: PatchUserGroomingReviewRequestParams) => {
       try {
         return await patchUserGroomingReview(params);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
+
+export const usePostCareReviewMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.POST_CARE_REVIEW,
+    mutationFn: async (body: PostUserCareReviewRequestBody) => {
+      try {
+        return await postUserCareReview(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
+
+export const useGetUserCareReviewQuery = (params: GetUserCareReviewParams) => {
+  return useQuery<GetUserCareReviewResponse>({
+    queryKey: [QUERY_KEYS.GET_USER_CARE_REVIEW, params],
+    queryFn: async () => {
+      try {
+        return await getUserCareReview(params);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+    enabled: !!params,
+  });
+};
+
+export const usePatchUserCareReviewMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.PATCH_CARE_REVIEW,
+    mutationFn: async (params: PatchUserCareReviewRequestParams) => {
+      try {
+        return await patchUserCareReview(params);
       } catch (error) {
         throw new Error(String(error));
       }
