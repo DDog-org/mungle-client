@@ -13,8 +13,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "./src/libs/libs.d.ts",
-    "../../packages/services/src/libs/portone/portone.d.ts"
+    "./src/libs/index.d.ts"
   ],
   "exclude": ["node_modules"]
 }
