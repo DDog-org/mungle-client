@@ -10,7 +10,7 @@ import {
   PartnerGnbEstimateActive,
   GnbEstimateInactive,
 } from '@daengle/design-system/icons';
-import { ROUTES } from './routes';
+import { ROUTES } from '~/constants/commons';
 
 export const MENUS = [
   {
