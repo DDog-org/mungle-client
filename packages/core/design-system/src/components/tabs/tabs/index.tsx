@@ -11,10 +11,12 @@ interface Tab {
 interface Props {
   tabs: Tab[];
   renderContent: (activeTabId: string) => React.ReactNode;
+  activeTabId: string;
+  onChange: (tabId: string) => void;
   isPadding?: boolean;
 }
 
-export function Tabs({ tabs, renderContent, isPadding = true }: Props) {
+export function Tabs({ tabs, renderContent, activeTabId, onChange, isPadding = true }: Props) {
   const [activeTab, setActiveTab] = useState<string>(tabs[0]?.id ?? '');
   const [direction, setDirection] = useState<number>(0);
 
@@ -24,6 +26,7 @@ export function Tabs({ tabs, renderContent, isPadding = true }: Props) {
     const newIndex = tabs.findIndex((tab) => tab.id === id);
     setDirection(newIndex > activeIndex ? 1 : -1);
     setActiveTab(id);
+    onChange(id);
   };
 
   return (
@@ -34,7 +37,7 @@ export function Tabs({ tabs, renderContent, isPadding = true }: Props) {
             key={tab.id}
             id={tab.id}
             label={tab.label}
-            isActive={activeTab === tab.id}
+            isActive={activeTabId === tab.id}
             onClick={() => handleTabChange(tab.id)}
           />
         ))}
@@ -50,7 +53,7 @@ export function Tabs({ tabs, renderContent, isPadding = true }: Props) {
             transition={{ duration: 0.4 }}
             css={tabContentItem(isPadding)}
           >
-            {renderContent(activeTab)}
+            {renderContent(activeTabId)}
           </motion.div>
         </AnimatePresence>
       </div>

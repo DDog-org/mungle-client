@@ -32,5 +32,5 @@ export const tabContentItem = (isPadding: boolean) => css`
 
   width: 100%;
   height: 100%;
-  padding: 0 0 18px;
+  padding: ${isPadding ? '0 0 18px' : '18px 18px 0 0'};
 `;
