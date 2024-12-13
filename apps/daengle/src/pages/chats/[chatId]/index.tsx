@@ -2,11 +2,15 @@ import { css } from '@emotion/react';
 import { AppBar, CapsuleButton, Layout, Text, theme } from '@daengle/design-system';
 import { ChatPlus, ChatSendButton, DefaultImage } from '@daengle/design-system/icons';
 import { Bubble } from '~/components/chats/bubble';
+import { useRouter } from 'next/router';
+import { ROUTES } from '~/constants/commons';
 
 export default function ChatRoom() {
+  const router = useRouter();
+
   return (
     <Layout>
-      <AppBar title="문소연 디자이너" suffix={<></>} />
+      <AppBar title="문소연 디자이너" suffix={<></>} onBackClick={router.back} />
 
       <section css={wrapper}>
         <div css={estimateWrapper}>
@@ -17,7 +21,7 @@ export default function ChatRoom() {
             </Text>
           </div>
 
-          <CapsuleButton size="S">
+          <CapsuleButton size="S" onClick={() => router.push(ROUTES.ESTIMATE_DETAIL(1))}>
             <Text typo="body2" color="gray500">
               견적서 상세보기
             </Text>
