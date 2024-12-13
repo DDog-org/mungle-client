@@ -1,4 +1,3 @@
-import { EmptyStateBone } from '@daengle/design-system/icons';
 import { useRouter } from 'next/router';
 import { Card, EmptyState } from 'node_modules/@daengle/services/src/components/estimate-list';
 import { ROUTES } from '~/constants/commons';
@@ -6,6 +5,7 @@ import { useVetEstimateGeneralListQuery } from '~/queries/estimate';
 
 export function GeneralCardList() {
   const router = useRouter();
+  const { tab } = router.query;
 
   const {
     data: estimateResponse,
@@ -32,7 +32,9 @@ export function GeneralCardList() {
       {estimates.map((data) => (
         <Card
           id={data.id}
-          onDetailClick={() => router.push(ROUTES.ESTIMATE_DETAIL(data.id))}
+          onDetailClick={() =>
+            router.push({ pathname: ROUTES.ESTIMATE_DETAIL(data.id), query: { tab: tab } })
+          }
           imageUrl={data.imageUrl}
           nickname={data.nickname}
           proposal={data.proposal}

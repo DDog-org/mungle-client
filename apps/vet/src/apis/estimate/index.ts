@@ -1,5 +1,7 @@
 import {
   GetVetEstimateDesignationListResponse,
+  GetVetEstimateDetailRequestParams,
+  GetVetEstimateDetailResponse,
   GetVetEstimateGeneralListResponse,
 } from '~/models/estimate';
 import { api } from '../config';
@@ -10,4 +12,10 @@ export const getVetEstimateGeneralList = async () => {
 
 export const getVetEstimateDesignationList = async () => {
   return await api.get<GetVetEstimateDesignationListResponse>('/vet/estimate/designation/list');
+};
+
+export const getVetEstimateDetail = async (params: GetVetEstimateDetailRequestParams) => {
+  return await api.get<GetVetEstimateDetailResponse>(
+    `/vet/estimate/${params.careEstimateId}/detail`
+  );
 };

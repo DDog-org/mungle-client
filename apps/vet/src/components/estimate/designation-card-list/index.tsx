@@ -5,6 +5,7 @@ import { useVetEstimateDesignationListQuery } from '~/queries/estimate';
 
 export function DesignationCardList() {
   const router = useRouter();
+  const { tab } = router.query;
 
   const {
     data: estimateResponse,
@@ -32,7 +33,9 @@ export function DesignationCardList() {
       {estimates.map((data) => (
         <Card
           id={data.id}
-          onDetailClick={() => router.push(ROUTES.ESTIMATE_DETAIL(data.id))}
+          onDetailClick={() =>
+            router.push({ pathname: ROUTES.ESTIMATE_DETAIL(data.id), query: { tab: tab } })
+          }
           imageUrl={data.imageUrl}
           nickname={data.nickname}
           proposal={data.proposal}

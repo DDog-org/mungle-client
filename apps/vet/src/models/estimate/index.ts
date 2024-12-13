@@ -23,3 +23,26 @@ export interface VetEstimateDesignationList {
   significant: string;
   reservedDate: string;
 }
+
+export interface GetVetEstimateDetailRequestParams {
+  careEstimateId: number;
+}
+
+export interface GetVetEstimateDetailResponse {
+  userImageUrl: string;
+  nickname: string;
+  address: string;
+  reservedDate: string;
+  proposal: 'GENERAL' | 'DESIGNATION';
+  petId: number;
+  petImageUrl: string;
+  petName: string;
+  age: number;
+  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
+  significant: string;
+  symptoms: string;
+  requirements: string;
+  diagnosis: string;
+  cause: string;
+  treatment: string;
+}

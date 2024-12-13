@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { Card } from '@daengle/services/components';
 import { Layout, Tabs, Text, theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
@@ -19,6 +17,13 @@ const TABS = [
 ];
 
 export default function EstimateList(): JSX.Element {
+  const router = useRouter();
+  const { tab = 'general' } = router.query;
+
+  const handleTabChange = (tabId: string) => {
+    router.push({ pathname: '/estimates', query: { tab: tabId } }, undefined, { shallow: true });
+  };
+
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'general':
@@ -36,7 +41,13 @@ export default function EstimateList(): JSX.Element {
         <header css={headerContainer}>
           <Text typo="title1">견적</Text>
         </header>
-        <Tabs tabs={TABS} renderContent={renderContent} isPadding={false} />
+        <Tabs
+          tabs={TABS}
+          renderContent={renderContent}
+          activeTabId={String(tab)}
+          onChange={handleTabChange}
+          isPadding={false}
+        />
       </div>
       <GNB />
     </Layout>

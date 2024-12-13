@@ -6,6 +6,8 @@ import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system
 import { DatePick } from '~/components/estimate';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
+import { useVetEstimateDetailQuery } from '~/queries/estimate';
+import { GetVetEstimateDetailRequestParams } from '~/models/estimate';
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -15,79 +17,70 @@ function formatDate(dateString: string): string {
   const day = String(date.getDate()).padStart(2, '0');
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
 
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+  const weekday = weekdays[date.getDay()];
+
+  return `${year}.${month}.${day}(${weekday}) ${hours}:${minutes}`;
 }
 
-interface PetType {
-  userImage: string;
-  nickname: string;
-  address: string;
-  reservedDate: string;
-  proposal: 'GENERAL' | 'DESIGNATION';
-  petId: number;
-  petImage: string;
-  petName: string;
-  age: number;
-  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
-  significant: string | null;
-  symptoms: string;
-  requirements: string;
-  diagnosis: string | null;
-  cause: string | null;
-  treatment: string | null;
-}
-
-const petData: PetType = {
-  userImage: '/test.jpg',
-  nickname: '닉네임',
-  address: '서울특별시 관악구 봉천동',
-  reservedDate: '2024-11-25 11:22:11',
-  proposal: 'GENERAL',
-  petId: 1,
-  petImage: '/test.jpg',
-  petName: '강아지A',
-  age: 2,
-  weight: 'SMALL',
-  significant: null,
-  symptoms: '강아지가 많이 아파요.',
-  requirements: '추가 요구사항 없음',
-  diagnosis: null,
-  cause: null,
-  treatment: null,
-};
 export default function EstimateDetail() {
   const router = useRouter();
-  const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | string>();
-  const [overallOpinion, setOverallOpinion] = useState<string>('');
+  const [, setSelectedDateTime] = useState<Dayjs | string>();
+  const [inputs, setInputs] = useState({
+    diagnosis: '',
+    cause: '',
+    treatment: '',
+  });
 
   const { id } = router.query;
   const estimateId = Number(id);
+  const params: GetVetEstimateDetailRequestParams = { careEstimateId: estimateId };
+
+  const { data: estimateData } = useVetEstimateDetailQuery(params);
+
+  const petData = estimateData || [];
+
+  if (!petData || Array.isArray(petData)) {
+    console.error('Unexpected response', petData);
+    return <div>데이터를 불러오는 중 오류가 발생했습니다.</div>;
+  }
 
   const petAttributes = [petData.age, petData.weight, petData.significant];
   const isEditable = petData.proposal === 'DESIGNATION';
+
+  const formattedDate = petData.reservedDate
+    ? formatDate(new Date(petData.reservedDate.toString()).toISOString())
+    : formatDate(petData.reservedDate);
 
   const handleDateTimeChange = (dateTime: Dayjs) => {
     setSelectedDateTime(dateTime);
   };
 
   const handleReservation = () => {
-    if (!overallOpinion) {
+    if (!inputs) {
       alert('추가 요청 사항을 입력해주세요.');
       return;
     }
-
-    const formattedDate = selectedDateTime
-      ? formatDate(new Date(selectedDateTime.toString()).toISOString())
-      : formatDate(petData.reservedDate);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setInputs((prevInputs) => ({
+      ...prevInputs,
+      [name]: value,
+    }));
+  };
   return (
     <Layout>
-      <AppBar onBackClick={() => router.back()} />
+      <AppBar
+        onBackClick={() =>
+          router.push({ pathname: '/estimates', query: { tab: router.query.tab || 'general' } })
+        }
+      />
+
       <div css={wrapper}>
-        <UserProfile userImage={petData.userImage} userName={petData.nickname} />
+        <UserProfile userImage={petData.userImageUrl} userName={petData.nickname} />
         <div css={sectionDivider}></div>
         <div css={requestTitle}>
           <Text typo="subtitle1">요청상세</Text>
@@ -96,12 +89,16 @@ export default function EstimateDetail() {
         <Section title="시술 희망 날짜 및 시간">
           <DatePick
             onChange={handleDateTimeChange}
-            placeholderText={petData.reservedDate}
+            placeholderText={formattedDate}
             isEditable={isEditable}
           />
         </Section>
         <Section title="어떤 아이가 진료 받을 예정인가요?">
-          <PetDetails image={petData.petImage} name={petData.petName} attributes={petAttributes} />
+          <PetDetails
+            image={petData.petImageUrl}
+            name={petData.petName}
+            attributes={petAttributes}
+          />
         </Section>
         <Section title="증상">{petData.symptoms}</Section>
         <Section title="추가 요청사항">{petData.requirements}</Section>
@@ -115,22 +112,28 @@ export default function EstimateDetail() {
           title="추정 병명"
           placeholder="추정 병명을 입력해주세요."
           height={40}
-          value={overallOpinion}
-          onChange={(e) => setOverallOpinion(e.target.value)}
+          maxLength={50}
+          name="diagnosis"
+          value={inputs.diagnosis}
+          onChange={handleInputChange}
         />
         <AddInput
           title="추정 원인"
           placeholder="추정 원인을 입력해주세요."
           height={60}
-          value={overallOpinion}
-          onChange={(e) => setOverallOpinion(e.target.value)}
+          maxLength={400}
+          name="cause"
+          value={inputs.cause}
+          onChange={handleInputChange}
         />
         <AddInput
           title="예상 진료"
           placeholder="예상되는 진료를 입력해주세요."
           height={120}
-          value={overallOpinion}
-          onChange={(e) => setOverallOpinion(e.target.value)}
+          maxLength={400}
+          name="treatment"
+          value={inputs.treatment}
+          onChange={handleInputChange}
         />
         <div css={button}>
           <RoundButton service="partner" size="L" fullWidth onClick={handleReservation}>
