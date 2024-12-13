@@ -1,51 +1,11 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
-import { Layout, Tabs, Text, TextButton, theme } from '@daengle/design-system';
+import { Layout, Tabs, Text, TextButton } from '@daengle/design-system';
 import { SelectUnfoldInactive } from '@daengle/design-system/icons';
+import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
-
 import { GNB } from '~/components/commons';
-import {
-  useUserEstimateGeneralGroomingPetsQuery,
-  useUserEstimateGeneralGroomingQuery,
-} from '~/queries';
-import { EmptyState } from '@daengle/services/components';
-import { CardList, ProfileSelector } from '~/components/estimate';
-import { GetUserEstimateGeneralGroomingResponse } from '~/models';
-
-// CardList 컴포넌트 (mode/category/petId에 따른 리스트 렌더링)
-// function CardList({
-//   mode,
-//   category,
-//   petId,
-//   onCardClick,
-// }: {
-//   mode: 'general' | 'designation';
-//   category: 'groomer' | 'vet';
-//   petId: number | undefined;
-//   onCardClick: (itemId: number) => void;
-// }) {
-//   // 실제 데이터 호출
-//   const { data, isLoading, error } = useUserEstimateGeneralGroomingPetsQuery();
-
-//   if (isLoading) return <div>로딩 중...</div>;
-//   if (error || !data) return <div>데이터 불러오기 실패</div>;
-
-//   const { petInfos } = data;
-//   if (!petInfos || petInfos.length === 0) {
-//     return <EmptyState isEmptyEstimates={true} hasOptions={true} />;
-//   }
-
-//   return (
-//     <div>
-//       {petInfos.map((item) => (
-//         <div key={item.petId} onClick={() => onCardClick(item.petId)}>
-//           {item.name}
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
+import { GroomerEstimateList } from '~/components/estimate/groomer-card-list';
+import { VetEstimateList } from '~/components/estimate/vet-card-list';
 
 const TABS = [
   {
@@ -57,54 +17,28 @@ const TABS = [
     label: '병원',
   },
 ];
-
 export default function EstimateList() {
-  const router = useRouter();
-  const [activeTabId, setActiveTabId] = useState<'groomer' | 'vet'>('groomer');
   const [isDesignation, setIsDesignation] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPetIndex, setSelectedPetIndex] = useState(0);
 
-  const mode = isDesignation ? 'designation' : 'general';
-  const category = activeTabId;
-
-  const {
-    data: petData,
-    isLoading: petLoading,
-    error: petError,
-  } = useUserEstimateGeneralGroomingPetsQuery();
-  const petInfos = petData?.petInfos || [];
-  const selectedPet = petInfos[selectedPetIndex] || null;
-
-  const {
-    data: estimatesData,
-    isLoading: estimatesLoading,
-    error: estimatesError,
-    fetchNextPage,
-  } = useUserEstimateGeneralGroomingQuery(
-    selectedPet?.petId! // petId가 있을 경우에만 호출, 없으면 undefined일 때 호출 안 할 수 있도록 조건부로 처리
-  );
-
-  const flattenedEstimates =
-    estimatesData?.pages.flatMap((page: GetUserEstimateGeneralGroomingResponse) =>
-      page.estimates?.map((est) => ({
-        id: est.id,
-        image: est.imageUrl,
-        name: est.name,
-        daengleMeter: est.daengleMeter,
-        shopName: est.shopName,
-        reservedDate: est.reservedDate,
-        tags: est.keywords,
-      }))
-    ) || [];
-
-  const handleModal = () => setIsModalOpen(!isModalOpen);
-  const handleTogglePage = (value: boolean) => {
-    setIsDesignation(value);
-    setIsModalOpen(false);
+  const renderContent = (activeTabId: string) => {
+    switch (activeTabId) {
+      case 'groomer':
+        return <GroomerEstimateList />;
+      case 'vet':
+        return <VetEstimateList />;
+      default:
+        return <GroomerEstimateList />;
+    }
   };
-  const handleCardClick = (itemId: number) => {
-    router.push(`/estimate/${itemId}?type=${category}`);
+
+  const handleModal = () => {
+    setIsModalOpen((prev) => !prev);
+  };
+
+  const handleTogglePage = (isDesignationPage: boolean) => {
+    setIsDesignation(isDesignationPage);
+    handleModal();
   };
 
   return (
@@ -112,63 +46,27 @@ export default function EstimateList() {
       <div css={wrapper}>
         <div css={headerContainer} onClick={handleModal}>
           <Text typo="title1">{isDesignation ? '바로 예약' : '견적'}</Text>
-          <SelectUnfoldInactive width="14px" height="8px" />
+          <SelectUnfoldInactive width="14px" height="8px" color="black" />
         </div>
         {isModalOpen && (
           <>
             <div css={modalOverlay} onClick={handleModal}></div>
             <div css={modalContent}>
               <TextButton onClick={() => handleTogglePage(false)}>
-                <Text typo="subtitle1" css={modalItem(!isDesignation)}>
+                <Text typo="subtitle1" css={modalItem(isDesignation === false)}>
                   견적
                 </Text>
               </TextButton>
               <div css={line}></div>
               <TextButton onClick={() => handleTogglePage(true)}>
-                <Text typo="subtitle1" css={modalItem(isDesignation)}>
+                <Text typo="subtitle1" css={modalItem(isDesignation === true)}>
                   바로 예약
                 </Text>
               </TextButton>
             </div>
           </>
         )}
-
-        <Tabs
-          tabs={TABS}
-          renderContent={(id) => (
-            <CardList
-              mode={mode}
-              category={id === 'groomer' ? 'groomer' : 'vet'}
-              estimateData={flattenedEstimates}
-              onCardClick={handleCardClick}
-            />
-          )}
-        />
-
-        {petLoading ? (
-          <div>로딩 중...</div>
-        ) : petError ? (
-          <div>펫 정보를 불러오는데 실패했습니다.</div>
-        ) : petInfos.length === 0 ? (
-          <EmptyState isEmptyEstimates={true} hasOptions={false} />
-        ) : selectedPet ? (
-          <>
-            <ProfileSelector
-              petInfos={petInfos}
-              selectedPetIndex={selectedPetIndex}
-              onSelectPet={setSelectedPetIndex}
-            />
-            {/* <CardList
-              mode={mode}
-              category={category}
-              petId={selectedPet.petId}
-              onCardClick={handleCardClick}
-            /> */}
-          </>
-        ) : (
-          <div>선택한 펫 정보가 없습니다.</div>
-        )}
-
+        <Tabs tabs={TABS} renderContent={renderContent} />
         <GNB />
       </div>
     </Layout>
@@ -189,7 +87,7 @@ const headerContainer = css`
   gap: 8px;
 
   margin-top: 4px;
-  padding: 18px 34px;
+  padding: 34px 18px;
 
   cursor: pointer;
 `;
@@ -201,11 +99,11 @@ const line = css`
   background: ${theme.colors.gray100};
 `;
 
-const modalItem = (isActive: boolean) => css`
+const modalItem = (isDesignation: boolean) => css`
   width: 100%;
   border: none;
 
-  color: ${isActive ? theme.colors.blue200 : theme.colors.gray400};
+  color: ${isDesignation ? theme.colors.blue200 : theme.colors.gray400};
   text-align: center;
 
   cursor: pointer;
@@ -241,6 +139,8 @@ const modalContent = css`
 
   background: white;
 
+  animation: slide-up 0.3s ease-in-out;
+
   @keyframes slide-up {
     from {
       transform: translateY(100%);
@@ -250,5 +150,4 @@ const modalContent = css`
       transform: translateY(0);
     }
   }
-  animation: slide-up 0.3s ease-in-out;
 `;

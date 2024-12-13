@@ -13,24 +13,44 @@ export interface PetEstimateId extends PetInfo {
 //   careEstimates?: CareEstimateType[];
 // }
 
-export interface GroomingEstimateType {
-  groomingEstimateId: number;
+export interface UserEstimateGeneralGroomingType {
+  id: number;
   name: string;
   daengleMeter: number;
-  proposal: 'GENERAL' | 'DESIGNATION';
-  image: string;
-  shopName?: string | null;
+  imageUrl: string;
+  shopName?: string;
+  keywords: string[];
   reservedDate: string;
   tags?: string[];
 }
 
-export interface CareEstimateType {
-  careEstimateId: number;
+export interface UserEstimateGeneralCareType {
+  id: number;
   name: string;
   daengleMeter: number;
-  proposal: 'GENERAL' | 'DESIGNATION';
-  image: string;
-  shopName?: string | null;
+  imageUrl: string;
+  keywords: string[];
   reservedDate: string;
-  tags?: string[];
 }
+
+// export interface GroomingEstimateType {
+//   groomingEstimateId: number;
+//   name: string;
+//   daengleMeter: number;
+//   proposal: 'GENERAL' | 'DESIGNATION';
+//   image: string;
+//   shopName?: string | null;
+//   reservedDate: string;
+//   tags?: string[];
+// }
+
+// export interface CareEstimateType {
+//   careEstimateId: number;
+//   name: string;
+//   daengleMeter: number;
+//   proposal: 'GENERAL' | 'DESIGNATION';
+//   image: string;
+//   shopName?: string | null;
+//   reservedDate: string;
+//   tags?: string[];
+// }

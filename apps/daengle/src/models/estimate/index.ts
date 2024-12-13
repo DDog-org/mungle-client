@@ -1,15 +1,14 @@
 import { PetInfo, PetEstimateId } from '~/interfaces/estimate';
 
 export interface GetUserEstimateGeneralGroomingPetsResponse {
-  petInfos?: PetEstimateId[];
+  pets?: PetEstimateId[];
 }
 
 export interface GetUserEstimateGeneralGroomingRequestParams {
   petId: number;
-  params: {
-    page: number;
-    size: number;
-  };
+
+  page: number;
+  size: number;
 }
 
 export interface GetUserEstimateGeneralGroomingResponse {
@@ -21,11 +20,37 @@ export interface GetUserEstimateGeneralGroomingList {
   name: string;
   daengleMeter: number;
   imageUrl: string;
-  shopName: string;
+  shopName?: string;
   keywords: string[];
   reservedDate: string;
   tags?: string[];
 }
+
+export interface GetUserEstimateGeneralCarePetsResponse {
+  pets?: PetEstimateId[];
+}
+
+export interface GetUserEstimateGeneralCareRequestParams {
+  petId: number;
+
+  page: number;
+  size: number;
+}
+
+export interface GetUserEstimateGeneralCareResponse {
+  estimates?: GetUserEstimateGeneralCareList[];
+}
+
+export interface GetUserEstimateGeneralCareList {
+  id: number;
+  name: string;
+  daengleMeter: number;
+  imageUrl: string;
+  keywords: string[];
+  reservedDate: string;
+}
+
+///////////
 
 export interface PostUserEstimateGroomerUserInfoRequestBody {
   groomerId: number | null;

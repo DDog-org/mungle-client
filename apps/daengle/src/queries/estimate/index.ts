@@ -9,6 +9,8 @@ import {
   postUserEstimateVetUserInfo,
   getUserEstimateGeneralGroomingPets,
   getUserEstimateGeneralGrooming,
+  getUserEstimateGeneralCarePets,
+  getUserEstimateGeneralCare,
 } from '~/apis';
 
 import {
@@ -19,6 +21,7 @@ import {
   PostUserEstimateVetUserInfoRequestBody,
   GetUserEstimateGeneralGroomingPetsResponse,
   GetUserEstimateGeneralGroomingResponse,
+  GetUserEstimateGeneralCarePetsResponse,
 } from '~/models/estimate';
 import { PAGE_SIZE } from '~/constants/review';
 
@@ -48,14 +51,12 @@ export const useUserEstimateGeneralGroomingPetsQuery = () => {
 export const useUserEstimateGeneralGroomingQuery = (petId: number) => {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_GROOMING,
-    initialPageParam: 1,
-    queryFn: ({ pageParam = 1 }) => {
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
       return getUserEstimateGeneralGrooming({
         petId,
-        params: {
-          page: pageParam,
-          size: PAGE_SIZE,
-        },
+        page: pageParam,
+        size: PAGE_SIZE,
       });
     },
     getNextPageParam: (lastPage, allPages) => {
@@ -65,6 +66,32 @@ export const useUserEstimateGeneralGroomingQuery = (petId: number) => {
   });
 };
 
+export const useUserEstimateGeneralCarePetsQuery = () => {
+  return useQuery<GetUserEstimateGeneralCarePetsResponse>({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_CARE_PETS,
+    queryFn: () => {
+      return getUserEstimateGeneralCarePets();
+    },
+  });
+};
+
+export const useUserEstimateGeneralCareQuery = (petId: number) => {
+  return useInfiniteQuery({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_CARE,
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
+      return getUserEstimateGeneralCare({
+        petId,
+        page: pageParam,
+        size: PAGE_SIZE,
+      });
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.estimates?.length === PAGE_SIZE ? allPages.length + 1 : undefined;
+    },
+    enabled: !!petId,
+  });
+};
 // export const useUserEstimateGeneralGroomingQuery = () => {
 //   return useQuery<GetUserEstimateGeneralGroomingResponse>({
 //     queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_GROOMING_PETS,

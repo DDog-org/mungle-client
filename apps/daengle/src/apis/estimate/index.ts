@@ -12,11 +12,10 @@ import {
   GetUserEstimateGeneralGroomingPetsResponse,
   GetUserEstimateGeneralGroomingRequestParams,
   GetUserEstimateGeneralGroomingResponse,
+  GetUserEstimateGeneralCarePetsResponse,
+  GetUserEstimateGeneralCareRequestParams,
+  GetUserEstimateGeneralCareResponse,
 } from '~/models/estimate';
-
-// export const getUserEstimateList = async () => {
-//   return await api.get<GetUserEstimateListResponse>('/user/estimate/list');
-// };
 
 export const getUserEstimateGeneralGroomingPets = async () => {
   return await api.get<GetUserEstimateGeneralGroomingPetsResponse>(
@@ -24,23 +23,34 @@ export const getUserEstimateGeneralGroomingPets = async () => {
   );
 };
 
-// export const getUserGroomingMyReviewList = async (
-//   params: GetUserGroomingMyReviewListRequestParams
-// ) => {
-//   return await api.get<GetUserGroomingMyReviewListResponse>(
-//     '/user/grooming/my-review/list',
-//     params
-//   );
-// };
-
 export const getUserEstimateGeneralGrooming = async (
   params: GetUserEstimateGeneralGroomingRequestParams
 ) => {
+  const { petId, page, size } = params;
+
   return await api.get<GetUserEstimateGeneralGroomingResponse>(
-    `/user/estimate/general/grooming/${params.petId}`,
-    { params }
+    `/user/estimate/general/grooming/${petId}`,
+    {
+      params: { page, size },
+    }
   );
 };
+
+export const getUserEstimateGeneralCarePets = async () => {
+  return await api.get<GetUserEstimateGeneralCarePetsResponse>('/user/estimate/general/care/pets');
+};
+
+export const getUserEstimateGeneralCare = async (
+  params: GetUserEstimateGeneralCareRequestParams
+) => {
+  const { petId, page, size } = params;
+
+  return await api.get<GetUserEstimateGeneralCareResponse>(`/user/estimate/general/care/${petId}`, {
+    params: { page, size },
+  });
+};
+
+/////////
 
 export const postUserEstimateGroomerUserInfo = async (
   body: PostUserEstimateGroomerUserInfoRequestBody

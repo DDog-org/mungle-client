@@ -40,6 +40,8 @@ export const profileImage = css`
   border-radius: 50%;
   object-fit: cover;
 
+  background-color: ${theme.colors.gray200};
+
   cursor: pointer;
 `;
 
