@@ -20,10 +20,9 @@ export interface GetUserEstimateGeneralGroomingList {
   name: string;
   daengleMeter: number;
   imageUrl: string;
-  shopName?: string;
+  shopName: string;
   keywords: string[];
   reservedDate: string;
-  tags?: string[];
 }
 
 export interface GetUserEstimateGeneralCarePetsResponse {
@@ -42,6 +41,55 @@ export interface GetUserEstimateGeneralCareResponse {
 }
 
 export interface GetUserEstimateGeneralCareList {
+  id: number;
+  name: string;
+  daengleMeter: number;
+  imageUrl: string;
+  keywords: string[];
+  reservedDate: string;
+}
+
+export interface GetUserEstimateDesignationGroomingPetsResponse {
+  pets?: PetEstimateId[];
+}
+
+export interface GetUserEstimateDesignationGroomingRequestParams {
+  petId: number;
+
+  page: number;
+  size: number;
+}
+
+export interface GetUserEstimateDesignationGroomingResponse {
+  estimates?: GetUserEstimateDesignationGroomingList[];
+}
+
+export interface GetUserEstimateDesignationGroomingList {
+  id: number;
+  name: string;
+  daengleMeter: number;
+  imageUrl: string;
+  shopName: string;
+  keywords: string[];
+  reservedDate: string;
+}
+
+export interface GetUserEstimateDesignationCarePetsResponse {
+  pets?: PetEstimateId[];
+}
+
+export interface GetUserEstimateDesignationCareRequestParams {
+  petId: number;
+
+  page: number;
+  size: number;
+}
+
+export interface GetUserEstimateDesignationCareResponse {
+  estimates?: GetUserEstimateDesignationCareList[];
+}
+
+export interface GetUserEstimateDesignationCareList {
   id: number;
   name: string;
   daengleMeter: number;
