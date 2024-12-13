@@ -56,7 +56,7 @@ export default function EditProfile() {
     if (response.isAvailable) {
       setValue('isAvailableNickname', true);
     } else {
-      setError('nickname', { message: '이미 사용중인 닉네임입니다.' });
+      setError('nickname', { message: '이미 사용 중인 닉네임입니다.' });
       setValue('isAvailableNickname', false);
     }
   };

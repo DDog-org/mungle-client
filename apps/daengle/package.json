@@ -32,7 +32,6 @@
     "@daengle/services": "workspace:*",
     "@daengle/stylelint-config": "workspace:*",
     "@daengle/typescript-config": "workspace:*",
-    "@daengle/utils": "workspace:*",
     "@hookform/devtools": "^4.3.1",
     "@types/node": "^20",
     "@types/react": "^18",
