@@ -55,8 +55,8 @@ export function CardList({ mode, category, estimateData, onCardClick }: Props): 
                 {item.reservedDate}
               </Text>
               <div css={tagsContainer}>
-                {item.keywords?.map((keyword, index) => (
-                  <TextButton key={`${item.id}-${index}`} css={tagButtonStyle}>
+                {item.keywords?.map((keyword) => (
+                  <TextButton key={item.id} css={tagButtonStyle}>
                     #{keyword}
                   </TextButton>
                 ))}
