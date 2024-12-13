@@ -7,6 +7,6 @@
     },
     "jsxImportSource": "@emotion/react"
   },
-  "include": ["src"],
+  "include": ["src", "../../apps/daengle/src/libs/portone"],
   "exclude": ["node_modules"]
 }

@@ -121,6 +121,9 @@ importers:
       '@emotion/react':
         specifier: ^11.13.5
         version: 11.13.5(@types/react@18.3.12)(react@18.3.1)
+      '@portone/browser-sdk':
+        specifier: ^0.0.11
+        version: 0.0.11
       '@emotion/styled':
         specifier: ^11.13.5
         version: 11.13.5(@emotion/react@11.13.5(@types/react@18.3.12)(react@18.3.1))(@types/react@18.3.12)(react@18.3.1)
@@ -1580,6 +1583,9 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+
+  '@portone/browser-sdk@0.0.11':
+    resolution: {integrity: sha512-NxvODPjSmfst/hTbEQAiTrd/zTyckC+Mggtz8H2PGBXbjKsUXKwNReIt6BHvZEmgDWuRQ94ltkTZapkTO4H1Aw==}
 
   '@popperjs/core@2.11.8':
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
@@ -6870,6 +6876,8 @@ snapshots:
     optional: true
 
   '@pkgr/core@0.1.1': {}
+
+  '@portone/browser-sdk@0.0.11': {}
 
   '@popperjs/core@2.11.8': {}
 

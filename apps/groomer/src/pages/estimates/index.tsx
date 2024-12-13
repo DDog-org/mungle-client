@@ -104,7 +104,7 @@ export default function EstimateList(): JSX.Element {
           {filteredData.map((data) => (
             <Card
               key={data.id}
-              onDetailClick={() => router.push(`/estimate/detail/${data.id}`)}
+              onDetailClick={() => router.push(`/estimates/detail/${data.id}`)}
               {...data}
             />
           ))}
