@@ -5,17 +5,32 @@ import './normalize.css';
 
 const defaultStyles = css`
   :root {
-    font-family: 'Pretendard Variable', 'Pretendard', '-apple-system', 'BlinkMacSystemFont',
-      'system-ui', 'Roboto', 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR',
-      'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'sans-serif';
     width: 100%;
     height: 100%;
+
+    font-family:
+      'Pretendard Variable',
+      Pretendard,
+      -apple-system,
+      BlinkMacSystemFont,
+      system-ui,
+      Roboto,
+      'Helvetica Neue',
+      'Segoe UI',
+      'Apple SD Gothic Neo',
+      'Noto Sans KR',
+      'Malgun Gothic',
+      'Apple Color Emoji',
+      'Segoe UI Emoji',
+      'Segoe UI Symbol',
+      sans-serif;
   }
 
   * {
     box-sizing: border-box;
     scrollbar-width: none;
     -ms-overflow-style: none;
+
     font-family: inherit;
 
     -webkit-user-select: none;
@@ -31,23 +46,28 @@ const defaultStyles = css`
 
   html,
   body {
+    overscroll-behavior: none;
+
     margin: 0;
     padding: 0;
-    overscroll-behavior: none;
   }
 
   a {
     outline: none;
+
     color: inherit;
     text-decoration: none;
+
     cursor: pointer;
   }
 
   button {
-    outline: none;
     border: none;
-    cursor: pointer;
+
     background: none;
+
+    cursor: pointer;
+    outline: none;
     padding-block: 0;
     padding-inline: 0;
   }
@@ -60,7 +80,9 @@ const defaultStyles = css`
 
   input {
     outline: none;
+
     border: none;
+
     background: none;
   }
 `;

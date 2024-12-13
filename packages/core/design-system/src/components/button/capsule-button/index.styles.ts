@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
 import { theme } from '../../../foundation';
+import { Size } from './index.types';
 
-export const wrapper = ({ disabled }: { disabled: boolean }) => css`
+export const wrapper = ({ disabled, size }: { disabled: boolean; size: Size }) => css`
   ${!disabled &&
   css`
     transition: all 0.25s ease;
@@ -14,9 +15,19 @@ export const wrapper = ({ disabled }: { disabled: boolean }) => css`
 
     cursor: default;
   `}
+
+  ${size === 'S' &&
+  css`
+    padding: 4px 10px;
+  `}
+
+
+  ${size === 'M' &&
+  css`
+    padding: 6px 10px;
+  `}
   width: fit-content;
   height: fit-content;
-  padding: 6px 10px;
   border-radius: 20px;
 
   background: ${theme.colors.gray100};
