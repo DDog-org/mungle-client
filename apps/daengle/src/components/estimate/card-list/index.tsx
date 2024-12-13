@@ -47,7 +47,7 @@ export function CardList({ mode, category, estimateData, onCardClick }: Props): 
                 {isDesignation ? '진행 중' : `🐾 ${item.daengleMeter}m`}
               </div>
             </div>
-            <div css={cardContent}>
+            <div css={cardContent} onClick={() => onCardClick?.(item.id)}>
               <Text typo="body11" color="gray400">
                 {item.shopName || (category === 'vet' ? '' : '미용실 정보 없음')}
               </Text>
@@ -55,12 +55,8 @@ export function CardList({ mode, category, estimateData, onCardClick }: Props): 
                 {item.reservedDate}
               </Text>
               <div css={tagsContainer}>
-                {item.keywords?.map((keyword, index) => (
-                  <TextButton
-                    key={`${item.id}-${index}`}
-                    css={tagButtonStyle}
-                    onClick={() => onCardClick?.(item.id)}
-                  >
+                {item.keywords?.map((keyword) => (
+                  <TextButton key={item.id} css={tagButtonStyle}>
                     #{keyword}
                   </TextButton>
                 ))}
@@ -72,11 +68,11 @@ export function CardList({ mode, category, estimateData, onCardClick }: Props): 
               src={item.imageUrl}
               alt={`${item.name} 프로필`}
               css={profileImage}
-              onClick={() => onCardClick?.(item.id)}
               onError={handleImageError}
+              onClick={() => onCardClick?.(item.id)}
             />
           ) : (
-            <DefaultProfile css={profileImage} onClick={() => onCardClick?.(item.id)} />
+            <DefaultProfile css={profileImage} />
           )}
         </div>
       ))}

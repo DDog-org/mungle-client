@@ -1,7 +1,7 @@
 import { api } from '~/apis';
+import { UserEstimateCareDetailData, UserEstimateGroomingDetailData } from '~/interfaces/estimate';
 
 import {
-  GetUserEstimateListResponse,
   PostUserEstimateGroomerUserInfoRequestBody,
   PostUserEstimateGroomerUserInfoResponse,
   PostUserEstimateGroomingRequestBody,
@@ -16,6 +16,14 @@ import {
   GetUserEstimateGeneralCarePetsResponse,
   GetUserEstimateGeneralCareRequestParams,
   GetUserEstimateGeneralCareResponse,
+  GetUserEstimateDesignationGroomingPetsResponse,
+  UserEstimateGroomingDetailRequestParams,
+  UserEstimateCareDetailRequestParams,
+  GetUserEstimateDesignationGroomingRequestParams,
+  GetUserEstimateDesignationGroomingResponse,
+  GetUserEstimateDesignationCarePetsResponse,
+  GetUserEstimateDesignationCareRequestParams,
+  GetUserEstimateDesignationCareResponse,
 } from '~/models/estimate';
 
 export const getUserEstimateGeneralGroomingPets = async () => {
@@ -51,7 +59,43 @@ export const getUserEstimateGeneralCare = async (
   });
 };
 
-/////////
+export const getUserEstimateDesignationGroomingPets = async () => {
+  return await api.get<GetUserEstimateDesignationGroomingPetsResponse>(
+    '/user/estimate/designation/grooming/pets'
+  );
+};
+
+export const getUserEstimateDesignationGrooming = async (
+  params: GetUserEstimateDesignationGroomingRequestParams
+) => {
+  const { petId, page, size } = params;
+
+  return await api.get<GetUserEstimateDesignationGroomingResponse>(
+    `/user/estimate/designation/grooming/${petId}`,
+    {
+      params: { page, size },
+    }
+  );
+};
+
+export const getUserEstimateDesignationCarePets = async () => {
+  return await api.get<GetUserEstimateDesignationCarePetsResponse>(
+    '/user/estimate/designation/care/pets'
+  );
+};
+
+export const getUserEstimateDesignationCare = async (
+  params: GetUserEstimateDesignationCareRequestParams
+) => {
+  const { petId, page, size } = params;
+
+  return await api.get<GetUserEstimateDesignationCareResponse>(
+    `/user/estimate/designation/care/${petId}`,
+    {
+      params: { page, size },
+    }
+  );
+};
 
 export const postUserEstimateGroomerUserInfo = async (
   body: PostUserEstimateGroomerUserInfoRequestBody

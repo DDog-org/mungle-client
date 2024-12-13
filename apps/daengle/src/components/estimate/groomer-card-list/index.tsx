@@ -1,20 +1,36 @@
 import { EmptyState } from '@daengle/services/components';
 import { useState } from 'react';
 import {
+  useUserEstimateDesignationGroomingPetsQuery,
+  useUserEstimateDesignationGroomingQuery,
   useUserEstimateGeneralGroomingPetsQuery,
   useUserEstimateGeneralGroomingQuery,
 } from '~/queries';
 import { ProfileSelector } from '../pet-profile';
 import { CardList } from '../card-list';
-import { GetUserEstimateGeneralGroomingList } from '~/models';
+import {
+  GetUserEstimateDesignationGroomingList,
+  GetUserEstimateGeneralGroomingList,
+} from '~/models';
+import { useIntersectionLoad } from '~/hooks';
+import { bottom } from './index.styles';
+import { useRouter } from 'next/router';
+import { ROUTES } from '~/constants/commons';
 
-export function GroomerEstimateList() {
+interface Props {
+  isDesignation: boolean;
+}
+
+export function GroomerEstimateList({ isDesignation }: Props) {
+  const router = useRouter();
   const [selectedPetIndex, setSelectedPetIndex] = useState(0);
   const {
     data: petData,
     isLoading: petLoading,
     error: petError,
-  } = useUserEstimateGeneralGroomingPetsQuery();
+  } = isDesignation
+    ? useUserEstimateDesignationGroomingPetsQuery()
+    : useUserEstimateGeneralGroomingPetsQuery();
 
   const petInfos = petData?.pets || [];
   const selectedPet = petInfos[selectedPetIndex] || null;
@@ -25,14 +41,20 @@ export function GroomerEstimateList() {
     error: estimateError,
     fetchNextPage,
     hasNextPage,
-  } = useUserEstimateGeneralGroomingQuery(selectedPet?.petId || 0);
+    isFetchingNextPage,
+  } = isDesignation
+    ? useUserEstimateDesignationGroomingQuery(selectedPet?.petId || 0)
+    : useUserEstimateGeneralGroomingQuery(selectedPet?.petId || 0);
 
-  const flattenedEstimates: GetUserEstimateGeneralGroomingList[] =
-    estimates?.pages
-      .flatMap((page) => page.estimates)
-      .filter((estimate): estimate is GetUserEstimateGeneralGroomingList => !!estimate) || [];
+  const { loadMoreRef } = useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNextPage });
 
-  console.log('변환된 데이터', flattenedEstimates);
+  const flattenedEstimates = isDesignation
+    ? estimates?.pages
+        .flatMap((page) => page.estimates)
+        .filter((estimate): estimate is GetUserEstimateDesignationGroomingList => !!estimate) || []
+    : estimates?.pages
+        .flatMap((page) => page.estimates)
+        .filter((estimate): estimate is GetUserEstimateGeneralGroomingList => !!estimate) || [];
 
   return (
     <>
@@ -41,7 +63,11 @@ export function GroomerEstimateList() {
       ) : petError ? (
         <div>펫 정보를 불러오는데 실패했습니다.</div>
       ) : petInfos.length === 0 ? (
-        <EmptyState isEmptyEstimates={false} hasOptions={false} />
+        <EmptyState
+          isEmptyEstimates={false}
+          hasOptions={false}
+          onClick={() => router.push(ROUTES.ESTIMATE_GROOMING)}
+        />
       ) : selectedPet ? (
         <>
           <ProfileSelector
@@ -57,13 +83,18 @@ export function GroomerEstimateList() {
             <EmptyState isEmptyEstimates={true} hasOptions={true} />
           ) : (
             <CardList
-              mode="general"
+              mode={isDesignation ? 'designation' : 'general'}
               category="groomer"
               estimateData={flattenedEstimates}
-              onCardClick={(petId: number) => console.log(`Card clicked: ${petId}`)}
+              onCardClick={(id: number) =>
+                router.push({
+                  pathname: ROUTES.ESTIMATE_DETAIL(selectedPet.estimateId),
+                  query: { type: 'grooming', petId: selectedPet?.petId },
+                })
+              }
             />
           )}
-          {hasNextPage && <button onClick={() => fetchNextPage()}>더 보기</button>}
+          <div ref={loadMoreRef} css={bottom} />
         </>
       ) : (
         <div>선택한 펫 정보가 없습니다.</div>

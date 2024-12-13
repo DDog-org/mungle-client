@@ -3,16 +3,32 @@ import { useState } from 'react';
 
 import { ProfileSelector } from '../pet-profile';
 import { CardList } from '../card-list';
-import { useUserEstimateGeneralCarePetsQuery, useUserEstimateGeneralCareQuery } from '~/queries';
+import {
+  useUserEstimateDesignationCarePetsQuery,
+  useUserEstimateDesignationCareQuery,
+  useUserEstimateGeneralCarePetsQuery,
+  useUserEstimateGeneralCareQuery,
+} from '~/queries';
 import { GetUserEstimateGeneralCareList } from '~/models';
+import { useIntersectionLoad } from '~/hooks';
+import { bottom } from './index.styles';
+import { useRouter } from 'next/router';
+import { ROUTES } from '~/constants/commons';
 
-export function VetEstimateList() {
+interface Props {
+  isDesignation: boolean;
+}
+
+export function VetEstimateList({ isDesignation }: Props) {
+  const router = useRouter();
   const [selectedPetIndex, setSelectedPetIndex] = useState(0);
   const {
     data: petData,
     isLoading: petLoading,
     error: petError,
-  } = useUserEstimateGeneralCarePetsQuery();
+  } = isDesignation
+    ? useUserEstimateDesignationCarePetsQuery()
+    : useUserEstimateGeneralCarePetsQuery();
 
   const petInfos = petData?.pets || [];
   const selectedPet = petInfos[selectedPetIndex] || null;
@@ -23,14 +39,17 @@ export function VetEstimateList() {
     error: estimateError,
     fetchNextPage,
     hasNextPage,
-  } = useUserEstimateGeneralCareQuery(selectedPet?.petId || 0);
+    isFetchingNextPage,
+  } = isDesignation
+    ? useUserEstimateDesignationCareQuery(selectedPet?.petId || 0)
+    : useUserEstimateGeneralCareQuery(selectedPet?.petId || 0);
+
+  const { loadMoreRef } = useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNextPage });
 
   const flattenedEstimates: GetUserEstimateGeneralCareList[] =
     estimates?.pages
       .flatMap((page) => page.estimates)
       .filter((estimate): estimate is GetUserEstimateGeneralCareList => !!estimate) || [];
-
-  console.log('변환된 데이터', flattenedEstimates);
 
   return (
     <>
@@ -39,7 +58,11 @@ export function VetEstimateList() {
       ) : petError ? (
         <div>펫 정보를 불러오는데 실패했습니다.</div>
       ) : petInfos.length === 0 ? (
-        <EmptyState isEmptyEstimates={false} hasOptions={false} />
+        <EmptyState
+          isEmptyEstimates={false}
+          hasOptions={false}
+          onClick={() => router.push(ROUTES.ESTIMATE_VET)}
+        />
       ) : selectedPet ? (
         <>
           <ProfileSelector
@@ -55,13 +78,18 @@ export function VetEstimateList() {
             <EmptyState isEmptyEstimates={true} hasOptions={true} />
           ) : (
             <CardList
-              mode="general"
+              mode={isDesignation ? 'designation' : 'general'}
               category="vet"
               estimateData={flattenedEstimates}
-              onCardClick={(petId: number) => console.log(`Card clicked: ${petId}`)}
+              onCardClick={(id: number) =>
+                router.push({
+                  pathname: ROUTES.ESTIMATE_DETAIL(selectedPet.estimateId),
+                  query: { type: 'care', petId: selectedPet?.petId },
+                })
+              }
             />
           )}
-          {hasNextPage && <button onClick={() => fetchNextPage()}>더 보기</button>}
+          <div ref={loadMoreRef} css={bottom} />
         </>
       ) : (
         <div>선택한 펫 정보가 없습니다.</div>

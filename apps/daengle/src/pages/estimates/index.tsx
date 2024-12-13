@@ -24,11 +24,12 @@ export default function EstimateList() {
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'groomer':
-        return <GroomerEstimateList />;
+        return <GroomerEstimateList isDesignation={isDesignation} />;
+
       case 'vet':
-        return <VetEstimateList />;
+        return <VetEstimateList isDesignation={isDesignation} />;
       default:
-        return <GroomerEstimateList />;
+        return <GroomerEstimateList isDesignation={isDesignation} />;
     }
   };
 
