@@ -17,3 +17,7 @@ export interface VetPaymentHistoryItem {
   paymentDate: string;
   status: keyof typeof VET_PAYMENT_STATUS;
 }
+export interface VisitorInfoFormType {
+  username: string;
+  phoneNumber: string;
+}

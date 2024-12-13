@@ -38,6 +38,12 @@ export const ROUTES = {
   CHATS: '/chats',
   CHATS_DETAIL: (chatId: number) => `/chats/${chatId}`,
 
+  //Payment
+  PAYMENTS: '/payments',
+  PAYMENTS_ORDER: '/payments/order',
+  PAYMENTS_VALIDATE: '/payments/validate',
+  PAYMENTS_COMPLETE: '/payments/complete',
+
   // Mypage
   MYPAGE: '/mypage',
   MYPAGE_USER_INFO: '/mypage/user-profile',
