@@ -1,12 +1,9 @@
 import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { ROUTES } from '~/constants/commons';
 import { useOrderInfoStore } from '~/stores/payment';
 
 export default function PaymentComplete() {
-  const router = useRouter();
   const { recipientName, shopName, schedule } = useOrderInfoStore();
 
   const date = schedule.split('T', 1);

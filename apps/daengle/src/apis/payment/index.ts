@@ -8,8 +8,11 @@ import {
   PostPaymentOrderResponse,
   PostPaymentValidateRequestBody,
   PostPaymentValidateResponse,
+<<<<<<< HEAD
   GetPaymentHistoryRequestParams,
   GetPaymentHistoryResponse,
+=======
+>>>>>>> af1095eb (feature(daengle): PG 결제 api 연동 (#250))
 } from '~/models';
 
 export const getPaymentGroomingHistoryList = async (
@@ -33,7 +36,10 @@ export const postPaymentOrder = async (body: PostPaymentOrderRequestBody) => {
 export const postPaymentValidate = async (body: PostPaymentValidateRequestBody) => {
   return await api.post<PostPaymentValidateResponse>('/payment/validate', body);
 };
+<<<<<<< HEAD
 
 export const getPaymentHistory = async ({ reservationId }: GetPaymentHistoryRequestParams) => {
   return await api.get<GetPaymentHistoryResponse>(`/payment/history/${reservationId}`);
 };
+=======
+>>>>>>> af1095eb (feature(daengle): PG 결제 api 연동 (#250))
