@@ -31,14 +31,11 @@ export const ROUTES = {
   // Reservations
   RESERVATIONS: '/reservations',
 
-  // Payments
-  PAYMENTS_ORDER: '/payments/order',
-
   // Chat
   CHATS: '/chats',
   CHATS_DETAIL: (chatId: number) => `/chats/${chatId}`,
 
-  //Payment
+  //Payments
   PAYMENTS: '/payments',
   PAYMENTS_ORDER: '/payments/order',
   PAYMENTS_VALIDATE: '/payments/validate',
