@@ -1,75 +1,44 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
-import { EmptyState, Tab } from '@daengle/services/components';
-import { Layout, Text, TextButton } from '@daengle/design-system';
+import { Layout, Tabs, Text, TextButton } from '@daengle/design-system';
 import { SelectUnfoldInactive } from '@daengle/design-system/icons';
 import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
-import { useUserEstimateListQuery } from '~/queries';
-import { CardList, OptionSelector, ProfileSelector } from '~/components/estimate';
 import { GNB } from '~/components/commons';
+import { GroomerEstimateList } from '~/components/estimate/groomer-card-list';
+import { VetEstimateList } from '~/components/estimate/vet-card-list';
 
+const TABS = [
+  {
+    id: 'groomer',
+    label: '미용사',
+  },
+  {
+    id: 'vet',
+    label: '병원',
+  },
+];
 export default function EstimateList() {
-  const router = useRouter();
-  const [activeTab, setActiveTab] = useState<string>('미용사');
   const [isDesignation, setIsDesignation] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPetIndex, setSelectedPetIndex] = useState(0);
-  const { data, isLoading, error } = useUserEstimateListQuery();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error || !data) return <div>에러가 발생했습니다.</div>;
-
-  const cardData = data || [];
-
-  const selectedPet = cardData?.petInfos?.[selectedPetIndex];
-  const type = activeTab === '미용사' ? 'grooming' : 'care';
-  const estimateData = selectedPet
-    ? (() => {
-        const groomingData =
-          selectedPet?.groomingEstimates
-            ?.filter((item) => (isDesignation ? item.proposal === 'DESIGNATION' : true))
-            .map((item) => ({
-              ...item,
-              id: item.groomingEstimateId,
-            })) || [];
-
-        const careData =
-          selectedPet?.careEstimates
-            ?.filter((item) => (isDesignation ? item.proposal === 'DESIGNATION' : true))
-            .map((item) => ({
-              ...item,
-              id: item.careEstimateId,
-            })) || [];
-
-        return activeTab === '미용사' ? groomingData : careData;
-      })()
-    : [];
-
-  const petInfos = cardData?.petInfos || [];
-  const hasOptions = !!(cardData?.petInfos && cardData.petInfos.length > 0);
-  const isEmptyEstimates = selectedPet
-    ? !selectedPet.groomingEstimates?.length && !selectedPet.careEstimates?.length
-    : false;
+  const renderContent = (activeTabId: string) => {
+    switch (activeTabId) {
+      case 'groomer':
+        return <GroomerEstimateList />;
+      case 'vet':
+        return <VetEstimateList />;
+      default:
+        return <GroomerEstimateList />;
+    }
+  };
 
   const handleModal = () => {
     setIsModalOpen((prev) => !prev);
   };
 
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab);
-  };
-
   const handleTogglePage = (isDesignationPage: boolean) => {
     setIsDesignation(isDesignationPage);
     handleModal();
-  };
-  const handleNavigate = (path: string) => {
-    router.push(path);
-  };
-
-  const handleCardClick = (itemId: number) => {
-    router.push(`/estimates/detail/${itemId}?type=${type}`);
   };
 
   return (
@@ -97,28 +66,7 @@ export default function EstimateList() {
             </div>
           </>
         )}
-        <Tab items={['미용사', '병원']} activeItem={activeTab} onChange={handleTabChange} />
-        {hasOptions ? (
-          <>
-            <ProfileSelector
-              petInfos={petInfos}
-              selectedPetIndex={selectedPetIndex}
-              onSelectPet={setSelectedPetIndex}
-            />
-            <OptionSelector />
-            {estimateData && estimateData.length > 0 ? (
-              <CardList
-                estimateData={estimateData}
-                isDesignation={isDesignation}
-                onCardClick={handleCardClick}
-              />
-            ) : (
-              <EmptyState isEmptyEstimates={isEmptyEstimates} hasOptions={hasOptions} />
-            )}
-          </>
-        ) : (
-          <EmptyState isEmptyEstimates={false} hasOptions={hasOptions} />
-        )}
+        <Tabs tabs={TABS} renderContent={renderContent} />
         <GNB />
       </div>
     </Layout>
@@ -139,7 +87,7 @@ const headerContainer = css`
   gap: 8px;
 
   margin-top: 4px;
-  padding: 18px 34px;
+  padding: 34px 18px;
 
   cursor: pointer;
 `;
