@@ -12,6 +12,7 @@ export const ROUTES = {
 
   // Reservations
   RESERVATIONS: '/reservations',
+  RESERVATIONS_DETAIL: (reservationId: number) => `/reservations/${reservationId}`,
 
   // Chats
   CHATS: '/chats',
