@@ -1,40 +1,107 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../query-keys';
 import {
-  getUserEstimateList,
+  // getUserEstimateList,
   postUserEstimateGrooming,
   postUserEstimateGroomerUserInfo,
   postUserEstimateCare,
   postUserEstimateVetUserInfo,
-  getUserEstimateGroomingDetail,
-  getUserEstimateCareDetail,
+  getUserEstimateGeneralGroomingPets,
+  getUserEstimateGeneralGrooming,
+  getUserEstimateGeneralCarePets,
+  getUserEstimateGeneralCare,
 } from '~/apis';
 
 import {
-  GetUserEstimateListResponse,
+  // GetUserEstimateListResponse,
   PostUserEstimateGroomingRequestBody,
   PostUserEstimateGroomerUserInfoRequestBody,
   PostUserEstimateCareRequestBody,
   PostUserEstimateVetUserInfoRequestBody,
-  UserEstimateCareDetailRequestParams,
-  UserEstimateGroomingDetailRequestParams,
+  GetUserEstimateGeneralGroomingPetsResponse,
+  GetUserEstimateGeneralGroomingResponse,
+  GetUserEstimateGeneralCarePetsResponse,
 } from '~/models/estimate';
-import { UserEstimateGroomingDetailData, UserEstimateCareDetailData } from '~/interfaces/estimate';
+import { PAGE_SIZE } from '~/constants/review';
 
-export const useUserEstimateListQuery = () => {
-  return useQuery<GetUserEstimateListResponse>({
-    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_LIST,
-    queryFn: async () => {
-      try {
-        const data = await getUserEstimateList();
-        return data;
-      } catch (error) {
-        throw new Error('견적 리스트를 가져오는 데 실패했습니다.');
-      }
+// export const useUserEstimateListQuery = () => {
+//   return useQuery<GetUserEstimateListResponse>({
+//     queryKey: QUERY_KEYS.GET_DAENGLE_ESTIMATE_LIST,
+//     queryFn: async () => {
+//       try {
+//         const data = await getUserEstimateList();
+//         return data;
+//       } catch (error) {
+//         throw new Error('견적 리스트를 가져오는 데 실패했습니다.');
+//       }
+//     },
+//   });
+// };
+
+export const useUserEstimateGeneralGroomingPetsQuery = () => {
+  return useQuery<GetUserEstimateGeneralGroomingPetsResponse>({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_GROOMING_PETS,
+    queryFn: () => {
+      return getUserEstimateGeneralGroomingPets();
     },
   });
 };
+
+export const useUserEstimateGeneralGroomingQuery = (petId: number) => {
+  return useInfiniteQuery({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_GROOMING,
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
+      return getUserEstimateGeneralGrooming({
+        petId,
+        page: pageParam,
+        size: PAGE_SIZE,
+      });
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.estimates?.length === PAGE_SIZE ? allPages.length + 1 : undefined;
+    },
+    enabled: !!petId,
+  });
+};
+
+export const useUserEstimateGeneralCarePetsQuery = () => {
+  return useQuery<GetUserEstimateGeneralCarePetsResponse>({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_CARE_PETS,
+    queryFn: () => {
+      return getUserEstimateGeneralCarePets();
+    },
+  });
+};
+
+export const useUserEstimateGeneralCareQuery = (petId: number) => {
+  return useInfiniteQuery({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_CARE,
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
+      return getUserEstimateGeneralCare({
+        petId,
+        page: pageParam,
+        size: PAGE_SIZE,
+      });
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.estimates?.length === PAGE_SIZE ? allPages.length + 1 : undefined;
+    },
+    enabled: !!petId,
+  });
+};
+// export const useUserEstimateGeneralGroomingQuery = () => {
+//   return useQuery<GetUserEstimateGeneralGroomingResponse>({
+//     queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_GROOMING_PETS,
+//     queryFn: () => {
+//       return getUserEstimateGeneralGrooming(params);
+//     }
+//   })
+// }
+
+///////////////////////
 
 export const usePostUserEstimateGroomerUserInfoMutation = () => {
   return useMutation({
