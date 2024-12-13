@@ -5,10 +5,11 @@ import { css } from '@emotion/react';
 import router from 'next/router';
 import { useForm } from 'react-hook-form';
 import { GroomerModifyPageForm } from '~/interfaces/auth';
-import { useGetGroomerModifyPageQuery } from '~/queries';
+import { useGetGroomerModifyPageQuery, usePatchGroomerInfoMutation } from '~/queries';
 
 export default function EditProfile() {
   const { data: getGroomerModifyPage } = useGetGroomerModifyPageQuery();
+  const { mutateAsync: patchGroomerInfo } = usePatchGroomerInfoMutation();
 
   const { uploadToS3, deleteFromS3 } = useS3({ targetFolderPath: 'groomer/profile-images' });
 
@@ -134,11 +135,6 @@ const profileImageWrapper = css`
   align-items: center;
   justify-content: center;
   margin: 32px 0 40px;
-`;
-const profileEditButtonBox = css`
-  margin-top: 12px;
-  font-size: 14px;
-  color: ${theme.colors.gray400};
 `;
 const inputWrapper = css`
   display: flex;

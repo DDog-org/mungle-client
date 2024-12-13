@@ -1,4 +1,4 @@
-import { theme } from '@daengle/design-system';
+import { theme } from '../../foundation';
 import { css } from '@emotion/react';
 
 export const wrapper = css`

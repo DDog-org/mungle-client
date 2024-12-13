@@ -1,7 +1,10 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import exp from 'constants';
-import { getGroomerModifyPage, postJoin, postKakao } from '~/apis';
-import { PostJoinRequestBody, PostKakaoRequestBody } from '~/models/auth';
+import { getGroomerModifyPage, patchGroomerInfo, postJoin, postKakao } from '~/apis';
+import {
+  PatchGroomerInfoRequestBody,
+  PostJoinRequestBody,
+  PostKakaoRequestBody,
+} from '~/models/auth';
 import { QUERY_KEYS } from '~/queries/query-keys';
 
 export const usePostKakaoMutation = () => {
@@ -30,5 +33,14 @@ export const useGetGroomerModifyPageQuery = () => {
   return useQuery({
     queryKey: QUERY_KEYS.GET_GROOMER_MODIFY_PAGE,
     queryFn: getGroomerModifyPage,
+  });
+};
+
+export const usePatchGroomerInfoMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.PATCH_GROOMER_INFO,
+    mutationFn: async (body: PatchGroomerInfoRequestBody) => {
+      return await patchGroomerInfo(body);
+    },
   });
 };

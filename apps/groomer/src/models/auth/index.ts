@@ -31,6 +31,14 @@ export interface GetGroomerModifyPageResponse {
   phoneNumber: string;
   email: string;
   introduction: string | null;
-  businessLicences: string[];
   licenses: string[];
+}
+
+export interface PatchGroomerInfoResponse {
+  requestResult: string;
+}
+
+export interface PatchGroomerInfoRequestBody {
+  image: string;
+  introduction: string;
 }

@@ -2,6 +2,8 @@ import axios from 'axios';
 import { api } from '~/apis';
 import {
   GetGroomerModifyPageResponse,
+  PatchGroomerInfoRequestBody,
+  PatchGroomerInfoResponse,
   PostJoinRequestBody,
   PostJoinResponse,
   PostKakaoRequestBody,
@@ -32,4 +34,8 @@ export const postJoin = async (body: PostJoinRequestBody) => {
 
 export const getGroomerModifyPage = async () => {
   return await api.get<GetGroomerModifyPageResponse>('/groomer/modify-page');
+};
+
+export const patchGroomerInfo = async (body: PatchGroomerInfoRequestBody) => {
+  return await api.patch<PatchGroomerInfoResponse>('/groomer/info', body);
 };
