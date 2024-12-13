@@ -173,9 +173,6 @@ importers:
       '@daengle/typescript-config':
         specifier: workspace:*
         version: link:../../packages/core/typescript-config
-      '@daengle/utils':
-        specifier: workspace:*
-        version: link:../../packages/utils
       '@hookform/devtools':
         specifier: ^4.3.1
         version: 4.3.1(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -567,40 +564,9 @@ importers:
       '@types/react-dom':
         specifier: 18.3.1
         version: 18.3.1
-      typescript:
-        specifier: 5.5.4
-        version: 5.5.4
-
-  packages/utils:
-    dependencies:
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@daengle/eslint-config':
-        specifier: workspace:*
-        version: link:../core/eslint-config
-      '@daengle/typescript-config':
-        specifier: workspace:*
-        version: link:../core/typescript-config
-      '@types/eslint':
-        specifier: ^8.56.5
-        version: 8.56.12
-      '@types/node':
-        specifier: ^22.9.3
-        version: 22.9.3
-      '@types/react':
-        specifier: 18.3.0
-        version: 18.3.0
-      '@types/react-dom':
-        specifier: 18.3.1
-        version: 18.3.1
       msw:
         specifier: ^2.6.5
-        version: 2.6.5(@types/node@22.9.3)(typescript@5.5.4)
+        version: 2.6.5(@types/node@20.17.6)(typescript@5.5.4)
       typescript:
         specifier: 5.5.4
         version: 5.5.4
@@ -6453,30 +6419,10 @@ snapshots:
       '@inquirer/type': 3.0.1(@types/node@20.17.6)
       '@types/node': 20.17.6
 
-  '@inquirer/confirm@5.0.2(@types/node@22.9.3)':
-    dependencies:
-      '@inquirer/core': 10.1.0(@types/node@22.9.3)
-      '@inquirer/type': 3.0.1(@types/node@22.9.3)
-      '@types/node': 22.9.3
-
   '@inquirer/core@10.1.0(@types/node@20.17.6)':
     dependencies:
       '@inquirer/figures': 1.0.8
       '@inquirer/type': 3.0.1(@types/node@20.17.6)
-      ansi-escapes: 4.3.2
-      cli-width: 4.1.0
-      mute-stream: 2.0.0
-      signal-exit: 4.1.0
-      strip-ansi: 6.0.1
-      wrap-ansi: 6.2.0
-      yoctocolors-cjs: 2.1.2
-    transitivePeerDependencies:
-      - '@types/node'
-
-  '@inquirer/core@10.1.0(@types/node@22.9.3)':
-    dependencies:
-      '@inquirer/figures': 1.0.8
-      '@inquirer/type': 3.0.1(@types/node@22.9.3)
       ansi-escapes: 4.3.2
       cli-width: 4.1.0
       mute-stream: 2.0.0
@@ -6492,10 +6438,6 @@ snapshots:
   '@inquirer/type@3.0.1(@types/node@20.17.6)':
     dependencies:
       '@types/node': 20.17.6
-
-  '@inquirer/type@3.0.1(@types/node@22.9.3)':
-    dependencies:
-      '@types/node': 22.9.3
 
   '@joshwooding/vite-plugin-react-docgen-typescript@0.3.0(typescript@5.6.3)(vite@5.4.11(@types/node@22.9.3)(sass@1.81.0)(terser@5.36.0))':
     dependencies:
@@ -7773,10 +7715,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/eslint-plugin@8.15.0(@typescript-eslint/parser@8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)':
+  '@typescript-eslint/eslint-plugin@8.15.0(@typescript-eslint/parser@8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.5.4))(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
+      '@typescript-eslint/parser': 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.5.4)
       '@typescript-eslint/scope-manager': 8.15.0
       '@typescript-eslint/type-utils': 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
       '@typescript-eslint/utils': 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
@@ -9904,31 +9846,6 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  msw@2.6.5(@types/node@22.9.3)(typescript@5.5.4):
-    dependencies:
-      '@bundled-es-modules/cookie': 2.0.1
-      '@bundled-es-modules/statuses': 1.0.1
-      '@bundled-es-modules/tough-cookie': 0.1.6
-      '@inquirer/confirm': 5.0.2(@types/node@22.9.3)
-      '@mswjs/interceptors': 0.37.1
-      '@open-draft/deferred-promise': 2.2.0
-      '@open-draft/until': 2.1.0
-      '@types/cookie': 0.6.0
-      '@types/statuses': 2.0.5
-      chalk: 4.1.2
-      graphql: 16.9.0
-      headers-polyfill: 4.0.3
-      is-node-process: 1.2.0
-      outvariant: 1.4.3
-      path-to-regexp: 6.3.0
-      strict-event-emitter: 0.5.1
-      type-fest: 4.27.0
-      yargs: 17.7.2
-    optionalDependencies:
-      typescript: 5.5.4
-    transitivePeerDependencies:
-      - '@types/node'
-
   mute-stream@0.0.8: {}
 
   mute-stream@2.0.0: {}
@@ -11105,7 +11022,7 @@ snapshots:
 
   typescript-eslint@8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.15.0(@typescript-eslint/parser@8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
+      '@typescript-eslint/eslint-plugin': 8.15.0(@typescript-eslint/parser@8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.5.4))(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
       '@typescript-eslint/parser': 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
       '@typescript-eslint/utils': 8.15.0(eslint@9.15.0(jiti@1.21.6))(typescript@5.6.3)
       eslint: 9.15.0(jiti@1.21.6)

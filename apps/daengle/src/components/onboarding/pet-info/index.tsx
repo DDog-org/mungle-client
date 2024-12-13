@@ -15,12 +15,15 @@ import {
   usePostJoinWithPetMutation,
 } from '~/queries';
 import { itemWrapper, radioGroup, section, weightWrapper, wrapper } from './index.styles';
+import { useRouter } from 'next/router';
+import { ROUTES } from '~/constants/commons';
 
 interface Props {
   onNext?: () => void;
 }
 
 export function PetInfo({ onNext }: Props) {
+  const router = useRouter();
   const { userInfoForm } = useUserInfoFormStore();
 
   const { data: breeds } = useGetBreedListQuery();
@@ -184,7 +187,10 @@ export function PetInfo({ onNext }: Props) {
         <CTAButton
           type="submit"
           secondaryButtonLabel="건너뛰기"
-          onSecondaryButtonClick={() => postJoinWithoutPet({ ...userInfoForm.form })}
+          onSecondaryButtonClick={() => {
+            postJoinWithoutPet({ ...userInfoForm.form });
+            router.replace(ROUTES.HOME);
+          }}
           disabled={!isValid}
         >
           시작하기

@@ -33,7 +33,7 @@ export default function Onboarding() {
         </Step>
 
         <Step name={STEPS.PET_INFO}>
-          <PetInfo onNext={() => router.push(ROUTES.HOME)} />
+          <PetInfo onNext={() => router.replace(ROUTES.HOME)} />
         </Step>
 
         <Step name={STEPS.SEARCH_ADDRESS}>

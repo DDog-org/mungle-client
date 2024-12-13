@@ -43,7 +43,8 @@ export function UserInfo({ onNext }: Props) {
 
     const response = await postAvailableNickname({ nickname });
     if (!response.isAvailable) {
-      setError('nickname', { message: '이미 사용중인 닉네임입니다' });
+      setError('nickname', { message: '이미 사용 중인 닉네임입니다' });
+      setUserInfoForm({ ...watch(), isAvailableNickname: false });
     } else {
       setUserInfoForm({ ...watch(), isAvailableNickname: true });
     }
@@ -101,7 +102,10 @@ export function UserInfo({ onNext }: Props) {
               setUserInfoForm({ ...watch(), isAvailableNickname: false });
               clearErrors();
             }}
-            errorMessage={errors.nickname?.message}
+            errorMessage={
+              errors.nickname?.message ||
+              (userInfoForm.isAvailableNickname ? '' : '이미 사용 중인 닉네임입니다')
+            }
             confirmMessage={userInfoForm.isAvailableNickname ? '사용 가능한 닉네임입니다' : ''}
           />
 
