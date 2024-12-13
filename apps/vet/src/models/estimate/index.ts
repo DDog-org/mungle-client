@@ -46,3 +46,16 @@ export interface GetVetEstimateDetailResponse {
   cause: string;
   treatment: string;
 }
+
+export interface PostVetEstimateBody {
+  id: number;
+  reservedDate: string;
+  diagnosis: string;
+  cause: string;
+  treatment: string;
+}
+
+export interface PostVetEstimateResponse {
+  estimateId: number;
+  requestResult: string;
+}

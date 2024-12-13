@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Dayjs } from 'dayjs';
 import { AddInput, PetDetails, Section, UserProfile } from '@daengle/services/components';
 import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
-
 import { DatePick } from '~/components/estimate';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
-import { useVetEstimateDetailQuery } from '~/queries/estimate';
+import { usePostVetEstimateMutation, useVetEstimateDetailQuery } from '~/queries/estimate';
+
 import { GetVetEstimateDetailRequestParams } from '~/models/estimate';
+import { ROUTES } from '~/constants/commons';
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -24,9 +25,22 @@ function formatDate(dateString: string): string {
   return `${year}.${month}.${day}(${weekday}) ${hours}:${minutes}`;
 }
 
+function requestDate(dateString: string): string {
+  const date = new Date(dateString);
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
 export default function EstimateDetail() {
   const router = useRouter();
-  const [, setSelectedDateTime] = useState<Dayjs | string>();
+  const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | string>();
   const [inputs, setInputs] = useState({
     diagnosis: '',
     cause: '',
@@ -38,6 +52,7 @@ export default function EstimateDetail() {
   const params: GetVetEstimateDetailRequestParams = { careEstimateId: estimateId };
 
   const { data: estimateData } = useVetEstimateDetailQuery(params);
+  const mutation = usePostVetEstimateMutation();
 
   const petData = estimateData || [];
 
@@ -58,10 +73,30 @@ export default function EstimateDetail() {
   };
 
   const handleReservation = () => {
-    if (!inputs) {
-      alert('추가 요청 사항을 입력해주세요.');
+    if (!inputs.diagnosis || !inputs.cause || !inputs.treatment) {
+      alert('모든 입력 항목을 작성해주세요.');
       return;
     }
+
+    const reservationData = {
+      id: estimateId,
+      reservedDate: selectedDateTime
+        ? requestDate(selectedDateTime.toString()).toString()
+        : requestDate(petData.reservedDate).toString(),
+      diagnosis: inputs.diagnosis,
+      cause: inputs.cause,
+      treatment: inputs.treatment,
+    };
+
+    mutation.mutate(reservationData, {
+      onSuccess: () => {
+        alert('예약이 성공적으로 등록되었습니다.');
+        router.push(ROUTES.ESTIMATE_COMPLELTE);
+      },
+      onError: () => {
+        alert('예약 전송에 실패했습니다.');
+      },
+    });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -71,6 +106,7 @@ export default function EstimateDetail() {
       [name]: value,
     }));
   };
+
   return (
     <Layout>
       <AppBar

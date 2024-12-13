@@ -3,6 +3,8 @@ import {
   GetVetEstimateDetailRequestParams,
   GetVetEstimateDetailResponse,
   GetVetEstimateGeneralListResponse,
+  PostVetEstimateBody,
+  PostVetEstimateResponse,
 } from '~/models/estimate';
 import { api } from '../config';
 
@@ -18,4 +20,8 @@ export const getVetEstimateDetail = async (params: GetVetEstimateDetailRequestPa
   return await api.get<GetVetEstimateDetailResponse>(
     `/vet/estimate/${params.careEstimateId}/detail`
   );
+};
+
+export const postVetEstimate = async (body: PostVetEstimateBody) => {
+  return await api.post<PostVetEstimateResponse>('/vet/estimate', body);
 };
