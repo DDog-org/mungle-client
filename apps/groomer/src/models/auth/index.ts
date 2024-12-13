@@ -30,10 +30,15 @@ export interface GetGroomerModifyPageResponse {
   name: string;
   phoneNumber: string;
   email: string;
-  introduction: string | null;
-  licenses: string[];
+  instagram: string;
+  introduction: string;
+  licenses: license[];
 }
 
+export interface license {
+  name: string;
+  acquisitionDate: string;
+}
 export interface PatchGroomerInfoResponse {
   requestResult: string;
 }

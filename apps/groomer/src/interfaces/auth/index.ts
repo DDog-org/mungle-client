@@ -12,4 +12,9 @@ export interface GroomerInfoForm {
 export interface GroomerModifyPageForm {
   image: string | null;
   introduction: string | null;
+  licenses: license[];
+}
+export interface license {
+  name: string;
+  acquisitionDate: string;
 }

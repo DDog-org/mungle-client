@@ -2,6 +2,7 @@ import { AppBar, CTAButton, ImageInputBox, Layout, Text } from '@daengle/design-
 import { theme } from '@daengle/design-system';
 import { useS3 } from '@daengle/services/hooks';
 import { css } from '@emotion/react';
+import { Input } from '@mui/material';
 import router from 'next/router';
 import { useForm } from 'react-hook-form';
 import { GroomerModifyPageForm } from '~/interfaces/auth';
@@ -28,6 +29,7 @@ export default function EditProfile() {
       introduction: '',
     },
   });
+
   const onSubmit = async (data: GroomerModifyPageForm) => {
     let imageString = '';
 
@@ -84,9 +86,13 @@ export default function EditProfile() {
                 {getGroomerModifyPage?.email}
               </Text>
             </div>
+            <div css={readOnlyTextBox}>
+              <Text typo="subtitle3">인스타그램 아이디</Text>
+              <Input defaultValue={getGroomerModifyPage?.instagram} />
+            </div>
             <div css={textareaWrapper}>
               <Text typo="subtitle3">소개</Text>
-              <textarea css={detailInput} placeholder="안녕" />
+              <textarea css={detailInput} defaultValue={getGroomerModifyPage?.introduction} />
             </div>
           </section>
         </div>
@@ -95,22 +101,16 @@ export default function EditProfile() {
           <div css={licenseWrapper}>
             <Text typo="subtitle3">자격증 관리</Text>
             <div css={licenseBox}>
-              <div css={license}>
-                <Text typo="body4" color="green200">
-                  윤일 관리사 자격증
-                </Text>
-                <Text typo="body5" color="gray400">
-                  2024.12.12
-                </Text>
-              </div>
-              <div css={license}>
-                <Text typo="body4" color="green200">
-                  윤일 관리사 자격증
-                </Text>
-                <Text typo="body5" color="gray400">
-                  2024.12.12
-                </Text>
-              </div>
+              {getGroomerModifyPage?.licenses?.map((license, index) => (
+                <div css={licenseStyle} key={index}>
+                  <Text typo="body4" color="green200">
+                    {license.name}
+                  </Text>
+                  <Text typo="body5" color="gray400">
+                    {license.acquisitionDate}
+                  </Text>
+                </div>
+              ))}
             </div>
           </div>
           <CTAButton type="submit" service="partner">
@@ -180,7 +180,7 @@ const licenseBox = css`
   flex-direction: column;
   gap: 10px;
 `;
-const license = css`
+const licenseStyle = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
