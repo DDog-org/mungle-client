@@ -8,3 +8,8 @@ export interface GroomerInfoForm {
   licenses: File[];
   email: string;
 }
+
+export interface GroomerModifyPageForm {
+  image: string | null;
+  introduction: string | null;
+}
