@@ -58,3 +58,11 @@ export interface PostUserEstimateCareRequestBody {
 export interface PostUserEstimateCareResponse {
   requestResult: string;
 }
+
+export interface UserEstimateGroomingDetailRequestParams {
+  groomingEstimateId: number;
+}
+
+export interface UserEstimateCareDetailRequestParams {
+  careEstimateId: number;
+}

@@ -1,7 +1,8 @@
 import { api } from '~/apis';
-import { GetUserEstimateListResponse } from '~/models';
+import { UserEstimateGroomingDetailData, UserEstimateCareDetailData } from '~/interfaces/estimate';
 
 import {
+  GetUserEstimateListResponse,
   PostUserEstimateGroomerUserInfoRequestBody,
   PostUserEstimateGroomerUserInfoResponse,
   PostUserEstimateGroomingRequestBody,
@@ -10,6 +11,8 @@ import {
   PostUserEstimateCareResponse,
   PostUserEstimateVetUserInfoRequestBody,
   PostUserEstimateVetUserInfoResponse,
+  UserEstimateCareDetailRequestParams,
+  UserEstimateGroomingDetailRequestParams,
 } from '~/models/estimate';
 
 export const getUserEstimateList = async () => {
@@ -35,4 +38,18 @@ export const postUserEstimateVetUserInfo = async (body: PostUserEstimateVetUserI
 
 export const postUserEstimateCare = async (body: PostUserEstimateCareRequestBody) => {
   return await api.post<PostUserEstimateCareResponse>('/user/estimate/care', body);
+};
+
+export const getUserEstimateGroomingDetail = async (
+  params: UserEstimateGroomingDetailRequestParams
+) => {
+  return await api.get<UserEstimateGroomingDetailData>(
+    `/user/estimate/${params.groomingEstimateId}/grooming-detail`
+  );
+};
+
+export const getUserEstimateCareDetail = async (params: UserEstimateCareDetailRequestParams) => {
+  return await api.get<UserEstimateCareDetailData>(
+    `/user/estimate/${params.careEstimateId}/care-detail`
+  );
 };
