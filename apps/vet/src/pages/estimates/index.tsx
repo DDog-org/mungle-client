@@ -5,6 +5,7 @@ import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { GeneralCardList } from '~/components/estimate/general-card-list';
 import { DesignationCardList } from '~/components/estimate/designation-card-list';
+import { GNB } from '~/components/commons/gnb';
 
 const TABS = [
   {
@@ -18,7 +19,6 @@ const TABS = [
 ];
 
 export default function EstimateList(): JSX.Element {
-  const [, setActivePath] = useState<string>(PATHS.ESTIMATE);
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'general':

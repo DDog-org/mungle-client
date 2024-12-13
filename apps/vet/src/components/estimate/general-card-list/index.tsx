@@ -1,40 +1,44 @@
+import { EmptyStateBone } from '@daengle/design-system/icons';
 import { useRouter } from 'next/router';
-import { Card } from 'node_modules/@daengle/services/src/components/estimate-list';
+import { Card, EmptyState } from 'node_modules/@daengle/services/src/components/estimate-list';
+import { ROUTES } from '~/constants/commons';
+import { useVetEstimateGeneralListQuery } from '~/queries/estimate';
 
 export function GeneralCardList() {
   const router = useRouter();
 
-  const filteredData = [
-    {
-      id: 3,
-      userImage: null,
-      nickname: '닉네임',
-      proposal: 'GENERAL',
-      significant: null,
-      reservedDate: '2024-11-25 11:22:11',
-    },
-    {
-      id: 4,
-      userImage: null,
-      nickname: '닉네임',
-      proposal: 'GENERAL',
-      significant: null,
-      reservedDate: '2024-11-25 11:22:11',
-    },
-    {
-      id: 5,
-      userImage: null,
-      nickname: '닉네임',
-      proposal: 'GENERAL',
-      significant: null,
-      reservedDate: '2024-11-25 11:22:11',
-    },
-  ];
+  const {
+    data: estimateResponse,
+    isLoading: estimateLoading,
+    error: estimateError,
+  } = useVetEstimateGeneralListQuery();
+
+  const estimates = estimateResponse?.estimates || [];
+
+  if (estimateLoading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (estimateError) {
+    return <div>견적 데이터를 불러오는데 실패했습니다.</div>;
+  }
+
+  if (estimates.length === 0) {
+    return <EmptyState isEmptyEstimates={true} hasOptions={false} />;
+  }
 
   return (
     <div>
-      {filteredData.map((data) => (
-        <Card key={data.id} onDetailClick={() => router.push(`/estimate/${data.id}`)} {...data} />
+      {estimates.map((data) => (
+        <Card
+          id={data.id}
+          onDetailClick={() => router.push(ROUTES.ESTIMATE_DETAIL(data.id))}
+          imageUrl={data.imageUrl}
+          nickname={data.nickname}
+          proposal={data.proposal}
+          significant={data.significant}
+          reservedDate={data.reservedDate}
+        />
       ))}
     </div>
   );

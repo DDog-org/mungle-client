@@ -2,6 +2,10 @@ import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
+  margin: 18px 18px 0 0;
+`;
+
+export const card = css`
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -9,7 +13,7 @@ export const wrapper = css`
   margin-bottom: 12px;
   padding: 20px 24px;
 
-  background-color: #fff;
+  background-color: ${theme.colors.white};
 
   cursor: pointer;
   border-top-right-radius: 65.6px;
