@@ -2,6 +2,7 @@ import axios from 'axios';
 import { api } from '~/apis';
 import {
   GetBreedListResponse,
+  GetUserPetInfoResponse,
   PostAvailableNicknameRequestBody,
   PostAvailableNicknameResponse,
   PostJoinWithoutPetRequestBody,
@@ -13,6 +14,12 @@ import {
   PatchUserInfoRequestBody,
   PatchUserInfoResponse,
   GetUserInfoResponse,
+  PostUserPetRequestBody,
+  PostUserPetResponse,
+  PatchUserPetInfoRequestBody,
+  PatchUserPetInfoResponse,
+  DeleteUserPetResponse,
+  DeleteUserPetRequestData,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -55,4 +62,20 @@ export const getUserInfo = async () => {
 
 export const patchUserInfo = async (body: PatchUserInfoRequestBody) => {
   return await api.patch<PatchUserInfoResponse>('/user/info', body);
+};
+
+export const getUserPetInfo = async () => {
+  return await api.get<GetUserPetInfoResponse>('/user/pet-info');
+};
+
+export const postUserPet = async (body: PostUserPetRequestBody) => {
+  return await api.post<PostUserPetResponse>('/user/pet', body);
+};
+
+export const patchUserPetInfo = async (body: PatchUserPetInfoRequestBody) => {
+  return await api.patch<PatchUserPetInfoResponse>('/user/pet-info', body);
+};
+
+export const deleteUserPet = async (data: DeleteUserPetRequestData) => {
+  return await api.delete<DeleteUserPetResponse>('/user/pet', { data });
 };

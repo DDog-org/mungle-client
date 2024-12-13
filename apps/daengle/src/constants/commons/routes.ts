@@ -44,6 +44,7 @@ export const ROUTES = {
   MYPAGE_USER_INFO_EDIT: '/mypage/user-profile/edit',
   MYPAGE_PET_PROFILE: '/mypage/pet-profile',
   MYPAGE_PET_PROFILE_EDIT: '/mypage/pet-profile/edit',
+  MYPAGE_PET_PROFILE_CREATE: '/mypage/pet-profile/create',
   MYPAGE_REVIEWS: '/mypage/reviews',
   MYPAGE_FAVORITES: '/mypage/favorites',
   MYPAGE_PAYMENTS: '/mypage/payments',

@@ -4,17 +4,23 @@ import {
   getBreedList,
   getUserInfo,
   patchUserInfo,
+  getUserPetInfo,
   postAvailableNickname,
   postJoinWithoutPet,
   postJoinWithPet,
   postKakao,
+  postUserPet,
+  patchUserPetInfo,
+  deleteUserPet,
 } from '~/apis';
 import {
   PatchUserInfoRequestBody,
-  PostAvailableNicknameRequestBody,
   PostJoinWithoutPetRequestBody,
   PostJoinWithPetRequestBody,
   PostKakaoRequestBody,
+  PostUserPetRequestBody,
+  DeleteUserPetRequestData,
+  PatchUserPetInfoRequestBody,
 } from '~/models';
 
 export const usePostKakaoMutation = () => {
@@ -94,5 +100,50 @@ export const usePatchUserInfoMutation = () => {
         throw new Error(String(error));
       }
     },
+  });
+};
+export const useGetUserPetInfoQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_USER_PET_INFO,
+    queryFn: async () => {
+      try {
+        return await getUserPetInfo();
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
+
+export const usePostUserPetMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.POST_USER_PET,
+    mutationFn: async (body: PostUserPetRequestBody) => {
+      try {
+        return await postUserPet(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
+
+export const usePatchUserPetInfoMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.POST_USER_PET_INFO,
+    mutationFn: async (body: PatchUserPetInfoRequestBody) => {
+      try {
+        return await patchUserPetInfo(body);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+  });
+};
+
+export const useDeleteUserPetMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.DELETE_USER_PET,
+    mutationFn: (data: DeleteUserPetRequestData) => deleteUserPet(data),
   });
 };

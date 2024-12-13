@@ -1,17 +1,15 @@
 import { css } from '@emotion/react';
-import { colors, theme } from '../../../foundation';
 import { Size } from './index.types';
+import { theme } from '@daengle/design-system';
 
 export const wrapper = ({
   isSelected,
   size,
   disabled,
-  textColor,
 }: {
   isSelected: boolean;
   size: Size;
   disabled: boolean;
-  textColor: keyof typeof colors;
 }) => css`
   ${size === 'fixed' &&
   css`
@@ -22,6 +20,7 @@ export const wrapper = ({
     width: 67px;
     height: 38px;
     border-radius: 19px;
+
     ${theme.typo.body11};
   `}
 
@@ -41,6 +40,7 @@ export const wrapper = ({
     width: 100%;
     padding: 10px 0;
     border-radius: 28px;
+
     ${theme.typo.body10};
   `}
 
@@ -66,5 +66,7 @@ export const wrapper = ({
         border: 1px solid ${disabled ? theme.colors.gray300 : theme.colors.gray200};
 
         color: ${theme.colors.gray500};
+
+        /* color: ${theme.colors.black}; */
       `}
 `;

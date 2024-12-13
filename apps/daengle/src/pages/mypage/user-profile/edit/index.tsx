@@ -1,6 +1,5 @@
-import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
-import { AppBar, ChipButton, CTAButton, Input, Layout, Text } from '@daengle/design-system';
+import { AppBar, ChipButton, CTAButton, Input, Layout, Text, theme } from '@daengle/design-system';
 import {
   useGetUserProfileInfoQuery,
   usePostAvailableNicknameMutation,
@@ -9,7 +8,7 @@ import {
 import { UserProfileInfoEditForm } from '~/interfaces/auth';
 import { useValidateUserForm } from '~/hooks/mypage';
 import { useS3 } from '@daengle/services/hooks';
-import { ImageInputBox } from '~/components/mypage/user-profile/edit/imageInput';
+import { ImageInputBox } from '~/components/mypage/user-profile/imageInput';
 import router from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { css } from '@emotion/react';
@@ -65,15 +64,13 @@ export default function EditProfile() {
   const onSubmit = async (data: UserProfileInfoEditForm) => {
     let imageString = '';
 
-    // 기존 이미지 삭제
     if (getUserInfo?.image) {
-      const fileName = getUserInfo.image.split('/').pop(); // S3 경로에서 파일 이름 추출
+      const fileName = getUserInfo.image.split('/').pop();
       if (fileName) {
         await deleteFromS3(fileName);
       }
     }
 
-    // 새 이미지 업로드
     if (data.image) {
       const uploadedImages = await uploadToS3([data.image]);
       if (uploadedImages && uploadedImages.length > 0) {
@@ -83,7 +80,6 @@ export default function EditProfile() {
       imageString = getUserInfo?.image || '';
     }
 
-    // 사용자 정보 업데이트
     if (imageString != undefined) {
       patchUserInfo({ ...data, image: imageString });
     }
@@ -96,7 +92,7 @@ export default function EditProfile() {
 
   return (
     <Layout isAppBarExist={true}>
-      <AppBar />
+      <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
       <section css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
           사용자 프로필

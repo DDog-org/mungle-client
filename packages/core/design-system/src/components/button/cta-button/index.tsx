@@ -26,7 +26,10 @@ export function CTAButton({
       </RoundButton>
 
       {secondaryButtonLabel && (
-        <TextButton onClick={onSecondaryButtonClick ? onSecondaryButtonClick : undefined}>
+        <TextButton
+          type="button"
+          onClick={onSecondaryButtonClick ? onSecondaryButtonClick : undefined}
+        >
           <Text typo="body8" color="gray200">
             {secondaryButtonLabel}
           </Text>

@@ -9,11 +9,19 @@ interface Props {
   prefix?: ReactNode;
   title?: string;
   suffix?: ReactNode;
+  backgroundColor?: string;
 }
 
-export function AppBar({ onBackClick, onHomeClick, prefix, title, suffix }: Props) {
+export function AppBar({
+  onBackClick,
+  onHomeClick,
+  prefix,
+  title,
+  suffix,
+  backgroundColor,
+}: Props) {
   return (
-    <header css={wrapper}>
+    <header css={wrapper(backgroundColor)}>
       <div css={contents}>
         {prefix ? (
           prefix
