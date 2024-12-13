@@ -9,4 +9,5 @@ export * from './radio-group';
 export * from './rating';
 export * from './select';
 export * from './tabs';
+export * from './tag';
 export * from './text';
