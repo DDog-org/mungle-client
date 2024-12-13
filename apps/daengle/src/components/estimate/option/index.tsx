@@ -7,7 +7,7 @@ export function OptionSelector(): JSX.Element {
   const estimateId = 10; //예시 Id
   return (
     <div css={wrapper}>
-      <TextButton onClick={() => router.push(`/estimate/request/${estimateId}`)}>
+      <TextButton onClick={() => router.push(`/estimates/request/${estimateId}`)}>
         <Text typo="body4" color="gray500">
           내가 보낸 요청
         </Text>

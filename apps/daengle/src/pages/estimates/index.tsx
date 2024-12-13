@@ -69,7 +69,7 @@ export default function EstimateList() {
   };
 
   const handleCardClick = (itemId: number) => {
-    router.push(`/estimate/detail/${itemId}?type=${type}`);
+    router.push(`/estimates/detail/${itemId}?type=${type}`);
   };
 
   return (
