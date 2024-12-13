@@ -2,11 +2,15 @@ import { AppBar, CTAButton, Layout, Text } from '@daengle/design-system';
 import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import Image from 'next/image';
+import router from 'next/router';
+import { useGetGroomerModifyPageQuery } from '~/queries';
 
 export default function EditProfile() {
+  const { data: getGroomerModifyPage } = useGetGroomerModifyPageQuery();
+
   return (
     <Layout isAppBarExist={true}>
-      <AppBar />
+      <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
       <div css={wrapper}>
         <Text typo="title1">프로필 관리</Text>
         <div css={profileImageWrapper}>
@@ -24,24 +28,24 @@ export default function EditProfile() {
           <div css={readOnlyTextBox}>
             <Text typo="subtitle3">이름</Text>
             <Text typo="body3" color="gray400">
-              김윤일
+              {getGroomerModifyPage?.name}
             </Text>
           </div>
           <div css={readOnlyTextBox}>
             <Text typo="subtitle3">휴대폰번호</Text>
             <Text typo="body3" color="gray400">
-              010-0000-0000
+              {getGroomerModifyPage?.phoneNumber}
             </Text>
           </div>
           <div css={readOnlyTextBox}>
             <Text typo="subtitle3">이메일</Text>
             <Text typo="body3" color="gray400">
-              kyoul10121@gmail.com
+              {getGroomerModifyPage?.email}
             </Text>
           </div>
           <div css={textareaWrapper}>
             <Text typo="subtitle3">소개</Text>
-            <textarea css={detailInput} placeholder="안녕" readOnly />
+            <textarea css={detailInput} placeholder="안녕" />
           </div>
         </section>
       </div>
@@ -76,7 +80,7 @@ export default function EditProfile() {
 
 const wrapper = css`
   height: auto;
-  padding: 18px 18px;
+  padding: 18px;
 `;
 const footerWrapper = css`
   padding: 18px 18px 141px;

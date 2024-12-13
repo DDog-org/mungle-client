@@ -24,3 +24,13 @@ export interface PostJoinRequestBody {
 export interface PostJoinResponse {
   accessToken: string;
 }
+
+export interface GetGroomerModifyPageResponse {
+  image: string;
+  name: string;
+  phoneNumber: string;
+  email: string;
+  introduction: string | null;
+  businessLicences: string[];
+  licenses: string[];
+}

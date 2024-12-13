@@ -1,5 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
-import { postJoin, postKakao } from '~/apis';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import exp from 'constants';
+import { getGroomerModifyPage, postJoin, postKakao } from '~/apis';
 import { PostJoinRequestBody, PostKakaoRequestBody } from '~/models/auth';
 import { QUERY_KEYS } from '~/queries/query-keys';
 
@@ -22,5 +23,12 @@ export const usePostJoinMutation = () => {
     mutationFn: async (body: PostJoinRequestBody) => {
       return await postJoin(body);
     },
+  });
+};
+
+export const useGetGroomerModifyPageQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_GROOMER_MODIFY_PAGE,
+    queryFn: getGroomerModifyPage,
   });
 };
