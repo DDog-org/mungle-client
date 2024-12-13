@@ -1,3 +1,4 @@
+import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
@@ -22,7 +23,7 @@ export const imageUrl = css`
   height: 80px;
   border-radius: 50%;
 
-  background-color: #d9d9d9;
+  background-color: ${theme.colors.gray200};
 `;
 
 export const petName = css`

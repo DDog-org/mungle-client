@@ -2,10 +2,6 @@ import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
-  margin: 18px 18px 0 0;
-`;
-
-export const card = css`
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -51,10 +47,12 @@ export const profileImage = css`
   height: 30px;
   border-radius: 50%;
   object-fit: cover;
+
+  background-color: ${theme.colors.gray200};
 `;
 
 export const type = css`
-  padding: 2px 7px;
+  padding: 3px 10px;
   border-radius: 14.03px;
   ${theme.typo.body2};
 `;
