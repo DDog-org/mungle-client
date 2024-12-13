@@ -30,7 +30,7 @@ export interface GetGroomerModifyPageResponse {
   name: string;
   phoneNumber: string;
   email: string;
-  instagram: string;
+  instagramId: string;
   introduction: string;
   licenses: license[];
 }

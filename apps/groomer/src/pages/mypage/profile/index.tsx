@@ -1,10 +1,10 @@
-import { AppBar, CTAButton, ImageInputBox, Layout, Text } from '@daengle/design-system';
+import { AppBar, CTAButton, ImageInputBox, Layout, Text, Input } from '@daengle/design-system';
 import { theme } from '@daengle/design-system';
 import { useS3 } from '@daengle/services/hooks';
 import { css } from '@emotion/react';
-import { Input } from '@mui/material';
 import router from 'next/router';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+import useValidateGroomerForm from '~/hooks/mypage/use-validate-groomer-form';
 import { GroomerModifyPageForm } from '~/interfaces/auth';
 import { useGetGroomerModifyPageQuery, usePatchGroomerInfoMutation } from '~/queries';
 
@@ -14,19 +14,19 @@ export default function EditProfile() {
 
   const { uploadToS3, deleteFromS3 } = useS3({ targetFolderPath: 'groomer/profile-images' });
 
+  const validation = useValidateGroomerForm();
   const {
     handleSubmit,
-    watch,
+    control,
     register,
-    setError,
     setValue,
-    clearErrors,
     formState: { errors, isValid },
   } = useForm<GroomerModifyPageForm>({
     mode: 'onChange',
     defaultValues: {
       image: null,
       introduction: '',
+      instagramId: '',
     },
   });
 
@@ -48,6 +48,12 @@ export default function EditProfile() {
     } else {
       imageString = getGroomerModifyPage?.image || '';
     }
+
+    const payload = {
+      ...data,
+      image: imageString,
+    };
+    await patchGroomerInfo(payload);
   };
   return (
     <Layout isAppBarExist={true}>
@@ -86,13 +92,31 @@ export default function EditProfile() {
                 {getGroomerModifyPage?.email}
               </Text>
             </div>
+
             <div css={readOnlyTextBox}>
-              <Text typo="subtitle3">인스타그램 아이디</Text>
-              <Input defaultValue={getGroomerModifyPage?.instagram} />
+              <Input
+                label="인스타그램 아이디"
+                maxLength={30}
+                value={getGroomerModifyPage?.instagramId}
+                {...register('instagramId', { ...validation.instagramId })}
+              />
             </div>
             <div css={textareaWrapper}>
               <Text typo="subtitle3">소개</Text>
-              <textarea css={detailInput} defaultValue={getGroomerModifyPage?.introduction} />
+              <Controller
+                name="introduction"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <textarea
+                      css={detailInput}
+                      placeholder="소개글을 작성해주세요"
+                      onChange={field.onChange}
+                      defaultValue={getGroomerModifyPage?.introduction}
+                    />
+                  </>
+                )}
+              />
             </div>
           </section>
         </div>
