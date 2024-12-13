@@ -4,9 +4,16 @@ import { ChatPlus, ChatSendButton, DefaultImage } from '@daengle/design-system/i
 import { Bubble } from '~/components/chats/bubble';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
+import { useEffect, useRef } from 'react';
 
 export default function ChatRoom() {
   const router = useRouter();
+  const chatListRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!chatListRef.current) return;
+    chatListRef.current.scrollTo(0, chatListRef.current.scrollHeight);
+  }, []);
 
   return (
     <Layout>
@@ -28,7 +35,7 @@ export default function ChatRoom() {
           </CapsuleButton>
         </div>
 
-        <section css={chatList}>
+        <section css={chatList} ref={chatListRef}>
           <Bubble.Sender />
           <Bubble.Receiver />
           <Bubble.Sender />
