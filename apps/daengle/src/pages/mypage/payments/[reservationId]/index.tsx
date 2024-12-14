@@ -168,7 +168,7 @@ const buttonWrapper = css`
 
 const border = css`
   width: 100%;
-  height: 8px;
+  height: 7px;
 
   background: ${theme.colors.gray100};
 `;
