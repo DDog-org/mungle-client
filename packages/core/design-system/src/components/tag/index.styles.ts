@@ -23,8 +23,6 @@ export const solid = css`
 
 export const line = css`
   border: 1px solid ${theme.colors.blue200};
-
-  background: ${theme.colors.blue100};
 `;
 
 export const ghost = css`
