@@ -1,5 +1,5 @@
 import { EmptyState } from '@daengle/services/components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ProfileSelector } from '../pet-profile';
 import { CardList } from '../card-list';
@@ -22,7 +22,7 @@ interface Props {
 
 export function VetEstimateList({ isDesignation }: Props) {
   const router = useRouter();
-  const [selectedPetIndex, setSelectedPetIndex] = useState(0);
+  const [selectedPetId, setSelectedPetId] = useState<number | undefined>(undefined);
   const {
     data: petData,
     isLoading: petLoading,
@@ -32,7 +32,11 @@ export function VetEstimateList({ isDesignation }: Props) {
     : useUserEstimateGeneralCarePetsQuery();
 
   const petInfos = petData?.pets || [];
-  const selectedPet = petInfos[selectedPetIndex] || null;
+  useEffect(() => {
+    if (selectedPetId === undefined && petInfos.length > 0) {
+      setSelectedPetId(petInfos[0]?.petId);
+    }
+  }, [petInfos, selectedPetId]);
 
   const {
     data: estimates,
@@ -42,8 +46,8 @@ export function VetEstimateList({ isDesignation }: Props) {
     hasNextPage,
     isFetchingNextPage,
   } = isDesignation
-    ? useUserEstimateDesignationCareQuery(selectedPet?.petId || 0)
-    : useUserEstimateGeneralCareQuery(selectedPet?.petId || 0);
+    ? useUserEstimateDesignationCareQuery(selectedPetId)
+    : useUserEstimateGeneralCareQuery(selectedPetId);
 
   const { loadMoreRef } = useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNextPage });
 
@@ -64,12 +68,14 @@ export function VetEstimateList({ isDesignation }: Props) {
           hasOptions={false}
           onClick={() => router.push(ROUTES.ESTIMATE_VET)}
         />
-      ) : selectedPet ? (
+      ) : (
         <>
           <ProfileSelector
             petInfos={petInfos}
-            selectedPetIndex={selectedPetIndex}
-            onSelectPet={setSelectedPetIndex}
+            selectedPetId={selectedPetId}
+            onSelectPet={(petId) => {
+              setSelectedPetId(petId);
+            }}
           />
           <OptionSelector />
           {estimateLoading ? (
@@ -85,16 +91,14 @@ export function VetEstimateList({ isDesignation }: Props) {
               estimateData={flattenedEstimates}
               onCardClick={(id: number) =>
                 router.push({
-                  pathname: ROUTES.ESTIMATE_DETAIL(selectedPet.estimateId),
-                  query: { type: 'care', petId: selectedPet?.petId },
+                  pathname: ROUTES.ESTIMATE_DETAIL(id),
+                  query: { type: 'care', petId: selectedPetId },
                 })
               }
             />
           )}
           <div ref={loadMoreRef} css={bottom} />
         </>
-      ) : (
-        <div>선택한 펫 정보가 없습니다.</div>
       )}
     </>
   );

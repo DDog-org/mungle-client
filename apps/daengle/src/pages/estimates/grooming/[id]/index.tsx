@@ -12,18 +12,19 @@ import {
   usePostUserEstimateGroomingMutation,
   usePostUserEstimateGroomerUserInfoMutation,
 } from '~/queries/estimate';
-import { PetInfos, PostUserEstimateGroomerUserInfoResponse } from '~/models/estimate';
+import { PostUserEstimateGroomerUserInfoResponse } from '~/models/estimate';
 
 import DatePickerComponent from '~/components/estimate/date-picker-component';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
+import { PetInfo } from '~/interfaces/estimate';
 
 export default function EstimateCreate() {
   const router = useRouter();
   const [address, setAddress] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(dayjs());
-  const [petInfos, setPetInfos] = useState<PetInfos[] | null>(null);
+  const [petInfos, setPetInfos] = useState<PetInfo[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
   const [desiredStyle, setDesiredStyle] = useState<string>('');
   const [requirements, setRequirements] = useState<string>('');
@@ -137,9 +138,9 @@ export default function EstimateCreate() {
               <div css={petList}>
                 {petInfos.map((pet) => (
                   <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
-                    {pet.image ? (
+                    {pet.imageURL ? (
                       <Image
-                        src={pet.image}
+                        src={pet.imageURL}
                         alt="반려견 프로필"
                         width={86}
                         height={86}

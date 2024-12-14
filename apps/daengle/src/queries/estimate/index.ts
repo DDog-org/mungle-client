@@ -42,11 +42,14 @@ export const useUserEstimateGeneralGroomingPetsQuery = () => {
   });
 };
 
-export const useUserEstimateGeneralGroomingQuery = (petId: number) => {
+export const useUserEstimateGeneralGroomingQuery = (petId: number | undefined) => {
   return useInfiniteQuery({
-    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_GROOMING,
+    queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_GROOMING, petId],
     initialPageParam: 0,
     queryFn: ({ pageParam = 0 }) => {
+      if (!petId) {
+        throw new Error('Pet ID가 설정되지 않았습니다.');
+      }
       return getUserEstimateGeneralGrooming({
         petId,
         page: pageParam,
@@ -69,11 +72,14 @@ export const useUserEstimateGeneralCarePetsQuery = () => {
   });
 };
 
-export const useUserEstimateGeneralCareQuery = (petId: number) => {
+export const useUserEstimateGeneralCareQuery = (petId: number | undefined) => {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_CARE,
     initialPageParam: 0,
     queryFn: ({ pageParam = 0 }) => {
+      if (!petId) {
+        throw new Error('Pet ID가 설정되지 않았습니다.');
+      }
       return getUserEstimateGeneralCare({
         petId,
         page: pageParam,
@@ -96,11 +102,14 @@ export const useUserEstimateDesignationGroomingPetsQuery = () => {
   });
 };
 
-export const useUserEstimateDesignationGroomingQuery = (petId: number) => {
+export const useUserEstimateDesignationGroomingQuery = (petId: number | undefined) => {
   return useInfiniteQuery({
-    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_DESIGNATION_GROOMING,
+    queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_DESIGNATION_GROOMING, petId],
     initialPageParam: 0,
     queryFn: ({ pageParam = 0 }) => {
+      if (!petId) {
+        throw new Error('Pet ID가 설정되지 않았습니다.');
+      }
       return getUserEstimateDesignationGrooming({
         petId,
         page: pageParam,
@@ -123,11 +132,14 @@ export const useUserEstimateDesignationCarePetsQuery = () => {
   });
 };
 
-export const useUserEstimateDesignationCareQuery = (petId: number) => {
+export const useUserEstimateDesignationCareQuery = (petId: number | undefined) => {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.GET_USER_ESTIMATE_DESIGNATION_CARE,
     initialPageParam: 0,
     queryFn: ({ pageParam = 0 }) => {
+      if (!petId) {
+        throw new Error('Pet ID가 설정되지 않았습니다.');
+      }
       return getUserEstimateDesignationCare({
         petId,
         page: pageParam,

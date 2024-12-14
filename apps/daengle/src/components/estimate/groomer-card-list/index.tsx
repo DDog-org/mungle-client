@@ -1,5 +1,5 @@
 import { EmptyState } from '@daengle/services/components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   useUserEstimateDesignationGroomingPetsQuery,
   useUserEstimateDesignationGroomingQuery,
@@ -24,7 +24,8 @@ interface Props {
 
 export function GroomerEstimateList({ isDesignation }: Props) {
   const router = useRouter();
-  const [selectedPetIndex, setSelectedPetIndex] = useState(0);
+  const [selectedPetId, setSelectedPetId] = useState<number | undefined>(undefined);
+
   const {
     data: petData,
     isLoading: petLoading,
@@ -34,7 +35,12 @@ export function GroomerEstimateList({ isDesignation }: Props) {
     : useUserEstimateGeneralGroomingPetsQuery();
 
   const petInfos = petData?.pets || [];
-  const selectedPet = petInfos[selectedPetIndex] || null;
+
+  useEffect(() => {
+    if (selectedPetId === undefined && petInfos.length > 0) {
+      setSelectedPetId(petInfos[0]?.petId);
+    }
+  }, [petInfos, selectedPetId]);
 
   const {
     data: estimates,
@@ -44,8 +50,8 @@ export function GroomerEstimateList({ isDesignation }: Props) {
     hasNextPage,
     isFetchingNextPage,
   } = isDesignation
-    ? useUserEstimateDesignationGroomingQuery(selectedPet?.petId || 0)
-    : useUserEstimateGeneralGroomingQuery(selectedPet?.petId || 0);
+    ? useUserEstimateDesignationGroomingQuery(selectedPetId)
+    : useUserEstimateGeneralGroomingQuery(selectedPetId);
 
   const { loadMoreRef } = useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNextPage });
 
@@ -69,12 +75,14 @@ export function GroomerEstimateList({ isDesignation }: Props) {
           hasOptions={false}
           onClick={() => router.push(ROUTES.ESTIMATE_GROOMING)}
         />
-      ) : selectedPet ? (
+      ) : (
         <>
           <ProfileSelector
             petInfos={petInfos}
-            selectedPetIndex={selectedPetIndex}
-            onSelectPet={setSelectedPetIndex}
+            selectedPetId={selectedPetId}
+            onSelectPet={(petId) => {
+              setSelectedPetId(petId);
+            }}
           />
           <OptionSelector />
           {estimateLoading ? (
@@ -90,16 +98,14 @@ export function GroomerEstimateList({ isDesignation }: Props) {
               estimateData={flattenedEstimates}
               onCardClick={(id: number) =>
                 router.push({
-                  pathname: ROUTES.ESTIMATE_DETAIL(selectedPet.estimateId),
-                  query: { type: 'grooming', petId: selectedPet?.petId },
+                  pathname: ROUTES.ESTIMATE_DETAIL(id),
+                  query: { type: 'grooming', petId: selectedPetId },
                 })
               }
             />
           )}
           <div ref={loadMoreRef} css={bottom} />
         </>
-      ) : (
-        <div>선택한 펫 정보가 없습니다.</div>
       )}
     </>
   );
