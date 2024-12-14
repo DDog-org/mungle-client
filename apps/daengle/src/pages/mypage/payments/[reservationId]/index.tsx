@@ -11,7 +11,7 @@ import 'dayjs/locale/ko';
 export default function PaymentsDetail() {
   const router = useRouter();
   const params = useSearchParams();
-  const tab = params.get('tab');
+  const isGroomer = params.get('tab') === 'groomer';
 
   const reservationId = Number(router.query.reservationId);
   const { data } = useGetPaymentHistoryQuery(reservationId);
@@ -29,6 +29,7 @@ export default function PaymentsDetail() {
     customerPhoneNumber,
     visitorName,
     visitorPhoneNumber,
+    hasWrittenReview,
   } = data;
 
   return (
@@ -50,7 +51,7 @@ export default function PaymentsDetail() {
             </div>
             <div css={detailInfo}>
               <Text typo="subtitle1" color="black">
-                {`${recipientName}${tab === 'groomer' && ' 디자이너'}`}
+                {`${recipientName}${isGroomer ? ' 디자이너' : ''}`}
               </Text>
               <Text typo="body9" color="gray400">
                 {shopName}
@@ -61,8 +62,19 @@ export default function PaymentsDetail() {
             <Text tag="h2" typo="body11" color="gray300">
               이 날 받은 서비스는 어땠나요? 리뷰를 남겨보세요
             </Text>
-            {/* TODO: reservationStatus 값에 따라 버튼 활성화 여부 설정 */}
-            <RoundButton size="L" onClick={() => router.push(ROUTES.MYPAGE_REVIEWS)}>
+
+            <RoundButton
+              size="L"
+              onClick={() =>
+                router.push({
+                  pathname: isGroomer
+                    ? ROUTES.REVIEWS_FORM(reservationId)
+                    : ROUTES.REVIEWS_FORM(reservationId),
+                  query: { service: isGroomer ? 'groomer' : 'vet' },
+                })
+              }
+              disabled={hasWrittenReview}
+            >
               리뷰 남기기
             </RoundButton>
           </div>
@@ -79,7 +91,7 @@ export default function PaymentsDetail() {
               예약금
             </Text>
             <Text typo="subtitle1" color="black">
-              {deposit.toLocaleString()}원
+              {deposit?.toLocaleString()}원
             </Text>
           </div>
         </section>

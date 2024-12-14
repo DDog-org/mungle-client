@@ -62,6 +62,7 @@ export interface GetPaymentHistoryResponse {
   customerPhoneNumber: string;
   visitorName: string;
   visitorPhoneNumber: string;
+  hasWrittenReview: boolean;
 }
 
 export interface PostPaymentOrderResponse {

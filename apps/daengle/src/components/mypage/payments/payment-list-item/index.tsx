@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import { Tag, Text } from '@daengle/design-system';
 import { DefaultImage } from '@daengle/design-system/icons';
 import { ROUTES } from '~/constants/commons';
-import { GROOMER_PAYMENT_STATUS } from '~/constants/payment';
+import { GROOMER_PAYMENT_STATUS, VET_PAYMENT_STATUS } from '~/constants/payment';
 import { GroomerPaymentHistoryItem } from '~/interfaces/payment';
 import { infoWrapper, top, wrapper } from './index.styles';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { useSearchParams } from 'next/navigation';
 
 interface Props {
   item: GroomerPaymentHistoryItem;
@@ -19,6 +19,7 @@ export function PaymentListItem({
 }: Props) {
   const router = useRouter();
   const params = useSearchParams();
+  const isGroomer = params.get('tab') === 'groomer';
 
   return (
     <div
@@ -38,7 +39,7 @@ export function PaymentListItem({
 
           <Tag variant="solid">
             <Text typo="body2" color="blue200">
-              {GROOMER_PAYMENT_STATUS[status]}
+              {isGroomer ? GROOMER_PAYMENT_STATUS[status] : VET_PAYMENT_STATUS[status]}
             </Text>
           </Tag>
         </div>

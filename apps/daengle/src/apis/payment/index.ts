@@ -35,5 +35,5 @@ export const postPaymentValidate = async (body: PostPaymentValidateRequestBody) 
 };
 
 export const getPaymentHistory = async ({ reservationId }: GetPaymentHistoryRequestParams) => {
-  return await api.get<GetPaymentHistoryResponse>(`/api/payment/${reservationId}`);
+  return await api.get<GetPaymentHistoryResponse>(`/payment/history/${reservationId}`);
 };
