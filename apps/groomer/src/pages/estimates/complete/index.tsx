@@ -11,7 +11,7 @@ export default function Pending() {
     <Layout>
       <section css={wrapper}>
         <div css={content}>
-          <TransmissionComplete />
+          <TransmissionComplete width={90} height={90} />
 
           <div css={title}>
             <Text typo="title2" color="black">

@@ -1,8 +1,17 @@
-export interface GroomingEstimateList {
+export interface GroomingEstimateGeneralList {
   id: number;
-  userImage: string;
+  imageUrl: string;
   nickname: string;
-  proposal: 'GENERAL' | 'DESIGNATION';
-  significant: string | null;
+  proposal: 'GENERAL';
+  significant: string;
+  reservedDate: string;
+}
+
+export interface GroomingEstimateDesignationList {
+  id: number;
+  imageUrl: string;
+  nickname: string;
+  proposal: 'DESIGNATION';
+  significant: string;
   reservedDate: string;
 }

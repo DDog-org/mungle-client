@@ -15,9 +15,9 @@ export function DatePick({ onChange, placeholderText, isEditable }: Props): JSX.
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
 
   const now = dayjs();
-  const startOfDay = dayjs().hour(10).minute(0).second(0).millisecond(0);
-  const endOfDay = dayjs().hour(19).minute(0).second(0).millisecond(0);
-  const maxDate = now.add(1, 'year');
+  const startOfToday = now.startOf('day').hour(10).minute(0);
+  const endOfToday = now.startOf('day').hour(19).minute(0);
+  const maxDate = now.add(1, 'year').endOf('day');
 
   const handleDateChange = (date: Dayjs | null) => {
     setSelectedDate(date);
@@ -33,15 +33,16 @@ export function DatePick({ onChange, placeholderText, isEditable }: Props): JSX.
         onChange={handleDateChange}
         minDate={now.startOf('day')}
         maxDate={maxDate}
-        minDateTime={
+        minTime={
           selectedDate?.isSame(now, 'day')
-            ? now.isBefore(startOfDay)
-              ? startOfDay
-              : now.isBefore(endOfDay)
-                ? now
-                : undefined
-            : startOfDay
+            ? now.isBefore(startOfToday)
+              ? startOfToday
+              : now.isAfter(endOfToday)
+                ? endOfToday
+                : now
+            : startOfToday
         }
+        maxTime={selectedDate?.startOf('day').hour(19).minute(0)}
         disabled={!isEditable}
         ampm={false}
         slotProps={{

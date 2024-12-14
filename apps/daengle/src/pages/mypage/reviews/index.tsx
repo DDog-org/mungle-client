@@ -38,7 +38,12 @@ export default function Reviews() {
         </Text>
 
         <div css={content}>
-          <Tabs tabs={TABS} renderContent={renderContent} />
+          <Tabs
+            tabs={TABS}
+            renderContent={renderContent}
+            activeTabId={String(tab)}
+            onChange={handleTabChange}
+          />
         </div>
       </section>
     </Layout>

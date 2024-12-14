@@ -1,18 +1,27 @@
 import { api } from '~/apis';
 import {
-  GetGroomerEstimateDetailParams,
+  GetGroomerEstimateDesignationListResponse,
+  GetGroomerEstimateDetailRequestParams,
   GetGroomerEstimateDetailResponse,
-  GetGroomerEstimateListResponse,
+  GetGroomerEstimateGeneralListResponse,
   PostGroomerEstimateBody,
   PostGroomerEstimateResponse,
 } from '~/models/estimate';
 
-export const getGroomerEstimateList = async () => {
-  return await api.get<GetGroomerEstimateListResponse>('/groomer/estimate/list');
+export const getGroomerEstimateGeneralList = async () => {
+  return await api.get<GetGroomerEstimateGeneralListResponse>('/groomer/estimate/general/list');
 };
 
-export const getGroomerEstimateDetail = async (params: GetGroomerEstimateDetailParams) => {
-  return await api.get<GetGroomerEstimateDetailResponse>(`/groomer/estimate/${params.id}/detail`);
+export const getGroomerEstimateDesignationList = async () => {
+  return await api.get<GetGroomerEstimateDesignationListResponse>(
+    '/groomer/estimate/designation/list'
+  );
+};
+
+export const getGroomerEstimateDetail = async (params: GetGroomerEstimateDetailRequestParams) => {
+  return await api.get<GetGroomerEstimateDetailResponse>(
+    `/groomer/estimate/${params.groomingEstimateId}/detail`
+  );
 };
 
 export const postGroomerEstimate = async (body: PostGroomerEstimateBody) => {
