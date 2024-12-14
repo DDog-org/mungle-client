@@ -17,6 +17,8 @@ import {
 } from '~/models/review';
 import { GROOMER_REVIEW_KEYWORDS, VET_REVIEW_KEYWORDS } from '~/constants/review';
 import { ROUTES } from '~/constants/commons';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 const getKeywordsByService = (service: string | undefined): string[] => {
   if (service === 'groomer') {
@@ -39,30 +41,20 @@ export default function ReviewPage() {
   const router = useRouter();
 
   const { id, service } = router.query;
-  const reservationId = Number(id) || 3;
+  const reservationId = Number(id) || 0;
   const keywords = getKeywordsByService(service as string);
 
   const params: GetUserReservationReviewParams = { reservationId: reservationId };
   const { data, isLoading, error } = useGetUserReservationReviewQuery(params);
 
   const partnersCardData = isLoading
-    ? { partnerName: '로딩 중...', shopName: '로딩 중...', schedule: { date: '', time: '' } }
+    ? { partnerName: '로딩 중...', shopName: '로딩 중...', schedule: '로딩 중...' }
     : error
-      ? { partnerName: '에러 발생', shopName: '에러 발생', schedule: { date: '', time: '' } }
+      ? { partnerName: '에러 발생', shopName: '에러 발생', schedule: '로딩 중...' }
       : {
           partnerName: data?.recipientName || '알 수 없음',
           shopName: data?.shopName || '',
-          schedule: {
-            date: new Date(data?.schedule || '').toLocaleDateString('ko-KR', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            }),
-            time: new Date(data?.schedule || '').toLocaleTimeString('ko-KR', {
-              hour: '2-digit',
-              minute: '2-digit',
-            }),
-          },
+          schedule: dayjs(data?.schedule).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm'),
         };
 
   const toggleExpand = () => setIsExpanded((prev) => !prev);
@@ -92,7 +84,17 @@ export default function ReviewPage() {
         return;
       }
     }
+    const handleError = (error: any) => {
+      console.log('Error 객체:', error);
 
+      const { code, message } = error;
+
+      if (code === 4000) {
+        alert(`${message}는 등록할 수 없는 단어입니다!`);
+      } else {
+        alert(`리뷰 등록에 실패했습니다. 에러 메시지: ${message}`);
+      }
+    };
     if (service === 'groomer') {
       const body: PostUserGroomingReviewRequestBody = {
         reservationId,
@@ -110,9 +112,7 @@ export default function ReviewPage() {
           alert('리뷰가 성공적으로 등록되었습니다!');
           router.push(ROUTES.GROOMER_REVIEWS(response.revieweeId));
         },
-        onError: () => {
-          alert('리뷰 등록에 실패했습니다.');
-        },
+        onError: handleError,
       });
     } else if (service === 'vet') {
       const body: PostUserCareReviewRequestBody = {
@@ -130,9 +130,7 @@ export default function ReviewPage() {
           alert('리뷰가 성공적으로 등록되었습니다!');
           router.push(ROUTES.VET_REVIEWS(response.revieweeId));
         },
-        onError: () => {
-          alert('리뷰 등록에 실패했습니다.');
-        },
+        onError: handleError,
       });
     } else {
       alert('알 수 없는 서비스 타입입니다.');
@@ -141,7 +139,7 @@ export default function ReviewPage() {
 
   return (
     <Layout>
-      <AppBar />
+      <AppBar backgroundColor={theme.colors.background} />
       <div css={wrapper}>
         <div css={header}>
           <Text typo="title1">

@@ -141,11 +141,14 @@ export interface GetUserGroomingReviewParams {
 }
 
 export interface GetUserGroomingReviewResponse {
-  reviewId: number;
+  groomingReviewId: number;
+  reservationId: number;
+  groomerId: number;
+  groomingKeywordList: string[];
   revieweeName: string;
   shopName?: string;
+  schedule: string;
   starRating: number;
-  groomingKeywordList: string[];
   content: string;
   imageUrlList: string[];
 }
@@ -186,11 +189,14 @@ export interface GetUserCareReviewParams {
 }
 
 export interface GetUserCareReviewResponse {
-  reviewId: number;
-  revieweeName: string;
-  shopName?: string;
-  starRating: number;
+  careReviewId: number;
+  reservationId: number;
+  vetId: number;
   careKeywordList: string[];
+  shopName?: string;
+  revieweeName: string;
+  schedule: string;
+  starRating: number;
   content: string;
   imageUrlList: string[];
 }

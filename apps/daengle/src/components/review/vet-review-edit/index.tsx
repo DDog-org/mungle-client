@@ -1,20 +1,21 @@
 import { useState, useEffect } from 'react';
-import { AppBar, Layout, Text, RoundButton } from '@daengle/design-system';
-import { css } from '@emotion/react';
-import { theme } from '@daengle/design-system';
+import { AppBar, Layout, Text, RoundButton, theme } from '@daengle/design-system';
 import { KeywordCard, PartnersCard, RatingCard, ReviewInputCard } from '~/components/review';
-import {
-  useGetUserGroomingReviewQuery,
-  usePatchUserGroomingReviewMutation,
-} from '~/queries/review';
+import { useGetUserCareReviewQuery, usePatchUserCareReviewMutation } from '~/queries/review';
 import { useRouter } from 'next/router';
 import { useS3 } from '@daengle/services/hooks';
-import { GetUserGroomingReviewParams, PatchUserGroomingReviewRequestBody } from '~/models/review';
+import { GetUserCareReviewParams, PatchUserCareReviewRequestBody } from '~/models/review';
 import { QUERY_KEYS } from '~/queries/query-keys';
 import { queryClient } from '@daengle/services/providers';
-import { GROOMER_REVIEW_KEYWORDS, KEYWORDS } from '~/constants/review';
+import { VET_REVIEW_KEYWORDS } from '~/constants/review';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+import { container, header, submitButton, wrapper } from './index.styles';
+import { ROUTES } from '~/constants/commons';
 
-export default function ReviewEditPage() {
+const KEYWORDS = Object.values(VET_REVIEW_KEYWORDS);
+
+export function VetReviewEdit() {
   const [rating, setRating] = useState<number>(0);
   const [reviewText, setReviewText] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -25,14 +26,14 @@ export default function ReviewEditPage() {
   const { id } = router.query;
   const reviewId = Number(id);
 
-  const params: GetUserGroomingReviewParams = { reviewId: reviewId };
+  const params: GetUserCareReviewParams = { reviewId: reviewId };
 
-  const { data, isLoading, error } = useGetUserGroomingReviewQuery(params);
+  const { data, isLoading, error } = useGetUserCareReviewQuery(params);
+  const reservationId = data?.reservationId || 0;
+  const vetId = data?.vetId || 0;
 
-  const { mutate: patchReview } = usePatchUserGroomingReviewMutation();
+  const { mutate: patchReview } = usePatchUserCareReviewMutation();
   const { uploadToS3 } = useS3({ targetFolderPath: 'user/review-images' });
-
-  const reservationId = 3; // 임시 예약 ID
 
   useEffect(() => {
     if (data) {
@@ -52,7 +53,7 @@ export default function ReviewEditPage() {
       setRating(data.starRating);
       setReviewText(data.content);
       setSelectedTags(
-        data.groomingKeywordList.map((keyword) => GROOMER_REVIEW_KEYWORDS[keyword] || keyword)
+        data.careKeywordList.map((keyword) => VET_REVIEW_KEYWORDS[keyword] || keyword)
       );
     }
   }, [data]);
@@ -82,12 +83,23 @@ export default function ReviewEditPage() {
       uploadedImageUrls = newImageUrls;
     }
 
-    const body: PatchUserGroomingReviewRequestBody = {
+    const handleError = (error: any) => {
+      console.log('Error 객체:', error);
+
+      const { code, message } = error;
+
+      if (code === 4000) {
+        alert(`${message}는 등록할 수 없는 단어입니다!`);
+      } else {
+        alert(`리뷰 등록에 실패했습니다. 에러 메시지: ${message}`);
+      }
+    };
+
+    const body: PatchUserCareReviewRequestBody = {
       reservationId,
       starRating: rating,
-      groomingKeywordList: selectedTags.map(
-        (tag) =>
-          Object.entries(GROOMER_REVIEW_KEYWORDS).find(([, value]) => value === tag)?.[0] || ''
+      careKeywordList: selectedTags.map(
+        (tag) => Object.entries(VET_REVIEW_KEYWORDS).find(([, value]) => value === tag)?.[0] || ''
       ),
       content: reviewText,
       imageUrlList: uploadedImageUrls,
@@ -97,24 +109,22 @@ export default function ReviewEditPage() {
       { reviewId, body },
       {
         onSuccess: () => {
-          queryClient.refetchQueries({ queryKey: QUERY_KEYS.GET_USER_GROOMING_REVIEW });
+          queryClient.refetchQueries({ queryKey: QUERY_KEYS.GET_USER_CARE_REVIEW });
 
           alert('리뷰가 성공적으로 수정되었습니다!');
-          router.push('/reviews');
+          router.push(ROUTES.VET_REVIEWS(vetId));
         },
-        onError: () => {
-          alert('리뷰 수정에 실패했습니다.');
-        },
+        onError: handleError,
       }
     );
   };
 
   return (
     <Layout>
-      <AppBar />
+      <AppBar backgroundColor={theme.colors.background} />
       <div css={wrapper}>
         <div css={header}>
-          <Text typo="title1">{data?.shopName || '알 수 없음'}</Text>
+          <Text typo="title1">{data?.revieweeName || '알 수 없음'}</Text>
         </div>
         <div css={container}>
           {isLoading ? (
@@ -125,18 +135,8 @@ export default function ReviewEditPage() {
             <>
               <PartnersCard
                 partnerName={data?.revieweeName || '알 수 없음'}
-                shopName={data?.shopName || '알 수 없음'}
-                schedule={{
-                  date: new Date().toLocaleDateString('ko-KR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  }),
-                  time: new Date().toLocaleTimeString('ko-KR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  }),
-                }}
+                shopName={data?.shopName || ''}
+                schedule={dayjs(data?.schedule).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
               />
 
               <RatingCard rating={rating} onRatingChange={setRating} />
@@ -174,28 +174,3 @@ export default function ReviewEditPage() {
     </Layout>
   );
 }
-
-const wrapper = css`
-  display: flex;
-  flex-direction: column;
-
-  background-color: ${theme.colors.background};
-`;
-
-const header = css`
-  margin-bottom: 6px;
-  padding: 18px;
-`;
-
-const container = css`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  padding: 0 18px;
-`;
-
-const submitButton = css`
-  margin-top: 14px;
-  padding: 18px;
-`;

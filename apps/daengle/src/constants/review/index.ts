@@ -15,22 +15,7 @@ export const GROOMER_REVIEW_KEYWORDS: Record<string, string> = {
   CARES_FOR_SKIN_DISEASE: '피부병 케어를 잘해요',
 } as const;
 
-export const KEYWORDS = [
-  '위생적이에요',
-  '상담을 잘해 줘요',
-  '스타일이 멋져요',
-  '친절해요',
-  '솜씨가 좋아요',
-  '가격이 적당해요',
-  '설명을 잘해줘요',
-  '전문적이에요',
-  '노견을 잘 다뤄요',
-  '대형견을 잘 다뤄요',
-  '맹견을 잘 다뤄요',
-  '피부병 케어를 잘해요',
-];
-
-export const VET_REVIEW_KEYWORDS = {
+export const VET_REVIEW_KEYWORDS: Record<string, string> = {
   KIND: '친절해요',
   PROFESSIONAL: '전문적이에요',
   GOOD_AT_EXPLAINING: '설명을 잘해줘요',

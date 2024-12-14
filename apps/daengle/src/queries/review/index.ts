@@ -30,6 +30,7 @@ import {
   PatchUserCareReviewRequestParams,
 } from '~/models';
 import { QUERY_KEYS } from '../query-keys';
+import { AxiosError } from 'axios';
 
 export const getUserGroomingMyReviewListInfiniteQuery = () => {
   return useInfiniteQuery({
@@ -120,8 +121,11 @@ export const usePostGroomingReviewMutation = () => {
     mutationFn: async (body: PostUserGroomingReviewRequestBody) => {
       try {
         return await postUserGroomingReview(body);
-      } catch (error) {
-        throw new Error(String(error));
+      } catch (error: any) {
+        if (error instanceof AxiosError && error.response?.data?.error) {
+          throw error.response.data.error;
+        }
+        throw error;
       }
     },
   });
@@ -147,8 +151,11 @@ export const usePatchUserGroomingReviewMutation = () => {
     mutationFn: async (params: PatchUserGroomingReviewRequestParams) => {
       try {
         return await patchUserGroomingReview(params);
-      } catch (error) {
-        throw new Error(String(error));
+      } catch (error: any) {
+        if (error instanceof AxiosError && error.response?.data?.error) {
+          throw error.response.data.error;
+        }
+        throw error;
       }
     },
   });
@@ -160,8 +167,11 @@ export const usePostCareReviewMutation = () => {
     mutationFn: async (body: PostUserCareReviewRequestBody) => {
       try {
         return await postUserCareReview(body);
-      } catch (error) {
-        throw new Error(String(error));
+      } catch (error: any) {
+        if (error instanceof AxiosError && error.response?.data?.error) {
+          throw error.response.data.error;
+        }
+        throw error;
       }
     },
   });
@@ -187,8 +197,11 @@ export const usePatchUserCareReviewMutation = () => {
     mutationFn: async (params: PatchUserCareReviewRequestParams) => {
       try {
         return await patchUserCareReview(params);
-      } catch (error) {
-        throw new Error(String(error));
+      } catch (error: any) {
+        if (error instanceof AxiosError && error.response?.data?.error) {
+          throw error.response.data.error;
+        }
+        throw error;
       }
     },
   });

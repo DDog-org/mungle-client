@@ -8,7 +8,7 @@ export function PartnersCard({
 }: {
   partnerName: string;
   shopName: string | null;
-  schedule: { date: string; time: string };
+  schedule: string;
 }) {
   return (
     <div css={wrapper}>
@@ -21,8 +21,7 @@ export function PartnersCard({
           일정
         </Text>
         <div css={date}>
-          <Text typo="body4">{schedule.date}</Text>
-          <Text typo="body4">{schedule.time}</Text>
+          <Text typo="body4">{schedule}</Text>
         </div>
       </div>
     </div>
