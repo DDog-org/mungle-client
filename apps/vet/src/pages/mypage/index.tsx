@@ -11,14 +11,13 @@ import {
 } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import router from 'next/router';
-import { Controller } from 'react-hook-form';
 import DatePickerComponent from '~/components/mypage/date-picker';
 import { VET_DAT_OFF } from '~/constants/mypage';
 
 export default function vetProfile() {
   return (
     <Layout isAppBarExist={true}>
-      <AppBar onBackClick={router.back} />
+      <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
       <div css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
           병원 프로필 관리
