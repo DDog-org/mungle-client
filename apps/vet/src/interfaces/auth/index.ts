@@ -12,7 +12,7 @@ export interface VetProfileForm {
   name: string;
   startTime: string;
   endTime: string;
-  closedDays: string;
+  closedDays: string[];
   phoneNumber: string;
   address: string;
   detailAddress: string;

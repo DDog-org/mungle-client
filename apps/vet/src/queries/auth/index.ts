@@ -1,6 +1,10 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getVetModifyPage, postKakao, postVetJoin } from '~/apis';
-import { PostKakaoRequestBody, PostVetJoinRequestBody } from '~/models/auth';
+import { getVetModifyPage, patchVetInfo, postKakao, postVetJoin } from '~/apis';
+import {
+  PatchVetInfoRequestBody,
+  PostKakaoRequestBody,
+  PostVetJoinRequestBody,
+} from '~/models/auth';
 import { QUERY_KEYS } from '~/queries/query-keys';
 
 export const usePostKakaoMutation = () => {
@@ -25,9 +29,18 @@ export const usePostVetJoinMutation = () => {
   });
 };
 
-export const useGetVetModifyPage = () => {
+export const useGetVetModifyPageQuery = () => {
   return useQuery({
     queryKey: QUERY_KEYS.GET_VET_MODIFY_PAGE,
     queryFn: getVetModifyPage,
+  });
+};
+
+export const usePatchVetInfoMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.PATCH_VET_MODIFY_PAGE,
+    mutationFn: async (body: PatchVetInfoRequestBody) => {
+      return await patchVetInfo(body);
+    },
   });
 };

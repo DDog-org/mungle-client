@@ -34,3 +34,15 @@ export interface GetVetModifyPageResponse {
   detailAddress: string;
   introduction: string;
 }
+
+export interface PatchVetInfoResponse {
+  requestResult: string;
+}
+export interface PatchVetInfoRequestBody {
+  imageUrls: string[];
+  startTime: string;
+  endTime: string;
+  closedDays: string[];
+  phoneNumber: string;
+  introduction: string;
+}

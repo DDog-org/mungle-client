@@ -2,6 +2,8 @@ import axios from 'axios';
 import { api } from '~/apis';
 import {
   GetVetModifyPageResponse,
+  PatchVetInfoRequestBody,
+  PatchVetInfoResponse,
   PostKakaoRequestBody,
   PostKakaoResponse,
   PostVetJoinRequestBody,
@@ -32,4 +34,8 @@ export const postVetJoin = async (body: PostVetJoinRequestBody) => {
 
 export const getVetModifyPage = async () => {
   return await api.get<GetVetModifyPageResponse>('/vet/modify-page');
+};
+
+export const patchVetInfo = async (body: PatchVetInfoRequestBody) => {
+  return await api.patch<PatchVetInfoResponse>('/vet/info', body);
 };

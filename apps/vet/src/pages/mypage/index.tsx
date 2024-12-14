@@ -18,10 +18,11 @@ import DatePickerComponent from '~/components/mypage/date-picker';
 import { VET_DAT_OFF } from '~/constants/mypage';
 import { useValidateMyPageForm } from '~/hooks/mypage/use-validate-mypage-form';
 import { VetProfileForm } from '~/interfaces/auth';
-import { useGetVetModifyPage } from '~/queries/auth';
+import { useGetVetModifyPageQuery, usePatchVetInfoMutation } from '~/queries/auth';
 
 export default function vetProfile() {
-  const { data: getVetModifyPage } = useGetVetModifyPage();
+  const { data: getVetModifyPage } = useGetVetModifyPageQuery();
+  const { mutateAsync: patchVetInfo } = usePatchVetInfoMutation();
 
   const {
     register,
@@ -40,7 +41,7 @@ export default function vetProfile() {
     const imageUrls = await uploadToS3(data.imageUrls);
     if (!imageUrls?.length) return;
 
-    // await postVetJoin({ ...data, licenses });
+    await patchVetInfo({ ...data, imageUrls });
   };
 
   return (
@@ -124,7 +125,9 @@ export default function vetProfile() {
               />
             </li>
           </ul>
-          <CTAButton service="partner">수정하기</CTAButton>
+          <CTAButton type="submit" service="partner">
+            수정하기
+          </CTAButton>
         </form>
       </div>
     </Layout>
