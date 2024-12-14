@@ -1,6 +1,7 @@
 export * from './AddButton';
 export * from './AppBarBack';
 export * from './AppBarHome';
+export * from './AppBarPartnerLogo';
 export * from './AuthLogo';
 export * from './ButtonTextButtonArrow';
 export * from './DefaultImage';
@@ -24,6 +25,7 @@ export * from './PartnerGnbEstimateActive';
 export * from './PartnerGnbHomeActive';
 export * from './PartnerGnbMyActive';
 export * from './PartnerGnbReservationActive';
+export * from './PartnerHomeNavigate';
 export * from './RegistrationPending';
 export * from './ReviewFold';
 export * from './ReviewStarFilled';

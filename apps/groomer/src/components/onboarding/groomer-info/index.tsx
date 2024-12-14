@@ -40,7 +40,14 @@ export default function GroomerInfo() {
 
     if (!businessLicenses?.length || !licenses?.length) return;
 
-    await postJoin({ ...data, shopName: data.shopName.trim(), businessLicenses, licenses });
+    const response = await postJoin({
+      ...data,
+      shopName: data.shopName.trim(),
+      businessLicenses,
+      licenses,
+    });
+    localStorage.setItem('accessToken', response.accessToken);
+
     router.replace(ROUTES.ONBOARDING_PENDING);
   };
 
