@@ -87,7 +87,11 @@ export default function PetProfileEdit() {
 
   return (
     <Layout isAppBarExist={true}>
-      <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
+      <AppBar
+        onBackClick={router.back}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+        backgroundColor={theme.colors.white}
+      />
       <div css={wrapper}>
         <Text typo="title1">반려견 프로필 등록하기</Text>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -374,6 +378,7 @@ const profileImageWrapper = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   margin: 40px 0 32px;
 `;
 
@@ -410,19 +415,22 @@ const chipButtonBox = css`
   gap: 7px;
 `;
 const detailInput = css`
-  background-color: ${theme.colors.gray100};
   height: 136px;
-  border-radius: 10px;
   padding: 14px;
+  border-radius: 10px;
+
+  background-color: ${theme.colors.gray100};
+
   ::placeholder {
     color: ${theme.colors.gray200};
   }
 `;
 const weightWrapper = css`
-  flex: 1;
   display: flex;
   flex-direction: column;
+  flex: 1;
   justify-content: center;
-  text-align: center;
   gap: 3px;
+
+  text-align: center;
 `;

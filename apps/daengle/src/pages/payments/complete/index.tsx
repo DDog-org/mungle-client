@@ -11,7 +11,7 @@ export default function PaymentComplete() {
 
   return (
     <Layout>
-      <AppBar />
+      <AppBar prefix={<></>} suffix={<></>} />
       <div css={wrapper}>
         <section css={section}>
           <Image src="/icons/check_icon.svg" alt="checkIcon" width={90} height={90} />

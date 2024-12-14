@@ -11,7 +11,7 @@ import 'dayjs/locale/ko';
 export default function PaymentsDetail() {
   const router = useRouter();
   const params = useSearchParams();
-  const isGroomer = params.get('tab') === 'groomer';
+  const isGroomer = params.get('service') === 'groomer';
 
   const reservationId = Number(router.query.reservationId);
   const { data } = useGetPaymentHistoryQuery(reservationId);
@@ -34,7 +34,7 @@ export default function PaymentsDetail() {
 
   return (
     <Layout>
-      <AppBar />
+      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
       <div css={wrapper}>
         <section css={top}>
           <Text tag="h1" typo="title1" color="black">

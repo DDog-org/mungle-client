@@ -7,7 +7,6 @@ export * from './DefaultImage';
 export * from './DefaultProfile';
 export * from './EmptyLogo';
 export * from './EmptyStateBone';
-export * from './DefaultImage';
 export * from './GnbChattingActive';
 export * from './GnbChattingInactive';
 export * from './GnbEstimateActive';

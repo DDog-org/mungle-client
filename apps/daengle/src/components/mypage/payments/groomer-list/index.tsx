@@ -11,7 +11,7 @@ export function GroomerList() {
 
   useEffect(() => {
     router.replace({
-      query: { tab: 'groomer' },
+      query: { service: 'groomer' },
     });
   }, []);
 

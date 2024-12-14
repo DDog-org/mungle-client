@@ -1,12 +1,8 @@
 import type { SVGProps } from 'react';
-
-interface Props extends SVGProps<SVGSVGElement> {
-  strokeColor?: string;
-}
-export const ButtonTextButtonArrow = ({ strokeColor = '#979797', ...props }: Props) => (
+export const ButtonTextButtonArrow = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10" {...props}>
     <path
-      stroke={strokeColor}
+      stroke="#979797"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={1.5}

@@ -157,7 +157,7 @@ export default function Order() {
   return (
     <Layout>
       <Script src="https://cdn.iamport.kr/v1/iamport.js" strategy="afterInteractive" />
-      <AppBar />
+      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
       <div css={wrapper}>
         <section css={section}>
           <Text tag="h1" typo="title1" css={title}>

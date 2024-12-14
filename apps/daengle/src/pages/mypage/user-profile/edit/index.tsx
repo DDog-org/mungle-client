@@ -92,7 +92,11 @@ export default function EditProfile() {
 
   return (
     <Layout isAppBarExist={true}>
-      <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
+      <AppBar
+        onBackClick={router.back}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+        backgroundColor={theme.colors.white}
+      />
       <section css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
           사용자 프로필

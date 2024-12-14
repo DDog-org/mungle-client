@@ -15,7 +15,7 @@ export function VetList() {
 
   useEffect(() => {
     router.replace({
-      query: { tab: 'vet' },
+      query: { service: 'vet' },
     });
   }, []);
 

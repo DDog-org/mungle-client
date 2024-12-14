@@ -6,6 +6,7 @@ import { Card, Empty } from '~/components/reviews';
 import { VET_REVIEW_KEYWORDS } from '~/constants/review';
 import { useIntersectionLoad } from '~/hooks';
 import { getUserVetReviewListInfiniteQuery } from '~/queries';
+import { ROUTES } from '~/constants/commons';
 
 export default function VetReviews() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function VetReviews() {
 
   return (
     <Layout isAppBarExist={false}>
-      <AppBar />
+      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
 
       <section css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
