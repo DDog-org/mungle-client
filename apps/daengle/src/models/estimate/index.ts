@@ -101,7 +101,7 @@ export interface GetUserEstimateDesignationCareList {
 ///////////
 
 export interface GetUserEstimateRequestGroomingParams {
-  estimateId: number;
+  groomingEstimateId: number;
 }
 
 export interface GetUserEstimateRequestGroomingResponse {
@@ -109,11 +109,42 @@ export interface GetUserEstimateRequestGroomingResponse {
   address: string;
   reservedDate: string;
   proposal: 'GENERAL' | 'DESIGNATION';
-  petImage: string;
+  petImageUrl: string;
   petName: string;
   desiredStyle: string;
   requirements: string;
   petInfos?: PetEstimateId[];
+}
+
+export interface GetUserEstimateRequestCareParams {
+  careEstimateId: number;
+}
+
+export interface GetUserEstimateRequestCareResponse {
+  id: number;
+  address: string;
+  reservedDate: string;
+  proposal: 'GENERAL' | 'DESIGNATION';
+  petImageUrl: string;
+  petName: string;
+  symptoms: string;
+  requirements: string;
+}
+
+export interface PostUserEstimateCancelGroomingRequestBody {
+  estimateId: number;
+}
+
+export interface PostUserEstimateCancelGroomingResponse {
+  requestResult: string;
+}
+
+export interface PostUserEstimateCancelCareRequestBody {
+  estimateId: number;
+}
+
+export interface PostUserEstimateCancelCareResponse {
+  requestResult: string;
 }
 
 export interface PostUserEstimateGroomerUserInfoRequestBody {

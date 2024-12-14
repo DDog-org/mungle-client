@@ -1,3 +1,4 @@
+import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
@@ -11,6 +12,8 @@ export const image = css`
   margin-bottom: 8px;
   border-radius: 50%;
   object-fit: cover;
+
+  background-color: ${theme.colors.background};
 `;
 
 export const name = css`
