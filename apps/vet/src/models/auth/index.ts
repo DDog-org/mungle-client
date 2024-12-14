@@ -22,3 +22,15 @@ export interface PostVetJoinRequestBody {
 export interface PostVetJoinResponse {
   accessToken: string;
 }
+
+export interface GetVetModifyPageResponse {
+  imageUrls: string[];
+  name: string;
+  startTime: string;
+  endTime: string;
+  closedDays: string;
+  phoneNumber: string;
+  address: string;
+  detailAddress: string;
+  introduction: string;
+}

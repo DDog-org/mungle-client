@@ -20,6 +20,21 @@ export function useValidateMyPageForm() {
             files?.length <= 10 || '프로필 사진은 최대 10장까지 첨부할 수 있어요',
         },
       },
+      phoneNumber: {
+        maxLength: { value: 13, message: '전화번호 형식이 올바르지 않아요' },
+        validate: (value: string) => {
+          if (!value) return '전화번호를 입력해 주세요';
+          if (/^02/.test(value) && !/^02-\d{3}-\d{4}$/.test(value))
+            return '전화번호 형식이 올바르지 않아요';
+          if (
+            !/^(051|053|032|062|042|052|044|031|033|043|041|063|061|054|055|064|070|010|02)-?\d{3,4}-?\d{4}$/.test(
+              value
+            )
+          )
+            return '전화번호 형식이 올바르지 않아요';
+          return true;
+        },
+      },
     }),
     []
   );

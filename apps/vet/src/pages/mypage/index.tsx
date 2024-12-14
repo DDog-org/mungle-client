@@ -16,8 +16,11 @@ import DatePickerComponent from '~/components/mypage/date-picker';
 import { VET_DAT_OFF } from '~/constants/mypage';
 import { useValidateMyPageForm } from '~/hooks/mypage/use-validate-mypage-form';
 import { VetProfileForm } from '~/interfaces/auth';
+import { useGetVetModifyPage } from '~/queries/auth';
 
 export default function vetProfile() {
+  const { data: getVetModifyPage } = useGetVetModifyPage();
+
   const {
     register,
     handleSubmit,
@@ -59,7 +62,7 @@ export default function vetProfile() {
                 병원명
               </Text>
               <Text typo="body3" color="gray400">
-                다고쳐병원
+                {getVetModifyPage?.name}
               </Text>
             </li>
             <li css={readOnlyTextBox}>
@@ -84,21 +87,32 @@ export default function vetProfile() {
               </div>
             </li>
             <li css={readOnlyTextBox}>
-              <Input label="전화번호" />
+              <Input
+                label="전화번호"
+                placeholder="병원 전화번호를 입력해 주세요"
+                service="partner"
+                maxLength={13}
+                defaultValue={getVetModifyPage?.phoneNumber}
+              />
             </li>
             <li css={readOnlyTextBox}>
               <Text tag="h2" typo="subtitle3">
                 위치
               </Text>
               <Text typo="body3" color="gray400">
-                서울특별시 강남구 언주로152길 10
+                {getVetModifyPage?.address}
+                {getVetModifyPage?.detailAddress}
               </Text>
             </li>
             <li css={readOnlyTextBox}>
               <Text tag="h2" typo="subtitle3">
                 소개
               </Text>
-              <textarea css={detailInput} placeholder="소개글을 작성해주세요" />
+              <textarea
+                css={detailInput}
+                placeholder="소개글을 작성해주세요"
+                defaultValue={getVetModifyPage?.introduction}
+              />
             </li>
           </ul>
           <CTAButton service="partner">수정하기</CTAButton>
