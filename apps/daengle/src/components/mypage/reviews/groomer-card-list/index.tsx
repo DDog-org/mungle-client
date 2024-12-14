@@ -41,9 +41,9 @@ export function GroomerCardList() {
                 starRating={starRating}
                 content={content}
                 imageUrlList={imageUrlList}
-                onRevieweeNameClick={() => router.push(ROUTES.VET_DETAIL(groomerId))}
+                onRevieweeNameClick={() => router.push(ROUTES.GROOMER_DETAIL(groomerId))}
                 onDelete={() => deleteUserGroomingReview({ reviewId: groomingReviewId })}
-                onEdit={() => router.push(ROUTES.VET_REVIEW_FORM_EDIT(groomingReviewId))}
+                onEdit={() => router.push(ROUTES.GROOMER_REVIEW_FORM_EDIT(groomingReviewId))}
               />
             )
           )
