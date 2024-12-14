@@ -35,6 +35,7 @@ export const ROUTES = {
 
   // Reservations
   RESERVATIONS: '/reservations',
+  RESERVATIONS_DETAIL: (estimateId: number) => `reservations/${estimateId}`,
 
   // Chat
   CHATS: '/chats',
