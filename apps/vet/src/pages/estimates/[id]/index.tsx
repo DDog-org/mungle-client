@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import 'dayjs/locale/ko';
 import { AddInput, PetDetails, Section, UserProfile } from '@daengle/services/components';
 import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
 import { DatePick } from '~/components/estimate';
@@ -9,21 +10,6 @@ import { usePostVetEstimateMutation, useVetEstimateDetailQuery } from '~/queries
 
 import { GetVetEstimateDetailRequestParams } from '~/models/estimate';
 import { ROUTES } from '~/constants/commons';
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-
-  const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
-  const weekday = weekdays[date.getDay()];
-
-  return `${year}.${month}.${day}(${weekday}) ${hours}:${minutes}`;
-}
 
 function requestDate(dateString: string): string {
   const date = new Date(dateString);
@@ -63,10 +49,6 @@ export default function EstimateDetail() {
 
   const petAttributes = [petData.age, petData.weight, petData.significant];
   const isEditable = petData.proposal === 'DESIGNATION';
-
-  const formattedDate = petData.reservedDate
-    ? formatDate(new Date(petData.reservedDate.toString()).toISOString())
-    : formatDate(petData.reservedDate);
 
   const handleDateTimeChange = (dateTime: Dayjs) => {
     setSelectedDateTime(dateTime);
@@ -125,7 +107,9 @@ export default function EstimateDetail() {
         <Section title="시술 희망 날짜 및 시간">
           <DatePick
             onChange={handleDateTimeChange}
-            placeholderText={formattedDate}
+            placeholderText={dayjs(petData.reservedDate)
+              .locale('ko')
+              .format('YYYY.MM.DD(ddd) • HH:mm')}
             isEditable={isEditable}
           />
         </Section>
