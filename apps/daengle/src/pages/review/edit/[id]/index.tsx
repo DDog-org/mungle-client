@@ -124,7 +124,7 @@ export default function ReviewEditPage() {
           ) : (
             <>
               <PartnersCard
-                designerName={data?.revieweeName || '알 수 없음'}
+                partnerName={data?.revieweeName || '알 수 없음'}
                 shopName={data?.shopName || '알 수 없음'}
                 schedule={{
                   date: new Date().toLocaleDateString('ko-KR', {
