@@ -1,7 +1,7 @@
-import { PetInfo, PetEstimateId } from '~/interfaces/estimate';
+import { PetInfo, PetEstimateInfo } from '~/interfaces/estimate';
 
 export interface GetUserEstimateGeneralGroomingPetsResponse {
-  pets?: PetEstimateId[];
+  pets?: PetEstimateInfo[];
 }
 
 export interface GetUserEstimateGeneralGroomingRequestParams {
@@ -26,7 +26,7 @@ export interface GetUserEstimateGeneralGroomingList {
 }
 
 export interface GetUserEstimateGeneralCarePetsResponse {
-  pets?: PetEstimateId[];
+  pets?: PetEstimateInfo[];
 }
 
 export interface GetUserEstimateGeneralCareRequestParams {
@@ -50,7 +50,7 @@ export interface GetUserEstimateGeneralCareList {
 }
 
 export interface GetUserEstimateDesignationGroomingPetsResponse {
-  pets?: PetEstimateId[];
+  pets?: PetEstimateInfo[];
 }
 
 export interface GetUserEstimateDesignationGroomingRequestParams {
@@ -75,7 +75,7 @@ export interface GetUserEstimateDesignationGroomingList {
 }
 
 export interface GetUserEstimateDesignationCarePetsResponse {
-  pets?: PetEstimateId[];
+  pets?: PetEstimateInfo[];
 }
 
 export interface GetUserEstimateDesignationCareRequestParams {
