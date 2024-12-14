@@ -1,3 +1,4 @@
+import { text } from './../../../../../../../apps/vet/src/components/mypage/date-picker/index.styles';
 import { css } from '@emotion/react';
 import { colors, theme } from '../../../foundation';
 import { Size } from './index.types';
@@ -6,11 +7,13 @@ export const wrapper = ({
   isSelected,
   size,
   disabled,
+  isPartnerSelected,
   textColor,
 }: {
   isSelected: boolean;
   size: Size;
   disabled: boolean;
+  isPartnerSelected: boolean;
   textColor: keyof typeof colors;
 }) => css`
   ${size === 'fixed' &&
@@ -44,6 +47,20 @@ export const wrapper = ({
     ${theme.typo.body10};
   `}
 
+  ${size === 'circle' &&
+  css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+
+    text-align: center;
+    ${theme.typo.body6};
+  `}
+
   ${disabled
     ? css`
         background: ${theme.colors.gray200} !important;
@@ -66,5 +83,17 @@ export const wrapper = ({
         border: 1px solid ${disabled ? theme.colors.gray300 : theme.colors.gray200};
 
         color: ${theme.colors.gray500};
+      `}
+  ${isPartnerSelected
+    ? css`
+        border: none;
+
+        background: ${theme.colors.gray100};
+      `
+    : css`
+        border: none;
+
+        background: ${theme.colors.green200};
+        color: ${theme.colors.white};
       `}
 `;

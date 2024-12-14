@@ -1,6 +1,19 @@
-import { AppBar, CTAButton, ImageInput, Input, Layout, Text, theme } from '@daengle/design-system';
+import {
+  AppBar,
+  ChipRadio,
+  ChipToggleButton,
+  CTAButton,
+  ImageInput,
+  Input,
+  Layout,
+  Text,
+  theme,
+} from '@daengle/design-system';
 import { css } from '@emotion/react';
 import router from 'next/router';
+import { Controller } from 'react-hook-form';
+import DatePickerComponent from '~/components/mypage/date-picker';
+import { VET_DAT_OFF } from '~/constants/mypage';
 
 export default function vetProfile() {
   return (
@@ -29,11 +42,22 @@ export default function vetProfile() {
             <Text tag="h2" typo="subtitle3">
               영업시간
             </Text>
+            <DatePickerComponent />
           </li>
           <li css={readOnlyTextBox}>
             <Text tag="h2" typo="subtitle3">
               휴무일
             </Text>
+
+            <div css={chipButton}>
+              {VET_DAT_OFF.map((item) => {
+                return (
+                  <ChipToggleButton key={item.value} size="circle" isPartnerSelected={true}>
+                    {item.label}
+                  </ChipToggleButton>
+                );
+              })}
+            </div>
           </li>
           <li css={readOnlyTextBox}>
             <Input label="전화번호" />
@@ -92,4 +116,9 @@ const detailInput = css`
     color: ${theme.colors.gray200};
     font-size: ${theme.typo.body9};
   }
+`;
+
+const chipButton = css`
+  display: flex;
+  gap: 7px;
 `;
