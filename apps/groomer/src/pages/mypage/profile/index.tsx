@@ -61,7 +61,7 @@ export default function EditProfile() {
   };
 
   useEffect(() => {
-    if (getGroomerModifyPage) {
+    if (getGroomerModifyPage?.introduction) {
       setValue('introduction', getGroomerModifyPage.introduction || '');
       setValue('instagramId', getGroomerModifyPage.instagramId || '');
     }
@@ -112,6 +112,7 @@ export default function EditProfile() {
                   ...validation.instagramId,
                 })}
                 onChange={(e) => setValue('instagramId', e.target.value, { shouldValidate: true })}
+                errorMessage={errors.instagramId?.message}
               />
             </div>
             <div css={textareaWrapper}>
@@ -119,14 +120,24 @@ export default function EditProfile() {
               <Controller
                 name="introduction"
                 control={control}
-                defaultValue={getGroomerModifyPage?.introduction || ''}
+                rules={validation.introduction}
                 render={({ field }) => (
-                  <textarea
-                    css={detailInput}
-                    placeholder="소개글을 작성해주세요"
-                    onChange={field.onChange}
-                    value={field.value ?? ''}
-                  />
+                  <>
+                    <textarea
+                      css={detailInput}
+                      placeholder="소개글을 작성해주세요"
+                      maxLength={50}
+                      onChange={field.onChange}
+                      value={field.value ?? ''}
+                    />
+                    {errors.introduction && (
+                      <div css={infoTextWrapper}>
+                        <Text typo="body12" color="red200">
+                          {errors.introduction?.message}
+                        </Text>
+                      </div>
+                    )}
+                  </>
                 )}
               />
             </div>
@@ -202,7 +213,7 @@ const detailInput = css`
   border-radius: 10px;
   padding: 14px;
   ::placeholder {
-    color: ${theme.colors.black};
+    color: ${theme.colors.gray200};
     font-size: ${theme.typo.body9};
   }
 `;
@@ -228,4 +239,11 @@ const licenseStyle = css`
     color: ${theme.colors.black};
     font-size: ${theme.typo.body9};
   }
+`;
+const infoTextWrapper = css`
+  position: absolute;
+  bottom: -20px;
+  left: 2px;
+
+  padding: 0 2px;
 `;
