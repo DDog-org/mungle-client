@@ -1,10 +1,13 @@
 import { css } from '@emotion/react';
-import { AppBar, Layout, Text, theme } from '@daengle/design-system';
+import { AppBar, Empty, Layout, Text, theme } from '@daengle/design-system';
 import { AppBarPartnerLogo } from '@daengle/design-system/icons';
 import { GNB } from '~/components/commons';
 import { ReservationItem } from '~/components/home';
+import { useGetGroomerSchedule } from '~/queries';
 
 export default function Home() {
+  const { data: schedule } = useGetGroomerSchedule();
+
   return (
     <Layout isAppBarExist={false}>
       <AppBar
@@ -33,7 +36,7 @@ export default function Home() {
                 전체
               </Text>
               <Text typo="title2" color="green200">
-                5
+                {schedule?.totalScheduleCount}
               </Text>
             </div>
             <div css={requestInfo}>
@@ -41,7 +44,7 @@ export default function Home() {
                 지정 요청
               </Text>
               <Text typo="title2" color="green200">
-                5
+                {schedule?.designationCount}
               </Text>
             </div>
             <div css={requestInfo}>
@@ -49,7 +52,7 @@ export default function Home() {
                 예약
               </Text>
               <Text typo="title2" color="green200">
-                5
+                {schedule?.totalReservationCount}
               </Text>
             </div>
           </div>
@@ -61,12 +64,13 @@ export default function Home() {
           </Text>
 
           <div css={reservationWrapper}>
-            <ReservationItem />
-            <ReservationItem />
-            <ReservationItem />
-            <ReservationItem />
-            <ReservationItem />
-            <ReservationItem />
+            {!schedule || schedule.todayAllReservations.length === 0 ? (
+              <Empty title="오늘은 예약이 없어요" />
+            ) : (
+              schedule?.todayAllReservations.map((reservation) => (
+                <ReservationItem key={reservation.petId} reservation={reservation} />
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -146,6 +150,7 @@ const sheet = css`
 const reservationWrapper = css`
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 13px;
   overflow-y: auto;
 

@@ -1,31 +1,40 @@
+import dayjs from 'dayjs';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { Text } from '@daengle/design-system';
 import { DefaultProfile, PartnerHomeNavigate } from '@daengle/design-system/icons';
-import { profileTextWrapper, profileWrapper, wrapper, info } from './index.styles';
-import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants';
+import { GroomerScheduleReservation } from '~/interfaces';
+import { profileTextWrapper, profileWrapper, wrapper, info } from './index.styles';
 
-// TODO: API 연동 후 변경
-const reservationId = 1;
+interface Props {
+  reservation: GroomerScheduleReservation;
+}
 
-export function ReservationItem() {
+export function ReservationItem({ reservation }: Props) {
   const router = useRouter();
+  const { reservationId, reservationTime, petName, desiredStyle, petImage } = reservation;
 
   return (
     <div css={wrapper} onClick={() => router.push(ROUTES.RESERVATIONS_DETAIL(reservationId))}>
       <Text typo="body5" color="gray600">
-        11:00
+        {dayjs(reservationTime).format('YYYY.MM.DD HH:mm')}
       </Text>
 
       <div css={info}>
         <div css={profileWrapper}>
-          <DefaultProfile width="60px" height="60px" />
+          {petImage ? (
+            <Image src={petImage} alt="반려견 이미지" width={60} height={60} />
+          ) : (
+            <DefaultProfile width={60} height={60} />
+          )}
 
           <div css={profileTextWrapper}>
             <Text typo="title2" color="black">
-              가이
+              {petName}
             </Text>
             <Text typo="body9" color="gray500">
-              전체 클리핑
+              {desiredStyle}
             </Text>
           </div>
         </div>

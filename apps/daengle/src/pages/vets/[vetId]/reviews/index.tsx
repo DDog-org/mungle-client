@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
-import { AppBar, Layout, Text, theme } from '@daengle/design-system';
-import { Card, Empty } from '~/components/reviews';
+import { AppBar, Layout, Text, theme, Empty } from '@daengle/design-system';
+import { Card } from '~/components/reviews';
 import { VET_REVIEW_KEYWORDS } from '~/constants/review';
 import { useIntersectionLoad } from '~/hooks';
 import { getUserVetReviewListInfiniteQuery } from '~/queries';
