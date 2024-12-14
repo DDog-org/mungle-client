@@ -11,6 +11,20 @@ import {
   GetUserGroomingMyReviewListResponse,
   GetUserVetReviewListRequestParams,
   GetUserVetReviewListResponse,
+  PostUserGroomingReviewRequestBody,
+  PostUserGroomingReviewResponse,
+  GetUserReservationReviewParams,
+  GetUserReservationReviewResponse,
+  GetUserGroomingReviewParams,
+  GetUserGroomingReviewResponse,
+  PatchUserGroomingReviewRequestParams,
+  PatchUserGroomingReviewResponse,
+  PostUserCareReviewRequestBody,
+  PostUserCareReviewResponse,
+  GetUserCareReviewParams,
+  GetUserCareReviewResponse,
+  PatchUserCareReviewRequestParams,
+  PatchUserCareReviewResponse,
 } from '~/models';
 import { api } from '../config';
 
@@ -52,4 +66,40 @@ export const getUserVetReviewList = async ({
   return await api.get<GetUserVetReviewListResponse>(`/user/vet/${vetId}/review/list`, {
     params,
   });
+};
+
+export const getUserReservationReview = async (params: GetUserReservationReviewParams) => {
+  return await api.get<GetUserReservationReviewResponse>(
+    `/user/reservation/${params.reservationId}/review`
+  );
+};
+
+export const postUserGroomingReview = async (body: PostUserGroomingReviewRequestBody) => {
+  return await api.post<PostUserGroomingReviewResponse>('/user/grooming/review', body);
+};
+
+export const getUserGroomingReview = async (params: GetUserGroomingReviewParams) => {
+  return await api.get<GetUserGroomingReviewResponse>(`/user/grooming/review/${params.reviewId}`);
+};
+
+export const patchUserGroomingReview = async (params: PatchUserGroomingReviewRequestParams) => {
+  return await api.patch<PatchUserGroomingReviewResponse>(
+    `/user/grooming/review/${params.reviewId}`,
+    params.body
+  );
+};
+
+export const postUserCareReview = async (body: PostUserCareReviewRequestBody) => {
+  return await api.post<PostUserCareReviewResponse>('/user/care/review', body);
+};
+
+export const getUserCareReview = async (params: GetUserCareReviewParams) => {
+  return await api.get<GetUserCareReviewResponse>(`/user/care/review/${params.reviewId}`);
+};
+
+export const patchUserCareReview = async (params: PatchUserCareReviewRequestParams) => {
+  return await api.patch<PatchUserCareReviewResponse>(
+    `/user/care/review/${params.reviewId}`,
+    params.body
+  );
 };

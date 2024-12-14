@@ -2,17 +2,17 @@ import { Text } from '@daengle/design-system';
 import { wrapper, plan, date } from './index.styles';
 
 export function PartnersCard({
-  designerName,
+  partnerName,
   shopName,
   schedule,
 }: {
-  designerName: string;
-  shopName: string;
-  schedule: { date: string; time: string };
+  partnerName: string;
+  shopName: string | null;
+  schedule: string;
 }) {
   return (
     <div css={wrapper}>
-      <Text typo="subtitle1">{designerName}</Text>
+      <Text typo="subtitle1">{partnerName}</Text>
       <Text typo="body9" color="gray400">
         {shopName}
       </Text>
@@ -21,8 +21,7 @@ export function PartnersCard({
           일정
         </Text>
         <div css={date}>
-          <Text typo="body4">{schedule.date}</Text>
-          <Text typo="body4">{schedule.time}</Text>
+          <Text typo="body4">{schedule}</Text>
         </div>
       </div>
     </div>

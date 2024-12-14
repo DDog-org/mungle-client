@@ -27,7 +27,7 @@ export function GroomerCardList() {
               ({
                 groomingReviewId,
                 groomerId,
-                groomingKeywordReviewList,
+                groomingKeywordList,
                 revieweeName,
                 starRating,
                 content,
@@ -37,7 +37,7 @@ export function GroomerCardList() {
                   key={groomingReviewId}
                   reviewId={groomingReviewId}
                   revieweeId={groomerId}
-                  keywordReviewList={groomingKeywordReviewList}
+                  keywordReviewList={groomingKeywordList}
                   revieweeName={`${revieweeName} 디자이너`}
                   starRating={starRating}
                   content={content}

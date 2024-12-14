@@ -1,6 +1,6 @@
 export const PAGE_SIZE = 20 as const;
 
-export const GROOMER_REVIEW_KEYWORDS = {
+export const GROOMER_REVIEW_KEYWORDS: Record<string, string> = {
   HYGIENIC: '위생적이에요',
   EXCELLENT_CONSULTATION: '상담을 잘해 줘요',
   STYLE_IS_GREAT: '스타일이 멋져요',
@@ -15,7 +15,7 @@ export const GROOMER_REVIEW_KEYWORDS = {
   CARES_FOR_SKIN_DISEASE: '피부병 케어를 잘해요',
 } as const;
 
-export const VET_REVIEW_KEYWORDS = {
+export const VET_REVIEW_KEYWORDS: Record<string, string> = {
   KIND: '친절해요',
   PROFESSIONAL: '전문적이에요',
   GOOD_AT_EXPLAINING: '설명을 잘해줘요',
