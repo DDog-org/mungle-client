@@ -1,4 +1,4 @@
-import { Text, TextButton } from '@daengle/design-system';
+import { CapsuleButton, Text, TextButton } from '@daengle/design-system';
 import {
   wrapper,
   userImage,
@@ -15,7 +15,12 @@ import {
   report,
 } from './index.styles';
 import { ReviewStars } from '../star';
-import { ButtonDownArrow, ButtonTextButtonArrow } from '@daengle/design-system/icons';
+import {
+  ButtonTextButtonArrow,
+  ReviewFold,
+  ReviewUnfold,
+  SelectUnfoldInactive,
+} from '@daengle/design-system/icons';
 import { useState } from 'react';
 
 interface Props {
@@ -28,6 +33,7 @@ interface Props {
   flagged?: boolean;
   reportType?: string;
   reportContent?: string;
+  onReport: () => void;
 }
 
 export function ReviewCard({
@@ -40,12 +46,14 @@ export function ReviewCard({
   flagged = false,
   reportType,
   reportContent,
+  onReport,
 }: Props) {
   const [isUnrolled, setIsUnrolled] = useState(false);
 
-  const handleUnrollClick = () => {
-    setIsUnrolled((prev) => !prev);
-  };
+  function handleCheckAllContent() {
+    setIsUnrolled(!isUnrolled);
+  }
+
   return (
     <div css={wrapper}>
       <div css={reviewerInfo}>
@@ -54,7 +62,7 @@ export function ReviewCard({
           <Text typo="subtitle2">{reviewerName}</Text>
           <ReviewStars rating={rating} />
         </div>
-        {!flagged && <TextButton css={reportButton}>신고하기</TextButton>}
+        {!flagged && <CapsuleButton onClick={onReport}>수정하기</CapsuleButton>}
       </div>
       <div css={reviewImages}>
         {images.map((image, index) => (
@@ -67,10 +75,15 @@ export function ReviewCard({
         </Text>
       </div>
       <div css={contentContainer}>
-        <Text typo="body11" css={[contentStyle(flagged), isUnrolled && contentUnrolled]}>
+        <Text
+          typo="body11"
+          css={[contentStyle(flagged, isUnrolled), isUnrolled && contentUnrolled]}
+        >
           {content}
         </Text>
-        {flagged && <ButtonTextButtonArrow width={'6px'} />}
+        {!isUnrolled && flagged && (
+          <ButtonTextButtonArrow width={6} onClick={handleCheckAllContent} />
+        )}
       </div>
       {flagged && (
         <>
@@ -89,9 +102,13 @@ export function ReviewCard({
         </>
       )}
       {!flagged && (
-        <div css={unroll} onClick={handleUnrollClick}>
-          <ButtonDownArrow />
-        </div>
+        <button css={unroll} onClick={() => setIsUnrolled(!isUnrolled)}>
+          {isUnrolled ? (
+            <ReviewFold width={12} height={6} />
+          ) : (
+            <ReviewUnfold width={12} height={6} />
+          )}
+        </button>
       )}
     </div>
   );

@@ -2,15 +2,17 @@ import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
-  background: ${theme.colors.white};
-  border-radius: 21px;
   padding: 18px;
+  border-radius: 21px;
+
+  background: ${theme.colors.white};
 `;
 
 export const userImage = css`
   width: 33px;
   height: 33px;
   object-fit: cover;
+
   border-radius: 50px;
 `;
 
@@ -23,24 +25,27 @@ export const userInfo = css`
 
 export const reviewerInfo = css`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 13px;
+  justify-content: space-between;
+
   margin-right: 5px;
+  margin-bottom: 13px;
 `;
 
 export const reviewImages = css`
   display: flex;
-  padding: 5px 1px;
   gap: 6px;
-  margin-bottom: 8px;
   overflow-x: auto;
+
+  margin-bottom: 8px;
+  padding: 5px 1px;
   -webkit-overflow-scrolling: touch;
 
   img {
     width: 101px;
     height: 101px;
     object-fit: cover;
+
     border-radius: 10px;
   }
 `;
@@ -48,40 +53,46 @@ export const reviewImages = css`
 export const tagsContainer = css`
   display: flex;
   gap: 6px;
+
   margin-bottom: 12px;
 `;
 
 export const tags = css`
   padding: 3px 10px;
-  background-color: ${theme.colors.green100};
   border: 0.5px solid ${theme.colors.green200};
   border-radius: 14px;
+
+  background-color: ${theme.colors.green100};
 `;
 
 export const reportButton = css`
+  padding: 6px 10px;
+  border-radius: 20px;
   ${theme.typo.body7};
   background-color: ${theme.colors.gray100};
   color: ${theme.colors.gray600};
-  border-radius: 20px;
-  padding: 6px 10px;
+
   cursor: pointer;
 `;
 
 export const contentContainer = css`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+
   margin-bottom: 6px;
 `;
 
-export const contentStyle = (flagged: boolean) => css`
+export const contentStyle = (flagged: boolean, isUnrolled: boolean) => css`
   display: -webkit-box;
+  overflow: hidden;
+
+  width: ${flagged && !isUnrolled ? '80%' : '100%'};
+
+  white-space: normal;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden;
   text-overflow: ellipsis;
-  white-space: normal;
-  width: ${flagged ? '80%' : '100%'};
 `;
 
 export const contentUnrolled = css`
@@ -91,11 +102,14 @@ export const contentUnrolled = css`
 
 export const unroll = css`
   display: flex;
-  padding: 18px 18px 0;
   justify-content: center;
+
+  width: 100%;
+  padding: 18px 18px 0;
 `;
 
 export const report = css`
   display: flex;
-  padding: 18px 0px 10px;
+
+  padding: 18px 0 10px;
 `;

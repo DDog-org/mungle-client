@@ -14,13 +14,14 @@ interface Props {
     reportContent?: string;
   }[];
   flagged?: boolean;
+  onReport: () => void;
 }
 
-export function ReviewCardList({ reviews, flagged }: Props) {
+export function ReviewCardList({ reviews, flagged, onReport }: Props) {
   return (
     <div css={wrapper}>
       {reviews.map((review) => (
-        <ReviewCard key={review.id} {...review} flagged={flagged} />
+        <ReviewCard key={review.id} {...review} flagged={flagged} onReport={onReport} />
       ))}
     </div>
   );
