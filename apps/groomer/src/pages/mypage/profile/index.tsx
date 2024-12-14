@@ -3,6 +3,7 @@ import { theme } from '@daengle/design-system';
 import { useS3 } from '@daengle/services/hooks';
 import { css } from '@emotion/react';
 import router from 'next/router';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import useValidateGroomerForm from '~/hooks/mypage/use-validate-groomer-form';
 import { GroomerModifyPageForm } from '~/interfaces/auth';
@@ -17,6 +18,7 @@ export default function EditProfile() {
   const validation = useValidateGroomerForm();
   const {
     handleSubmit,
+    watch,
     control,
     register,
     setValue,
@@ -26,7 +28,7 @@ export default function EditProfile() {
     defaultValues: {
       image: null,
       introduction: '',
-      instagramId: '',
+      instagramId: getGroomerModifyPage?.instagramId || '',
     },
   });
 
@@ -52,16 +54,24 @@ export default function EditProfile() {
     const payload = {
       ...data,
       image: imageString,
+      introduction: data.introduction || '',
     };
+
     await patchGroomerInfo(payload);
   };
+
+  useEffect(() => {
+    if (getGroomerModifyPage) {
+      setValue('introduction', getGroomerModifyPage.introduction || '');
+      setValue('instagramId', getGroomerModifyPage.instagramId || '');
+    }
+  }, [getGroomerModifyPage, setValue]);
   return (
     <Layout isAppBarExist={true}>
       <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <div css={wrapper}>
           <Text typo="title1">프로필 관리</Text>
-
           <div css={profileImageWrapper}>
             <ImageInputBox
               onChange={(files) => setValue('image', files, { shouldValidate: true })}
@@ -97,8 +107,11 @@ export default function EditProfile() {
               <Input
                 label="인스타그램 아이디"
                 maxLength={30}
-                value={getGroomerModifyPage?.instagramId}
-                {...register('instagramId', { ...validation.instagramId })}
+                value={watch('instagramId')}
+                {...register('instagramId', {
+                  ...validation.instagramId,
+                })}
+                onChange={(e) => setValue('instagramId', e.target.value, { shouldValidate: true })}
               />
             </div>
             <div css={textareaWrapper}>
@@ -106,15 +119,14 @@ export default function EditProfile() {
               <Controller
                 name="introduction"
                 control={control}
+                defaultValue={getGroomerModifyPage?.introduction || ''}
                 render={({ field }) => (
-                  <>
-                    <textarea
-                      css={detailInput}
-                      placeholder="소개글을 작성해주세요"
-                      onChange={field.onChange}
-                      defaultValue={getGroomerModifyPage?.introduction}
-                    />
-                  </>
+                  <textarea
+                    css={detailInput}
+                    placeholder="소개글을 작성해주세요"
+                    onChange={field.onChange}
+                    value={field.value ?? ''}
+                  />
                 )}
               />
             </div>

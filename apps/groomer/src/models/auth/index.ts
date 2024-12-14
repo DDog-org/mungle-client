@@ -45,5 +45,6 @@ export interface PatchGroomerInfoResponse {
 
 export interface PatchGroomerInfoRequestBody {
   image: string;
-  introduction: string;
+  instagramId: string | null;
+  introduction: string | null;
 }

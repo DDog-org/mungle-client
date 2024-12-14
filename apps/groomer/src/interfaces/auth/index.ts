@@ -10,7 +10,7 @@ export interface GroomerInfoForm {
 }
 
 export interface GroomerModifyPageForm {
-  image: string | null;
+  image: File | null;
   introduction: string | null;
   licenses: license[];
   instagramId: string;
