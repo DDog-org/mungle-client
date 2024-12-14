@@ -22,4 +22,5 @@ export const ROUTES = {
   // Mypage
   MYPAGE: '/mypage',
   MYPAGE_PROFILE: '/mypage/profile',
+  MYPAGE_REVIEWS_REPORT: '/mypage/reviews/report',
 } as const;
