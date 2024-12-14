@@ -1,4 +1,3 @@
-import { text } from './../../../../../../../apps/vet/src/components/mypage/date-picker/index.styles';
 import { css } from '@emotion/react';
 import { colors, theme } from '../../../foundation';
 import { Size } from './index.types';
