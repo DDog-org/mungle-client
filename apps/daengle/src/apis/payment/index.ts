@@ -8,6 +8,8 @@ import {
   PostPaymentOrderResponse,
   PostPaymentValidateRequestBody,
   PostPaymentValidateResponse,
+  GetPaymentHistoryRequestParams,
+  GetPaymentHistoryResponse,
 } from '~/models';
 
 export const getPaymentGroomingHistoryList = async (
@@ -30,4 +32,8 @@ export const postPaymentOrder = async (body: PostPaymentOrderRequestBody) => {
 
 export const postPaymentValidate = async (body: PostPaymentValidateRequestBody) => {
   return await api.post<PostPaymentValidateResponse>('/payment/validate', body);
+};
+
+export const getPaymentHistory = async ({ reservationId }: GetPaymentHistoryRequestParams) => {
+  return await api.get<GetPaymentHistoryResponse>(`/payment/history/${reservationId}`);
 };

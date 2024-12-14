@@ -25,7 +25,7 @@ export default function Onboarding() {
 
   return (
     <Layout>
-      <AppBar onBackClick={router.back} />
+      <AppBar onBackClick={router.back} suffix={<></>} />
 
       <Funnel>
         <Step name={STEPS.USER_INFO}>

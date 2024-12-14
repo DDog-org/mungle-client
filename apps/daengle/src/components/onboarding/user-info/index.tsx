@@ -102,10 +102,7 @@ export function UserInfo({ onNext }: Props) {
               setUserInfoForm({ ...watch(), isAvailableNickname: false });
               clearErrors();
             }}
-            errorMessage={
-              errors.nickname?.message ||
-              (userInfoForm.isAvailableNickname ? '' : '이미 사용 중인 닉네임입니다')
-            }
+            errorMessage={errors.nickname?.message}
             confirmMessage={userInfoForm.isAvailableNickname ? '사용 가능한 닉네임입니다' : ''}
           />
 

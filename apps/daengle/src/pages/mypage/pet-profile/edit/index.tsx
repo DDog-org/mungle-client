@@ -34,6 +34,7 @@ import { useS3 } from '@daengle/services/hooks';
 import { DefaultImage } from '@daengle/design-system/icons';
 import { PetProfileEditType } from '~/interfaces/auth';
 import router from 'next/router';
+import { ROUTES } from '~/constants/commons';
 
 export default function PetInfoEdit() {
   const [petInfos, setPetInfos] = useState<PetProfile[] | null>(null);
@@ -155,7 +156,11 @@ export default function PetInfoEdit() {
 
   return (
     <Layout isAppBarExist={true}>
-      <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
+      <AppBar
+        onBackClick={router.back}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+        backgroundColor={theme.colors.white}
+      />
       <div css={titleBox}>
         <Text typo="title1">반려견 프로필 수정</Text>
       </div>
@@ -532,8 +537,6 @@ const profileImageWrapper = css`
   margin: 0 0 32px;
 `;
 const inputWrapper = css`
-  padding: 0 18px 146px;
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 32px;

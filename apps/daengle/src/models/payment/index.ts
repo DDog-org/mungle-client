@@ -30,6 +30,7 @@ export interface PaymentHistory {
 }
 
 export interface GetPaymentHistoryDetailResponse {}
+
 export interface PostPaymentOrderRequestBody {
   estimateId: number;
   petId: number;
@@ -44,6 +45,24 @@ export interface PostPaymentOrderRequestBody {
   customerPhoneNumber: string;
   visitorName: string;
   visitorPhoneNumber: string;
+}
+
+export interface GetPaymentHistoryRequestParams {
+  reservationId: number;
+}
+
+export interface GetPaymentHistoryResponse {
+  reservationId: number;
+  reservationStatus: string;
+  recipientName: string;
+  shopName: string;
+  schedule: string;
+  deposit: number;
+  customerName: string;
+  customerPhoneNumber: string;
+  visitorName: string;
+  visitorPhoneNumber: string;
+  hasWrittenReview: boolean;
 }
 
 export interface PostPaymentOrderResponse {

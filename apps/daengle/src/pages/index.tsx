@@ -1,3 +1,11 @@
+import { AppBar, Layout } from '@daengle/design-system';
+import { GNB } from '~/components/commons';
+
 export default function Home() {
-  return <div>Daengle</div>;
+  return (
+    <Layout>
+      <AppBar />
+      <GNB />
+    </Layout>
+  );
 }

@@ -10,7 +10,7 @@ export default function EstimateComplete() {
 
   return (
     <Layout>
-      <AppBar />
+      <AppBar prefix={<></>} suffix={<></>} />
       <div css={wrapper}>
         <div css={box}>
           <TransmissionComplete width={90} height={90} color={theme.colors.blue200} />

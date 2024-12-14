@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { PaymentListItem } from '~/components/mypage';
 import { Empty } from '~/components/reviews';
 import { useIntersectionLoad } from '~/hooks';
@@ -8,6 +10,14 @@ export function VetList() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGetPaymentCareHistoryListInfiniteQuery();
   const { loadMoreRef } = useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNextPage });
+
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace({
+      query: { service: 'vet' },
+    });
+  }, []);
 
   return (
     <div css={wrapper}>

@@ -1,6 +1,8 @@
 import { css } from '@emotion/react';
 import { AppBar, Layout, Tabs, Text, theme } from '@daengle/design-system';
 import { GroomerCardList, VetCardList } from '~/components/mypage';
+import { ROUTES } from '~/constants/commons';
+import { useRouter } from 'next/router';
 
 const TABS = [
   {
@@ -14,6 +16,8 @@ const TABS = [
 ];
 
 export default function Reviews() {
+  const router = useRouter();
+
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'groomer':
@@ -27,7 +31,7 @@ export default function Reviews() {
 
   return (
     <Layout isAppBarExist={false}>
-      <AppBar />
+      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
       <section css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
           내가 쓴 리뷰

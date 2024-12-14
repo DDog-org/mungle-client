@@ -103,7 +103,7 @@ export default function EstimateCare() {
 
   return (
     <Layout>
-      <AppBar />
+      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
       <div css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
           견적 요청서

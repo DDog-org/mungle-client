@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { PaymentListItem } from '~/components/mypage';
 import { Empty } from '~/components/reviews';
 import { useIntersectionLoad } from '~/hooks';
@@ -5,6 +7,14 @@ import { useGetPaymentGroomingHistoryListInfiniteQuery } from '~/queries/payment
 import { bottom, wrapper } from './index.styles';
 
 export function GroomerList() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace({
+      query: { service: 'groomer' },
+    });
+  }, []);
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGetPaymentGroomingHistoryListInfiniteQuery();
   const { loadMoreRef } = useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNextPage });

@@ -11,6 +11,7 @@ import {
   UserEstimateCareDetailRequestParams,
   UserEstimateGroomingDetailRequestParams,
 } from '~/models/estimate';
+import { ROUTES } from '~/constants/commons';
 
 type DetailData = UserEstimateGroomingDetailData | UserEstimateCareDetailData;
 
@@ -74,7 +75,7 @@ export default function Detail() {
 
     return (
       <Layout isAppBarExist={false}>
-        <AppBar />
+        <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
         <div css={wrapper}>
           <div css={header}>
             <Text typo="title1">견적 상세</Text>
@@ -125,7 +126,7 @@ export default function Detail() {
     };
     return (
       <Layout isAppBarExist={false}>
-        <AppBar />
+        <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
         <div css={wrapper}>
           <div css={header}>
             <Text typo="title1">진료 상세</Text>

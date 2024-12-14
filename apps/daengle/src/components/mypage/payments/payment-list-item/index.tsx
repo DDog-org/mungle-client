@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import { Tag, Text } from '@daengle/design-system';
 import { DefaultImage } from '@daengle/design-system/icons';
 import { ROUTES } from '~/constants/commons';
-import { GROOMER_PAYMENT_STATUS } from '~/constants/payment';
+import { GROOMER_PAYMENT_STATUS, VET_PAYMENT_STATUS } from '~/constants/payment';
 import { GroomerPaymentHistoryItem } from '~/interfaces/payment';
 import { infoWrapper, top, wrapper } from './index.styles';
 import dayjs from 'dayjs';
@@ -17,9 +18,19 @@ export function PaymentListItem({
   item: { reservationId, recipientImageUrl, recipientName, shopName, paymentDate, status },
 }: Props) {
   const router = useRouter();
+  const params = useSearchParams();
+  const isGroomer = params.get('tab') === 'groomer';
 
   return (
-    <div css={wrapper} onClick={() => router.push(ROUTES.MYPAGE_PAYMENTS_DETAIL(reservationId))}>
+    <div
+      css={wrapper}
+      onClick={() =>
+        router.push({
+          pathname: ROUTES.MYPAGE_PAYMENTS_DETAIL(reservationId),
+          query: { tab: params.get('tab') },
+        })
+      }
+    >
       <div css={infoWrapper}>
         <div css={top}>
           <Text typo="subtitle1" color="black">
@@ -28,7 +39,7 @@ export function PaymentListItem({
 
           <Tag variant="solid">
             <Text typo="body2" color="blue200">
-              {GROOMER_PAYMENT_STATUS[status]}
+              {isGroomer ? GROOMER_PAYMENT_STATUS[status] : VET_PAYMENT_STATUS[status]}
             </Text>
           </Tag>
         </div>

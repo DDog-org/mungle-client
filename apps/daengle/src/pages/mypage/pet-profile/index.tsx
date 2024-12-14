@@ -62,7 +62,11 @@ export default function PetProfileDetail() {
 
   return (
     <Layout isAppBarExist={true}>
-      <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
+      <AppBar
+        onBackClick={router.back}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+        backgroundColor={theme.colors.white}
+      />
       <div css={wrapper}>
         <div css={titleBox}>
           <Text typo="title1">상세보기</Text>

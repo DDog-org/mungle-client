@@ -39,13 +39,7 @@ export const usePostKakaoMutation = () => {
 export const usePostJoinWithoutPetMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_JOIN_WITHOUT_PET,
-    mutationFn: async (body: PostJoinWithoutPetRequestBody) => {
-      try {
-        return await postJoinWithoutPet(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: postJoinWithoutPet,
   });
 };
 
