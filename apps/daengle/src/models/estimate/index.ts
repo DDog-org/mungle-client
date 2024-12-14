@@ -1,4 +1,12 @@
-import { PetInfo, PetEstimateId } from '~/interfaces/estimate';
+export interface PetInfo {
+  petId: number;
+  name: string;
+  imageURL: string;
+}
+
+export interface PetEstimateId extends PetInfo {
+  estimateId: number;
+}
 
 export interface GetUserEstimateGeneralGroomingPetsResponse {
   pets?: PetEstimateId[];

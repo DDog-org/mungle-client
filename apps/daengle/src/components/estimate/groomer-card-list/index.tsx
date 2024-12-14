@@ -16,6 +16,7 @@ import { useIntersectionLoad } from '~/hooks';
 import { bottom } from './index.styles';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
+import { OptionSelector } from '../option';
 
 interface Props {
   isDesignation: boolean;
@@ -75,6 +76,7 @@ export function GroomerEstimateList({ isDesignation }: Props) {
             selectedPetIndex={selectedPetIndex}
             onSelectPet={setSelectedPetIndex}
           />
+          <OptionSelector />
           {estimateLoading ? (
             <div>견적 데이터를 불러오는 중...</div>
           ) : estimateError ? (
