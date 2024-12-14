@@ -32,10 +32,10 @@ export interface GetGroomerModifyPageResponse {
   email: string;
   instagramId: string;
   introduction: string;
-  licenses: license[];
+  licenses: License[];
 }
 
-export interface license {
+export interface License {
   name: string;
   acquisitionDate: string;
 }
