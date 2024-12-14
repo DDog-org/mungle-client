@@ -92,7 +92,7 @@ export function VetEstimateList({ isDesignation }: Props) {
               onCardClick={(id: number) =>
                 router.push({
                   pathname: ROUTES.ESTIMATE_DETAIL(id),
-                  query: { type: 'care', petId: selectedPetId },
+                  query: { service: 'vet', petId: selectedPetId },
                 })
               }
             />

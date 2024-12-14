@@ -99,7 +99,7 @@ export function GroomerEstimateList({ isDesignation }: Props) {
               onCardClick={(id: number) =>
                 router.push({
                   pathname: ROUTES.ESTIMATE_DETAIL(id),
-                  query: { type: 'grooming', petId: selectedPetId },
+                  query: { service: 'groomer', petId: selectedPetId },
                 })
               }
             />

@@ -15,6 +15,7 @@ export const ROUTES = {
   ESTIMATE_GROOMING: '/estimates/grooming',
   ESTIMATE_VET: 'estimates/care',
   ESTIMATE_FORM_COMPLETE: '/estimates/complete',
+  ESTIMATE_REQUEST: (estimateId: number) => `estimates/request/${estimateId}`,
 
   // Groomers
   GROOMER_DETAIL: (groomerId: number) => `/groomers/${groomerId}`,
