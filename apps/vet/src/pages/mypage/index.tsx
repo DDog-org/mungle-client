@@ -9,8 +9,10 @@ import {
   theme,
 } from '@daengle/design-system';
 import { useS3 } from '@daengle/services/hooks';
+import { formatPhoneNumberWithRegionNumber } from '@daengle/services/utils';
 import { css } from '@emotion/react';
 import router from 'next/router';
+import { ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import DatePickerComponent from '~/components/mypage/date-picker';
 import { VET_DAT_OFF } from '~/constants/mypage';
@@ -27,7 +29,10 @@ export default function vetProfile() {
     watch,
     setValue,
     formState: { errors, isValid },
-  } = useForm<VetProfileForm>({ mode: 'onChange' });
+  } = useForm<VetProfileForm>({
+    defaultValues: { phoneNumber: getVetModifyPage?.phoneNumber },
+    mode: 'onChange',
+  });
   const { uploadToS3 } = useS3({ targetFolderPath: 'vet/licenses' });
   const validation = useValidateMyPageForm();
 
@@ -92,7 +97,11 @@ export default function vetProfile() {
                 placeholder="병원 전화번호를 입력해 주세요"
                 service="partner"
                 maxLength={13}
-                defaultValue={getVetModifyPage?.phoneNumber}
+                {...register('phoneNumber', { ...validation.phoneNumber })}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setValue('phoneNumber', formatPhoneNumberWithRegionNumber(e.target.value))
+                }
+                errorMessage={errors.phoneNumber?.message}
               />
             </li>
             <li css={readOnlyTextBox}>
