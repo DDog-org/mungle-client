@@ -1,18 +1,21 @@
 import { css } from '@emotion/react';
 
 import { Card } from '../card';
-import { theme } from '@daengle/design-system';
+import { useGetUserShopsQuery } from '~/queries/main';
 
 export function GroomerListComponent() {
-  const array = [1, 2, 3, 4, 5];
+  const { data: shops } = useGetUserShopsQuery();
+
+  console.log('shopInfo', shops?.allShops);
 
   return (
     <div css={wrapper}>
-      {array.map(() => (
+      {shops?.allShops.map((shop) => (
         <Card
-          shopName="꼬꼬마 관리샵"
-          address="서울특별시 강남구 언주로152길 10"
-          schedule="매일 10:00 - 20:00"
+          image={shop.shopImage}
+          name={shop.shopName}
+          address={shop.shopAddress}
+          schedule={`매일 ${shop.startTime} - ${shop.endTime}`}
         />
       ))}
     </div>

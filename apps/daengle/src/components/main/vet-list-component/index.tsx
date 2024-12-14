@@ -1,16 +1,21 @@
 import { css } from '@emotion/react';
 
 import { Card } from '../card';
+import { useGetUserVetsQuery } from '~/queries/main';
 
 export function VetListComponent() {
-  const array = [1, 2, 3, 4, 5];
+  const { data: vets } = useGetUserVetsQuery();
+
+  console.log(vets?.allVets);
+
   return (
     <div css={wrapper}>
-      {array.map(() => (
+      {vets?.allVets.map((vet) => (
         <Card
-          shopName="다고쳐 댕댕병원"
-          address="서울특별시 강남구 언주로152길 10"
-          schedule="매일 10:00 - 18:00"
+          image={vet.vetImage}
+          name={vet.vetName}
+          address={vet.vetAddress}
+          schedule={`매일 ${vet.startTime.substring(0, 5)} - ${vet.endTime.substring(0, 5)}`}
         />
       ))}
     </div>

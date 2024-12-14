@@ -1,20 +1,23 @@
 import { DefaultProfile } from '@daengle/design-system/icons';
 import { Text, theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
+import Image from 'next/image';
 
 interface Props {
-  shopName: string;
+  image: string;
+  name: string;
   address: string;
   schedule: string;
 }
 
-export function Card({ shopName, address, schedule }: Props) {
+export function Card({ image, name, address, schedule }: Props) {
   return (
     <div css={wrapper}>
-      <DefaultProfile width={101} height={117} css={imageStyle} />
+      <Image src={image} alt="미용샵 이미지" width={101} height={117} css={imageStyle} />
+      {/* <DefaultProfile width={101} height={117} css={imageStyle} /> */}
 
       <div css={textBox}>
-        <Text typo="title2">{shopName}</Text>
+        <Text typo="title2">{name}</Text>
         <Text typo="body9" color="gray400" css={addressStyle}>
           {address}
         </Text>

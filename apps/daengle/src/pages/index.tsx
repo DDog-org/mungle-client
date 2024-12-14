@@ -2,7 +2,10 @@ import { AppBar, Layout, RoundButton, Tabs, Text, theme } from '@daengle/design-
 import { MainLogo, SearchIcon, SelectUnfoldInactive } from '@daengle/design-system/icons';
 import { DaengleDog } from '@daengle/design-system/images';
 import { css } from '@emotion/react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { GNB } from '~/components/commons';
+import ActionSheet from '~/components/main/action-sheet';
 import { GroomerListComponent } from '~/components/main/groomer-list-component';
 import { VetListComponent } from '~/components/main/vet-list-component';
 
@@ -18,6 +21,16 @@ const TABS = [
 ];
 
 export default function Home() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const handleOpenActionSheet = () => {
+    setIsVisible(true);
+  };
+
+  const handleCloseActionSheet = () => {
+    setIsVisible(false);
+  };
+
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'groomer':
@@ -49,12 +62,20 @@ export default function Home() {
             </Text>
           </div>
           <DaengleDog width={149} height={132} css={daengleDog} />
-          <RoundButton size="XL">견적 요청하기</RoundButton>
+          <RoundButton size="XL" onClick={handleOpenActionSheet}>
+            견적 요청하기
+          </RoundButton>
         </section>
         <section css={content}>
           <Tabs tabs={TABS} renderContent={renderContent} />
         </section>
       </div>
+      {isVisible && (
+        <>
+          <ActionSheet />
+          <div css={overlay} onClick={handleCloseActionSheet} />
+        </>
+      )}
       <GNB />
     </Layout>
   );
@@ -104,4 +125,15 @@ const content = css`
   border-radius: 30px 30px 0 0;
 
   background-color: ${theme.colors.white};
+`;
+
+const overlay = css`
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: ${theme.colors.grayOpacity200};
 `;
