@@ -27,9 +27,8 @@ export default function vetProfile() {
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<VetProfileForm>({
     defaultValues: { phoneNumber: getVetModifyPage?.phoneNumber },
     mode: 'onChange',
@@ -172,7 +171,6 @@ const detailInput = css`
     font-size: ${theme.typo.body9};
   }
 `;
-
 const chipButton = css`
   display: flex;
   gap: 7px;
