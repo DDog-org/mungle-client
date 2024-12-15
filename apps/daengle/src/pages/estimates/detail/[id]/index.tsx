@@ -80,7 +80,7 @@ export default function Detail() {
           recipientImageUrl: detailData.imageURL,
           recipientName: detailData.name,
           shopName: detailData.shopName ?? undefined,
-          schedule: detailData.reservedDate,
+          schedule: dayjs(detailData.reservedDate).format('YYYY-MM-DDTHH:mm:ss'),
           price: 1000,
         }
       : {
@@ -91,7 +91,7 @@ export default function Detail() {
           recipientImageUrl: detailData.imageUrl,
           recipientName: detailData.name,
           shopName: detailData.name || '병원 정보 없음',
-          schedule: detailData.reservedDate,
+          schedule: dayjs(detailData.reservedDate).format('YYYY-MM-DDTHH:mm:ss'),
           price: 1000,
         };
 
@@ -161,7 +161,7 @@ export default function Detail() {
     const vetData = {
       id: detailData.careEstimateId,
       name: detailData.name,
-      shopName: detailData.name || '병원 정보 없음',
+      shopName: null,
       image: detailData.imageUrl,
       daengleMeter: detailData.daengleMeter,
       tags: detailData?.tags || [],

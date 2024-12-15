@@ -33,7 +33,6 @@ export default function EstimateDetail() {
   const { id } = router.query;
   const estimateId = Number(id);
   const params: GetGroomerEstimateDetailRequestParams = { groomingEstimateId: estimateId };
-  console.log(params);
 
   const { data: estimateData } = useGroomerEstimateDetailQuery(params);
   const mutation = usePostGroomerEstimateMutation();

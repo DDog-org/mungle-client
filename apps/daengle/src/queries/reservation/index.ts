@@ -1,10 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import {
+  GetUserReservationCareDetailRequestParams,
+  GetUserReservationCareDetailResponse,
   GetUserReservationCareListResponse,
+  GetUserReservationGroomingDetailRequestParams,
+  GetUserReservationGroomingDetailResponse,
   GetUserReservationGroomingListResponse,
 } from '~/models/reservation';
 import { QUERY_KEYS } from '../query-keys';
-import { getUserReservationCareList, getUserReservationGroomingList } from '~/apis/reservation';
+import {
+  getUserReservationCareDetail,
+  getUserReservationCareList,
+  getUserReservationGroomingDetail,
+  getUserReservationGroomingList,
+} from '~/apis/reservation';
 
 export const useUserReservationGroomingListQuery = () => {
   return useQuery<GetUserReservationGroomingListResponse>({
@@ -21,5 +30,31 @@ export const useUserReservationCareListQuery = () => {
     queryFn: () => {
       return getUserReservationCareList();
     },
+  });
+};
+
+export const useUserReservationGroomingDetailQuery = (
+  params: GetUserReservationGroomingDetailRequestParams,
+  enabled: boolean
+) => {
+  return useQuery<GetUserReservationGroomingDetailResponse>({
+    queryKey: [QUERY_KEYS.GET_USER_RESERVATION_GROOMING_DETAIL, params],
+    queryFn: () => {
+      return getUserReservationGroomingDetail(params);
+    },
+    enabled,
+  });
+};
+
+export const useUserReservationCareDetailQuery = (
+  params: GetUserReservationCareDetailRequestParams,
+  enabled: boolean
+) => {
+  return useQuery<GetUserReservationCareDetailResponse>({
+    queryKey: [QUERY_KEYS.GET_USER_RESERVATION_CARE_DETAIL, params],
+    queryFn: () => {
+      return getUserReservationCareDetail(params);
+    },
+    enabled,
   });
 };

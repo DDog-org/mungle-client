@@ -36,11 +36,15 @@ export const PartnersInfo = ({ profile, onClick }: Props) => {
       )}
       <div css={details}>
         <Text typo="title2">{profile.name}</Text>
-        <TextButton icons={{ suffix: <ButtonTextButtonArrow width={'6px'} /> }} onClick={onClick}>
-          <Text color="gray500" typo="body8">
-            {profile.shopName}
-          </Text>
-        </TextButton>
+
+        {profile.shopName && (
+          <TextButton icons={{ suffix: <ButtonTextButtonArrow width={'6px'} /> }} onClick={onClick}>
+            <Text color="gray500" typo="body8">
+              {profile.shopName}
+            </Text>
+          </TextButton>
+        )}
+
         <div css={tags}>
           {profile?.tags?.map((hashtag, index) => (
             <Text color="blue200" typo="body12" key={`${profile.id}-${index}`} css={tag}>

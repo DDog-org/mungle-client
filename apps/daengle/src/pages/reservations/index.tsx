@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { Layout, Tabs, Text, theme } from '@daengle/design-system';
 import { GroomerList, VetList } from '~/components/reservations';
 import { GNB } from '~/components/commons';
+import { useRouter } from 'next/router';
 
 const TABS = [
   {
@@ -15,6 +16,7 @@ const TABS = [
 ];
 
 export default function Reservations() {
+  const router = useRouter();
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'groomer':
@@ -26,6 +28,14 @@ export default function Reservations() {
     }
   };
 
+  const { tab = 'groomer' } = router.query;
+
+  const handleTabChange = (activeTabId: string) => {
+    router.push({ pathname: '/reservations', query: { tab: activeTabId } }, undefined, {
+      shallow: true,
+    });
+  };
+
   return (
     <Layout isAppBarExist={false}>
       <section css={wrapper}>
@@ -34,7 +44,12 @@ export default function Reservations() {
         </Text>
 
         <div css={content}>
-          <Tabs tabs={TABS} renderContent={renderContent} />
+          <Tabs
+            tabs={TABS}
+            renderContent={renderContent}
+            activeTabId={String(tab)}
+            onChange={handleTabChange}
+          />
         </div>
         <GNB />
       </section>

@@ -9,7 +9,7 @@ import {
   useUserEstimateGeneralCarePetsQuery,
   useUserEstimateGeneralCareQuery,
 } from '~/queries';
-import { GetUserEstimateGeneralCareList } from '~/models';
+import { GetUserEstimateDesignationCareList, GetUserEstimateGeneralCareList } from '~/models';
 import { useIntersectionLoad } from '~/hooks';
 import { bottom } from './index.styles';
 import { useRouter } from 'next/router';
@@ -65,10 +65,13 @@ export function VetEstimateList({ isDesignation }: Props) {
 
   const { loadMoreRef } = useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNextPage });
 
-  const flattenedEstimates: GetUserEstimateGeneralCareList[] =
-    estimates?.pages
-      .flatMap((page) => page.estimates)
-      .filter((estimate): estimate is GetUserEstimateGeneralCareList => !!estimate) || [];
+  const flattenedEstimates = isDesignation
+    ? estimates?.pages
+        .flatMap((page) => page.estimates)
+        .filter((estimate): estimate is GetUserEstimateDesignationCareList => !!estimate) || []
+    : estimates?.pages
+        .flatMap((page) => page.estimates)
+        .filter((estimate): estimate is GetUserEstimateGeneralCareList => !!estimate) || [];
 
   return (
     <>

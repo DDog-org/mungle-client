@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Layout, Tabs, Text, TextButton } from '@daengle/design-system';
-import { SelectUnfoldInactive } from '@daengle/design-system/icons';
+import { BlackUnfoldArrow, SelectUnfoldInactive } from '@daengle/design-system/icons';
 import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import { GNB } from '~/components/commons';
@@ -31,13 +31,13 @@ export default function EstimateList() {
         query: { tab: 'groomer', isDesignation: 'false' },
       });
     }
-  }, [router.isReady, tab]);
+  }, [router.isReady]);
 
   const handleTabChange = (activeTabId: string) => {
     router.push(
       {
         pathname: '/estimates',
-        query: { tab: activeTabId, isDesignation: isDesignationQuery || 'false' },
+        query: { tab: activeTabId, isDesignation: isDesignationQuery },
       },
       undefined,
       { shallow: true }
@@ -77,7 +77,7 @@ export default function EstimateList() {
       <div css={wrapper}>
         <div css={headerContainer} onClick={handleModal}>
           <Text typo="title1">{isDesignation ? '바로 예약' : '견적'}</Text>
-          <SelectUnfoldInactive width="14px" height="8px" color="black" />
+          <BlackUnfoldArrow width={14} height={8} />
         </div>
         {isModalOpen && (
           <>
