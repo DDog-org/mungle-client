@@ -36,7 +36,7 @@ export default function VetReviews() {
                   careReviewId,
                   reviewerName,
                   reviewerImageUrl,
-                  careKeywordReviewList,
+                  careKeywordList,
                   starRating,
                   content,
                   imageUrlList,
@@ -46,9 +46,9 @@ export default function VetReviews() {
                     reviewId={careReviewId}
                     reviewerImageUrl={reviewerImageUrl}
                     reviewerName={reviewerName}
-                    keywordReviewList={careKeywordReviewList.map(
-                      (keyword) => VET_REVIEW_KEYWORDS[keyword]
-                    )}
+                    keywordReviewList={careKeywordList
+                      .map((keyword) => VET_REVIEW_KEYWORDS[keyword])
+                      .filter((keyword): keyword is string => !!keyword)}
                     starRating={starRating}
                     content={content}
                     imageUrlList={imageUrlList}

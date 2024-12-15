@@ -35,7 +35,7 @@ export default function GroomerReviews() {
                   groomingReviewId,
                   reviewerName,
                   reviewerImageUrl,
-                  groomingKeywordReviewList,
+                  groomingKeywordList,
                   starRating,
                   content,
                   imageUrlList,
@@ -45,9 +45,9 @@ export default function GroomerReviews() {
                     reviewId={groomingReviewId}
                     reviewerImageUrl={reviewerImageUrl}
                     reviewerName={reviewerName}
-                    keywordReviewList={groomingKeywordReviewList.map(
-                      (keyword) => GROOMER_REVIEW_KEYWORDS[keyword]
-                    )}
+                    keywordReviewList={groomingKeywordList
+                      .map((keyword) => GROOMER_REVIEW_KEYWORDS[keyword])
+                      .filter((keyword): keyword is string => !!keyword)}
                     starRating={starRating}
                     content={content}
                     imageUrlList={imageUrlList}
