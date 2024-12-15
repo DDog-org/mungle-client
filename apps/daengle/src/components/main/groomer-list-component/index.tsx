@@ -1,8 +1,7 @@
 import { Card } from '../card';
 import { useGetUserShopsQuery } from '~/queries/main';
 import { useAddressFormStore } from '~/stores/main';
-import { EmptyLogo } from '@daengle/design-system/icons';
-import { Text } from '@daengle/design-system';
+import { Empty } from '@daengle/design-system';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { wrapper, emptyState } from './index.styles';
@@ -31,13 +30,7 @@ export function GroomerListComponent() {
           />
         ))
       ) : (
-        // TODO: dev pull 받아서 디자인시스템에 있는 Empty 컴포넌트 이용하기
-        <div css={emptyState}>
-          <EmptyLogo width={42} height={47} />
-          <Text typo="subtitle3" color="gray400">
-            해당 주소 주변에 샵이 없어요
-          </Text>
-        </div>
+        <Empty title="해당 주소 주변에 샵이 없어요" css={emptyState} />
       )}
     </div>
   );

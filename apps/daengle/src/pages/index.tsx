@@ -24,6 +24,7 @@ const TABS = [
 ];
 
 export default function Home() {
+  // TODO: 무한스크롤 구현
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const { data: getUserValidate } = useGetUserValidateQuery();

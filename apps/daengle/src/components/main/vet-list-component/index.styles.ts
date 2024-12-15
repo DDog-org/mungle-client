@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 
 export const wrapper = css`
+  margin-top: 150px;
   padding-bottom: 110px;
 `;
 
@@ -9,6 +10,4 @@ export const emptyState = css`
   flex-direction: column;
   align-items: center;
   gap: 15px;
-
-  margin-top: 150px;
 `;
