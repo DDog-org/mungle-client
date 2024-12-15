@@ -1,4 +1,5 @@
 import { Text, TextButton } from '@daengle/design-system';
+import { EmptyState } from '@daengle/services/components'; // EmptyState import
 import {
   wrapper,
   card,
@@ -12,85 +13,66 @@ import {
   tagButtonStyle,
 } from './index.styles';
 import { DefaultProfile } from '@daengle/design-system/icons';
-
-interface GroomingEstimate {
-  id: number;
-  image: string;
-  name: string;
-  daengleMeter: number;
-  shopName?: string | null;
-  reservedDate: string;
-  tags?: string[];
-}
-
-interface CareEstimate {
-  id: number;
-  image: string;
-  name: string;
-  daengleMeter: number;
-  shopName?: string | null;
-  reservedDate: string;
-  tags?: string[];
-}
-
-type UserEstimateContent = GroomingEstimate | CareEstimate;
+import { UserEstimateGeneralGroomingType } from '~/interfaces/estimate';
 
 interface Props {
-  estimateData: UserEstimateContent[];
-  isDesignation: boolean;
+  mode: 'general' | 'designation';
+  category: 'groomer' | 'vet';
+  estimateData: UserEstimateGeneralGroomingType[];
   onCardClick?: (id: number) => void;
 }
 
-export function CardList({ estimateData, isDesignation, onCardClick }: Props): JSX.Element {
+export function CardList({ mode, category, estimateData, onCardClick }: Props): JSX.Element {
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
     event.currentTarget.onerror = null;
     event.currentTarget.src = '';
   };
 
+  if (estimateData.length === 0) {
+    return <EmptyState isEmptyEstimates={false} hasOptions={true} />;
+  }
+
+  const isDesignation = mode === 'designation';
+
   return (
     <div css={wrapper}>
-      {estimateData?.map((data) => (
-        <div key={data.id} css={card}>
-          <div css={contentContainer} onClick={() => onCardClick?.(data.id)}>
+      {estimateData.map((item) => (
+        <div key={item.id} css={card}>
+          <div css={contentContainer} onClick={() => onCardClick?.(item.id)}>
             <div css={cardHeader}>
               <Text css={nameStyle} typo="subtitle3">
-                {data.name}
+                {item.name}
               </Text>
-              <div css={distanceStyle(data.daengleMeter)}>
-                {/* 상태 확인 데이터 추후 필요한 부분 */}
-                {isDesignation ? `진행 중` : `🐾 ${data.daengleMeter}m`}
+              <div css={distanceStyle(item.daengleMeter)}>
+                {isDesignation ? '진행 중' : `🐾 ${item.daengleMeter}m`}
               </div>
             </div>
-            <div css={cardContent}>
+            <div css={cardContent} onClick={() => onCardClick?.(item.id)}>
               <Text typo="body11" color="gray400">
-                {data.shopName || ''}
+                {item.shopName || (category === 'vet' ? '' : '미용실 정보 없음')}
               </Text>
               <Text typo="body12" color="gray600">
-                {data.reservedDate}
+                {item.reservedDate}
               </Text>
               <div css={tagsContainer}>
-                {data.tags?.map((tag, index) => (
-                  <TextButton
-                    key={`${data.id}-${index}`}
-                    css={tagButtonStyle}
-                    onClick={() => onCardClick?.(data.id)}
-                  >
-                    #{tag}
+                {item.keywords?.map((keyword) => (
+                  <TextButton key={item.id} css={tagButtonStyle}>
+                    #{keyword}
                   </TextButton>
                 ))}
               </div>
             </div>
           </div>
-          {data.image ? (
+          {item.imageUrl ? (
             <img
-              src={data.image}
-              alt={`${data.name} 프로필`}
+              src={item.imageUrl}
+              alt={`${item.name} 프로필`}
               css={profileImage}
-              onClick={() => onCardClick?.(data.id)}
               onError={handleImageError}
+              onClick={() => onCardClick?.(item.id)}
             />
           ) : (
-            <DefaultProfile css={profileImage} onClick={() => onCardClick?.(data.id)} />
+            <DefaultProfile css={profileImage} />
           )}
         </div>
       ))}

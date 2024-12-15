@@ -1,38 +1,155 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../query-keys';
 import {
-  getUserEstimateList,
   postUserEstimateGrooming,
   postUserEstimateGroomerUserInfo,
   postUserEstimateCare,
   postUserEstimateVetUserInfo,
+  getUserEstimateGeneralGroomingPets,
+  getUserEstimateGeneralGrooming,
+  getUserEstimateGeneralCarePets,
+  getUserEstimateGeneralCare,
+  getUserEstimateDesignationGroomingPets,
   getUserEstimateGroomingDetail,
   getUserEstimateCareDetail,
+  getUserEstimateDesignationGrooming,
+  getUserEstimateDesignationCarePets,
+  getUserEstimateDesignationCare,
 } from '~/apis';
 
 import {
-  GetUserEstimateListResponse,
   PostUserEstimateGroomingRequestBody,
   PostUserEstimateGroomerUserInfoRequestBody,
   PostUserEstimateCareRequestBody,
   PostUserEstimateVetUserInfoRequestBody,
-  UserEstimateCareDetailRequestParams,
+  GetUserEstimateGeneralGroomingPetsResponse,
+  GetUserEstimateGeneralCarePetsResponse,
+  GetUserEstimateDesignationGroomingPetsResponse,
   UserEstimateGroomingDetailRequestParams,
+  UserEstimateCareDetailRequestParams,
+  GetUserEstimateDesignationCarePetsResponse,
 } from '~/models/estimate';
-import { UserEstimateGroomingDetailData, UserEstimateCareDetailData } from '~/interfaces/estimate';
+import { PAGE_SIZE } from '~/constants/review';
+import { UserEstimateCareDetailData, UserEstimateGroomingDetailData } from '~/interfaces/estimate';
 
-export const useUserEstimateListQuery = () => {
-  return useQuery<GetUserEstimateListResponse>({
-    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_LIST,
-    queryFn: async () => {
-      try {
-        const data = await getUserEstimateList();
-        return data;
-      } catch (error) {
-        throw new Error('견적 리스트를 가져오는 데 실패했습니다.');
-      }
+export const useUserEstimateGeneralGroomingPetsQuery = () => {
+  return useQuery<GetUserEstimateGeneralGroomingPetsResponse>({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_GROOMING_PETS,
+    queryFn: () => {
+      return getUserEstimateGeneralGroomingPets();
     },
+  });
+};
+
+export const useUserEstimateGeneralGroomingQuery = (petId: number | undefined) => {
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_GROOMING, petId],
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
+      if (!petId) {
+        throw new Error('Pet ID가 설정되지 않았습니다.');
+      }
+      return getUserEstimateGeneralGrooming({
+        petId,
+        page: pageParam,
+        size: PAGE_SIZE,
+      });
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.estimates?.length === PAGE_SIZE ? allPages.length + 1 : undefined;
+    },
+    enabled: !!petId,
+  });
+};
+
+export const useUserEstimateGeneralCarePetsQuery = () => {
+  return useQuery<GetUserEstimateGeneralCarePetsResponse>({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_CARE_PETS,
+    queryFn: () => {
+      return getUserEstimateGeneralCarePets();
+    },
+  });
+};
+
+export const useUserEstimateGeneralCareQuery = (petId: number | undefined) => {
+  return useInfiniteQuery({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_CARE,
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
+      if (!petId) {
+        throw new Error('Pet ID가 설정되지 않았습니다.');
+      }
+      return getUserEstimateGeneralCare({
+        petId,
+        page: pageParam,
+        size: PAGE_SIZE,
+      });
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.estimates?.length === PAGE_SIZE ? allPages.length + 1 : undefined;
+    },
+    enabled: !!petId,
+  });
+};
+
+export const useUserEstimateDesignationGroomingPetsQuery = () => {
+  return useQuery<GetUserEstimateDesignationGroomingPetsResponse>({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_DESIGNATION_GROOMING_PETS,
+    queryFn: () => {
+      return getUserEstimateDesignationGroomingPets();
+    },
+  });
+};
+
+export const useUserEstimateDesignationGroomingQuery = (petId: number | undefined) => {
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_DESIGNATION_GROOMING, petId],
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
+      if (!petId) {
+        throw new Error('Pet ID가 설정되지 않았습니다.');
+      }
+      return getUserEstimateDesignationGrooming({
+        petId,
+        page: pageParam,
+        size: PAGE_SIZE,
+      });
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.estimates?.length === PAGE_SIZE ? allPages.length + 1 : undefined;
+    },
+    enabled: !!petId,
+  });
+};
+
+export const useUserEstimateDesignationCarePetsQuery = () => {
+  return useQuery<GetUserEstimateDesignationCarePetsResponse>({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_DESIGNATION_CARE_PETS,
+    queryFn: () => {
+      return getUserEstimateDesignationCarePets();
+    },
+  });
+};
+
+export const useUserEstimateDesignationCareQuery = (petId: number | undefined) => {
+  return useInfiniteQuery({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_DESIGNATION_CARE,
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
+      if (!petId) {
+        throw new Error('Pet ID가 설정되지 않았습니다.');
+      }
+      return getUserEstimateDesignationCare({
+        petId,
+        page: pageParam,
+        size: PAGE_SIZE,
+      });
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.estimates?.length === PAGE_SIZE ? allPages.length + 1 : undefined;
+    },
+    enabled: !!petId,
   });
 };
 

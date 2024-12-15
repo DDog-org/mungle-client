@@ -9,16 +9,17 @@ import {
   usePostUserEstimateCareMutation,
   usePostUserEstimateVetUserInfoMutation,
 } from '~/queries/estimate';
-import { PetInfos, PostUserEstimateVetUserInfoResponse } from '~/models/estimate';
+import { PostUserEstimateVetUserInfoResponse } from '~/models/estimate';
 import { useEffect, useState } from 'react';
 
 import DatePickerComponent from '~/components/estimate/date-picker-component';
 import dayjs, { Dayjs } from 'dayjs';
+import { PetInfo } from '~/interfaces/estimate';
 
 export default function EstimateCare() {
   const router = useRouter();
   const [address, setAddress] = useState<string>('');
-  const [petInfos, setPetInfos] = useState<PetInfos[] | null>(null);
+  const [petInfos, setPetInfos] = useState<PetInfo[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(dayjs());
@@ -131,9 +132,9 @@ export default function EstimateCare() {
               <div css={petList}>
                 {petInfos.map((pet) => (
                   <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
-                    {pet.image ? (
+                    {pet.imageURL ? (
                       <Image
-                        src={pet.image}
+                        src={pet.imageURL}
                         alt="반려견 프로필"
                         width={86}
                         height={86}

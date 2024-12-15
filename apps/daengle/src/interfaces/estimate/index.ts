@@ -1,34 +1,31 @@
 export interface PetInfo {
   petId: number;
   name: string;
-  image: string;
+  imageURL: string;
 }
 
-export interface PetEstimateInfo extends PetInfo {
-  groomingEstimates?: GroomingEstimateType[];
-  careEstimates?: CareEstimateType[];
+export interface PetEstimateId extends PetInfo {
+  estimateId: number;
 }
 
-export interface GroomingEstimateType {
-  groomingEstimateId: number;
+export interface UserEstimateGeneralGroomingType {
+  id: number;
   name: string;
   daengleMeter: number;
-  proposal: 'GENERAL' | 'DESIGNATION';
-  image: string;
-  shopName?: string | null;
+  imageUrl: string;
+  shopName?: string;
+  keywords: string[];
   reservedDate: string;
   tags?: string[];
 }
 
-export interface CareEstimateType {
-  careEstimateId: number;
+export interface UserEstimateGeneralCareType {
+  id: number;
   name: string;
   daengleMeter: number;
-  proposal: 'GENERAL' | 'DESIGNATION';
-  image: string;
-  shopName?: string | null;
+  imageUrl: string;
+  keywords: string[];
   reservedDate: string;
-  tags?: string[];
 }
 
 export interface UserEstimateGroomingDetailData {

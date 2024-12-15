@@ -5,9 +5,10 @@ import { wrapper, emptyButton } from './index.styles';
 interface Props {
   isEmptyEstimates: boolean;
   hasOptions: boolean;
+  onClick?: () => void;
 }
 
-export function EmptyState({ isEmptyEstimates, hasOptions }: Props): JSX.Element {
+export function EmptyState({ isEmptyEstimates, hasOptions, onClick }: Props): JSX.Element {
   return (
     <div css={wrapper(hasOptions)}>
       <EmptyStateBone width={42} height={47} />
@@ -20,7 +21,7 @@ export function EmptyState({ isEmptyEstimates, hasOptions }: Props): JSX.Element
           <Text typo="subtitle3" color="gray400">
             견적을 요청해 보세요!
           </Text>
-          <RoundButton css={emptyButton} size="M" variant="primary">
+          <RoundButton css={emptyButton} size="M" variant="primary" onClick={onClick}>
             견적 요청하기
           </RoundButton>
         </>

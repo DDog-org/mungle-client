@@ -2,20 +2,15 @@ import { TextButton } from '@daengle/design-system';
 import { wrapper, profileButton, selectedProfileButton, defaultImage } from './index.styles';
 import { useState } from 'react';
 import { DefaultProfile } from '@daengle/design-system/icons';
-
-interface PetInfo {
-  petId: number;
-  name: string;
-  image: string;
-}
+import { PetInfo } from '~/interfaces/estimate';
 
 interface Props {
   petInfos: PetInfo[];
-  selectedPetIndex: number;
-  onSelectPet: (index: number) => void;
+  selectedPetId: number | undefined;
+  onSelectPet: (petId: number) => void;
 }
 
-export function ProfileSelector({ petInfos, selectedPetIndex, onSelectPet }: Props): JSX.Element {
+export function ProfileSelector({ petInfos, selectedPetId, onSelectPet }: Props): JSX.Element {
   const [failedImages, setFailedImages] = useState<Record<number, boolean>>({});
 
   const handleImageError = (index: number) => {
@@ -24,20 +19,20 @@ export function ProfileSelector({ petInfos, selectedPetIndex, onSelectPet }: Pro
 
   return (
     <div css={wrapper}>
-      {petInfos.map((pet, index) => (
+      {petInfos.map((pet) => (
         <TextButton
           key={pet.petId}
-          css={[profileButton, index === selectedPetIndex && selectedProfileButton]}
-          onClick={() => onSelectPet(index)}
+          css={[profileButton, pet.petId === selectedPetId && selectedProfileButton]}
+          onClick={() => onSelectPet(pet.petId)}
           icons={{
             prefix:
-              !pet.image || failedImages[index] ? (
+              !pet.imageURL || failedImages[pet.petId] ? (
                 <DefaultProfile css={defaultImage} />
               ) : (
                 <img
-                  src={pet.image}
+                  src={pet.imageURL}
                   alt={`${pet.name} 프로필`}
-                  onError={() => handleImageError(index)}
+                  onError={() => handleImageError(pet.petId)}
                 />
               ),
           }}
