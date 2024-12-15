@@ -16,7 +16,7 @@ export interface GetUserVetsResponse {
 }
 
 export interface GetAllVets {
-  vetId: number;
+  vetAccountId: number;
   vetName: string;
   vetAddress: string;
   vetImage: string;

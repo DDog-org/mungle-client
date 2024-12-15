@@ -8,6 +8,9 @@ import { GNB } from '~/components/commons';
 import ActionSheet from '~/components/main/action-sheet';
 import { GroomerListComponent } from '~/components/main/groomer-list-component';
 import { VetListComponent } from '~/components/main/vet-list-component';
+import { ROUTES } from '~/constants/commons';
+import { useGetUserValidateQuery } from '~/queries';
+import { useAddressFormStore } from '~/stores/main';
 
 const TABS = [
   {
@@ -21,10 +24,25 @@ const TABS = [
 ];
 
 export default function Home() {
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
+  const { data: getUserValidate } = useGetUserValidateQuery();
+  const { addressForm } = useAddressFormStore();
+
+  const handleSearchAddress = () => {
+    if (getUserValidate) {
+      router.push(ROUTES.SEARCH_ADDRESS);
+    } else {
+      alert('로그인 해주세요');
+    }
+  };
 
   const handleOpenActionSheet = () => {
-    setIsVisible(true);
+    if (getUserValidate) {
+      setIsVisible(true);
+    } else {
+      alert('로그인 해주세요');
+    }
   };
 
   const handleCloseActionSheet = () => {
@@ -46,14 +64,21 @@ export default function Home() {
     <Layout isAppBarExist={false}>
       <AppBar
         prefix={<MainLogo width={95} height={25} />}
-        suffix={<SearchIcon width={19} height={20} />}
+        suffix={
+          <SearchIcon
+            width={19}
+            height={20}
+            onClick={() => router.push(ROUTES.SEARCH)}
+            cursor="pointer"
+          />
+        }
       />
       <div css={wrapper}>
         <section css={topSection}>
           <div css={textBox}>
-            <div css={address}>
+            <div css={address} onClick={handleSearchAddress}>
               <Text tag="h1" typo="title1" color="white">
-                강남구 역삼동
+                {addressForm}
               </Text>
               <SelectUnfoldInactive width={12} height={6} />
             </div>
@@ -69,13 +94,13 @@ export default function Home() {
         <section css={content}>
           <Tabs tabs={TABS} renderContent={renderContent} />
         </section>
+        {isVisible && (
+          <div css={actionSheetBox}>
+            <ActionSheet />
+            <div css={overlay} onClick={handleCloseActionSheet} />
+          </div>
+        )}
       </div>
-      {isVisible && (
-        <>
-          <ActionSheet />
-          <div css={overlay} onClick={handleCloseActionSheet} />
-        </>
-      )}
       <GNB />
     </Layout>
   );
@@ -109,6 +134,8 @@ const address = css`
   display: flex;
   align-items: center;
   gap: 6px;
+
+  cursor: pointer;
 `;
 
 const daengleDog = css`
@@ -125,6 +152,12 @@ const content = css`
   border-radius: 30px 30px 0 0;
 
   background-color: ${theme.colors.white};
+`;
+
+const actionSheetBox = css`
+  position: relative;
+
+  width: 100%;
 `;
 
 const overlay = css`

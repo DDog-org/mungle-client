@@ -8,13 +8,17 @@ interface Props {
   name: string;
   address: string;
   schedule: string;
+  onClick: () => void;
 }
 
-export function Card({ image, name, address, schedule }: Props) {
+export function Card({ image, name, address, schedule, onClick }: Props) {
   return (
-    <div css={wrapper}>
-      <Image src={image} alt="미용샵 이미지" width={101} height={117} css={imageStyle} />
-      {/* <DefaultProfile width={101} height={117} css={imageStyle} /> */}
+    <div css={wrapper} onClick={onClick}>
+      {image === '' ? (
+        <DefaultProfile width={101} height={117} css={imageStyle} />
+      ) : (
+        <Image src={image} alt="이미지" width={101} height={117} css={imageStyle} />
+      )}
 
       <div css={textBox}>
         <Text typo="title2">{name}</Text>
@@ -38,6 +42,8 @@ const wrapper = css`
   height: 153px;
 
   border-bottom: 1px solid ${theme.colors.gray200};
+
+  cursor: pointer;
 `;
 
 const imageStyle = css`

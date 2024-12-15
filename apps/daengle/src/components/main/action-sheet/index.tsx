@@ -38,7 +38,7 @@ const wrapper = css`
   flex-direction: column;
   align-items: center;
   position: absolute;
-  bottom: 0;
+  bottom: 58px;
   z-index: 20;
 
   width: 100%;
