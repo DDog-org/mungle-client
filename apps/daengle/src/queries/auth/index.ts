@@ -3,6 +3,7 @@ import { QUERY_KEYS } from '~/queries/query-keys';
 import {
   getBreedList,
   getUserInfo,
+  getUserValidate,
   patchUserInfo,
   getUserPetInfo,
   postAvailableNickname,
@@ -139,5 +140,12 @@ export const useDeleteUserPetMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.DELETE_USER_PET,
     mutationFn: (data: DeleteUserPetRequestData) => deleteUserPet(data),
+  });
+};
+
+export const useGetUserValidateQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_USER_VALIDATE,
+    queryFn: getUserValidate,
   });
 };

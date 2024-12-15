@@ -8,6 +8,7 @@ export const ROUTES = {
   HOME: '/',
   SEARCH: '/search',
   SEARCH_RESULT: (keyword: string) => `/search?keyword=${keyword}`,
+  SEARCH_ADDRESS: '/search-address',
 
   // Estimates
   ESTIMATES: '/estimates',
