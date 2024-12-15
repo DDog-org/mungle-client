@@ -1,42 +1,113 @@
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/react';
 import { AppBar, CapsuleButton, Layout, Text, theme } from '@daengle/design-system';
 import { ChatPlus, ChatSendButton, DefaultImage } from '@daengle/design-system/icons';
 import { Bubble } from '~/components/chats/bubble';
-import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
-import { useEffect, useRef } from 'react';
+import { ChatMessage } from '~/interfaces';
+import { useGetChatQuery } from '~/queries';
 
 export default function ChatRoom() {
   const router = useRouter();
+
+  // TODO: 미용사/병원 상세에서 query string으로 partnerId를 받아오도록
+  const partnerId = router.query.partnerId as string;
+
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [newMessage, setNewMessage] = useState<string>('');
+
+  const ws = useRef<WebSocket | null>(null);
   const chatListRef = useRef<HTMLDivElement>(null);
+
+  const { data } = useGetChatQuery(partnerId);
+
+  useEffect(() => {
+    if (!data) return;
+
+    setMessages(
+      data.messages.map((msg) => ({
+        messageType: msg.messageType,
+        messageContent: msg.messageContent,
+        sender: msg.messageSenderId === data.userId ? 'user' : 'partner',
+        messageTime: msg.messageTime,
+      }))
+    );
+  }, []);
+
+  useEffect(() => {
+    if (ws.current) return;
+
+    ws.current = new WebSocket('ws://api.daengle.com/chat');
+
+    ws.current.onopen = () => {
+      console.log('Connected to server');
+    };
+
+    ws.current.onmessage = (message) => {
+      const data = JSON.parse(message.data);
+      setMessages((prev) => [...prev, data]);
+    };
+
+    ws.current.onclose = () => {
+      console.log('Disconnected from server');
+    };
+
+    return () => {
+      ws.current?.close();
+    };
+  }, []);
 
   useEffect(() => {
     if (!chatListRef.current) return;
-    chatListRef.current.scrollTo(0, chatListRef.current.scrollHeight);
-  }, []);
+    chatListRef.current.scrollTo({
+      top: chatListRef.current.scrollHeight,
+      behavior: 'smooth',
+    });
+  }, [messages]);
+
+  const sendMessage = () => {
+    if (ws.current?.readyState === WebSocket.OPEN && newMessage.trim()) {
+      const messageData = {
+        messageType: 'TEXT_MESSAGE',
+        messageContent: newMessage,
+      };
+
+      ws.current.send(JSON.stringify(messageData));
+      setMessages((prev) => [...prev, { ...messageData, sender: 'user' }]);
+      setNewMessage('');
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    sendMessage();
+  };
 
   return (
     <Layout>
-      <AppBar title="문소연 디자이너" suffix={<></>} onBackClick={router.back} />
+      <AppBar title={data?.partner?.partnerNickname} suffix={<></>} onBackClick={router.back} />
 
       <section css={wrapper}>
-        <div css={estimateWrapper}>
-          <div css={profileWrapper}>
-            <DefaultImage width={32} height={32} />
-            <Text typo="body5" color="black">
-              문소연 디자이너
-            </Text>
-          </div>
+        {data?.estimateId && (
+          <div css={estimateWrapper}>
+            <div css={profileWrapper}>
+              <DefaultImage width={32} height={32} />
+              <Text typo="body5" color="black">
+                {data?.partner.partnerNickname}
+              </Text>
+            </div>
 
-          <CapsuleButton size="S" onClick={() => router.push(ROUTES.ESTIMATE_DETAIL(1))}>
-            <Text typo="body2" color="gray500">
-              견적서 상세보기
-            </Text>
-          </CapsuleButton>
-        </div>
+            <CapsuleButton size="S" onClick={() => router.push(ROUTES.ESTIMATE_DETAIL(1))}>
+              <Text typo="body2" color="gray500">
+                견적서 상세보기
+              </Text>
+            </CapsuleButton>
+          </div>
+        )}
 
         <section css={chatList} ref={chatListRef}>
-          <Bubble.Sender />
+          {/* <Bubble.Sender />
           <Bubble.Receiver />
           <Bubble.Sender />
           <Bubble.Receiver />
@@ -51,15 +122,27 @@ export default function ChatRoom() {
           <Bubble.Sender />
           <Bubble.Receiver />
           <Bubble.Sender />
-          <Bubble.Receiver />
+          <Bubble.Receiver /> */}
+          {messages.map((msg) =>
+            msg.sender === 'user' ? (
+              <Bubble.Sender key={msg.messageTime} message={msg} />
+            ) : (
+              <Bubble.Receiver key={msg.messageTime} message={msg} />
+            )
+          )}
         </section>
       </section>
 
       <div css={inputFieldWrapper}>
         <ChatPlus width={32} height={32} />
 
-        <form css={inputWrapper}>
-          <input css={input} placeholder="메시지를 입력해 주세요" />
+        <form css={inputWrapper} onSubmit={handleSubmit}>
+          <input
+            css={input}
+            placeholder="메시지를 입력해 주세요"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+          />
           <button type="submit">
             <ChatSendButton width={24} height={24} cursor="pointer" />
           </button>

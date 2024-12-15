@@ -6,3 +6,10 @@ export interface ChatItem {
   messageTime: string;
   lastMessage: string;
 }
+
+export interface ChatMessage {
+  messageType: string;
+  messageContent: string;
+  sender?: 'user' | 'partner';
+  messageTime?: string;
+}

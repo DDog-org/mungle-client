@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Text } from '@daengle/design-system';
 import { ChatDefaultProfileImage } from '@daengle/design-system/icons';
+import { ChatMessage } from '~/interfaces';
 import {
   receiverBubble,
   receiverBubbleWrapper,
@@ -11,6 +12,9 @@ import {
   senderBubble,
 } from './index.styles';
 
+interface BubbleProps {
+  message: ChatMessage;
+}
 interface Props {
   children: ReactNode;
 }
@@ -19,7 +23,7 @@ function BubbleWrapper({ children }: Props) {
   return <div css={wrapper}>{children}</div>;
 }
 
-function ReceiverBubble() {
+function ReceiverBubble({ message }: BubbleProps) {
   return (
     <div css={receiverBubbleWrapper}>
       <ChatDefaultProfileImage width={28} height={28} />
@@ -30,8 +34,7 @@ function ReceiverBubble() {
         </Text>
         <div css={receiverBubble}>
           <Text tag="p" typo="body7" color="black100">
-            안녕하세요 반갑습니다 안녕안녕 하하 안녕하세요 반갑습니다 안녕안녕 하하 안녕하세요
-            반갑습니다 안녕안녕 하하
+            {message.messageContent}
           </Text>
         </div>
       </div>
@@ -45,7 +48,7 @@ function ReceiverBubble() {
   );
 }
 
-function SenderBubble() {
+function SenderBubble({ message }: BubbleProps) {
   return (
     <div css={senderBubbleWrapper}>
       <div css={timeWrapper}>
@@ -56,8 +59,7 @@ function SenderBubble() {
 
       <div css={senderBubble}>
         <Text tag="p" typo="body7" color="white">
-          안녕하세요 반갑습니다 안녕안녕 하하 안녕하세요 반갑습니다 안녕안녕 하하 안녕하세요
-          반갑습니다 안녕안녕 하하
+          {message.messageContent}
         </Text>
       </div>
     </div>
