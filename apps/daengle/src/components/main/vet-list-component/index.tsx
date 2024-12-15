@@ -1,5 +1,3 @@
-import { css } from '@emotion/react';
-
 import { Card } from '../card';
 import { useGetUserVetsQuery } from '~/queries/main';
 import { useAddressFormStore } from '~/stores/main';
@@ -7,15 +5,13 @@ import { Text } from '@daengle/design-system';
 import { EmptyLogo } from '@daengle/design-system/icons';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
+import { emptyState, wrapper } from './index.styles';
 
 export function VetListComponent() {
+  const router = useRouter();
   const { data: vets } = useGetUserVetsQuery();
   const { addressForm } = useAddressFormStore();
   const filteredVets = vets?.allVets.filter((vet) => vet.vetAddress.includes(addressForm));
-
-  console.log('vetInfo', vets?.allVets);
-
-  const router = useRouter();
 
   const handleCardClick = (id: number) => {
     router.push(ROUTES.VET_DETAIL(id));
@@ -46,16 +42,3 @@ export function VetListComponent() {
     </div>
   );
 }
-
-const wrapper = css`
-  padding-bottom: 110px;
-`;
-
-const emptyState = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-
-  margin-top: 150px;
-`;

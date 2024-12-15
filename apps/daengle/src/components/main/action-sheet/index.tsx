@@ -1,7 +1,8 @@
-import { Text, theme } from '@daengle/design-system';
-import { css } from '@emotion/react';
+import { Text } from '@daengle/design-system';
+
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
+import { wrapper, actionSheetTitle, selectBox } from './index.styles';
 
 export default function ActionSheet() {
   const router = useRouter();
@@ -32,43 +33,3 @@ export default function ActionSheet() {
     </div>
   );
 }
-
-const wrapper = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  bottom: 58px;
-  z-index: 20;
-
-  width: 100%;
-  height: 165px;
-  border-radius: 20px 20px 0 0;
-
-  background-color: ${theme.colors.white};
-`;
-
-const actionSheetTitle = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  height: 52px;
-`;
-
-const selectBox = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  height: 52px;
-
-  :hover {
-    background-color: ${theme.colors.blue100};
-    color: ${theme.colors.blue200};
-
-    cursor: pointer;
-  }
-`;

@@ -33,6 +33,7 @@ export default function Home() {
     if (getUserValidate) {
       router.push(ROUTES.SEARCH_ADDRESS);
     } else {
+      // TODO: 모달창으로 변경
       alert('로그인 해주세요');
     }
   };
@@ -41,6 +42,7 @@ export default function Home() {
     if (getUserValidate) {
       setIsVisible(true);
     } else {
+      // TODO: 모달창으로 변경
       alert('로그인 해주세요');
     }
   };

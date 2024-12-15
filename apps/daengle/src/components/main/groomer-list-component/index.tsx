@@ -1,5 +1,3 @@
-import { css } from '@emotion/react';
-
 import { Card } from '../card';
 import { useGetUserShopsQuery } from '~/queries/main';
 import { useAddressFormStore } from '~/stores/main';
@@ -7,18 +5,17 @@ import { EmptyLogo } from '@daengle/design-system/icons';
 import { Text } from '@daengle/design-system';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
+import { wrapper, emptyState } from './index.styles';
 
 export function GroomerListComponent() {
+  const router = useRouter();
   const { data: shops } = useGetUserShopsQuery();
   const { addressForm } = useAddressFormStore();
   const filteredShops = shops?.allShops.filter((shop) => shop.shopAddress.includes(addressForm));
-  const router = useRouter();
 
   const handleCardClick = (id: number) => {
     router.push(ROUTES.GROOMER_DETAIL(id));
   };
-
-  console.log('shopInfo', shops?.allShops);
 
   return (
     <div css={wrapper}>
@@ -45,16 +42,3 @@ export function GroomerListComponent() {
     </div>
   );
 }
-
-const wrapper = css`
-  padding-bottom: 110px;
-`;
-
-const emptyState = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-
-  margin-top: 150px;
-`;
