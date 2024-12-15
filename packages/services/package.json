@@ -51,6 +51,7 @@
   "devDependencies": {
     "@daengle/eslint-config": "workspace:*",
     "@daengle/typescript-config": "workspace:*",
+    "@daengle/stylelint-config": "workspace:*",
     "@types/cors": "^2.8.17",
     "@types/eslint": "^8.56.5",
     "@types/express": "^5.0.0",
