@@ -1,14 +1,33 @@
-import { useRouter } from 'next/router';
-import { css } from '@emotion/react';
-import { Layout, Text, theme } from '@daengle/design-system';
-import { ROUTES } from '~/constants/commons';
-import { GNB } from '~/components/commons';
-import { ChatListItem } from '~/components/chats';
 import { useEffect, useRef } from 'react';
+import { css } from '@emotion/react';
+import { Layout, Tabs, Text, theme } from '@daengle/design-system';
+import { GNB } from '~/components/commons';
+import { GroomerChatList, VetChatList } from '~/components/chats';
+
+const TABS = [
+  {
+    id: 'groomer',
+    label: '미용사',
+  },
+  {
+    id: 'vet',
+    label: '병원',
+  },
+];
 
 export default function Chats() {
-  const router = useRouter();
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const renderContent = (activeTabId: string) => {
+    switch (activeTabId) {
+      case 'groomer':
+        return <GroomerChatList />;
+      case 'vet':
+        return <VetChatList />;
+      default:
+        return <GroomerChatList />;
+    }
+  };
 
   useEffect(() => {
     if (!scrollRef.current) return;
@@ -24,26 +43,7 @@ export default function Chats() {
         </Text>
 
         <div css={chatsWrapper}>
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
-          <ChatListItem onChatItemClick={() => router.push(ROUTES.CHATS_DETAIL(1))} />
+          <Tabs tabs={TABS} renderContent={renderContent} />
         </div>
       </section>
     </Layout>
