@@ -8,7 +8,7 @@ type KeyOfColors = keyof typeof colors;
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: Size;
   isSelected?: boolean;
-  isPartnerSelected: boolean;
+  isPartnerSelected?: boolean | null;
   textColor?: KeyOfColors;
   children: ReactNode;
 }
