@@ -1,4 +1,4 @@
-import { FilledStar, EmptyStar } from '@daengle/design-system/icons';
+import { ReviewStarFilled, ReviewStarUnfilled } from '@daengle/design-system/icons';
 import { wrapper } from './index.styles';
 
 interface Props {
@@ -21,9 +21,9 @@ export function ReviewStars({ rating, onRatingChange }: Props) {
         return (
           <div key={index} onClick={() => handleStarClick(index)}>
             {isFilled ? (
-              <FilledStar width={25} height={26} />
+              <ReviewStarFilled width={25} height={26} />
             ) : (
-              <EmptyStar width={25} height={26} />
+              <ReviewStarUnfilled width={25} height={26} />
             )}
           </div>
         );
