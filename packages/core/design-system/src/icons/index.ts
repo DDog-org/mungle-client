@@ -33,4 +33,5 @@ export * from './ReviewStarUnfilled';
 export * from './ReviewUnfold';
 export * from './SelectUnfoldActive';
 export * from './SelectUnfoldInactive';
+export * from './ToolTip';
 export * from './TransmissionComplete';
