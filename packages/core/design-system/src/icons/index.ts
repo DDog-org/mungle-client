@@ -7,6 +7,7 @@ export * from './ButtonTextButtonArrow';
 export * from './DefaultImage';
 export * from './DefaultProfile';
 export * from './EmptyLogo';
+export * from './EmptyStar';
 export * from './EmptyStateBone';
 export * from './GnbChattingActive';
 export * from './GnbChattingInactive';

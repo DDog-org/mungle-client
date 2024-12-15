@@ -15,7 +15,7 @@ export type StarRating = 1 | 2 | 3 | 4 | 5;
 export interface GetUserGroomingMyReviewList {
   groomingReviewId: number;
   groomerId: number;
-  groomingKeywordReviewList: string[];
+  groomingKeywordList: string[];
   revieweeName: string;
   starRating: StarRating;
   content: string | null;
@@ -35,7 +35,7 @@ export interface GetUserCareMyReviewListResponse {
 export interface GetUserCareMyReviewList {
   careReviewId: number;
   vetId: number;
-  careKeywordReviewList: string[];
+  careKeywordList: string[];
   revieweeName: string;
   starRating: StarRating;
   content: string | null;
@@ -80,7 +80,7 @@ export interface GetUserGroomerReviewList {
   reviewerImageUrl: string | null;
   groomingReviewId: number;
   groomerId: number;
-  groomingKeywordReviewList: (keyof typeof GROOMER_REVIEW_KEYWORDS)[];
+  groomingKeywordList: (keyof typeof GROOMER_REVIEW_KEYWORDS)[];
   revieweeName: string;
   starRating: StarRating;
   content: string | null;
@@ -105,9 +105,115 @@ export interface GetUserVetReviewList {
   reviewerImageUrl: string | null;
   careReviewId: number;
   vetId: number;
-  careKeywordReviewList: (keyof typeof VET_REVIEW_KEYWORDS)[];
+  careKeywordList: (keyof typeof VET_REVIEW_KEYWORDS)[];
   revieweeName: string;
   starRating: StarRating;
   content: string | null;
   imageUrlList: string[] | null;
+}
+export interface GetUserReservationReviewParams {
+  reservationId: number;
+}
+
+export interface GetUserReservationReviewResponse {
+  reservationId: number;
+  recipientName: string;
+  shopName?: string;
+  schedule: string;
+}
+
+export interface PostUserGroomingReviewRequestBody {
+  reservationId: number;
+  starRating: number;
+  groomingKeywordList: string[];
+  content: string;
+  imageUrlList: string[];
+}
+
+export interface PostUserGroomingReviewResponse {
+  reviewId: number;
+  reviewerId: number;
+  revieweeId: number;
+}
+
+export interface GetUserGroomingReviewParams {
+  reviewId: number;
+}
+
+export interface GetUserGroomingReviewResponse {
+  groomingReviewId: number;
+  reservationId: number;
+  groomerId: number;
+  groomingKeywordList: string[];
+  revieweeName: string;
+  shopName?: string;
+  schedule: string;
+  starRating: number;
+  content: string;
+  imageUrlList: string[];
+}
+
+export interface PatchUserGroomingReviewRequestParams {
+  reviewId: number;
+  body: PatchUserGroomingReviewRequestBody;
+}
+
+export interface PatchUserGroomingReviewRequestBody {
+  reservationId: number;
+  starRating: number;
+  groomingKeywordList: string[];
+  content: string;
+  imageUrlList: string[];
+}
+
+export interface PatchUserGroomingReviewResponse {
+  message: string;
+}
+
+export interface PostUserCareReviewRequestBody {
+  reservationId: number;
+  starRating: number;
+  careKeywordList: string[];
+  content: string;
+  imageUrlList: string[];
+}
+
+export interface PostUserCareReviewResponse {
+  reviewId: number;
+  reviewerId: number;
+  revieweeId: number;
+}
+
+export interface GetUserCareReviewParams {
+  reviewId: number;
+}
+
+export interface GetUserCareReviewResponse {
+  careReviewId: number;
+  reservationId: number;
+  vetId: number;
+  careKeywordList: string[];
+  shopName?: string;
+  revieweeName: string;
+  schedule: string;
+  starRating: number;
+  content: string;
+  imageUrlList: string[];
+}
+
+export interface PatchUserCareReviewRequestParams {
+  reviewId: number;
+  body: PatchUserCareReviewRequestBody;
+}
+
+export interface PatchUserCareReviewRequestBody {
+  reservationId: number;
+  starRating: number;
+  careKeywordList: string[];
+  content: string;
+  imageUrlList: string[];
+}
+
+export interface PatchUserCareReviewResponse {
+  message: string;
 }

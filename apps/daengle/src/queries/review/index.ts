@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { PAGE_SIZE } from '~/constants/review';
 import {
   deleteUserCareReview,
@@ -7,9 +7,30 @@ import {
   getUserGroomerReviewList,
   getUserGroomingMyReviewList,
   getUserVetReviewList,
+  getUserGroomingReview,
+  getUserReservationReview,
+  patchUserGroomingReview,
+  postUserGroomingReview,
+  postUserCareReview,
+  getUserCareReview,
+  patchUserCareReview,
 } from '~/apis/review';
-import { DeleteUserCareReviewRequestParams, DeleteUserGroomingReviewRequestParams } from '~/models';
+import {
+  DeleteUserCareReviewRequestParams,
+  DeleteUserGroomingReviewRequestParams,
+  GetUserReservationReviewParams,
+  GetUserReservationReviewResponse,
+  GetUserGroomingReviewParams,
+  PatchUserGroomingReviewRequestParams,
+  PostUserGroomingReviewRequestBody,
+  GetUserGroomingReviewResponse,
+  PostUserCareReviewRequestBody,
+  GetUserCareReviewParams,
+  GetUserCareReviewResponse,
+  PatchUserCareReviewRequestParams,
+} from '~/models';
 import { QUERY_KEYS } from '../query-keys';
+import { AxiosError } from 'axios';
 
 export const getUserGroomingMyReviewListInfiniteQuery = () => {
   return useInfiniteQuery({
@@ -77,5 +98,111 @@ export const getUserVetReviewListInfiniteQuery = (vetId: number) => {
       return lastPage.reviewList.length === PAGE_SIZE ? allPages.length + 1 : undefined;
     },
     enabled: !!vetId,
+  });
+};
+
+export const useGetUserReservationReviewQuery = (params: GetUserReservationReviewParams) => {
+  return useQuery<GetUserReservationReviewResponse>({
+    queryKey: [QUERY_KEYS.GET_USER_RESERVATION_REVIEW, params],
+    queryFn: async () => {
+      try {
+        return await getUserReservationReview(params);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+    enabled: !!params,
+  });
+};
+
+export const usePostGroomingReviewMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.POST_GROOMING_REVIEW,
+    mutationFn: async (body: PostUserGroomingReviewRequestBody) => {
+      try {
+        return await postUserGroomingReview(body);
+      } catch (error: any) {
+        if (error instanceof AxiosError && error.response?.data?.error) {
+          throw error.response.data.error;
+        }
+        throw error;
+      }
+    },
+  });
+};
+
+export const useGetUserGroomingReviewQuery = (params: GetUserGroomingReviewParams) => {
+  return useQuery<GetUserGroomingReviewResponse>({
+    queryKey: [QUERY_KEYS.GET_USER_GROOMING_REVIEW, params],
+    queryFn: async () => {
+      try {
+        return await getUserGroomingReview(params);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+    enabled: !!params,
+  });
+};
+
+export const usePatchUserGroomingReviewMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.PATCH_GROOMING_REVIEW,
+    mutationFn: async (params: PatchUserGroomingReviewRequestParams) => {
+      try {
+        return await patchUserGroomingReview(params);
+      } catch (error: any) {
+        if (error instanceof AxiosError && error.response?.data?.error) {
+          throw error.response.data.error;
+        }
+        throw error;
+      }
+    },
+  });
+};
+
+export const usePostCareReviewMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.POST_CARE_REVIEW,
+    mutationFn: async (body: PostUserCareReviewRequestBody) => {
+      try {
+        return await postUserCareReview(body);
+      } catch (error: any) {
+        if (error instanceof AxiosError && error.response?.data?.error) {
+          throw error.response.data.error;
+        }
+        throw error;
+      }
+    },
+  });
+};
+
+export const useGetUserCareReviewQuery = (params: GetUserCareReviewParams) => {
+  return useQuery<GetUserCareReviewResponse>({
+    queryKey: [QUERY_KEYS.GET_USER_CARE_REVIEW, params],
+    queryFn: async () => {
+      try {
+        return await getUserCareReview(params);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    },
+    enabled: !!params,
+  });
+};
+
+export const usePatchUserCareReviewMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.PATCH_CARE_REVIEW,
+    mutationFn: async (params: PatchUserCareReviewRequestParams) => {
+      try {
+        return await patchUserCareReview(params);
+      } catch (error: any) {
+        if (error instanceof AxiosError && error.response?.data?.error) {
+          throw error.response.data.error;
+        }
+        throw error;
+      }
+    },
   });
 };
