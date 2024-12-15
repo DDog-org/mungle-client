@@ -1,4 +1,4 @@
-export interface GroomingEstimateGeneralList {
+export interface VetEstimateGeneralList {
   id: number;
   imageUrl: string;
   nickname: string;
@@ -7,7 +7,7 @@ export interface GroomingEstimateGeneralList {
   reservedDate: string;
 }
 
-export interface GroomingEstimateDesignationList {
+export interface VetEstimateDesignationList {
   id: number;
   imageUrl: string;
   nickname: string;

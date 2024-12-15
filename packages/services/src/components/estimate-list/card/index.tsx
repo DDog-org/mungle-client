@@ -13,41 +13,46 @@ import {
   specialsNot,
   detailContainer,
 } from './index.styles';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
-interface EstimateContent {
+interface EstimateGeneralListType {
   id: number;
-  userImage: string;
+  imageUrl: string;
   nickname: string;
   proposal: 'GENERAL' | 'DESIGNATION';
-  significant: string | null;
+  significant: string;
   reservedDate: string;
   onDetailClick: () => void;
 }
 
 export function Card({
   id,
-  userImage,
+  imageUrl,
   nickname,
   proposal,
   significant,
   reservedDate,
   onDetailClick,
-}: EstimateContent): JSX.Element {
-  const groomingEstimateId = id;
+}: EstimateGeneralListType): JSX.Element {
+  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    event.currentTarget.onerror = null;
+    event.currentTarget.src = '';
+  };
 
   return (
     <div css={wrapper} onClick={onDetailClick}>
       <div css={contentContainer}>
         <div css={cardHeader}>
-          {userImage ? (
+          {imageUrl ? (
             <img
-              src={userImage}
+              src={imageUrl}
               alt={`${nickname} 프로필`}
               css={profileImage}
-              onError={(e) => (e.currentTarget.src = '')} // onError에서 src 초기화
+              onError={handleImageError}
             />
           ) : (
-            <DefaultProfile css={profileImage} />
+            <DefaultProfile width={30} height={30} css={profileImage} />
           )}
           <Text typo="body1">{nickname}</Text>
           <span css={[type, proposal === 'DESIGNATION' ? designated : general]}>
@@ -56,11 +61,11 @@ export function Card({
         </div>
 
         <div css={cardContent}>
-          <p css={[specials, significant === '' && specialsNot]}>
+          <p css={[specials, significant === null && specialsNot]}>
             {significant ? significant : '특이사항 없음'}
           </p>
           <Text typo="body11" color="gray500">
-            {reservedDate}
+            {dayjs(reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
           </Text>
         </div>
       </div>

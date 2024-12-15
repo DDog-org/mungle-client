@@ -1,5 +1,5 @@
 import { TextButton, Text } from '@daengle/design-system';
-import { ButtonTextButtonArrow } from '@daengle/design-system/icons';
+import { ButtonTextButtonArrow, DefaultProfile } from '@daengle/design-system/icons';
 import {
   wrapper,
   profile,
@@ -19,10 +19,19 @@ interface Props {
 const LABELS = ['나이', '몸무게', '특이사항'];
 
 export function PetDetails({ image, name, attributes }: Props): JSX.Element {
+  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    event.currentTarget.onerror = null;
+    event.currentTarget.src = '';
+  };
+
   return (
     <div css={wrapper}>
       <div css={profile}>
-        <img src={image} alt={`${name} 프로필`} css={imageUrl} />
+        {image ? (
+          <img src={image} alt={`${name} 프로필`} css={imageUrl} onError={handleImageError} />
+        ) : (
+          <DefaultProfile width={80} height={80} css={imageUrl} />
+        )}
         <Text typo="subtitle3" css={petName}>
           {name}
         </Text>

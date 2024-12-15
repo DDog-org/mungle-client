@@ -1,97 +1,38 @@
-import { useState } from 'react';
-import { useGetGroomerEstimateListQuery } from '~/queries';
-import { Tab, Card } from '@daengle/services/components';
-import { GNB, Layout, Text, theme } from '@daengle/design-system';
-import {
-  GnbChattingActive,
-  GnbChattingInactive,
-  GnbHomeActive,
-  GnbHomeInactive,
-  GnbMyActive,
-  GnbMyInactive,
-  GnbReservationActive,
-  GnbReservationInactive,
-  GnbEstimateActive,
-  GnbEstimateInactive,
-} from '@daengle/design-system/icons';
+import { Layout, Tabs, Text, theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
+import { GNB } from '~/components/commons/gnb';
+import { DesignationCardList, GeneralCardList } from '~/components/estimate';
 
-export const PATHS = {
-  ESTIMATE: '/estimate',
-  RESERVATION: '/reservation',
-  HOME: '/',
-  CHATTING: '/chatting',
-  MYPAGE: '/mypage',
-} as const;
-
-export const MENUS = [
+const TABS = [
   {
-    name: '견적',
-    icon: {
-      active: <GnbEstimateActive width="32px" height="32px" />,
-      inactive: <GnbEstimateInactive width="32px" height="32px" />,
-    },
-    path: PATHS.ESTIMATE,
+    id: 'general',
+    label: '일반 견적서',
   },
   {
-    name: '예약',
-    icon: {
-      active: <GnbReservationActive width="32px" height="32px" />,
-      inactive: <GnbReservationInactive width="32px" height="32px" />,
-    },
-    path: PATHS.RESERVATION,
-  },
-  {
-    name: '홈',
-    icon: {
-      active: <GnbHomeActive width="32px" height="32px" />,
-      inactive: <GnbHomeInactive width="32px" height="32px" />,
-    },
-    path: PATHS.HOME,
-  },
-  {
-    name: '채팅',
-    icon: {
-      active: <GnbChattingActive width="32px" height="32px" />,
-      inactive: <GnbChattingInactive width="32px" height="32px" />,
-    },
-    path: PATHS.CHATTING,
-  },
-  {
-    name: '마이',
-    icon: {
-      active: <GnbMyActive width="32px" height="32px" />,
-      inactive: <GnbMyInactive width="32px" height="32px" />,
-    },
-    path: PATHS.MYPAGE,
+    id: 'designation',
+    label: '지정 견적서',
   },
 ];
 
 export default function EstimateList(): JSX.Element {
   const router = useRouter();
+  const { tab = 'general' } = router.query;
 
-  const [activeTab, setActiveTab] = useState<string>('전체');
-  const { data, isLoading, isError } = useGetGroomerEstimateListQuery();
-  const [, setActivePath] = useState<string>(PATHS.ESTIMATE);
-
-  if (isLoading) {
-    return <div>로딩 중...</div>;
-  }
-
-  if (isError) {
-    return <div>데이터를 가져오는 데 실패했습니다.</div>;
-  }
-
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab);
+  const handleTabChange = (tabId: string) => {
+    router.push({ pathname: '/estimates', query: { tab: tabId } }, undefined, { shallow: true });
   };
 
-  const estimateData = data || [];
-  const filteredData =
-    activeTab === '전체'
-      ? estimateData
-      : estimateData.filter((data) => data.proposal === 'DESIGNATION');
+  const renderContent = (activeTabId: string) => {
+    switch (activeTabId) {
+      case 'general':
+        return <GeneralCardList />;
+      case 'designation':
+        return <DesignationCardList />;
+      default:
+        return <GeneralCardList />;
+    }
+  };
 
   return (
     <Layout isAppBarExist={false}>
@@ -99,18 +40,15 @@ export default function EstimateList(): JSX.Element {
         <header css={headerContainer}>
           <Text typo="title1">견적</Text>
         </header>
-        <Tab items={['전체', '지정']} activeItem={activeTab} onChange={handleTabChange} />
-        <div css={listContainer}>
-          {filteredData.map((data) => (
-            <Card
-              key={data.id}
-              onDetailClick={() => router.push(`/estimates/detail/${data.id}`)}
-              {...data}
-            />
-          ))}
-        </div>
+        <Tabs
+          tabs={TABS}
+          renderContent={renderContent}
+          activeTabId={String(tab)}
+          onChange={handleTabChange}
+          isPadding={false}
+        />
       </div>
-      <GNB menus={MENUS} activePath={PATHS.ESTIMATE} onNavigate={(path) => setActivePath(path)} />
+      <GNB />
     </Layout>
   );
 }
@@ -125,13 +63,4 @@ const wrapper = css`
 const headerContainer = css`
   margin-top: 20px;
   padding: 18px;
-`;
-
-const listContainer = css`
-  flex: 1;
-  overflow-y: auto;
-
-  padding: 18px 18px 104px 0;
-
-  background-color: ${theme.colors.background};
 `;

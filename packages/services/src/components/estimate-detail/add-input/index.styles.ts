@@ -11,7 +11,7 @@ export const inputSection = css`
   align-items: center;
   justify-content: center;
 
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   padding: 0 18px;
 `;
 

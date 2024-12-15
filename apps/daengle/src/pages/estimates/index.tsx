@@ -6,6 +6,7 @@ import { css } from '@emotion/react';
 import { GNB } from '~/components/commons';
 import { GroomerEstimateList } from '~/components/estimate/groomer-card-list';
 import { VetEstimateList } from '~/components/estimate/vet-card-list';
+import { useRouter } from 'next/router';
 
 const TABS = [
   {
@@ -18,8 +19,17 @@ const TABS = [
   },
 ];
 export default function EstimateList() {
+  const router = useRouter();
   const [isDesignation, setIsDesignation] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { tab = 'groomer' } = router.query;
+
+  const handleTabChange = (activeTabId: string) => {
+    router.push({ pathname: '/estimates', query: { tab: activeTabId } }, undefined, {
+      shallow: true,
+    });
+  };
 
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
@@ -67,7 +77,12 @@ export default function EstimateList() {
             </div>
           </>
         )}
-        <Tabs tabs={TABS} renderContent={renderContent} />
+        <Tabs
+          tabs={TABS}
+          renderContent={renderContent}
+          activeTabId={String(tab)}
+          onChange={handleTabChange}
+        />
         <GNB />
       </div>
     </Layout>

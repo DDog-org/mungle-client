@@ -18,6 +18,14 @@ const TABS = [
 export default function Payments() {
   const router = useRouter();
 
+  const { tab = 'groomer' } = router.query;
+
+  const handleTabChange = (activeTabId: string) => {
+    router.push({ pathname: '/estimates', query: { tab: activeTabId } }, undefined, {
+      shallow: true,
+    });
+  };
+
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'groomer':
@@ -38,7 +46,12 @@ export default function Payments() {
         </Text>
 
         <div css={content}>
-          <Tabs tabs={TABS} renderContent={renderContent} />
+          <Tabs
+            tabs={TABS}
+            renderContent={renderContent}
+            activeTabId={String(tab)}
+            onChange={handleTabChange}
+          />
         </div>
       </section>
     </Layout>
