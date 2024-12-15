@@ -20,4 +20,5 @@ export const ROUTES = {
 
   // Mypage
   MYPAGE: '/mypage',
+  MYPAGE_EDIT: '/mypage/edit',
 } as const;

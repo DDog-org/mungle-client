@@ -1,1 +1,1 @@
-export type Size = 'fixed' | 'fluid' | 'full';
+export type Size = 'fixed' | 'fluid' | 'full' | 'circle';
