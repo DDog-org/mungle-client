@@ -18,6 +18,14 @@ const TABS = [
 export default function Reviews() {
   const router = useRouter();
 
+  const { tab = 'groomer' } = router.query;
+
+  const handleTabChange = (activeTabId: string) => {
+    router.push({ pathname: '/estimates', query: { tab: activeTabId } }, undefined, {
+      shallow: true,
+    });
+  };
+
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'groomer':
