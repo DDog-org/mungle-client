@@ -70,3 +70,18 @@ export interface PetProfileCreateFormType {
   significantTags: SignificantTags[];
   significant: string;
 }
+
+export interface UserMypageFormType {
+  id: number;
+  image: string;
+  nickname: string;
+  reviewCount: number;
+  estimateCount: number;
+  petInfos: PetInfo[];
+}
+
+export interface PetInfo {
+  petId: number;
+  petImage: string;
+  petName: string;
+}
