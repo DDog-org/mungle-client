@@ -2,6 +2,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../query-keys';
 import {
+  getUserEstimateRequestGrooming,
   postUserEstimateGrooming,
   postUserEstimateGroomerUserInfo,
   postUserEstimateCare,
@@ -16,9 +17,14 @@ import {
   getUserEstimateDesignationGrooming,
   getUserEstimateDesignationCarePets,
   getUserEstimateDesignationCare,
+  getUserEstimateRequestCare,
+  postUserEstimateCancelGrooming,
+  postUserEstimateCancelCare,
 } from '~/apis';
 
 import {
+  GetUserEstimateRequestGroomingParams,
+  GetUserEstimateRequestGroomingResponse,
   PostUserEstimateGroomingRequestBody,
   PostUserEstimateGroomerUserInfoRequestBody,
   PostUserEstimateCareRequestBody,
@@ -29,6 +35,10 @@ import {
   UserEstimateGroomingDetailRequestParams,
   UserEstimateCareDetailRequestParams,
   GetUserEstimateDesignationCarePetsResponse,
+  GetUserEstimateRequestCareParams,
+  GetUserEstimateRequestCareResponse,
+  PostUserEstimateCancelGroomingRequestBody,
+  PostUserEstimateCancelCareRequestBody,
 } from '~/models/estimate';
 import { PAGE_SIZE } from '~/constants/review';
 import { UserEstimateCareDetailData, UserEstimateGroomingDetailData } from '~/interfaces/estimate';
@@ -132,6 +142,17 @@ export const useUserEstimateDesignationCarePetsQuery = () => {
   });
 };
 
+export const useUerEstimateRequestGroomingQuery = (
+  params: GetUserEstimateRequestGroomingParams
+) => {
+  return useQuery<GetUserEstimateRequestGroomingResponse>({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_REQUEST_GROOMING,
+    queryFn: () => {
+      return getUserEstimateRequestGrooming(params);
+    },
+  });
+};
+
 export const useUserEstimateDesignationCareQuery = (petId: number | undefined) => {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.GET_USER_ESTIMATE_DESIGNATION_CARE,
@@ -150,6 +171,33 @@ export const useUserEstimateDesignationCareQuery = (petId: number | undefined) =
       return lastPage.estimates?.length === PAGE_SIZE ? allPages.length + 1 : undefined;
     },
     enabled: !!petId,
+  });
+};
+
+export const useUerEstimateRequestCareQuery = (params: GetUserEstimateRequestCareParams) => {
+  return useQuery<GetUserEstimateRequestCareResponse>({
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_REQUEST_CARE,
+    queryFn: () => {
+      return getUserEstimateRequestCare(params);
+    },
+  });
+};
+
+export const usePostEstimateCancelGroomingMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.POST_ESTIMATE_CANCEL_GROOMING,
+    mutationFn: (body: PostUserEstimateCancelGroomingRequestBody) => {
+      return postUserEstimateCancelGrooming(body);
+    },
+  });
+};
+
+export const usePostEstimateCancelCareMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.POST_ESTIMATE_CANCEL_CARE,
+    mutationFn: (body: PostUserEstimateCancelCareRequestBody) => {
+      return postUserEstimateCancelCare(body);
+    },
   });
 };
 
