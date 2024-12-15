@@ -1,3 +1,3 @@
-export function ShopInfo() {
+export default function ShopInfo() {
   return <>미용샵 상세정보</>;
 }
