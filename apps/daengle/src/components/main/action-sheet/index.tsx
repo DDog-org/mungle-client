@@ -25,7 +25,7 @@ export default function ActionSheet() {
         typo="body1"
         css={selectBox}
         onClick={() => {
-          router.push(ROUTES.ESTIMATE_CARE);
+          router.push(ROUTES.ESTIMATE_VET);
         }}
       >
         병원
