@@ -173,8 +173,7 @@ export default function vetProfile() {
                 위치
               </Text>
               <Text typo="body3" color="gray400">
-                {getVetModifyPage?.address}
-                {getVetModifyPage?.detailAddress}
+                {getVetModifyPage?.address} {getVetModifyPage?.detailAddress}
               </Text>
             </li>
             <li css={readOnlyTextBox}>

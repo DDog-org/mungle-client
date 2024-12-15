@@ -19,11 +19,12 @@ export const ImageInput = forwardRef(({ onChange, defaultValue = [], maxLength }
   const filesRef = useRef<File[]>(defaultValue);
   const [files, setFiles] = useState<File[]>(defaultValue);
 
-  // TODO: 이 부분에서 무한루프 발생 -> 추후 수정되면 삭제 예정
-  // useEffect(() => {
-  //   filesRef.current = defaultValue;
-  //   setFiles(defaultValue);
-  // }, [defaultValue]);
+  useEffect(() => {
+    if (JSON.stringify(filesRef.current) !== JSON.stringify(defaultValue)) {
+      filesRef.current = defaultValue;
+      setFiles(defaultValue);
+    }
+  }, [defaultValue]);
 
   useImperativeHandle(ref, () => ({
     getFiles: () => filesRef.current,
