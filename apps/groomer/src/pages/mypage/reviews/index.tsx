@@ -3,6 +3,8 @@ import { ReviewCardList, ReviewSummary } from '@daengle/services/components';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
+import { useIntersectionLoad } from '~/hooks/review';
+import { getGroomerReviewListQuery, getGroomerReviewReportListQuery } from '~/queries/review';
 
 const TABS = [
   {
@@ -15,120 +17,75 @@ const TABS = [
   },
 ];
 
-const reviews = [
-  {
-    id: 1,
-    reviewerName: '김가이',
-    profileImage: '/test.jpg',
-    rating: 1,
-    images: ['/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg'],
-    tag: '#맞춤케어를 잘해줘요',
-    content:
-      '디자이너 최고 어쩌고 저쩌고 정말 마음에 들어요 앞으로 여기에 정착할게요~! 이제 이게 2줄이 넘어가면 알아서 말 줄임표가 생기지 않을까 하는 기대를 가지고 있습니다! 젠장 아직도 두 줄이 안 넘었네요',
-  },
-  {
-    id: 2,
-    reviewerName: '김가이',
-    profileImage: '/test.jpg',
-    rating: 2,
-    images: ['/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg'],
-    tag: '#맞춤케어를 잘해줘요',
-    content:
-      '디자이너 최고 어쩌고 저쩌고 정말 마음에 들어요 앞으로 여기에 정착할게요~! 이제 이게 2줄이 넘어가면 알아서 말 줄임표가 생기지 않을까 하는 기대를 가지고 있습니다! 젠장 아직도 두 줄이 안 넘었네요',
-  },
-  {
-    id: 3,
-    reviewerName: '김가이',
-    profileImage: '/test.jpg',
-    rating: 3,
-    images: ['/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg'],
-    tag: '#맞춤케어를 잘해줘요',
-    content:
-      '디자이너 최고 어쩌고 저쩌고 정말 마음에 들어요 앞으로 여기에 정착할게요~! 이제 이게 2줄이 넘어가면 알아서 말 줄임표가 생기지 않을까 하는 기대를 가지고 있습니다! 젠장 아직도 두 줄이 안 넘었네요',
-  },
-  {
-    id: 4,
-    reviewerName: '김가이',
-    profileImage: '/test.jpg',
-    rating: 5,
-    images: ['/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg'],
-    tag: '#맞춤케어를 잘해줘요',
-    content:
-      '디자이너 최고 어쩌고 저쩌고 정말 마음에 들어요 앞으로 여기에 정착할게요~! 이제 이게 2줄이 넘어가면 알아서 말 줄임표가 생기지 않을까 하는 기대를 가지고 있습니다! 젠장 아직도 두 줄이 안 넘었네요',
-  },
-  {
-    id: 5,
-    reviewerName: '김가이',
-    profileImage: '/test.jpg',
-    rating: 4,
-    images: ['/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg'],
-    tag: '#맞춤케어를 잘해줘요',
-    content:
-      '디자이너 최고 어쩌고 저쩌고 정말 마음에 들어요 앞으로 여기에 정착할게요~! 이제 이게 2줄이 넘어가면 알아서 말 줄임표가 생기지 않을까 하는 기대를 가지고 있습니다! 젠장 아직도 두 줄이 안 넘었네요',
-  },
-];
-
-const flaggedReviews = [
-  {
-    id: 1,
-    reviewerName: '김가이',
-    profileImage: '/test.jpg',
-    rating: 1,
-    images: ['/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg'],
-    tag: '#맞춤케어를 잘해줘요',
-    content:
-      '디자이너 최고 어쩌고 저쩌고 정말 마음에 들어요 앞으로 여기에 정착할게요~! 이제 이게 2줄이 넘어가면 알아서 말 줄임표가 생기지 않을까 하는 기대를 가지고 있습니다! 젠장 아직도 두 줄이 안 넘었네요',
-    reportType: '욕설',
-    reportContent: '리뷰에서 욕설이 발견되었습니다.',
-  },
-  {
-    id: 2,
-    reviewerName: '김가이',
-    profileImage: '/test.jpg',
-    rating: 2,
-    images: ['/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg', '/test.jpg'],
-    tag: '#맞춤케어를 잘해줘요',
-    content:
-      '디자이너 최고 어쩌고 저쩌고 정말 마음에 들어요 앞으로 여기에 정착할게요~! 이제 이게 2줄이 넘어가면 알아서 말 줄임표가 생기지 않을까 하는 기대를 가지고 있습니다! 젠장 아직도 두 줄이 안 넘었네요',
-    reportType: '욕설',
-    reportContent: '리뷰에서 욕설이 발견되었습니다.',
-  },
-];
-
 export default function ReviewsPage() {
   const router = useRouter();
+
+  const {
+    data: receivedData,
+    fetchNextPage: fetchNextReceivedPage,
+    hasNextPage: hasNextReceivedPage,
+    isFetchingNextPage: isFetchingNextReceivedPage,
+  } = getGroomerReviewListQuery();
+
+  const receivedReviews = receivedData?.pages.flatMap((page) => page.reviewList) || [];
+  const receivedReviewCount = receivedData?.pages[0]?.reviewCount || 0;
+
+  const { loadMoreRef: loadMoreReceivedRef } = useIntersectionLoad({
+    fetchNextPage: fetchNextReceivedPage,
+    hasNextPage: hasNextReceivedPage,
+    isFetchingNextPage: isFetchingNextReceivedPage,
+  });
+
+  const {
+    data: flaggedData,
+    fetchNextPage: fetchNextFlaggedPage,
+    hasNextPage: hasNextFlaggedPage,
+    isFetchingNextPage: isFetchingNextFlaggedPage,
+  } = getGroomerReviewReportListQuery();
+
+  const flaggedReviews = flaggedData?.pages.flatMap((page) => page.reviewList) || [];
+  const flaggedReviewCount = flaggedData?.pages[0]?.reviewCount || 0;
+
+  const { loadMoreRef: loadMoreFlaggedRef } = useIntersectionLoad({
+    fetchNextPage: fetchNextFlaggedPage,
+    hasNextPage: hasNextFlaggedPage,
+    isFetchingNextPage: isFetchingNextFlaggedPage,
+  });
 
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'list':
         return (
           <div>
-            <ReviewSummary total={reviews.length} />
+            <ReviewSummary total={receivedReviewCount} />
             <ReviewCardList
-              reviews={reviews}
+              reviews={receivedReviews}
               onReport={() => router.push(ROUTES.MYPAGE_REVIEWS_REPORT)}
             />
+            <div ref={loadMoreReceivedRef} css={bottom} />
           </div>
         );
       case 'report':
         return (
           <div>
-            <ReviewSummary total={flaggedReviews.length} />
+            <ReviewSummary total={flaggedReviewCount} />
             <ReviewCardList
               reviews={flaggedReviews}
               flagged={true}
               onReport={() => router.push(ROUTES.MYPAGE_REVIEWS_REPORT)}
             />
+            <div ref={loadMoreFlaggedRef} css={bottom} />
           </div>
         );
       default:
         return (
           <div>
-            <ReviewSummary total={reviews.length} />
+            <ReviewSummary total={receivedReviewCount} />
             <ReviewCardList
-              reviews={reviews}
+              reviews={receivedReviews}
               onReport={() => router.push(ROUTES.MYPAGE_REVIEWS_REPORT)}
             />
+            <div ref={loadMoreReceivedRef} css={bottom} />
           </div>
         );
     }
@@ -167,4 +124,12 @@ const content = css`
   width: 100%;
   height: 100%;
   margin: 34px 0 0;
+`;
+
+const bottom = css`
+  position: absolute;
+  bottom: 0;
+
+  width: 100%;
+  height: 18px;
 `;
