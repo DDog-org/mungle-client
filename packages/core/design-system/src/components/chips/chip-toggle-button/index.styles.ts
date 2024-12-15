@@ -12,7 +12,7 @@ export const wrapper = ({
   isSelected: boolean;
   size: Size;
   disabled: boolean;
-  isPartnerSelected: boolean;
+  isPartnerSelected: boolean | null;
   textColor: keyof typeof colors;
 }) => css`
   ${size === 'fixed' &&
@@ -87,12 +87,12 @@ export const wrapper = ({
     ? css`
         border: none;
 
-        background: ${theme.colors.gray100};
+        background: ${theme.colors.green200};
+        color: ${theme.colors.white};
       `
     : css`
         border: none;
 
-        background: ${theme.colors.green200};
-        color: ${theme.colors.white};
+        background: ${theme.colors.gray100};
       `}
 `;

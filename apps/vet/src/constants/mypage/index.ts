@@ -1,31 +1,31 @@
 export const VET_DAT_OFF: { value: string; label: string }[] = [
   {
-    value: 'Monday',
+    value: 'MONDAY',
     label: '월',
   },
   {
-    value: 'Tuesday',
+    value: 'TUESDAY',
     label: '화',
   },
   {
-    value: 'Wednesday',
+    value: 'WEDNESDAY',
     label: '수',
   },
   {
-    value: 'Thursday',
+    value: 'THURSDAY',
     label: '목',
   },
   {
-    value: 'Friday',
+    value: 'FRIDAY',
     label: '금',
   },
 
   {
-    value: 'Saturday',
+    value: 'SATURDAY',
     label: '토',
   },
   {
-    value: 'Sunday',
+    value: 'SUNDAY',
     label: '일',
   },
 ] as const;

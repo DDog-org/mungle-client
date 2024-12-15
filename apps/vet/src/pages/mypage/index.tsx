@@ -12,35 +12,84 @@ import { useS3 } from '@daengle/services/hooks';
 import { formatPhoneNumberWithRegionNumber } from '@daengle/services/utils';
 import { css } from '@emotion/react';
 import router from 'next/router';
-import { ChangeEvent } from 'react';
-import { useForm } from 'react-hook-form';
-import DatePickerComponent from '~/components/mypage/date-picker';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import TimePickerComponent from '~/components/mypage/time-picker';
 import { VET_DAT_OFF } from '~/constants/mypage';
 import { useValidateMyPageForm } from '~/hooks/mypage/use-validate-mypage-form';
 import { VetProfileForm } from '~/interfaces/auth';
 import { useGetVetModifyPageQuery, usePatchVetInfoMutation } from '~/queries/auth';
+import dayjs, { Dayjs } from 'dayjs';
 
 export default function vetProfile() {
+  const [selectedStartTime, setSelectedStartTime] = useState<Dayjs | null>(null);
+  const [selectedEndTime, setSelectedEndTime] = useState<Dayjs | null>(null);
+  const [selectedDaysOff, setSelectedDaysOff] = useState<string[]>([]);
+
   const { data: getVetModifyPage } = useGetVetModifyPageQuery();
   const { mutateAsync: patchVetInfo } = usePatchVetInfoMutation();
+
+  const validation = useValidateMyPageForm();
+  const { uploadToS3 } = useS3({ targetFolderPath: 'vet/licenses' });
 
   const {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors },
   } = useForm<VetProfileForm>({
-    defaultValues: { phoneNumber: getVetModifyPage?.phoneNumber },
+    defaultValues: {
+      phoneNumber: getVetModifyPage?.phoneNumber,
+      closedDays: getVetModifyPage?.closedDays,
+    },
     mode: 'onChange',
   });
-  const { uploadToS3 } = useS3({ targetFolderPath: 'vet/licenses' });
-  const validation = useValidateMyPageForm();
 
+  useEffect(() => {
+    if (getVetModifyPage) {
+      setSelectedDaysOff(getVetModifyPage.closedDays || null);
+      setValue('phoneNumber', getVetModifyPage.phoneNumber || '');
+      setSelectedStartTime(
+        getVetModifyPage.startTime ? dayjs(getVetModifyPage.startTime, 'HH:mm') : null
+      );
+      setSelectedEndTime(
+        getVetModifyPage.endTime ? dayjs(getVetModifyPage.endTime, 'HH:mm') : null
+      );
+    }
+  }, [getVetModifyPage, setValue]);
+
+  const handleStartTimeChange = (newValue: Dayjs | null) => {
+    setSelectedStartTime(newValue);
+  };
+  const handleEndTimeChange = (newValue: Dayjs | null) => {
+    setSelectedEndTime(newValue);
+  };
+
+  const handleDaysOffToggle = (day: string) => {
+    setSelectedDaysOff((prev) =>
+      prev?.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+    );
+  };
   const onSubmit = async (data: VetProfileForm) => {
     const imageUrls = await uploadToS3(data.imageUrls);
     if (!imageUrls?.length) return;
 
-    await patchVetInfo({ ...data, imageUrls });
+    if (!selectedStartTime || !selectedEndTime) {
+      alert('시작 시간과 종료 시간을 모두 선택해야 전송할 수 있습니다.');
+      return;
+    }
+
+    const startTimeString = selectedStartTime?.format('HH:mm');
+    const endTimeString = selectedEndTime?.format('HH:mm');
+
+    await patchVetInfo({
+      ...data,
+      imageUrls,
+      startTime: startTimeString,
+      endTime: endTimeString,
+      closedDays: selectedDaysOff,
+    });
   };
 
   return (
@@ -62,6 +111,7 @@ export default function vetProfile() {
                 onChange={(files) => setValue('imageUrls', files, { shouldValidate: true })}
               />
             </section>
+
             <li css={readOnlyTextBox}>
               <Text tag="h2" typo="subtitle3">
                 병원명
@@ -70,12 +120,19 @@ export default function vetProfile() {
                 {getVetModifyPage?.name}
               </Text>
             </li>
+
             <li css={readOnlyTextBox}>
               <Text tag="h2" typo="subtitle3">
                 영업시간
               </Text>
-              <DatePickerComponent />
+              <TimePickerComponent
+                onStartTimeChange={handleStartTimeChange}
+                onEndTimeChange={handleEndTimeChange}
+                startTime={selectedStartTime}
+                endTime={selectedEndTime}
+              />
             </li>
+
             <li css={readOnlyTextBox}>
               <Text tag="h2" typo="subtitle3">
                 휴무일
@@ -84,13 +141,20 @@ export default function vetProfile() {
               <div css={chipButton}>
                 {VET_DAT_OFF.map((item) => {
                   return (
-                    <ChipToggleButton key={item.value} size="circle" isPartnerSelected={true}>
+                    <ChipToggleButton
+                      type="button"
+                      key={item.value}
+                      size="circle"
+                      isPartnerSelected={selectedDaysOff.includes(item.value)}
+                      onClick={() => handleDaysOffToggle(item.value)}
+                    >
                       {item.label}
                     </ChipToggleButton>
                   );
                 })}
               </div>
             </li>
+
             <li css={readOnlyTextBox}>
               <Input
                 label="전화번호"
@@ -117,10 +181,20 @@ export default function vetProfile() {
               <Text tag="h2" typo="subtitle3">
                 소개
               </Text>
-              <textarea
-                css={detailInput}
-                placeholder="소개글을 작성해주세요"
-                defaultValue={getVetModifyPage?.introduction}
+              <Controller
+                name="introduction"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <textarea
+                      css={detailInput}
+                      placeholder="소개글을 작성해주세요"
+                      defaultValue={getVetModifyPage?.introduction}
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  </>
+                )}
               />
             </li>
           </ul>
@@ -138,7 +212,7 @@ export const wrapper = css`
 
   padding: 18px;
 `;
-export const profileImageWrapper = css`
+const profileImageWrapper = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -146,7 +220,7 @@ export const profileImageWrapper = css`
 
   margin: 40px 0 0;
 `;
-export const inputWrapper = css`
+const inputWrapper = css`
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -154,7 +228,7 @@ export const inputWrapper = css`
   margin: 0 0 104px;
   padding: 0;
 `;
-export const readOnlyTextBox = css`
+const readOnlyTextBox = css`
   display: flex;
   flex-direction: column;
   gap: 15px;
