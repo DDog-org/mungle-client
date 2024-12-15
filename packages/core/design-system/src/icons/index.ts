@@ -36,4 +36,5 @@ export * from './ReviewUnfold';
 export * from './SearchIcon';
 export * from './SelectUnfoldActive';
 export * from './SelectUnfoldInactive';
+export * from './ToolTip';
 export * from './TransmissionComplete';
