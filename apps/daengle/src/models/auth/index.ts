@@ -181,3 +181,6 @@ export interface DeleteUserPetResponse {
 export interface DeleteUserPetRequestData {
   petId: number;
 }
+export interface GetUserValidateResponse {
+  isValidateMember: boolean;
+}

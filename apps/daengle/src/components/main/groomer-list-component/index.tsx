@@ -1,24 +1,41 @@
-import { css } from '@emotion/react';
-
 import { Card } from '../card';
-import { theme } from '@daengle/design-system';
+import { useGetUserShopsQuery } from '~/queries/main';
+import { useAddressFormStore } from '~/stores/main';
+import { Empty } from '@daengle/design-system';
+import { useRouter } from 'next/router';
+import { ROUTES } from '~/constants/commons';
+import { wrapper, cardBox, emptyBox } from './index.styles';
 
 export function GroomerListComponent() {
-  const array = [1, 2, 3, 4, 5];
+  const router = useRouter();
+  const { data: shops } = useGetUserShopsQuery();
+  const { addressForm } = useAddressFormStore();
+  const filteredShops = shops?.allShops.filter((shop) => shop.shopAddress.includes(addressForm));
+
+  const handleCardClick = (id: number) => {
+    router.push(ROUTES.GROOMER_DETAIL(id));
+  };
 
   return (
     <div css={wrapper}>
-      {array.map(() => (
-        <Card
-          shopName="꼬꼬마 관리샵"
-          address="서울특별시 강남구 언주로152길 10"
-          schedule="매일 10:00 - 20:00"
-        />
-      ))}
+      <div css={cardBox}>
+        {filteredShops && filteredShops.length > 0 ? (
+          filteredShops?.map((shop) => (
+            <Card
+              key={shop.shopId}
+              image={shop.shopImage}
+              name={shop.shopName}
+              address={shop.shopAddress}
+              schedule={`매일 ${shop.startTime.substring(0, 5)} - ${shop.endTime.substring(0, 5)}`}
+              onClick={() => handleCardClick(shop.shopId)}
+            />
+          ))
+        ) : (
+          <div css={emptyBox}>
+            <Empty title="해당 주소 주변에 샵이 없어요" />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
-
-const wrapper = css`
-  padding-bottom: 110px;
-`;

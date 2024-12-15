@@ -20,6 +20,7 @@ import {
   PatchUserPetInfoResponse,
   DeleteUserPetResponse,
   DeleteUserPetRequestData,
+  GetUserValidateResponse,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -78,4 +79,8 @@ export const patchUserPetInfo = async (body: PatchUserPetInfoRequestBody) => {
 
 export const deleteUserPet = async (data: DeleteUserPetRequestData) => {
   return await api.delete<DeleteUserPetResponse>('/user/pet', { data });
+};
+
+export const getUserValidate = async () => {
+  return await api.get<GetUserValidateResponse>('/user/validate');
 };
