@@ -15,7 +15,7 @@ const nextConfig = {
 
 export default withSentryConfig(nextConfig, {
   org: 'corinthionia',
-  project: 'javascript-nextjs',
+  project: 'daengle',
   silent: !process.env.CI,
   widenClientFileUpload: true,
   tunnelRoute: '/monitoring',
