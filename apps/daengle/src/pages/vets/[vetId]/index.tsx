@@ -1,5 +1,3 @@
-// 병원 상세정보
-
 import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
 import {
   ButtonTextButtonArrow,
