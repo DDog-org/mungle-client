@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { Card, EmptyState } from 'node_modules/@daengle/services/src/components/estimate-list';
 import { ROUTES } from '~/constants/commons';
-import { useVetEstimateDesignationListQuery } from '~/queries/estimate';
+import { useGroomerEstimateDesignationListQuery } from '~/queries';
 
 export function DesignationCardList() {
   const router = useRouter();
@@ -11,7 +11,7 @@ export function DesignationCardList() {
     data: estimateResponse,
     isLoading: estimateLoading,
     error: estimateError,
-  } = useVetEstimateDesignationListQuery();
+  } = useGroomerEstimateDesignationListQuery();
 
   const estimates = estimateResponse?.estimates || [];
 

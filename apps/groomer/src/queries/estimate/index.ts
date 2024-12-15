@@ -1,39 +1,43 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { GroomingEstimateList } from '~/interfaces/estimate';
 import {
-  GetGroomerEstimateDetailParams,
+  GetGroomerEstimateDesignationListResponse,
+  GetGroomerEstimateDetailRequestParams,
   GetGroomerEstimateDetailResponse,
+  GetGroomerEstimateGeneralListResponse,
   PostGroomerEstimateBody,
 } from '~/models/estimate';
-import { getGroomerEstimateList, getGroomerEstimateDetail, postGroomerEstimate } from '~/apis';
+import {
+  getGroomerEstimateDetail,
+  postGroomerEstimate,
+  getGroomerEstimateGeneralList,
+  getGroomerEstimateDesignationList,
+} from '~/apis';
 import { QUERY_KEYS } from '~/queries/query-keys';
 
-export const useGetGroomerEstimateListQuery = () => {
-  return useQuery<GroomingEstimateList[]>({
-    queryKey: QUERY_KEYS.GET_GROOMER_ESTIMATE_LIST,
-    queryFn: async () => {
-      try {
-        const data = await getGroomerEstimateList();
-        return data.allEstimates;
-      } catch (error) {
-        throw new Error('견적 리스트를 가져오는 데 실패했습니다.');
-      }
+export const useGroomerEstimateGeneralListQuery = () => {
+  return useQuery<GetGroomerEstimateGeneralListResponse>({
+    queryKey: QUERY_KEYS.GET_GROOMER_ESTIMATE_GENERAL_LIST,
+    queryFn: () => {
+      return getGroomerEstimateGeneralList();
     },
   });
 };
 
-export const useGetGroomerEstimateDetailQuery = (params: GetGroomerEstimateDetailParams) => {
+export const useGroomerEstimateDesignationListQuery = () => {
+  return useQuery<GetGroomerEstimateDesignationListResponse>({
+    queryKey: QUERY_KEYS.GET_GROOMER_ESTIMATE_DESIGNATION_LIST,
+    queryFn: () => {
+      return getGroomerEstimateDesignationList();
+    },
+  });
+};
+
+export const useGroomerEstimateDetailQuery = (params: GetGroomerEstimateDetailRequestParams) => {
   return useQuery<GetGroomerEstimateDetailResponse>({
     queryKey: [QUERY_KEYS.GET_GROOMER_ESTIMATE_DETAIL, params],
-    queryFn: async () => {
-      try {
-        const data = await getGroomerEstimateDetail(params);
-        return data;
-      } catch (error) {
-        throw new Error('견적 상세 정보를 가져오는 데 실패했습니다.');
-      }
+    queryFn: () => {
+      return getGroomerEstimateDetail(params);
     },
-    enabled: !!params,
   });
 };
 

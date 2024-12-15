@@ -1,19 +1,25 @@
-import { GroomingEstimateList } from '~/interfaces/estimate';
+import {
+  GroomingEstimateDesignationList,
+  GroomingEstimateGeneralList,
+} from '~/interfaces/estimate';
 
-export interface GetGroomerEstimateListResponse {
-  allEstimates: GroomingEstimateList[];
-  designationEstimates: GroomingEstimateList[];
+export interface GetGroomerEstimateGeneralListResponse {
+  estimates: GroomingEstimateGeneralList[];
+}
+
+export interface GetGroomerEstimateDesignationListResponse {
+  estimates: GroomingEstimateDesignationList[];
 }
 
 export interface GetGroomerEstimateDetailResponse {
-  userImage: string;
+  userImageUrl: string;
   nickname: string;
-  proposal: 'GENERAL' | 'DESIGNATION';
   address: string;
   reservedDate: string;
-  id: number;
-  petImage: string;
-  name: string;
+  proposal: 'GENERAL' | 'DESIGNATION';
+  petId: number;
+  petImageUrl: string;
+  petName: string;
   age: number;
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
   significant: string | null;
@@ -22,8 +28,8 @@ export interface GetGroomerEstimateDetailResponse {
   overallOpinion?: string;
 }
 
-export interface GetGroomerEstimateDetailParams {
-  id: number;
+export interface GetGroomerEstimateDetailRequestParams {
+  groomingEstimateId: number;
 }
 
 export interface PostGroomerEstimateBody {
@@ -33,5 +39,6 @@ export interface PostGroomerEstimateBody {
 }
 
 export interface PostGroomerEstimateResponse {
-  isRegistered: boolean;
+  estimateId: number;
+  requestResult: string;
 }

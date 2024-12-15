@@ -9,7 +9,7 @@ export const wrapper = css`
   margin-bottom: 12px;
   padding: 20px 24px;
 
-  background-color: #fff;
+  background-color: ${theme.colors.white};
 
   cursor: pointer;
   border-top-right-radius: 65.6px;
@@ -47,10 +47,12 @@ export const profileImage = css`
   height: 30px;
   border-radius: 50%;
   object-fit: cover;
+
+  background-color: ${theme.colors.gray200};
 `;
 
 export const type = css`
-  padding: 2px 7px;
+  padding: 3px 10px;
   border-radius: 14.03px;
   ${theme.typo.body2};
 `;

@@ -1,3 +1,4 @@
+import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
 export const wrapper = css`
@@ -13,4 +14,6 @@ export const image = css`
   width: 50px;
   height: 50px;
   border-radius: 50%;
+
+  background-color: ${theme.colors.gray200};
 `;

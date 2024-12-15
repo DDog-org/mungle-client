@@ -1,15 +1,21 @@
 import { Text } from '@daengle/design-system';
 import { addTitle, inputSection, textarea } from './index.styles';
+import { TextareaHTMLAttributes } from 'react';
 
-interface Props {
+interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   title: string;
   placeholder: string;
   height?: number;
-  value: string;
-  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-export function AddInput({ title, placeholder, height, value, onChange }: Props): JSX.Element {
+export function AddInput({
+  title,
+  placeholder,
+  height,
+  value,
+  onChange,
+  ...rest
+}: Props): JSX.Element {
   return (
     <div>
       <div css={addTitle}>
@@ -24,6 +30,7 @@ export function AddInput({ title, placeholder, height, value, onChange }: Props)
           maxLength={400}
           value={value}
           onChange={onChange}
+          {...rest}
         />
       </section>
     </div>
