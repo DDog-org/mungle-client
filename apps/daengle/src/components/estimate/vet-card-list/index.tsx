@@ -22,7 +22,11 @@ interface Props {
 
 export function VetEstimateList({ isDesignation }: Props) {
   const router = useRouter();
-  const [selectedPetId, setSelectedPetId] = useState<number | undefined>(undefined);
+  const { petId } = router.query;
+  const [selectedPetId, setSelectedPetId] = useState<number | undefined>(
+    petId ? Number(petId) : undefined
+  );
+  const [selectedEstimateId, setSelectedEstimateId] = useState<number | undefined>(0);
   const {
     data: petData,
     isLoading: petLoading,
@@ -32,11 +36,21 @@ export function VetEstimateList({ isDesignation }: Props) {
     : useUserEstimateGeneralCarePetsQuery();
 
   const petInfos = petData?.pets || [];
+
   useEffect(() => {
-    if (selectedPetId === undefined && petInfos.length > 0) {
-      setSelectedPetId(petInfos[0]?.petId);
+    if (!selectedPetId && petInfos.length > 0) {
+      const firstPetId = petInfos[0]?.petId;
+      setSelectedPetId(firstPetId);
+      router.replace({ pathname: router.pathname, query: { ...router.query, petId: firstPetId } });
     }
-  }, [petInfos, selectedPetId]);
+  }, [petInfos, selectedPetId, router]);
+
+  useEffect(() => {
+    if (selectedPetId) {
+      const selectedPet = petInfos.find((pet) => pet.petId === selectedPetId);
+      setSelectedEstimateId(selectedPet?.estimateId);
+    }
+  }, [selectedPetId, petInfos]);
 
   const {
     data: estimates,
@@ -75,9 +89,10 @@ export function VetEstimateList({ isDesignation }: Props) {
             selectedPetId={selectedPetId}
             onSelectPet={(petId) => {
               setSelectedPetId(petId);
+              router.push({ pathname: router.pathname, query: { ...router.query, petId } });
             }}
           />
-          <OptionSelector />
+          <OptionSelector estimateId={selectedEstimateId} />
           {estimateLoading ? (
             <div>견적 데이터를 불러오는 중...</div>
           ) : estimateError ? (

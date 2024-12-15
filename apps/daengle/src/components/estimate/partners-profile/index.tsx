@@ -11,9 +11,10 @@ interface Props {
     daengleMeter: number;
     tags?: string[];
   };
+  onClick?: () => void;
 }
 
-export const PartnersInfo = ({ profile }: Props) => {
+export const PartnersInfo = ({ profile, onClick }: Props) => {
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
     event.currentTarget.onerror = null;
     event.currentTarget.src = '';
@@ -35,7 +36,7 @@ export const PartnersInfo = ({ profile }: Props) => {
       )}
       <div css={details}>
         <Text typo="title2">{profile.name}</Text>
-        <TextButton icons={{ suffix: <ButtonTextButtonArrow width={'6px'} /> }}>
+        <TextButton icons={{ suffix: <ButtonTextButtonArrow width={'6px'} /> }} onClick={onClick}>
           <Text color="gray500" typo="body8">
             {profile.shopName}
           </Text>

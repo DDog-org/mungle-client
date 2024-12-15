@@ -12,16 +12,20 @@ import {
   UserEstimateGroomingDetailRequestParams,
 } from '~/models/estimate';
 import { ROUTES } from '~/constants/commons';
+import { useOrderInfoStore } from '~/stores/payment';
 
 type DetailData = UserEstimateGroomingDetailData | UserEstimateCareDetailData;
 
 export default function Detail() {
   const router = useRouter();
-  const { id, type } = router.query;
+  const { id, service, petId } = router.query;
   const estimateId = Number(id);
+  const selectedPetId = petId && Number(petId);
 
-  const isGrooming = type === 'grooming';
-  const isCare = type === 'care';
+  const { setOrderInfo } = useOrderInfoStore();
+
+  const isGrooming = service === 'groomer';
+  const isCare = service === 'vet';
 
   const groomingParams: UserEstimateGroomingDetailRequestParams = {
     groomingEstimateId: estimateId,
@@ -60,17 +64,51 @@ export default function Detail() {
   const formattedDate = dayjs(detailData.reservedDate).locale('ko').format('YYYY.MM.DD(ddd) HH:mm');
   const introduction = detailData.introduction || '소개글 없음';
 
+  const handleChatRoom = () => {
+    isGroomingDetail(detailData)
+      ? router.push(ROUTES.CHATS_DETAIL(detailData.groomerId))
+      : router.push(ROUTES.CHATS_DETAIL(detailData.vetId));
+  };
+
+  const handleSetOrderInfo = () => {
+    const orderInfo = isGroomingDetail(detailData)
+      ? {
+          estimateId,
+          petId: selectedPetId || undefined,
+          serviceType: 'GROOMING',
+          recipientId: detailData.groomerId,
+          recipientImageUrl: detailData.imageURL,
+          recipientName: detailData.name,
+          shopName: detailData.shopName ?? undefined,
+          schedule: detailData.reservedDate,
+          price: 1000,
+        }
+      : {
+          estimateId,
+          petId: selectedPetId || undefined,
+          serviceType: 'CARE',
+          recipientId: detailData.vetId,
+          recipientImageUrl: detailData.imageUrl,
+          recipientName: detailData.name,
+          shopName: detailData.name || '병원 정보 없음',
+          schedule: detailData.reservedDate,
+          price: 1000,
+        };
+
+    setOrderInfo(orderInfo);
+    router.push(ROUTES.PAYMENTS_ORDER);
+  };
+
   if (isGroomingDetail(detailData)) {
     const designerData = {
       id: estimateId,
       name: detailData.name,
+      shopId: detailData.shopId,
       shopName: detailData.shopName,
-      image: detailData.image,
+      image: detailData.imageURL,
       daengleMeter: detailData.daengleMeter,
-      tags: detailData?.tags || [],
     };
 
-    // TODO: null값에 대한 일괄 처리 필요
     const overallOpinion = detailData.overallOpinion || '없음';
 
     return (
@@ -80,7 +118,16 @@ export default function Detail() {
           <div css={header}>
             <Text typo="title1">견적 상세</Text>
           </div>
-          <PartnersInfo profile={designerData} />
+          <PartnersInfo
+            profile={designerData}
+            onClick={() => {
+              if (detailData.shopId) {
+                router.push(ROUTES.GROOMER_SHOP_DETAIL(detailData.shopId));
+              } else {
+                alert('샵 정보를 찾을 수 없습니다.');
+              }
+            }}
+          />
           <section css={section}>
             <Text typo="body1">소개</Text>
             <Text typo="body10" tag="div">
@@ -96,17 +143,12 @@ export default function Detail() {
             ]}
           />
           <div css={buttonGroup}>
-            <RoundButton variant="primary" size="S" fullWidth>
+            <RoundButton variant="primary" size="S" fullWidth onClick={handleChatRoom}>
               <Text typo="body1" color="white">
                 채팅 문의
               </Text>
             </RoundButton>
-            <RoundButton
-              variant="primary"
-              size="M"
-              fullWidth
-              onClick={() => alert('예약금 결제를 진행합니다.')}
-            >
+            <RoundButton variant="primary" size="M" fullWidth onClick={handleSetOrderInfo}>
               <Text typo="body1" color="white">
                 예약금 결제
               </Text>
@@ -120,7 +162,7 @@ export default function Detail() {
       id: detailData.careEstimateId,
       name: detailData.name,
       shopName: detailData.name || '병원 정보 없음',
-      image: detailData.image,
+      image: detailData.imageUrl,
       daengleMeter: detailData.daengleMeter,
       tags: detailData?.tags || [],
     };
@@ -157,12 +199,7 @@ export default function Detail() {
                 채팅 문의
               </Text>
             </RoundButton>
-            <RoundButton
-              variant="primary"
-              size="M"
-              fullWidth
-              onClick={() => alert('예약금 결제를 진행합니다.')}
-            >
+            <RoundButton variant="primary" size="M" fullWidth onClick={handleSetOrderInfo}>
               <Text typo="body1" color="white">
                 예약금 결제
               </Text>
