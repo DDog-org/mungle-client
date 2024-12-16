@@ -1,6 +1,19 @@
-# 🐶 댕글
+# 🐶 댕글 🐾
 
-강아지 미용 중계 서비스 🐶 댕글 🐶
+![Header](https://github.com/user-attachments/assets/02a1beaa-e38c-4287-b13a-42faef2ac270)
+
+댕글 🐾 은 반려견을 위한 견적 매칭 플랫폼입니다.
+반려견 미용 서비스✂️와 동물병원🏥 가격비교 및 예약 서비스를 제공합니다.
+
+<br/>
+
+## 서비스 이용해 보기 🔗
+
+| Type           | URL                         |
+| -------------- | --------------------------- |
+| 🐾 일반 사용자 | www.daengle.com             |
+| ✂️ 미용사      | https://groomer.daengle.com |
+| 🏥 동물병원    | https://vet.daengle.com     |
 
 <br/>
 
@@ -8,7 +21,7 @@
 
 - Turborepo
 - Next.js, React
-- SCSS Modules
+- emotion
 - Zustand, Tanstack-query
 - Storybook
 
@@ -20,17 +33,17 @@
 .
 ├── README.md
 ├── apps
-│   ├── admin
 │   ├── daengle
 │   ├── groomer
 │   ├── storybook
 │   └── vet
-├── node_modules
-├── package.json
 ├── packages
-│   ├── eslint-config
-│   ├── typescript-config
-│   └── design-system
+│   ├── core
+│   │   ├── design-system
+│   │   ├── eslint-config
+│   │   ├── stylelint-config
+│   │   └── typescript-config
+│   └── services
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
 └── turbo.json
@@ -40,13 +53,14 @@
 
 ## 패키지 설명
 
-- `apps/admin` 관리자 서비스입니다.
 - `apps/daengle` 일반 사용자들이 이용하는 서비스입니다.
 - `apps/groomer` 미용사들이 이용하는 서비스입니다.
-- `apps/vet` 병원이 이용하는 서비스입니다.
-- `packages/eslint-config` 프로젝트 공통으로 사용되는 ESLint 설정 관련 패키지입니다.
-- `packages/typescript-config` 프로젝트 공통으로 사용되는 TypeScript 설정 관련 패키지입니다.
-- `packages/design-system` 프로젝트 공통으로 사용되는 디자인 컴포넌트 패키지입니다.
+- `apps/vet` 동물병원이 이용하는 서비스입니다.
+- `packages/core/design-system` 프로젝트 공통으로 사용되는 디자인 컴포넌트 패키지입니다.
+- `packages/core/eslint-config` 프로젝트 공통으로 사용되는 ESLint 설정 관련 패키지입니다.
+- `packages/core/stylelint-config` 프로젝트 공통으로 사용되는 Stylelint 설정 관련 패키지입니다.
+- `packages/core/typescript-config` 프로젝트 공통으로 사용되는 TypeScript 설정 관련 패키지입니다.
+- `packages/services` 프로젝트 공통으로 사용되는 서비스 코드를 모아놓은 패키지입니다.
 
 <br/>
 
