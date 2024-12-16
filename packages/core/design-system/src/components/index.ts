@@ -5,6 +5,7 @@ export * from './chat';
 export * from './empty';
 export * from './gnb';
 export * from './image-input';
+export * from './image-input-box';
 export * from './input';
 export * from './layout';
 export * from './radio-group';

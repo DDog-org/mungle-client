@@ -5,7 +5,7 @@ import { CTAButton, ImageInput, Input, Text } from '@daengle/design-system';
 import { useS3 } from '@daengle/services/hooks';
 import { formatPhoneNumber } from '@daengle/services/utils';
 import { GroomerInfoForm } from '~/interfaces/auth';
-import { useValidateOnboardingForm } from '~/hooks/auth';
+import { useValidateOnboardingForm } from '~/hooks/onboarding';
 import { useGroomerInfoFormStore } from '~/stores/auth';
 import {
   certificateInfo,

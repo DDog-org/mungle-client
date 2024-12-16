@@ -24,3 +24,27 @@ export interface PostJoinRequestBody {
 export interface PostJoinResponse {
   accessToken: string;
 }
+
+export interface GetGroomerModifyPageResponse {
+  image: string;
+  name: string;
+  phoneNumber: string;
+  email: string;
+  instagramId: string;
+  introduction: string;
+  licenses: License[];
+}
+
+export interface License {
+  name: string;
+  acquisitionDate: string;
+}
+export interface PatchGroomerInfoResponse {
+  requestResult: string;
+}
+
+export interface PatchGroomerInfoRequestBody {
+  image: string;
+  instagramId: string | null;
+  introduction: string | null;
+}
