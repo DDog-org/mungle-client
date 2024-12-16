@@ -3,41 +3,46 @@ import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import { PartnersInfo, Receipt } from '~/components/estimate';
 import { useRouter } from 'next/router';
-import { useEstimateCareDetailQuery, useEstimateGroomingDetailQuery } from '~/queries/estimate';
+
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { UserEstimateCareDetailData, UserEstimateGroomingDetailData } from '~/interfaces/estimate';
 import {
-  UserEstimateCareDetailRequestParams,
-  UserEstimateGroomingDetailRequestParams,
-} from '~/models/estimate';
+  GetUserReservationCareDetailRequestParams,
+  GetUserReservationCareDetailResponse,
+  GetUserReservationGroomingDetailRequestParams,
+  GetUserReservationGroomingDetailResponse,
+} from '~/models/reservation';
+import {
+  useUserReservationCareDetailQuery,
+  useUserReservationGroomingDetailQuery,
+} from '~/queries/reservation';
 
-type DetailData = UserEstimateGroomingDetailData | UserEstimateCareDetailData;
+type DetailData = GetUserReservationGroomingDetailResponse | GetUserReservationCareDetailResponse;
 
 export default function Detail() {
   const router = useRouter();
-  const { id, type } = router.query;
+  const { id, tab } = router.query;
   const estimateId = Number(id);
 
-  const isGrooming = type === 'grooming';
-  const isCare = type === 'care';
+  const isGrooming = tab === 'groomer';
+  const isCare = tab === 'vet';
 
-  const groomingParams: UserEstimateGroomingDetailRequestParams = {
-    groomingEstimateId: estimateId,
+  const groomingParams: GetUserReservationGroomingDetailRequestParams = {
+    estimateId: estimateId,
   };
-  const careParams: UserEstimateCareDetailRequestParams = { careEstimateId: estimateId };
-  //TODO: 예약 조회로 api 변환
+  const careParams: GetUserReservationCareDetailRequestParams = { estimateId: estimateId };
+
   const {
     data: groomingData,
     isLoading: groomerLoading,
     error: groomerError,
-  } = useEstimateGroomingDetailQuery(groomingParams, isGrooming);
+  } = useUserReservationGroomingDetailQuery(groomingParams, isGrooming);
 
   const {
     data: careData,
     isLoading: careLoading,
     error: careError,
-  } = useEstimateCareDetailQuery(careParams, isCare);
+  } = useUserReservationCareDetailQuery(careParams, isCare);
 
   if (groomerLoading || careLoading) return <div>Loading...</div>;
 
@@ -54,19 +59,18 @@ export default function Detail() {
     return <div>유효하지 않은 type 입니다.</div>;
   }
 
-  const isGroomingDetail = (data: DetailData): data is UserEstimateGroomingDetailData =>
+  const isGroomingDetail = (data: DetailData): data is GetUserReservationGroomingDetailResponse =>
     'groomerId' in data;
   const formattedDate = dayjs(detailData.reservedDate).locale('ko').format('YYYY.MM.DD(ddd) HH:mm');
   const introduction = detailData.introduction || '소개글 없음';
 
   if (isGroomingDetail(detailData)) {
     const designerData = {
-      id: estimateId,
+      id: detailData.groomingEstimateId,
       name: detailData.name,
       shopName: detailData.shopName,
-      image: detailData.image,
+      image: detailData.imageUrl,
       daengleMeter: detailData.daengleMeter,
-      tags: detailData?.tags || [],
     };
 
     // TODO: null값에 대한 일괄 처리 필요
@@ -104,7 +108,7 @@ export default function Detail() {
               variant="primary"
               size="M"
               fullWidth
-              onClick={() => alert('예약금 결제를 진행합니다.')}
+              onClick={() => alert('예약을 취소하시겠습니까?')}
             >
               <Text typo="body1" color="white">
                 예약 취소
@@ -118,10 +122,9 @@ export default function Detail() {
     const vetData = {
       id: detailData.careEstimateId,
       name: detailData.name,
-      shopName: detailData.name || '병원 정보 없음',
-      image: detailData.image,
+      shopName: null,
+      image: detailData.imageUrl,
       daengleMeter: detailData.daengleMeter,
-      tags: detailData?.tags || [],
     };
     return (
       <Layout isAppBarExist={false}>
@@ -160,10 +163,10 @@ export default function Detail() {
               variant="primary"
               size="M"
               fullWidth
-              onClick={() => alert('예약금 결제를 진행합니다.')}
+              onClick={() => alert('예약을 취소하시겠습니까?')}
             >
               <Text typo="body1" color="white">
-                예약금 결제
+                예약 취소
               </Text>
             </RoundButton>
           </div>

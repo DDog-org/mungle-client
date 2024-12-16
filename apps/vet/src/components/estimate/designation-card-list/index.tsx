@@ -27,7 +27,6 @@ export function DesignationCardList() {
     return <EmptyState isEmptyEstimates={true} hasOptions={false} />;
   }
 
-  console.log(estimates);
   return (
     <div>
       {estimates.map((data) => (

@@ -7,14 +7,6 @@ import { useGetPaymentGroomingHistoryListInfiniteQuery } from '~/queries/payment
 import { bottom, wrapper } from './index.styles';
 
 export function GroomerList() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace({
-      query: { service: 'groomer' },
-    });
-  }, []);
-
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGetPaymentGroomingHistoryListInfiniteQuery();
   const { loadMoreRef } = useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNextPage });

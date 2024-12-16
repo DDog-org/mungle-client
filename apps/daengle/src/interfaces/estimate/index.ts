@@ -31,8 +31,9 @@ export interface UserEstimateGeneralCareType {
 export interface UserEstimateGroomingDetailData {
   groomingEstimateId: number;
   groomerId: number;
-  image: string;
+  imageURL: string;
   name: string;
+  shopId: number;
   shopName?: string | null;
   daengleMeter: number;
   proposal: 'GENERAL' | 'DESIGNATION';
@@ -42,13 +43,12 @@ export interface UserEstimateGroomingDetailData {
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
   desiredStyle: string;
   overallOpinion: string;
-  tags?: string[];
 }
 
 export interface UserEstimateCareDetailData {
   careEstimateId: number;
   vetId: number;
-  image: string;
+  imageUrl: string;
   name: string;
   daengleMeter: number;
   introduction: string;

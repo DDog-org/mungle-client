@@ -1,40 +1,28 @@
-import { Empty } from '~/components/reviews';
-
 import { wrapper } from './index.styles';
 import { ReservationsCard } from '../reservations-card';
+import { Empty } from '@daengle/design-system';
+import { useUserReservationGroomingListQuery } from '~/queries/reservation';
 
 export function GroomerList() {
-  const data = [
-    {
-      estimateId: 3,
-      groomerName: '유레카미용사',
-      petName: '시바견',
-      petImageUrl: '',
-      shopName: '유레카 미용실',
-      reservedDate: '2024-12-12 21:34:13',
-    },
-    {
-      estimateId: 4,
-      groomerName: '유레카미용사',
-      petName: '시바견',
-      petImageUrl: '',
-      shopName: '유레카 미용실',
-      reservedDate: '2024-12-12 21:34:13',
-    },
-    {
-      estimateId: 5,
-      groomerName: '유레카미용사',
-      petName: '시바견',
-      petImageUrl: '',
-      shopName: '유레카 미용실',
-      reservedDate: '2024-12-12 21:34:13',
-    },
-  ];
+  const { data, isLoading, error } = useUserReservationGroomingListQuery();
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (error) {
+    return <div>데이터를 불러오는 중 오류가 발생했습니다.</div>;
+  }
+
+  const reservations = data?.contents || [];
+
+  if (reservations.length === 0) {
+    return <Empty title="예약 내역이 없어요" />;
+  }
 
   return (
     <div css={wrapper}>
-      {data ? (
-        data?.map((item) => <ReservationsCard item={item} />)
+      {reservations ? (
+        reservations?.map((item) => <ReservationsCard item={item} />)
       ) : (
         <Empty title="예약 내역이 없어요" />
       )}

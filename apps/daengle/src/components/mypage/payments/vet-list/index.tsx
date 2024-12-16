@@ -11,14 +11,6 @@ export function VetList() {
     useGetPaymentCareHistoryListInfiniteQuery();
   const { loadMoreRef } = useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNextPage });
 
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace({
-      query: { service: 'vet' },
-    });
-  }, []);
-
   return (
     <div css={wrapper}>
       {data ? (

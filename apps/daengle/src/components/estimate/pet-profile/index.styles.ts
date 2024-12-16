@@ -56,4 +56,6 @@ export const defaultImage = css`
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
+
+  background-color: ${theme.colors.background};
 `;

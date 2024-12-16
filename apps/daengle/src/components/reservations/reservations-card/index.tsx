@@ -30,10 +30,8 @@ interface VetItem {
 
 export function ReservationsCard({ item }: Props) {
   const router = useRouter();
-  const { service } = router.query; // service: 'groomer' or 'vet'
 
-  // 타입 가드로 데이터 구조 구분
-  const isGroomer = (item: GroomerItem | VetItem): item is GroomerItem => 'groomerName' in item;
+  const isGroomer = (item: GroomerItem | VetItem): item is GroomerItem => 'groomerId' in item;
 
   return (
     <div css={wrapper} onClick={() => router.push(ROUTES.RESERVATIONS_DETAIL(item.estimateId))}>

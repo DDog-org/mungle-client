@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout, Tabs, Text, TextButton } from '@daengle/design-system';
-import { SelectUnfoldInactive } from '@daengle/design-system/icons';
+import { BlackUnfoldArrow, SelectUnfoldInactive } from '@daengle/design-system/icons';
 import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import { GNB } from '~/components/commons';
@@ -20,15 +20,28 @@ const TABS = [
 ];
 export default function EstimateList() {
   const router = useRouter();
-  const [isDesignation, setIsDesignation] = useState(false);
+  const { tab, isDesignation: isDesignationQuery } = router.query;
+  const isDesignation = isDesignationQuery === 'true';
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { tab = 'groomer' } = router.query;
+  useEffect(() => {
+    if (router.isReady && !tab) {
+      router.replace({
+        pathname: '/estimates',
+        query: { tab: 'groomer', isDesignation: 'false' },
+      });
+    }
+  }, [router.isReady]);
 
   const handleTabChange = (activeTabId: string) => {
-    router.push({ pathname: '/estimates', query: { tab: activeTabId } }, undefined, {
-      shallow: true,
-    });
+    router.push(
+      {
+        pathname: '/estimates',
+        query: { tab: activeTabId, isDesignation: isDesignationQuery },
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   const renderContent = (activeTabId: string) => {
@@ -48,8 +61,15 @@ export default function EstimateList() {
   };
 
   const handleTogglePage = (isDesignationPage: boolean) => {
-    setIsDesignation(isDesignationPage);
-    handleModal();
+    router.push(
+      {
+        pathname: '/estimates',
+        query: { ...router.query, isDesignation: isDesignationPage.toString() },
+      },
+      undefined,
+      { shallow: true }
+    );
+    setIsModalOpen(false);
   };
 
   return (
@@ -57,7 +77,7 @@ export default function EstimateList() {
       <div css={wrapper}>
         <div css={headerContainer} onClick={handleModal}>
           <Text typo="title1">{isDesignation ? '바로 예약' : '견적'}</Text>
-          <SelectUnfoldInactive width="14px" height="8px" color="black" />
+          <BlackUnfoldArrow width={14} height={8} />
         </div>
         {isModalOpen && (
           <>

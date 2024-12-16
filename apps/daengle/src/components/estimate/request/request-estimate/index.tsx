@@ -75,7 +75,7 @@ export function RequestEstimate({
             {dayjs(reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
           </Text>
         </Section>
-        {/* 서비스에 따라 제목 분기 처리 */}
+
         <Section
           title={
             service === 'vet'
