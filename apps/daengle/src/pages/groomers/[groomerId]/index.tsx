@@ -276,11 +276,6 @@ const toolTipInfo = css`
   opacity: 0;
 `;
 
-const amountPrice = css`
-  display: flex;
-  align-items: center;
-`;
-
 const line = css`
   height: 1px;
 
