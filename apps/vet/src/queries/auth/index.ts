@@ -1,5 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getVetModifyPage, getVetValidate, patchVetInfo, postKakao, postVetJoin } from '~/apis';
+import {
+  getVetModifyPage,
+  getVetValidate,
+  patchVetInfo,
+  getVetInfo,
+  postKakao,
+  postVetJoin,
+} from '~/apis';
 import { PatchVetInfoRequestBody, PostVetJoinRequestBody } from '~/models/auth';
 import { QUERY_KEYS } from '~/queries/query-keys';
 
@@ -39,5 +46,12 @@ export const useGetVetValidateQuery = () => {
   return useQuery({
     queryKey: QUERY_KEYS.GET_VET_VALIDATE,
     queryFn: getVetValidate,
+  });
+};
+
+export const useGetVetInfoQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_VET_INFO,
+    queryFn: getVetInfo,
   });
 };

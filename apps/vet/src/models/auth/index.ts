@@ -52,3 +52,17 @@ export interface PatchVetInfoRequestBody {
 export interface GetVetValidateResponse {
   isValidateMember: boolean;
 }
+
+export interface GetVetInfoResponse {
+  imageUrls: string[];
+  name: string;
+  keywords: string[];
+  closedDays: string[];
+  startTime: string;
+  endTime: string;
+  phoneNumber: number;
+  address: string;
+  detailAddress: string;
+  introduction: string;
+  daengleMeter: number;
+}
