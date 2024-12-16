@@ -14,11 +14,12 @@ interface Props {
   image: string;
   name: string;
   attributes: (string | number | null)[];
+  onClick: () => void;
 }
 
 const LABELS = ['나이', '몸무게', '특이사항'];
 
-export function PetDetails({ image, name, attributes }: Props): JSX.Element {
+export function PetDetails({ image, name, attributes, onClick }: Props): JSX.Element {
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
     event.currentTarget.onerror = null;
     event.currentTarget.src = '';
@@ -26,7 +27,7 @@ export function PetDetails({ image, name, attributes }: Props): JSX.Element {
 
   return (
     <div css={wrapper}>
-      <div css={profile}>
+      <div css={profile} onClick={onClick}>
         {image ? (
           <img src={image} alt={`${name} 프로필`} css={imageUrl} onError={handleImageError} />
         ) : (
@@ -43,7 +44,10 @@ export function PetDetails({ image, name, attributes }: Props): JSX.Element {
               {label}
             </Text>
           ))}
-          <TextButton icons={{ suffix: <ButtonTextButtonArrow width={'6px'} stroke="#BEBEBE" /> }}>
+          <TextButton
+            onClick={onClick}
+            icons={{ suffix: <ButtonTextButtonArrow width={'6px'} stroke="#BEBEBE" /> }}
+          >
             <Text color="gray400" typo="body9">
               자세히보기
             </Text>

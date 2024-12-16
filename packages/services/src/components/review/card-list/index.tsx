@@ -1,25 +1,19 @@
 import { Empty } from '@daengle/design-system';
 import { ReviewCard } from '../card';
 import { empty, wrapper } from './index.styles';
+import { PartnersReviewListType } from '~/interface/review';
 
-interface Props {
-  reviews: {
-    reviewId: number;
-    userId: number;
-    keywordList: string[];
-    reviewerName: string;
-    reviewerImageUrl: string;
-    revieweeName: string;
-    createdAt: string;
-    starRating: number;
-    content: string;
-    imageUrlList: string[];
-  }[];
+interface Props<T extends PartnersReviewListType> {
+  reviews: T[];
   flagged?: boolean;
-  onReport: () => void;
+  onReport: (reviewId: number, userId: number) => void;
 }
 
-export function ReviewCardList({ reviews, flagged, onReport }: Props) {
+export function ReviewCardList<T extends PartnersReviewListType>({
+  reviews,
+  flagged,
+  onReport,
+}: Props<T>) {
   if (reviews.length === 0) {
     return (
       <div css={empty}>
@@ -30,7 +24,15 @@ export function ReviewCardList({ reviews, flagged, onReport }: Props) {
   return (
     <div css={wrapper}>
       {reviews.map((review) => (
-        <ReviewCard key={review.reviewId} {...review} flagged={flagged} onReport={onReport} />
+        <ReviewCard
+          key={review.reviewId}
+          review={review}
+          flagged={flagged}
+          onReport={(event) => {
+            event.preventDefault();
+            onReport(review.reviewId, review.userId);
+          }}
+        />
       ))}
     </div>
   );
