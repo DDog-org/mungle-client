@@ -48,3 +48,13 @@ export interface PatchGroomerInfoRequestBody {
   instagramId: string | null;
   introduction: string | null;
 }
+
+export interface GetGroomerInfoResponse {
+  imageUrl: string;
+  name: string;
+  keywords: string[];
+  shopId: number;
+  shopName: string;
+  introduction: string;
+  daengleMeter: number;
+}
