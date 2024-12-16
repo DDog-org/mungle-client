@@ -7,7 +7,7 @@ export const screen = css`
   width: 100%;
   min-width: ${theme.size.minWidth};
   max-width: ${theme.size.maxWidth};
-  height: 100vh;
+  height: 100dvh;
   margin: 0 auto;
 `;
 
@@ -19,5 +19,6 @@ export const main = ({ isAppBarExist }: { isAppBarExist: boolean }) => css`
   width: 100%;
   height: 100%;
   padding: ${isAppBarExist ? `${theme.size.appBarHeight} 0 0 0` : 0};
-  border: 1px solid ${theme.colors.gray200};
+
+  /* border: 1px solid ${theme.colors.gray200}; */
 `;

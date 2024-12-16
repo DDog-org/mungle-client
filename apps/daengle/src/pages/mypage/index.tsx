@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { AppBar, Layout } from '@daengle/design-system';
+import { AppBar, Layout, RoundButton } from '@daengle/design-system';
 import { ROUTES } from '~/constants/commons';
 import { GNB } from '~/components/commons';
 
@@ -25,12 +25,40 @@ export default function Mypage() {
 
       <div>
         <h1>임시 마이페이지 입니다.</h1>
-        <button onClick={handleGoToClick}>[사용자 프로필 수정]</button>
-        <button onClick={handlePetCreateClick}>[반려견 프로필 등록]</button>
-        <button onClick={handlePetEditClick}>[반려견 프로필 수정]</button>
-        <button onClick={handlePetClick}>[반려견 프로필 조회]</button>
-        <button onClick={() => router.push(ROUTES.MYPAGE_REVIEWS)}>[내가 쓴 리뷰 조회]</button>
-        <button onClick={() => router.push(ROUTES.MYPAGE_PAYMENTS)}>[결제 내역 조회]</button>
+        <br />
+
+        <RoundButton size="S" onClick={() => router.push(ROUTES.LOGIN)}>
+          [로그인]
+        </RoundButton>
+        <br />
+        <RoundButton size="S" onClick={handleGoToClick}>
+          [사용자 프로필 수정]
+        </RoundButton>
+        <br />
+
+        <RoundButton size="S" onClick={handlePetCreateClick}>
+          [반려견 프로필 등록]
+        </RoundButton>
+        <br />
+
+        <RoundButton size="S" onClick={handlePetEditClick}>
+          [반려견 프로필 수정]
+        </RoundButton>
+        <br />
+
+        <RoundButton size="S" onClick={handlePetClick}>
+          [반려견 프로필 조회]
+        </RoundButton>
+        <br />
+
+        <RoundButton size="S" onClick={() => router.push(ROUTES.MYPAGE_REVIEWS)}>
+          [내가 쓴 리뷰 조회]
+        </RoundButton>
+        <br />
+
+        <RoundButton size="S" onClick={() => router.push(ROUTES.MYPAGE_PAYMENTS)}>
+          [결제 내역 조회]
+        </RoundButton>
       </div>
 
       <GNB />

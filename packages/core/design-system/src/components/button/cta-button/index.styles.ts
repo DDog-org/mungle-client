@@ -10,10 +10,10 @@ export const wrapper = css`
   bottom: 0;
   z-index: ${theme.zIndex.ctaButton};
 
-  width: calc(100% - 36px);
+  width: 100%;
   max-width: calc(${theme.size.maxWidth} - 36px);
   margin: 0 auto;
-  padding: 0 0 21px;
+  padding: 0 18px 21px;
 
   background: ${theme.colors.whiteGradient100} !important;
 `;

@@ -5,11 +5,12 @@ export const wrapper = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: absolute;
-  bottom: 58px;
-  z-index: 20;
+  position: fixed;
+  bottom: 0;
+  z-index: ${theme.zIndex.actionSheet};
 
   width: 100%;
+  max-width: ${theme.size.maxWidth};
   height: 165px;
   border-radius: 20px 20px 0 0;
 
