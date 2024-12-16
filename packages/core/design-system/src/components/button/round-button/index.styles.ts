@@ -96,6 +96,11 @@ export const buttonVariant = ({
       : theme.colors.greenGradient100};
     color: ${theme.colors.white};
   `}
+  ${variant === 'primaryLow' &&
+  css`
+    background-color: ${theme.colors.blue100};
+    color: ${theme.colors.blue200};
+  `}
   ${variant === 'ghost' &&
   css`
     border: 1px solid ${theme.colors.gray200};
