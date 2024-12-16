@@ -37,7 +37,7 @@ function ReceiverBubble({ message, partnerName }: ReceiverBubbleProps) {
       </div>
 
       <div css={timeWrapper}>
-        <Text typo="body12" color="gray300">
+        <Text typo="body12" color="gray400">
           {message.sentAt}
         </Text>
       </div>
@@ -49,7 +49,7 @@ function SenderBubble({ message }: SenderBubbleProps) {
   return (
     <div css={senderBubbleWrapper}>
       <div css={timeWrapper}>
-        <Text typo="body12" color="gray300">
+        <Text typo="body12" color="gray400">
           {message.sentAt}
         </Text>
       </div>

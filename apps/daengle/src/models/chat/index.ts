@@ -53,3 +53,7 @@ export interface PostChatMessagesRequestBody {
   messageContent: string;
   senderId: number;
 }
+
+export interface DeleteChatDeleteRequestParams {
+  roomId: number;
+}

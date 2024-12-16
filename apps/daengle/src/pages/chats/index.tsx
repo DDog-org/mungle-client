@@ -38,9 +38,11 @@ export default function Chats() {
     <Layout isAppBarExist={false}>
       <GNB />
       <section css={wrapper}>
-        <Text tag="h1" typo="title1" color="black">
-          채팅
-        </Text>
+        <div css={titleWrapper}>
+          <Text tag="h1" typo="title1" color="black">
+            채팅
+          </Text>
+        </div>
 
         <div css={chatsWrapper}>
           <Tabs tabs={TABS} renderContent={renderContent} />
@@ -55,7 +57,12 @@ const wrapper = css`
 
   width: 100%;
   height: 100%;
-  padding: 38px 18px ${theme.size.gnbHeight};
+  padding: 38px 0 ${theme.size.gnbHeight};
+`;
+
+const titleWrapper = css`
+  width: 100%;
+  padding: 0 18px;
 `;
 
 const chatsWrapper = css`

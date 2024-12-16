@@ -16,6 +16,7 @@ export function GroomerChatList() {
         chats?.roomList.map((chat) => (
           <ChatListItem
             key={chat.roomId}
+            roomId={chat.roomId}
             partnerName={chat.partnerName}
             lastMessage={chat.lastMessage}
             messageTime={chat.messageTime}

@@ -243,6 +243,7 @@ export const chatList = css`
   width: 100%;
   height: 100%;
   padding: calc(56px + 24px) 18px calc(78px + 18px) 18px;
+
   border-bottom: 1px solid ${theme.colors.gray200};
 `;
 
