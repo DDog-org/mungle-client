@@ -4,6 +4,7 @@ import {
   GetGroomerModifyPageResponse,
   PatchGroomerInfoRequestBody,
   PatchGroomerInfoResponse,
+  GetGroomerInfoResponse,
   PostJoinRequestBody,
   PostJoinResponse,
   PostKakaoRequestBody,
@@ -38,4 +39,8 @@ export const getGroomerModifyPage = async () => {
 
 export const patchGroomerInfo = async (body: PatchGroomerInfoRequestBody) => {
   return await api.patch<PatchGroomerInfoResponse>('/groomer/info', body);
+};
+
+export const getGroomerInfo = async () => {
+  return await api.get<GetGroomerInfoResponse>('/groomer/info');
 };
