@@ -87,7 +87,11 @@ export function GroomerEstimateList({ isDesignation }: Props) {
         <EmptyState
           isEmptyEstimates={false}
           hasOptions={false}
-          onClick={() => router.push(ROUTES.ESTIMATE_GROOMING)}
+          onClick={
+            isDesignation
+              ? () => router.push(ROUTES.SEARCH)
+              : () => router.push(ROUTES.ESTIMATE_GROOMING)
+          }
         />
       ) : (
         <>

@@ -83,7 +83,11 @@ export function VetEstimateList({ isDesignation }: Props) {
         <EmptyState
           isEmptyEstimates={false}
           hasOptions={false}
-          onClick={() => router.push(ROUTES.ESTIMATE_VET)}
+          onClick={
+            isDesignation
+              ? () => router.push(ROUTES.SEARCH)
+              : () => router.push(ROUTES.ESTIMATE_VET)
+          }
         />
       ) : (
         <>
