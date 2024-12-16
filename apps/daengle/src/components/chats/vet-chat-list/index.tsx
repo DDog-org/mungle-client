@@ -17,13 +17,13 @@ export function VetChatList() {
           <ChatListItem
             key={chat.roomId}
             roomId={chat.roomId}
-            partnerName={chat.partnerName}
+            partnerName={chat.otherName}
             lastMessage={chat.lastMessage}
             messageTime={chat.messageTime}
             onChatItemClick={() =>
               router.push({
                 pathname: ROUTES.CHATS_DETAIL(chat.roomId),
-                query: { otherId: chat.partnerId.toString() },
+                query: { otherId: chat.otherId.toString(), service: 'vet' },
               })
             }
             refetchRoomList={refetchRoomList}

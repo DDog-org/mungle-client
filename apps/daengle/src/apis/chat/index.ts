@@ -1,11 +1,11 @@
 import {
-  GetChatParams,
+  GetChatWithParams,
   GetChatUserGroomerListResponse,
   GetChatUserVetListResponse,
-  GetChatResponse,
+  GetChatWithResponse,
   PostChatMessagesRequestArgs,
   DeleteChatDeleteRequestParams,
-} from '~/models/chat';
+} from '~/models';
 import { api } from '../config';
 
 export const getChatUserGroomerList = async () => {
@@ -16,8 +16,8 @@ export const getChatUserVetList = async () => {
   return await api.get<GetChatUserVetListResponse>('/chat/user/vet/list');
 };
 
-export const getChat = async (params: GetChatParams) => {
-  return await api.get<GetChatResponse>('/chat/with', { params });
+export const getChatWith = async (params: GetChatWithParams) => {
+  return await api.get<GetChatWithResponse>('/chat/with', { params });
 };
 
 export const postChatMessages = async ({ roomId, body }: PostChatMessagesRequestArgs) => {

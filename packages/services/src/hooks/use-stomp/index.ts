@@ -18,18 +18,13 @@ export function useStomp({ url, topic, onMessage }: Props) {
 
     const client = new Client({
       webSocketFactory: () => new SockJS(url),
-      debug: (str) => console.log(str),
       onConnect: () => {
-        console.log('🎉 WebSocket connected');
         client.subscribe(topic, (message: IMessage) => {
           const parsedMessage = JSON.parse(message.body);
-          console.log('Received message:', parsedMessage);
           onMessage(parsedMessage);
         });
       },
-      onDisconnect: () => {
-        console.log('WebSocket disconnected');
-      },
+      onDisconnect: () => {},
     });
 
     client.activate();
@@ -42,8 +37,6 @@ export function useStomp({ url, topic, onMessage }: Props) {
         destination,
         body: JSON.stringify(body),
       });
-    } else {
-      console.error('STOMP connection is not established.');
     }
   };
 

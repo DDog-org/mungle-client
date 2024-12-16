@@ -15,6 +15,16 @@ export interface MessageInfos {
 export interface Message {
   messageType: string;
   messageContent: string;
-  sender?: 'user' | 'partner';
+  isSender: boolean;
   messageTime: string;
+}
+
+export interface ReceivedMessage {
+  chatRoomId: number;
+  content: string;
+  messageId: number;
+  messageType: 'TEXT_MESSAGE' | 'PICTURE_MESSAGE';
+  recipientId: number;
+  senderId: number;
+  timestamp: string;
 }

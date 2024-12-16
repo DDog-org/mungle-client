@@ -1,32 +1,32 @@
 export interface GetChatUserGroomerListResponse {
-  roomList: ChatUser[];
+  roomList: ChatUserListItem[];
 }
 
 export interface GetChatUserVetListResponse {
-  roomList: ChatUser[];
+  roomList: ChatUserListItem[];
 }
 
-export interface ChatUser {
+export interface ChatUserListItem {
   roomId: number;
-  partnerId: number;
-  partnerName: string;
-  partnerProfile: string | null;
+  otherId: number;
+  otherName: string;
+  otherProfile: string | null;
   messageTime: string;
   lastMessage: string;
+  partnerType: 'GROOMER_PARTNER' | 'VET_PARTNER';
 }
 
-export interface GetChatParams {
+export interface GetChatWithParams {
   otherId: number;
 }
 
-export interface GetChatResponse {
+export interface GetChatWithResponse {
   roomId: number;
   userId: number;
-  partnerId: number;
-  partnerProfile: string | null;
-  partnerName: string;
+  otherId: number;
+  otherProfile: string | null;
+  otherName: string;
   estimateId: number | null;
-  dateTime: string | null;
   messagesGroupedByDate: MessagesGroupedByDate[];
 }
 
