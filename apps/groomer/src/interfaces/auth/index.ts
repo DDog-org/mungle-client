@@ -12,10 +12,10 @@ export interface GroomerInfoForm {
 export interface GroomerModifyPageForm {
   image: File | null;
   introduction: string | null;
-  licenses: license[];
+  licenses: License[];
   instagramId: string;
 }
-export interface license {
+export interface License {
   name: string;
   acquisitionDate: string;
 }
