@@ -9,23 +9,31 @@ import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import ProfileCard from '~/components/groomers/profile-card';
 import { ROUTES } from '~/constants/commons';
+import { GetUserShopDetailRequestParams } from '~/models/detail';
+import { useGetUserShopDetailQuery } from '~/queries/detail';
 
 export default function ShopInfo() {
   const router = useRouter();
-  const array = [1, 2, 3, 4, 5];
+  const { shopId } = router.query;
+  const getShopId = Number(shopId);
+  const shopParams: GetUserShopDetailRequestParams = { shopId: getShopId };
+
+  const { data: ShopDetail } = useGetUserShopDetailQuery(shopParams);
 
   const handleCardClick = (id: number) => {
     router.push(ROUTES.GROOMER_DETAIL(id));
   };
 
+  console.log('ShopDetail:', ShopDetail);
+
   return (
     <Layout isAppBarExist={false}>
       <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
       <div css={wrapper}>
-        <div css={imageSection}>
+        <div css={imageSection(ShopDetail?.imageUrlList[0])}>
           {/* TODO: 캐러셀 기능 구현 */}
           <Text typo="title2" color="white" css={shopName}>
-            꼬꼬마 미용샵
+            {ShopDetail?.shopName}
           </Text>
         </div>
         <div css={infoBox}>
@@ -33,7 +41,11 @@ export default function ShopInfo() {
             <section css={infoSection}>
               <div css={time}>
                 <DetailTime width={20} />
-                <Text typo="body9">매일 10:00 - 20:00</Text>
+                <Text typo="body9">
+                  {/* TODO: 휴무일 받기 */}
+                  매일 {ShopDetail?.startTime.substring(0, 5)} -{' '}
+                  {ShopDetail?.endTime.substring(0, 5)}
+                </Text>
               </div>
               <div css={call}>
                 <DetailCall width={20} />
@@ -41,27 +53,30 @@ export default function ShopInfo() {
               </div>
               <div css={address}>
                 <DetailLocation width={20} />
-                <Text typo="body9">서울특별시 강남구 언주로152길 10</Text>
+                <Text typo="body9">{ShopDetail?.shopAddress}</Text>
               </div>
             </section>
             <div css={line} />
             <section css={infoText}>
               <Text typo="body1">소개</Text>
-              <Text typo="body10">
-                사랑하는 반려동물의 아름다움을 책임지는 든든한 파트너
-                <br />
-                정성과 전문성으로 반려동물에게 최고의 미용 서비스를 제공합니다.
-              </Text>
+              <Text typo="body10">{ShopDetail?.introduction}</Text>
             </section>
           </section>
           <section css={bottomSection}>
             <div css={textBox}>
               <Text typo="title2">디자이너</Text>
-              <Text typo="title2">5</Text>
+              <Text typo="title2">{ShopDetail?.groomers.length}</Text>
             </div>
             <section css={groomerList}>
-              {array.map(() => (
-                <ProfileCard onClick={() => handleCardClick(3)} />
+              {ShopDetail?.groomers.map((groomer) => (
+                <ProfileCard
+                  key={groomer.groomerAccountId}
+                  groomerName={groomer.groomerName}
+                  groomerImage={groomer.grommerImage}
+                  keywords={groomer.keywords}
+                  daengleMeter={groomer.daengleMeter}
+                  onClick={() => handleCardClick(groomer.groomerAccountId)}
+                />
               ))}
             </section>
           </section>
@@ -80,13 +95,13 @@ const wrapper = css`
   background-color: aliceblue;
 `;
 
-const imageSection = css`
+const imageSection = (shopImage: string | undefined) => css`
   position: relative;
 
   width: 100%;
   height: 416px;
 
-  background-image: url('/icons/pet-profile/edit_image.jpeg');
+  background-image: url(${shopImage});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
