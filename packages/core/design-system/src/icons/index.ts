@@ -9,6 +9,8 @@ export * from './ChatDefaultProfileImage';
 export * from './ChatItemMenu';
 export * from './ChatPlus';
 export * from './ChatSendButton';
+export * from './CarouselLeft';
+export * from './CarouselRight';
 export * from './DefaultImage';
 export * from './DefaultProfile';
 export * from './DetailCall';
