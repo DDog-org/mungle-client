@@ -89,6 +89,7 @@ export default function Home() {
           />
         }
       />
+
       <div css={wrapper}>
         <section css={topSection}>
           <div css={textBox}>
