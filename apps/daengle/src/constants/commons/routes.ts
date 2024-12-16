@@ -24,6 +24,7 @@ export const ROUTES = {
   GROOMER_ESTIMATE_FORM: '/groomers/estimate-form',
   GROOMER_REVIEW_FORM_EDIT: (reviewId: number) => `/groomers/review/${reviewId}/edit`,
   GROOMER_SHOP_DETAIL: (shopId: number) => `/groomers/shops/${shopId}`,
+  GROOMER_PORFOLIO: (groomerId: number) => `/groomers/${groomerId}/porfolio`,
 
   // Vets
   VET_DETAIL: (vetId: number) => `/vets/${vetId}`,

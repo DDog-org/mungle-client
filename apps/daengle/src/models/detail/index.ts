@@ -8,7 +8,7 @@ export interface GetUserGroomerDetailResponse {
   shopName: string;
   daengleMeter: number;
   reviewCount: number;
-  urlLink: string; //instagram
+  instagram: string;
 }
 
 export interface GetUserGroomerDetailRequestParams {
