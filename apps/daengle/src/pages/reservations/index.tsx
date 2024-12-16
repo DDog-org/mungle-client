@@ -28,6 +28,14 @@ export default function Reservations() {
     }
   };
 
+  const { tab = 'groomer' } = router.query;
+
+  const handleTabChange = (activeTabId: string) => {
+    router.push({ pathname: '/reservations', query: { tab: activeTabId } }, undefined, {
+      shallow: true,
+    });
+  };
+
   return (
     <Layout isAppBarExist={false}>
       <section css={wrapper}>
