@@ -181,6 +181,7 @@ const profileImageWrapper = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   margin: 32px 0 40px;
 `;
 const inputWrapper = css`
@@ -201,17 +202,20 @@ const textareaWrapper = css`
 `;
 
 const line = css`
-  border: 3.5px solid ${theme.colors.gray100};
   width: 100%;
-  background-color: ${theme.colors.gray100};
   margin: 32px 0;
+  border: 3.5px solid ${theme.colors.gray100};
+
+  background-color: ${theme.colors.gray100};
 `;
 
 const detailInput = css`
-  background-color: ${theme.colors.gray100};
   height: 136px;
-  border-radius: 10px;
   padding: 14px;
+  border-radius: 10px;
+
+  background-color: ${theme.colors.gray100};
+
   ::placeholder {
     color: ${theme.colors.gray200};
     font-size: ${theme.typo.body9};
@@ -231,10 +235,13 @@ const licenseStyle = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   padding: 18px;
-  background-color: ${theme.colors.green100};
   border: 1px solid ${theme.colors.green200};
   border-radius: 12px;
+
+  background-color: ${theme.colors.green100};
+
   ::placeholder {
     color: ${theme.colors.black};
     font-size: ${theme.typo.body9};
