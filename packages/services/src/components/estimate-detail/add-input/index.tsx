@@ -1,11 +1,12 @@
 import { Text } from '@daengle/design-system';
 import { addTitle, inputSection, textarea } from './index.styles';
-import { TextareaHTMLAttributes } from 'react';
+import { ChangeEvent, TextareaHTMLAttributes } from 'react';
 
 interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  title: string;
+  title?: string;
   placeholder: string;
   height?: number;
+  onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 export function AddInput({
@@ -18,11 +19,16 @@ export function AddInput({
 }: Props): JSX.Element {
   return (
     <div>
-      <div css={addTitle}>
-        <Text typo="body4" color="gray400">
-          {title}
-        </Text>
-      </div>
+      {title ? (
+        <div css={addTitle}>
+          <Text typo="body4" color="gray400">
+            {title}
+          </Text>
+        </div>
+      ) : (
+        <></>
+      )}
+
       <section css={inputSection}>
         <textarea
           css={[textarea, height && { minHeight: `${height}px` }]}

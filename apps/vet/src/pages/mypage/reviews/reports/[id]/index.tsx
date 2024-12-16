@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router';
-import { AppBar, Layout, Select, Text, theme } from '@daengle/design-system';
+import { AppBar, Input, Layout, RoundButton, Select, Text, theme } from '@daengle/design-system';
 import { ROUTES } from '~/constants/commons';
 import { GNB } from '~/components/commons';
 import { css } from '@emotion/react';
 import { useState } from 'react';
 import { REPORT_KEYWORDS } from '~/constants';
+import { AddInput } from '@daengle/services/components';
 
 const options = Object.entries(REPORT_KEYWORDS).map(([key, value]) => ({
   value: key,
@@ -14,10 +15,13 @@ const options = Object.entries(REPORT_KEYWORDS).map(([key, value]) => ({
 export default function Mypage() {
   const router = useRouter();
   const [selectedKeyword, setSelectedKeyword] = useState<string>('');
+  const [reportContent, setReportContent] = useState<string>('');
 
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedKeyword(event.target.value);
-  };
+  const handleChange =
+    (setter: React.Dispatch<React.SetStateAction<string>>) =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+      setter(event.target.value);
+    };
 
   const handleSubmit = () => {
     if (selectedKeyword) {
@@ -46,15 +50,30 @@ export default function Mypage() {
             options={options}
             placeholder="신고 유형을 선택해주세요"
             value={selectedKeyword}
-            onChange={handleKeywordChange}
+            onChange={handleChange(setSelectedKeyword)}
           />
         </div>
         <div css={section}>
           <Text typo="subtitle1">신고 내용</Text>
-          <input placeholder="예) 이런식으로 써주세요" height={70} css={input}></input>
+          <AddInput
+            placeholder="예) 부적절한 사진이 올라와있고, 협의되지 않은 무리한 요구를 했습니다."
+            height={100}
+            value={reportContent}
+            onChange={handleChange(setReportContent)}
+          />
+        </div>
+        <div css={submit}>
+          <RoundButton
+            service="partner"
+            size="L"
+            fullWidth
+            disabled={!selectedKeyword || !reportContent}
+            onClick={handleSubmit}
+          >
+            제출하기
+          </RoundButton>
         </div>
       </div>
-      <GNB />
     </Layout>
   );
 }
@@ -76,6 +95,7 @@ const profileContainer = css`
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  position: relative;
 
   padding: 24px 18px;
 `;
@@ -95,12 +115,7 @@ const section = css`
   margin: 8px 18px 32px;
 `;
 
-const selectBox = css`
-  border-radius: 20px;
-`;
-
-const input = css`
-  border-radius: 10px;
-
-  background-color: ${theme.colors.gray100};
+const submit = css`
+  margin-top: auto;
+  padding: 18px;
 `;
