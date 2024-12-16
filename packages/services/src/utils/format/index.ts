@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export const formatPhoneNumber = (phoneNumber: string) => {
   return phoneNumber
     .replace(/[^0-9]/g, '')
@@ -17,4 +19,23 @@ export const formatPhoneNumberWithRegionNumber = (phoneNumber: string) => {
   }
 
   return cleaned.replace(/^(\d{3})(\d{0,3})(\d{0,4})$/, '$1-$2-$3').replace(/(-{1,2})$/g, '');
+};
+
+export const formatLastSendTime = (lastSendTime: string) => {
+  const now = dayjs();
+  const lastSend = dayjs(lastSendTime);
+
+  const diffInMinutes = now.diff(lastSend, 'minute');
+
+  if (diffInMinutes < 1) {
+    return '방금 전';
+  } else if (diffInMinutes < 60) {
+    return `${diffInMinutes}분 전`;
+  } else if (diffInMinutes < 1440) {
+    const hours = Math.floor(diffInMinutes / 60);
+    return `${hours}시간 전`;
+  } else {
+    const days = Math.floor(diffInMinutes / 1440);
+    return `${days}일 전`;
+  }
 };

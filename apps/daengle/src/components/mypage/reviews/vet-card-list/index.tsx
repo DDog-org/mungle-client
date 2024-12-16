@@ -31,6 +31,7 @@ export function VetCardList() {
                 imageUrlList,
               }) => (
                 <Card
+                  key={careReviewId}
                   reviewId={careReviewId}
                   revieweeId={vetId}
                   keywordReviewList={careKeywordList}

@@ -97,12 +97,7 @@ export default function EstimateList() {
             </div>
           </>
         )}
-        <Tabs
-          tabs={TABS}
-          renderContent={renderContent}
-          activeTabId={String(tab)}
-          onChange={handleTabChange}
-        />
+        <Tabs tabs={TABS} renderContent={renderContent} />
         <GNB />
       </div>
     </Layout>

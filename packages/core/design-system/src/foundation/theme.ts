@@ -8,7 +8,7 @@ const theme = {
     minWidth: '320px',
     maxWidth: '480px',
     appBarHeight: '52px',
-    gnbHeight: '55px',
+    gnbHeight: '52px',
     ctaButtonHeight: '76px',
   },
   zIndex: {

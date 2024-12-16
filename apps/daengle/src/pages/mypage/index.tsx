@@ -6,11 +6,11 @@ import { ROUTES } from '~/constants/commons';
 import { GNB } from '~/components/commons';
 import { DefaultImage, MypageAddButton, ProfileArrowButton } from '@daengle/design-system/icons';
 import Image from 'next/image';
-import { PetInfo } from '~/interfaces/auth';
+import { PetInfoForm } from '~/interfaces/auth';
 import { useGetUserMypageQuery } from '~/queries';
 
 export default function Mypage() {
-  const [petInfos, setPetInfos] = useState<PetInfo[] | null>(null);
+  const [petInfos, setPetInfos] = useState<PetInfoForm[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
   const { data: getUserMypage } = useGetUserMypageQuery();
 
