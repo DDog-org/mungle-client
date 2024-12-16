@@ -15,7 +15,6 @@ export * from './DetailCall';
 export * from './DetailLocation';
 export * from './DetailTime';
 export * from './EmptyLogo';
-export * from './EmptyStar';
 export * from './EmptyStateBone';
 export * from './GnbChattingActive';
 export * from './GnbChattingInactive';
