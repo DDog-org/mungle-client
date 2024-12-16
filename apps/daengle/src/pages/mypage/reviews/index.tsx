@@ -18,14 +18,6 @@ const TABS = [
 export default function Reviews() {
   const router = useRouter();
 
-  const { tab = 'groomer' } = router.query;
-
-  const handleTabChange = (activeTabId: string) => {
-    router.push({ pathname: '/mypage/reviews', query: { tab: activeTabId } }, undefined, {
-      shallow: true,
-    });
-  };
-
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'groomer':
@@ -46,12 +38,7 @@ export default function Reviews() {
         </Text>
 
         <div css={content}>
-          <Tabs
-            tabs={TABS}
-            renderContent={renderContent}
-            activeTabId={String(tab)}
-            onChange={handleTabChange}
-          />
+          <Tabs tabs={TABS} renderContent={renderContent} />
         </div>
       </section>
     </Layout>

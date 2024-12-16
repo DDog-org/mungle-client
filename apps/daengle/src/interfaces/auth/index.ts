@@ -77,10 +77,10 @@ export interface UserMypageFormType {
   nickname: string;
   reviewCount: number;
   estimateCount: number;
-  petInfos: PetInfo[];
+  petInfos: PetInfoForm[];
 }
 
-export interface PetInfo {
+export interface PetInfoForm {
   petId: number;
   petImage: string;
   petName: string;

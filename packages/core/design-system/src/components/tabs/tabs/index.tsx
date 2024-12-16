@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tab } from '../tab';
 import { tabHeader, wrapper, tabContent, tabContentItem } from './index.styles';
@@ -10,7 +10,7 @@ interface Tab {
 
 interface Props {
   tabs: Tab[];
-  renderContent: (activeTabId: string) => React.ReactNode;
+  renderContent: (activeTabId: string) => ReactNode;
 }
 
 export function Tabs({ tabs, renderContent }: Props) {

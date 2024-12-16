@@ -28,14 +28,6 @@ export default function Reservations() {
     }
   };
 
-  const { tab = 'groomer' } = router.query;
-
-  const handleTabChange = (activeTabId: string) => {
-    router.push({ pathname: '/reservations', query: { tab: activeTabId } }, undefined, {
-      shallow: true,
-    });
-  };
-
   return (
     <Layout isAppBarExist={false}>
       <section css={wrapper}>
@@ -44,12 +36,7 @@ export default function Reservations() {
         </Text>
 
         <div css={content}>
-          <Tabs
-            tabs={TABS}
-            renderContent={renderContent}
-            activeTabId={String(tab)}
-            onChange={handleTabChange}
-          />
+          <Tabs tabs={TABS} renderContent={renderContent} />
         </div>
         <GNB />
       </section>

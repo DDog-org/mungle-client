@@ -30,14 +30,6 @@ export default function Home() {
   const { data: getUserValidate } = useGetUserValidateQuery();
   const { addressForm } = useAddressFormStore();
 
-  const { tab = 'groomer' } = router.query;
-
-  const handleTabChange = (activeTabId: string) => {
-    router.push({ pathname: '/', query: { tab: activeTabId } }, undefined, {
-      shallow: true,
-    });
-  };
-
   const handleSearchAddress = () => {
     if (getUserValidate) {
       router.push(ROUTES.SEARCH_ADDRESS);
@@ -107,12 +99,7 @@ export default function Home() {
         </section>
 
         <section css={content}>
-          <Tabs
-            tabs={TABS}
-            renderContent={renderContent}
-            activeTabId={String(tab)}
-            onChange={handleTabChange}
-          />
+          <Tabs tabs={TABS} renderContent={renderContent} />
         </section>
 
         {isVisible && (
