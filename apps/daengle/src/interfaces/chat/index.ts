@@ -16,5 +16,5 @@ export interface Message {
   messageType: string;
   messageContent: string;
   sender?: 'user' | 'partner';
-  messageTime?: string;
+  messageTime: string;
 }

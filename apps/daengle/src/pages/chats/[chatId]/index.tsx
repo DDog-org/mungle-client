@@ -1,25 +1,35 @@
 import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/react';
-import { AppBar, CapsuleButton, Layout, Tag, Text, theme } from '@daengle/design-system';
-import { ChatPlus, ChatSendButton, DefaultImage } from '@daengle/design-system/icons';
+import {
+  AppBar,
+  Bubble,
+  CapsuleButton,
+  ChatInputForm,
+  InputFormRef,
+  Layout,
+  Tag,
+  Text,
+  theme,
+} from '@daengle/design-system';
+import { DefaultImage } from '@daengle/design-system/icons';
 import { useStomp } from '@daengle/services/hooks';
-import { Bubble } from '~/components/chats/bubble';
 import { ROUTES } from '~/constants/commons';
 import { Message, MessageInfos } from '~/interfaces';
 import { useGetChatQuery, usePostChatMessages } from '~/queries';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 export default function ChatRoom() {
   const router = useRouter();
   const chatId = router.query.chatId as string;
 
+  const inputRef = useRef<InputFormRef>(null);
+
   // TODO: 미용사/병원 상세에서 query string으로 partnerId를 받아오도록
   const partnerId = router.query.partnerId as string;
 
   const [messages, setMessages] = useState<MessageInfos[]>([]);
-  const [newMessage, setNewMessage] = useState<string>('');
-
   const chatListRef = useRef<HTMLDivElement>(null);
 
   const { data } = useGetChatQuery(partnerId);
@@ -36,12 +46,14 @@ export default function ChatRoom() {
   });
 
   const handleSendMessage = useCallback(() => {
-    if (newMessage.trim()) {
+    const inputValue = inputRef.current?.getValue();
+
+    if (inputValue) {
       const currentDate = new Date().toISOString().split('T')[0];
 
       const messageData: Message = {
         messageType: 'TEXT_MESSAGE',
-        messageContent: newMessage,
+        messageContent: inputValue,
         sender: 'user',
         messageTime: new Date().toISOString(),
       };
@@ -73,14 +85,16 @@ export default function ChatRoom() {
         roomId: Number(chatId),
         body: {
           messageType: 'TEXT_MESSAGE',
-          messageContent: newMessage,
+          messageContent: inputValue,
           senderId: Number(data?.userId),
         },
       });
 
-      setNewMessage('');
+      if (inputRef.current) {
+        inputRef.current.reset();
+      }
     }
-  }, [sendMessage, newMessage, chatId, data?.userId]);
+  }, [sendMessage, chatId, data?.userId]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -154,12 +168,21 @@ export default function ChatRoom() {
               </div>
               {message.messages.map((msg) =>
                 msg.sender === 'user' ? (
-                  <Bubble.Sender key={msg.messageTime} message={msg} />
+                  <Bubble.Sender
+                    key={msg.messageTime}
+                    message={{
+                      content: msg.messageContent,
+                      sentAt: dayjs(msg.messageTime).locale('ko').format('A HH:mm'),
+                    }}
+                  />
                 ) : (
                   <Bubble.Receiver
                     key={msg.messageTime}
-                    message={msg}
                     partnerName={partnerName ?? ''}
+                    message={{
+                      content: msg.messageContent,
+                      sentAt: dayjs(msg.messageTime).locale('ko').format('A HH:mm'),
+                    }}
                   />
                 )
               )}
@@ -168,21 +191,7 @@ export default function ChatRoom() {
         </section>
       </section>
 
-      <div css={inputFieldWrapper}>
-        <ChatPlus width={32} height={32} />
-
-        <form css={inputWrapper} onSubmit={handleSubmit}>
-          <input
-            css={input}
-            placeholder="메시지를 입력해 주세요"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-          />
-          <button type="submit">
-            <ChatSendButton width={24} height={24} cursor="pointer" />
-          </button>
-        </form>
-      </div>
+      <ChatInputForm ref={inputRef} onSubmit={handleSubmit} />
     </Layout>
   );
 }
@@ -235,44 +244,6 @@ export const chatList = css`
   height: 100%;
   padding: calc(56px + 24px) 18px calc(78px + 18px) 18px;
   border-bottom: 1px solid ${theme.colors.gray200};
-`;
-
-export const inputFieldWrapper = css`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-
-  width: 100%;
-  max-width: ${theme.size.maxWidth};
-  margin: 0 auto;
-  padding: 20px 18px;
-
-  background: white;
-  box-shadow: 0 -4px 10px 0 rgb(0 0 0 / 5%);
-`;
-
-export const inputWrapper = css`
-  display: flex;
-  align-items: center;
-
-  width: 100%;
-  padding: 8px 8px 8px 18px;
-  border: 1px solid ${theme.colors.gray200};
-  border-radius: 21px;
-`;
-
-export const input = css`
-  width: 100%;
-  height: 100%;
-  ${theme.typo.body12};
-
-  ::placeholder {
-    color: ${theme.colors.gray200};
-  }
 `;
 
 export const tagWrapper = css`

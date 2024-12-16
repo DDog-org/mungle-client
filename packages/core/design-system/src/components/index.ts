@@ -1,6 +1,7 @@
 export * from './app-bar';
 export * from './button';
 export * from './chips';
+export * from './chat';
 export * from './empty';
 export * from './gnb';
 export * from './image-input';

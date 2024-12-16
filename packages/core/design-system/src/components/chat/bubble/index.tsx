@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Text } from '@daengle/design-system';
 import { ChatDefaultProfileImage } from '@daengle/design-system/icons';
-import { Message } from '~/interfaces';
+import { ReceiverBubbleProps, SenderBubbleProps } from './index.types';
 import {
   receiverBubble,
   receiverBubbleWrapper,
@@ -11,17 +11,7 @@ import {
   timeWrapper,
   senderBubble,
 } from './index.styles';
-import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
 
-interface ReceiverBubbleProps {
-  message: Message;
-  partnerName: string;
-}
-
-interface SenderBubbleProps {
-  message: Message;
-}
 interface Props {
   children: ReactNode;
 }
@@ -30,25 +20,25 @@ function BubbleWrapper({ children }: Props) {
   return <div css={wrapper}>{children}</div>;
 }
 
-function ReceiverBubble({ message }: ReceiverBubbleProps) {
+function ReceiverBubble({ message, partnerName }: ReceiverBubbleProps) {
   return (
     <div css={receiverBubbleWrapper}>
       <ChatDefaultProfileImage width={28} height={28} />
 
       <div css={receiverBubbleInfo}>
         <Text typo="body12" color="black">
-          문소연 디자이너
+          {partnerName}
         </Text>
         <div css={receiverBubble}>
           <Text tag="p" typo="body7" color="black100">
-            {message.messageContent}
+            {message.content}
           </Text>
         </div>
       </div>
 
       <div css={timeWrapper}>
         <Text typo="body12" color="gray300">
-          {dayjs(message.messageTime).locale('ko').format('A HH:mm')}
+          {message.sentAt}
         </Text>
       </div>
     </div>
@@ -60,13 +50,13 @@ function SenderBubble({ message }: SenderBubbleProps) {
     <div css={senderBubbleWrapper}>
       <div css={timeWrapper}>
         <Text typo="body12" color="gray300">
-          {dayjs(message.messageTime).locale('ko').format('A HH:mm')}
+          {message.sentAt}
         </Text>
       </div>
 
       <div css={senderBubble}>
         <Text tag="p" typo="body7" color="white">
-          {message.messageContent}
+          {message.content}
         </Text>
       </div>
     </div>
