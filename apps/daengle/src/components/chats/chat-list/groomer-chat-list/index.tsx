@@ -18,6 +18,7 @@ export function GroomerChatList() {
             key={chat.roomId}
             partnerName={chat.partnerName}
             lastMessage={chat.lastMessage}
+            messageTime={chat.messageTime}
             onChatItemClick={() =>
               router.push({
                 pathname: ROUTES.CHATS_DETAIL(chat.roomId),

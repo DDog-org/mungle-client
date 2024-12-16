@@ -1,13 +1,14 @@
 import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/react';
-import { AppBar, CapsuleButton, Layout, Text, theme } from '@daengle/design-system';
+import { AppBar, CapsuleButton, Layout, Tag, Text, theme } from '@daengle/design-system';
 import { ChatPlus, ChatSendButton, DefaultImage } from '@daengle/design-system/icons';
 import { useStomp } from '@daengle/services/hooks';
 import { Bubble } from '~/components/chats/bubble';
 import { ROUTES } from '~/constants/commons';
 import { Message, MessageInfos } from '~/interfaces';
 import { useGetChatQuery, usePostChatMessages } from '~/queries';
+import dayjs from 'dayjs';
 
 export default function ChatRoom() {
   const router = useRouter();
@@ -144,7 +145,13 @@ export default function ChatRoom() {
         <section css={chatList} ref={chatListRef}>
           {messages?.map((message) => (
             <>
-              <span>{message.date}</span>
+              <div css={tagWrapper}>
+                <Tag variant="line">
+                  <Text typo="body2" color="blue200">
+                    {dayjs(message.date).format('YYYY년 MM월 DD일')}
+                  </Text>
+                </Tag>
+              </div>
               {message.messages.map((msg) =>
                 msg.sender === 'user' ? (
                   <Bubble.Sender key={msg.messageTime} message={msg} />
@@ -266,4 +273,12 @@ export const input = css`
   ::placeholder {
     color: ${theme.colors.gray200};
   }
+`;
+
+export const tagWrapper = css`
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+  margin: 0 8px;
 `;

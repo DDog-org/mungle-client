@@ -1,14 +1,16 @@
 import { Text } from '@daengle/design-system';
 import { ChatItemMenu, DefaultImage } from '@daengle/design-system/icons';
+import { formatLastSendTime } from '@daengle/services/utils';
 import { chatItem, chatItemText, chatMenu, wrapper } from './index.styles';
 
 interface Props {
   partnerName: string;
   lastMessage: string;
+  messageTime: string;
   onChatItemClick: () => void;
 }
 
-export function ChatListItem({ partnerName, lastMessage, onChatItemClick }: Props) {
+export function ChatListItem({ partnerName, lastMessage, messageTime, onChatItemClick }: Props) {
   return (
     <div css={wrapper} onClick={onChatItemClick}>
       <div css={chatItem}>
@@ -26,7 +28,7 @@ export function ChatListItem({ partnerName, lastMessage, onChatItemClick }: Prop
       <div css={chatMenu}>
         <ChatItemMenu width={12} height={3} />
         <Text typo="body11" color="gray300">
-          1분 전
+          {formatLastSendTime(messageTime)}
         </Text>
       </div>
     </div>

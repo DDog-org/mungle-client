@@ -12,6 +12,7 @@ import {
   senderBubble,
 } from './index.styles';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 interface ReceiverBubbleProps {
   message: Message;
@@ -47,7 +48,7 @@ function ReceiverBubble({ message }: ReceiverBubbleProps) {
 
       <div css={timeWrapper}>
         <Text typo="body12" color="gray300">
-          {dayjs(message.messageTime).format('A hh:mm')}
+          {dayjs(message.messageTime).locale('ko').format('A HH:mm')}
         </Text>
       </div>
     </div>
@@ -59,7 +60,7 @@ function SenderBubble({ message }: SenderBubbleProps) {
     <div css={senderBubbleWrapper}>
       <div css={timeWrapper}>
         <Text typo="body12" color="gray300">
-          {dayjs(message.messageTime).format('A hh:mm')}
+          {dayjs(message.messageTime).locale('ko').format('A HH:mm')}
         </Text>
       </div>
 
