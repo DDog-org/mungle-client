@@ -4,9 +4,11 @@ import {
   GetUserVetDetailResponse,
   GetUserShopDetailRequestParams,
   GetUserShopDetailResponse,
+  GetUserGroomerDetailRequestParams,
+  GetUserGroomerDetailResponse,
 } from '~/models/detail';
 import { QUERY_KEYS } from '../query-keys';
-import { getUserVetDetail, getUserShopDetail } from '~/apis/detail';
+import { getUserVetDetail, getUserShopDetail, getUserGroomerDetail } from '~/apis/detail';
 
 export const useGetUserVetDetailQuery = (params: GetUserVetDetailRequestParams) => {
   return useQuery<GetUserVetDetailResponse>({
@@ -22,6 +24,15 @@ export const useGetUserShopDetailQuery = (params: GetUserShopDetailRequestParams
     queryKey: QUERY_KEYS.GET_USER_SHOP_DETAIL,
     queryFn: () => {
       return getUserShopDetail(params);
+    },
+  });
+};
+
+export const useGetUserGroomerDetailQuery = (params: GetUserGroomerDetailRequestParams) => {
+  return useQuery<GetUserGroomerDetailResponse>({
+    queryKey: QUERY_KEYS.GET_USER_GROOMER_DETAIL,
+    queryFn: () => {
+      return getUserGroomerDetail(params);
     },
   });
 };

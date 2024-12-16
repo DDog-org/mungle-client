@@ -23,7 +23,8 @@ export const ROUTES = {
   GROOMER_DETAIL: (groomerId: number) => `/groomers/${groomerId}`,
   GROOMER_REVIEWS: (groomerId: number) => `/groomers/${groomerId}/reviews`,
   GROOMER_ESTIMATE_FORM: '/groomers/estimate-form',
-  GROOMER_REVIEW_FORM_EDIT: (reveiwId: number) => `/groomers/review/${reveiwId}/edit`,
+  GROOMER_REVIEW_FORM_EDIT: (reviewId: number) => `/groomers/review/${reviewId}/edit`,
+  GROOMER_PORFOLIO: (groomerId: number) => `/groomers/${groomerId}/porfolio`,
 
   // Vets
   VET_DETAIL: (vetId: number) => `/vets/${vetId}`,
