@@ -44,6 +44,7 @@ export default function Home() {
     } else {
       // TODO: 모달창으로 변경
       alert('로그인 해주세요');
+      router.push(ROUTES.LOGIN);
     }
   };
 
@@ -53,6 +54,7 @@ export default function Home() {
     } else {
       // TODO: 모달창으로 변경
       alert('로그인 해주세요');
+      router.push(ROUTES.LOGIN);
     }
   };
 
@@ -84,6 +86,7 @@ export default function Home() {
           />
         }
       />
+
       <div css={wrapper}>
         <section css={topSection}>
           <div css={textBox}>
@@ -102,6 +105,7 @@ export default function Home() {
             견적 요청하기
           </RoundButton>
         </section>
+
         <section css={content}>
           <Tabs
             tabs={TABS}
@@ -110,11 +114,12 @@ export default function Home() {
             onChange={handleTabChange}
           />
         </section>
+
         {isVisible && (
-          <div css={actionSheetBox}>
+          <>
             <ActionSheet />
             <div css={overlay} onClick={handleCloseActionSheet} />
-          </div>
+          </>
         )}
       </div>
       <GNB />
@@ -123,10 +128,12 @@ export default function Home() {
 }
 
 const wrapper = css`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   overflow: hidden;
 
   width: 100%;
-  height: 100%;
 
   background: linear-gradient(rgb(93 134 254 / 100%), rgb(255 255 255 / 0%) 50%);
 `;
@@ -162,18 +169,15 @@ const daengleDog = css`
 `;
 
 const content = css`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
   width: 100%;
-  height: 581px;
   padding: 18px 0;
   border-radius: 30px 30px 0 0;
 
   background-color: ${theme.colors.white};
-`;
-
-const actionSheetBox = css`
-  position: relative;
-
-  width: 100%;
 `;
 
 const overlay = css`

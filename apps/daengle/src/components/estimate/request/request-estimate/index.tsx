@@ -1,10 +1,10 @@
-import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
+import { AppBar, CTAButton, Layout, RoundButton, Text } from '@daengle/design-system';
 import { useRouter } from 'next/router';
 import { Section } from '../section';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { PetImage } from '../pet-image';
-import { footer, header, wrapper } from './index.styles';
+import { header, wrapper } from './index.styles';
 import {
   usePostEstimateCancelCareMutation,
   usePostEstimateCancelGroomingMutation,
@@ -62,7 +62,7 @@ export function RequestEstimate({
 
   return (
     <Layout>
-      <AppBar onBackClick={router.back} onHomeClick={() => router.back()} />
+      <AppBar backgroundColor="white" onBackClick={router.back} onHomeClick={() => router.back()} />
       <div css={wrapper}>
         <div css={header}>
           <Text typo="title1">내가 보낸 요청</Text>
@@ -91,20 +91,11 @@ export function RequestEstimate({
         <Section title="추가 요청사항">
           <Text typo="subtitle1">{requirements}</Text>
         </Section>
-        <div css={footer}>
-          <RoundButton
-            service="daengle"
-            size="L"
-            variant="primary"
-            fullWidth
-            onClick={handleRequest}
-          >
-            <Text typo="subtitle2" color="white">
-              요청 취소하기
-            </Text>
-          </RoundButton>
-        </div>
       </div>
+
+      <CTAButton service="daengle" onClick={handleRequest}>
+        요청 취소하기
+      </CTAButton>
     </Layout>
   );
 }
