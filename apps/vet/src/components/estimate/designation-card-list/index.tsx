@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { Card, EmptyState } from 'node_modules/@daengle/services/src/components/estimate-list';
 import { ROUTES } from '~/constants/commons';
@@ -5,7 +6,7 @@ import { useVetEstimateDesignationListQuery } from '~/queries/estimate';
 
 export function DesignationCardList() {
   const router = useRouter();
-  const { tab } = router.query;
+  const { type } = router.query;
 
   const {
     data: estimateResponse,
@@ -28,12 +29,12 @@ export function DesignationCardList() {
   }
 
   return (
-    <div>
+    <div css={wrapper}>
       {estimates.map((data) => (
         <Card
           id={data.id}
           onDetailClick={() =>
-            router.push({ pathname: ROUTES.ESTIMATE_DETAIL(data.id), query: { tab: tab } })
+            router.push({ pathname: ROUTES.ESTIMATE_DETAIL(data.id), query: { type: type } })
           }
           imageUrl={data.imageUrl}
           nickname={data.nickname}
@@ -45,3 +46,7 @@ export function DesignationCardList() {
     </div>
   );
 }
+
+const wrapper = css`
+  margin: 18px 18px 0 0;
+`;

@@ -1,11 +1,13 @@
 import { useRouter } from 'next/router';
 import { AppBar, Input, Layout, RoundButton, Select, Text, theme } from '@daengle/design-system';
 import { ROUTES } from '~/constants/commons';
-import { GNB } from '~/components/commons';
+
 import { css } from '@emotion/react';
 import { useState } from 'react';
 import { REPORT_KEYWORDS } from '~/constants';
 import { AddInput } from '@daengle/services/components';
+import { useGetVetReviewReportQuery, usePostVetReviewReportMutation } from '~/queries';
+import { DefaultProfile } from '@daengle/design-system/icons';
 
 const options = Object.entries(REPORT_KEYWORDS).map(([key, value]) => ({
   value: key,
@@ -14,6 +16,12 @@ const options = Object.entries(REPORT_KEYWORDS).map(([key, value]) => ({
 
 export default function Mypage() {
   const router = useRouter();
+  const { id, vetId } = router.query;
+  const careReviewId = Number(id);
+
+  const { data, isLoading, isError } = useGetVetReviewReportQuery({ careReviewId });
+  const mutation = usePostVetReviewReportMutation();
+
   const [selectedKeyword, setSelectedKeyword] = useState<string>('');
   const [reportContent, setReportContent] = useState<string>('');
 
@@ -23,15 +31,53 @@ export default function Mypage() {
       setter(event.target.value);
     };
 
-  const handleSubmit = () => {
-    if (selectedKeyword) {
-      console.log('선택된 키워드:', selectedKeyword); // 내부적으로는 키값 (예: BAD_WORDS)
-
-      // 여기에 키워드 저장 로직 추가
-    } else {
-      alert('신고 유형을 선택해주세요.');
+  const handleSubmit = async () => {
+    if (!selectedKeyword || !reportContent) {
+      alert('신고 유형과 내용을 모두 입력해주세요.');
+      return;
     }
+    const reportData = {
+      vetId: Number(vetId),
+      reviewId: careReviewId,
+      reportType: selectedKeyword,
+      reportContent,
+    };
+
+    mutation.mutate(reportData, {
+      onSuccess: () => {
+        alert('신고가 성공적으로 접수되었습니다.');
+        router.push(ROUTES.HOME);
+      },
+      onError: () => {
+        alert('신고 접수에 실패했습니다. 다시 시도해주세요.');
+      },
+    });
   };
+  if (isLoading) {
+    return (
+      <Layout>
+        <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
+        <div css={wrapper}>
+          <Text tag="h1" typo="title1" color="black">
+            로딩 중...
+          </Text>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Layout>
+        <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
+        <div css={wrapper}>
+          <Text tag="h1" typo="title1" color="black">
+            데이터를 불러오는 중 오류가 발생했습니다.
+          </Text>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -41,8 +87,13 @@ export default function Mypage() {
           신고하기
         </Text>
         <div css={profileContainer}>
-          <img src={'./test.jpg'} alt="profile" css={profileImage} />
-          <Text typo="subtitle3">이름</Text>
+          {data?.reviewerImageUrl ? (
+            <img src={data?.reviewerImageUrl} alt="profile" css={profileImage} />
+          ) : (
+            <DefaultProfile css={profileImage} />
+          )}
+
+          <Text typo="subtitle3">{data?.reviewerNickName}</Text>
         </div>
         <div css={section}>
           <Text typo="subtitle1">신고 유형</Text>

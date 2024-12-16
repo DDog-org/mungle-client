@@ -33,8 +33,10 @@ export default function EstimateDetail() {
     treatment: '',
   });
 
-  const { id } = router.query;
+  const { id, type } = router.query;
   const estimateId = Number(id);
+  const isDesignationService = type === 'designation';
+
   const params: GetVetEstimateDetailRequestParams = { careEstimateId: estimateId };
 
   const { data: estimateData } = useVetEstimateDetailQuery(params);
@@ -92,9 +94,13 @@ export default function EstimateDetail() {
   return (
     <Layout>
       <AppBar
+        backgroundColor={theme.colors.white}
         onBackClick={() =>
           router.push({ pathname: '/estimates', query: { tab: router.query.tab || 'general' } })
         }
+        onHomeClick={() => {
+          router.push(ROUTES.HOME);
+        }}
       />
 
       <div css={wrapper}>
@@ -118,6 +124,7 @@ export default function EstimateDetail() {
             image={petData.petImageUrl}
             name={petData.petName}
             attributes={petAttributes}
+            onClick={() => router.push(ROUTES.ESTIMATE_PETINFO(petData.petId))}
           />
         </Section>
         <Section title="증상">{petData.symptoms}</Section>
@@ -156,9 +163,26 @@ export default function EstimateDetail() {
           onChange={handleInputChange}
         />
         <div css={button}>
-          <RoundButton service="partner" size="L" fullWidth onClick={handleReservation}>
-            예약받기
-          </RoundButton>
+          {isDesignationService ? (
+            <>
+              <RoundButton
+                service="partner"
+                size="L"
+                onClick={() => {
+                  router.push(ROUTES.CHATS);
+                }}
+              >
+                채팅하기
+              </RoundButton>
+              <RoundButton service="partner" size="L" onClick={handleReservation}>
+                예약받기
+              </RoundButton>
+            </>
+          ) : (
+            <RoundButton service="partner" size="L" fullWidth onClick={handleReservation}>
+              예약받기
+            </RoundButton>
+          )}
         </div>
       </div>
     </Layout>
@@ -188,5 +212,9 @@ const allTitle = css`
 `;
 
 const button = css`
+  display: flex;
+  flex-direction: row;
+  gap: 13px;
+
   padding: 24px 18px;
 `;

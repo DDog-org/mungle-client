@@ -1,10 +1,12 @@
 import { Layout, AppBar, Text, theme, Tabs } from '@daengle/design-system';
 import { ReviewCardList, ReviewSummary } from '@daengle/services/components';
-
-import { useMemo } from 'react';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
+import { useIntersectionLoad } from '~/hooks/review';
+import { CareReviewList, CareReviewReportList, PartnersReviewListType } from '~/interfaces';
+
+import { useGetVetReviewListQuery, useGetVetReviewReportListQuery } from '~/queries/review';
 
 const TABS = [
   {
@@ -17,88 +19,114 @@ const TABS = [
   },
 ];
 
+function transformCareReviewList(data: CareReviewList): PartnersReviewListType {
+  return {
+    reviewId: data.careReviewId,
+    userId: data.vetId,
+    reviewerName: data.reviewerName,
+    reviewerImageUrl: data.reviewerImageUrl,
+    revieweeName: data.revieweeName,
+    createdAt: data.createdAt,
+    starRating: data.starRating,
+    content: data.content,
+    imageUrlList: data.imageUrlList,
+    keywordsList: data.carekeywordList, // carekeywordList를 keywordList로 변환
+  };
+}
+function transformCareReviewReportList(data: CareReviewReportList): PartnersReviewListType {
+  return {
+    reviewId: data.careReviewId,
+    userId: data.vetId,
+    reviewerName: data.reviewerName,
+    reviewerImageUrl: data.reviewerImageUrl,
+    revieweeName: data.revieweeName,
+    createdAt: data.createdAt,
+    starRating: data.starRating,
+    content: data.content,
+    imageUrlList: data.imageUrlList,
+    reportType: data.reportType, // 신고 유형
+    reportContent: data.reportContent, // 신고 내용
+    keywordsList: data.careKeywordList, // careKeywordList를 keywordList로 변환
+  };
+}
+
 export default function ReviewsPage() {
   const router = useRouter();
-  const reviews = useMemo(
-    () => [
-      {
-        reviewId: 12,
-        userId: 1,
-        keywordList: ['EXCELLENT_CONSULTATION', 'HYGIENIC', 'STYLE_IS_GREAT'],
-        reviewerName: '테스트닉네임',
-        reviewerImageUrl: '',
-        revieweeName: '김미용사',
-        createdAt: '2024-12-13T14:00:00',
-        starRating: 5.0,
-        content: '미용사분이 정말 친절하셨고, 스타일도 마음에 들어요 쉐!',
-        imageUrlList: ['https://example.com/image1.jpg', 'https://example.com/image2.jpg'],
-      },
-      // ... 다른 리뷰 데이터
-    ],
-    []
-  );
 
-  const flaggedReviews = useMemo(
-    () => [
-      {
-        reviewId: 1,
-        userId: 1,
-        keywordList: ['EXCELLENT_CONSULTATION', 'HYGIENIC', 'PROFESSIONAL'],
-        reviewerName: '테스트닉네임',
-        reviewerImageUrl: '',
-        revieweeName: '김미용사',
-        createdAt: '2024-12-14T21:25:56.973646',
-        starRating: 5.0,
-        content: '수의사분이 너무 전문적이세요 시123d',
-        imageUrlList: ['https://example.com/image1.jpg', 'https://example.com/image2.jpg'],
-        reportType: 'BAD_WORD',
-        reportContent: '기분 나쁘잖아요',
-      },
-      // ... 다른 신고 리뷰 데이터
-    ],
-    []
-  );
-  const { tab = 'list' } = router.query;
+  const {
+    data: receivedData,
+    fetchNextPage: fetchNextReceivedPage,
+    hasNextPage: hasNextReceivedPage,
+    isFetchingNextPage: isFetchingNextReceivedPage,
+  } = useGetVetReviewListQuery();
 
-  const handleTabChange = (activeTabId: string) => {
-    router.push({ pathname: '/mypage/reviews', query: { tab: activeTabId } }, undefined, {
-      shallow: true,
-    });
-  };
-  console.log(reviews[0]);
+  const receivedReviews: PartnersReviewListType[] =
+    receivedData?.pages.flatMap((page) => page.reviewList.map(transformCareReviewList)) || [];
+
+  const receivedReviewCount = receivedData?.pages[0]?.reviewCount || 0;
+
+  const { loadMoreRef: loadMoreReceivedRef } = useIntersectionLoad({
+    fetchNextPage: fetchNextReceivedPage,
+    hasNextPage: hasNextReceivedPage,
+    isFetchingNextPage: isFetchingNextReceivedPage,
+  });
+
+  const {
+    data: flaggedData,
+    fetchNextPage: fetchNextFlaggedPage,
+    hasNextPage: hasNextFlaggedPage,
+    isFetchingNextPage: isFetchingNextFlaggedPage,
+  } = useGetVetReviewReportListQuery();
+
+  const flaggedReviews: PartnersReviewListType[] =
+    flaggedData?.pages.flatMap((page) => page.reviewList.map(transformCareReviewReportList)) || [];
+  const flaggedReviewCount = flaggedData?.pages[0]?.reviewCount || 0;
+
+  const { loadMoreRef: loadMoreFlaggedRef } = useIntersectionLoad({
+    fetchNextPage: fetchNextFlaggedPage,
+    hasNextPage: hasNextFlaggedPage,
+    isFetchingNextPage: isFetchingNextFlaggedPage,
+  });
+
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'list':
         return (
           <div>
-            <ReviewSummary total={reviews.length} />
+            <ReviewSummary total={receivedReviewCount} />
             <ReviewCardList
-              reviews={[...reviews]}
-              flagged={false}
-              onReport={() => router.push(ROUTES.MYPAGE)}
+              reviews={receivedReviews}
+              onReport={(reviewId, userId) =>
+                router.push({
+                  pathname: ROUTES.MYPAGE_REVIEWS_REPORT(reviewId),
+                  query: { vetId: userId },
+                })
+              }
             />
+            <div ref={loadMoreReceivedRef} css={bottom} />
           </div>
         );
       case 'report':
         return (
           <div>
-            <ReviewSummary total={flaggedReviews.length} />
+            <ReviewSummary total={flaggedReviewCount} />
             <ReviewCardList
-              reviews={[...flaggedReviews]}
+              reviews={flaggedReviews}
               flagged={true}
-              onReport={() => router.push(ROUTES.MYPAGE)}
+              onReport={(reviewId) => router.push(ROUTES.MYPAGE_REVIEWS_REPORT(reviewId))}
             />
+            <div ref={loadMoreFlaggedRef} css={bottom} />
           </div>
         );
       default:
         return (
           <div>
-            <ReviewSummary total={reviews.length} />
+            <ReviewSummary total={receivedReviewCount} />
             <ReviewCardList
-              reviews={[...reviews]}
-              flagged={false}
-              onReport={() => router.push(ROUTES.MYPAGE)}
+              reviews={receivedReviews}
+              onReport={(reviewId) => router.push(ROUTES.MYPAGE_REVIEWS_REPORT(reviewId))}
             />
+            <div ref={loadMoreReceivedRef} css={bottom} />
           </div>
         );
     }
@@ -106,22 +134,13 @@ export default function ReviewsPage() {
 
   return (
     <Layout>
-      <AppBar
-        onBackClick={router.back}
-        onHomeClick={() => router.push(ROUTES.HOME)}
-        backgroundColor={theme.colors.background}
-      />
+      <AppBar backgroundColor={theme.colors.background} />
       <div css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
           리뷰 관리
         </Text>
         <div css={content}>
-          <Tabs
-            tabs={TABS}
-            renderContent={renderContent}
-            activeTabId={String(tab)}
-            onChange={handleTabChange}
-          />
+          <Tabs tabs={TABS} renderContent={renderContent} />
         </div>
       </div>
     </Layout>
@@ -146,4 +165,12 @@ const content = css`
   width: 100%;
   height: 100%;
   margin: 34px 0 0;
+`;
+
+const bottom = css`
+  position: absolute;
+  bottom: 0;
+
+  width: 100%;
+  height: 18px;
 `;
