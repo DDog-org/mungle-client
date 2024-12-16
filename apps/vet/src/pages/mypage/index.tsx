@@ -8,19 +8,42 @@ import {
 } from '@daengle/design-system/icons';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { GNB } from '~/components/commons';
 import { ROUTES } from '~/constants/commons';
+import { useGetVetInfoQuery } from '~/queries';
 
 export default function VetProfile() {
+  const [imageUrl, setImageUrl] = useState<string>();
   const router = useRouter();
+
+  const { data: getVetInfo } = useGetVetInfoQuery();
+
+  const dayMapping: { [key: string]: string } = {
+    MONDAY: '월',
+    TUESDAY: '화',
+    WEDNESDAY: '수',
+    THURSDAY: '목',
+    FRIDAY: '금',
+    SATURDAY: '토',
+    SUNDAY: '일',
+  };
+
+  const closedDays = getVetInfo?.closedDays?.map((day) => dayMapping[day] || day).join(', ');
+
+  useEffect(() => {
+    if (getVetInfo?.imageUrls) {
+      setImageUrl(getVetInfo?.imageUrls[0]);
+    }
+  }, [getVetInfo]);
 
   return (
     <Layout isAppBarExist={false}>
       <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
       <div css={wrapper}>
-        <div css={imageSection}>
+        <div css={imageSection(imageUrl || '')}>
           <Text typo="title2" color="white" css={vetName}>
-            다고쳐 댕댕병원
+            {getVetInfo?.name}
           </Text>
           <div css={tags}>
             <Text typo="body12" color="white" css={tag}>
@@ -36,42 +59,42 @@ export default function VetProfile() {
             <section css={infoSection}>
               <div css={time}>
                 <DetailTime width={20} />
-                <Text typo="body9">매일 10:00 - 20:00</Text>
+                <Text typo="body9">
+                  {closedDays || '매일'} {getVetInfo?.startTime} - {getVetInfo?.endTime}
+                </Text>
               </div>
               <div css={call}>
                 <DetailCall width={20} />
-                <Text typo="body9">02-000-0000</Text>
+                <Text typo="body9">{getVetInfo?.phoneNumber}</Text>
               </div>
               <div css={address}>
                 <DetailLocation width={20} />
-                <Text typo="body9">서울특별시 강남구 언주로152길 10</Text>
+                <Text typo="body9">
+                  {getVetInfo?.address} {getVetInfo?.detailAddress}
+                </Text>
               </div>
             </section>
             <section css={infoText}>
               <Text typo="body1">소개</Text>
-              <Text typo="body10">
-                사랑하는 반려동물의 건강을 책임지는 든든한 동반자
-                <br />
-                정성과 전문성으로 반려동물에게 최상의 진료를 제공합니다.
-              </Text>
+              <Text typo="body10">{getVetInfo?.introduction}</Text>
             </section>
             <section css={daengleMeter}>
               <div css={textBox}>
                 <Text typo="body1">댕글미터</Text>
                 <ToolTip width={14} />
                 <Text typo="body1" color="red200" css={meter}>
-                  43m
+                  {getVetInfo?.daengleMeter}m
                 </Text>
               </div>
               <div css={graph} />
             </section>
           </section>
           <section css={bottomSection}>
-            <div css={menu}>
+            <div css={menu} onClick={() => router.push(ROUTES.MYPAGE_EDIT)}>
               <Text typo="body4">병원 프로필 관리</Text>
               <ButtonTextButtonArrow width={6} />
             </div>
-            <div css={menu}>
+            <div css={menu} onClick={() => router.push(ROUTES.MYPAGE_REVIEWS)}>
               <Text typo="body4">리뷰 관리</Text>
               <ButtonTextButtonArrow width={6} />
             </div>
@@ -99,13 +122,13 @@ const wrapper = css`
   background-color: black;
 `;
 
-const imageSection = css`
+const imageSection = (imageUrl: string) => css`
   position: relative;
 
   width: 100%;
   height: 284px;
 
-  background-image: url('/icons/pet-profile/edit_image.jpeg');
+  background-image: url(${imageUrl});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

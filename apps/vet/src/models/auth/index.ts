@@ -46,3 +46,17 @@ export interface PatchVetInfoRequestBody {
   phoneNumber: string;
   introduction: string;
 }
+
+export interface GetVetInfoResponse {
+  imageUrls: string[];
+  name: string;
+  keywords: string[];
+  closedDays: string[];
+  startTime: string;
+  endTime: string;
+  phoneNumber: number;
+  address: string;
+  detailAddress: string;
+  introduction: string;
+  daengleMeter: number;
+}
