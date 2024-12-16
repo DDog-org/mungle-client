@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
-import { getChat, getChatUserGroomerList, getChatUserVetList } from '~/apis';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { getChat, getChatUserGroomerList, getChatUserVetList, postChatMessages } from '~/apis';
 import { QUERY_KEYS } from '../query-keys';
-import { GetChatParams } from '~/models/chat';
+import { GetChatParams, PostChatMessagesRequestArgs } from '~/models/chat';
 
 export const useGetChatUserGroomerListQuery = () => {
   return useQuery({
@@ -22,5 +22,13 @@ export const useGetChatQuery = (otherId?: string) => {
     queryKey: [...QUERY_KEYS.GET_CHAT, otherId],
     queryFn: () => getChat({ otherId: Number(otherId) }),
     enabled: !!otherId,
+  });
+};
+
+export const usePostChatMessages = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.POST_CHAT_MESSAGES,
+    mutationFn: ({ roomId, body }: PostChatMessagesRequestArgs) =>
+      postChatMessages({ roomId, body }),
   });
 };

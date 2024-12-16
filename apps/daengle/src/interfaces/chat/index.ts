@@ -7,7 +7,12 @@ export interface ChatItem {
   lastMessage: string;
 }
 
-export interface ChatMessage {
+export interface MessageInfos {
+  date: string;
+  messages: Message[];
+}
+
+export interface Message {
   messageType: string;
   messageContent: string;
   sender?: 'user' | 'partner';

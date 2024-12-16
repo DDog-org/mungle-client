@@ -3,6 +3,7 @@ import {
   GetChatUserGroomerListResponse,
   GetChatUserVetListResponse,
   GetChatResponse,
+  PostChatMessagesRequestArgs,
 } from '~/models/chat';
 import { api } from '../config';
 
@@ -16,4 +17,8 @@ export const getChatUserVetList = async () => {
 
 export const getChat = async (params: GetChatParams) => {
   return await api.get<GetChatResponse>('/chat/with', { params });
+};
+
+export const postChatMessages = async ({ roomId, body }: PostChatMessagesRequestArgs) => {
+  return await api.post(`/chat/messages/${roomId}`, body);
 };

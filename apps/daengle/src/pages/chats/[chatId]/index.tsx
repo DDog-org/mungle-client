@@ -1,62 +1,110 @@
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/react';
 import { AppBar, CapsuleButton, Layout, Text, theme } from '@daengle/design-system';
 import { ChatPlus, ChatSendButton, DefaultImage } from '@daengle/design-system/icons';
+import { useStomp } from '@daengle/services/hooks';
 import { Bubble } from '~/components/chats/bubble';
 import { ROUTES } from '~/constants/commons';
-import { ChatMessage } from '~/interfaces';
-import { useGetChatQuery } from '~/queries';
+import { Message, MessageInfos } from '~/interfaces';
+import { useGetChatQuery, usePostChatMessages } from '~/queries';
 
 export default function ChatRoom() {
   const router = useRouter();
+  const chatId = router.query.chatId as string;
 
   // TODO: 미용사/병원 상세에서 query string으로 partnerId를 받아오도록
   const partnerId = router.query.partnerId as string;
 
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<MessageInfos[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
 
-  const ws = useRef<WebSocket | null>(null);
   const chatListRef = useRef<HTMLDivElement>(null);
 
   const { data } = useGetChatQuery(partnerId);
+  const partnerName = data?.partnerName;
+
+  const { mutate } = usePostChatMessages();
+
+  const { sendMessage, connect } = useStomp({
+    url: `${process.env.NEXT_PUBLIC_API_URL}/chat/`,
+    topic: `/sub`,
+    onMessage: (message: MessageInfos) => {
+      setMessages((prev) => [...prev, message]);
+    },
+  });
+
+  const handleSendMessage = useCallback(() => {
+    if (newMessage.trim()) {
+      const currentDate = new Date().toISOString().split('T')[0];
+
+      const messageData: Message = {
+        messageType: 'TEXT_MESSAGE',
+        messageContent: newMessage,
+        sender: 'user',
+        messageTime: new Date().toISOString(),
+      };
+
+      setMessages((prevMessages) => {
+        const lastGroup = prevMessages[prevMessages.length - 1];
+
+        if (lastGroup && lastGroup.date === currentDate) {
+          return [
+            ...prevMessages.slice(0, -1),
+            {
+              ...lastGroup,
+              messages: [...lastGroup.messages, messageData],
+            },
+          ];
+        } else {
+          return [
+            ...prevMessages,
+            {
+              date: currentDate || '',
+              messages: [messageData],
+            },
+          ];
+        }
+      });
+
+      sendMessage(`/api/chat/${chatId}`, messageData);
+      mutate({
+        roomId: Number(chatId),
+        body: {
+          messageType: 'TEXT_MESSAGE',
+          messageContent: newMessage,
+          senderId: Number(data?.userId),
+        },
+      });
+
+      setNewMessage('');
+    }
+  }, [sendMessage, newMessage, chatId, data?.userId]);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSendMessage();
+  };
 
   useEffect(() => {
     if (!data) return;
 
     setMessages(
-      data.messages.map((msg) => ({
-        messageType: msg.messageType,
-        messageContent: msg.messageContent,
-        sender: msg.messageSenderId === data.userId ? 'user' : 'partner',
-        messageTime: msg.messageTime,
+      data.messagesGroupedByDate.map((message) => ({
+        ...message,
+        messages: message.messages.map((msg) => ({
+          messageType: msg.messageType,
+          messageContent: msg.messageContent,
+          sender: msg.messageSenderId === data.userId ? 'user' : 'partner',
+          messageTime: msg.messageTime,
+        })),
       }))
     );
-  }, []);
+  }, [data]);
 
   useEffect(() => {
-    if (ws.current) return;
-
-    ws.current = new WebSocket('ws://api.daengle.com/chat');
-
-    ws.current.onopen = () => {
-      console.log('Connected to server');
-    };
-
-    ws.current.onmessage = (message) => {
-      const data = JSON.parse(message.data);
-      setMessages((prev) => [...prev, data]);
-    };
-
-    ws.current.onclose = () => {
-      console.log('Disconnected from server');
-    };
-
-    return () => {
-      ws.current?.close();
-    };
-  }, []);
+    connect();
+  }, [connect]);
 
   useEffect(() => {
     if (!chatListRef.current) return;
@@ -66,27 +114,9 @@ export default function ChatRoom() {
     });
   }, [messages]);
 
-  const sendMessage = () => {
-    if (ws.current?.readyState === WebSocket.OPEN && newMessage.trim()) {
-      const messageData = {
-        messageType: 'TEXT_MESSAGE',
-        messageContent: newMessage,
-      };
-
-      ws.current.send(JSON.stringify(messageData));
-      setMessages((prev) => [...prev, { ...messageData, sender: 'user' }]);
-      setNewMessage('');
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    sendMessage();
-  };
-
   return (
     <Layout>
-      <AppBar title={data?.partner?.partnerNickname} suffix={<></>} onBackClick={router.back} />
+      <AppBar title={partnerName} suffix={<></>} onBackClick={router.back} />
 
       <section css={wrapper}>
         {data?.estimateId && (
@@ -94,42 +124,40 @@ export default function ChatRoom() {
             <div css={profileWrapper}>
               <DefaultImage width={32} height={32} />
               <Text typo="body5" color="black">
-                {data?.partner.partnerNickname}
+                {partnerName}
               </Text>
             </div>
 
-            <CapsuleButton size="S" onClick={() => router.push(ROUTES.ESTIMATE_DETAIL(1))}>
-              <Text typo="body2" color="gray500">
-                견적서 상세보기
-              </Text>
-            </CapsuleButton>
+            {data?.estimateId && (
+              <CapsuleButton
+                size="S"
+                onClick={() => router.push(ROUTES.ESTIMATE_DETAIL(data.estimateId!))}
+              >
+                <Text typo="body2" color="gray500">
+                  견적서 상세보기
+                </Text>
+              </CapsuleButton>
+            )}
           </div>
         )}
 
         <section css={chatList} ref={chatListRef}>
-          {/* <Bubble.Sender />
-          <Bubble.Receiver />
-          <Bubble.Sender />
-          <Bubble.Receiver />
-          <Bubble.Sender />
-          <Bubble.Receiver />
-          <Bubble.Sender />
-          <Bubble.Receiver />
-          <Bubble.Sender />
-          <Bubble.Sender />
-          <Bubble.Sender />
-          <Bubble.Receiver />
-          <Bubble.Sender />
-          <Bubble.Receiver />
-          <Bubble.Sender />
-          <Bubble.Receiver /> */}
-          {messages.map((msg) =>
-            msg.sender === 'user' ? (
-              <Bubble.Sender key={msg.messageTime} message={msg} />
-            ) : (
-              <Bubble.Receiver key={msg.messageTime} message={msg} />
-            )
-          )}
+          {messages?.map((message) => (
+            <>
+              <span>{message.date}</span>
+              {message.messages.map((msg) =>
+                msg.sender === 'user' ? (
+                  <Bubble.Sender key={msg.messageTime} message={msg} />
+                ) : (
+                  <Bubble.Receiver
+                    key={msg.messageTime}
+                    message={msg}
+                    partnerName={partnerName ?? ''}
+                  />
+                )
+              )}
+            </>
+          ))}
         </section>
       </section>
 
@@ -199,6 +227,7 @@ export const chatList = css`
   width: 100%;
   height: 100%;
   padding: calc(56px + 24px) 18px calc(78px + 18px) 18px;
+  border-bottom: 1px solid ${theme.colors.gray200};
 `;
 
 export const inputFieldWrapper = css`

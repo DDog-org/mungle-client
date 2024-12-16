@@ -22,15 +22,17 @@ export interface GetChatParams {
 export interface GetChatResponse {
   roomId: number;
   userId: number;
-  partner: GetChatResponsePartner;
-  estimateId: number | null;
-  messages: GetChatResponseMessage[];
-}
-
-export interface GetChatResponsePartner {
   partnerId: number;
   partnerProfile: string | null;
-  partnerNickname: string;
+  partnerName: string;
+  estimateId: number | null;
+  dateTime: string | null;
+  messagesGroupedByDate: MessagesGroupedByDate[];
+}
+
+export interface MessagesGroupedByDate {
+  date: string;
+  messages: GetChatResponseMessage[];
 }
 
 export interface GetChatResponseMessage {
@@ -39,4 +41,15 @@ export interface GetChatResponseMessage {
   messageContent: string;
   messageTime: string;
   messageType: 'TEXT_MESSAGE' | 'PICTURE_MESSAGE';
+}
+
+export interface PostChatMessagesRequestArgs {
+  roomId: number;
+  body: PostChatMessagesRequestBody;
+}
+
+export interface PostChatMessagesRequestBody {
+  messageType: 'TEXT_MESSAGE' | 'PICTURE_MESSAGE';
+  messageContent: string;
+  senderId: number;
 }
