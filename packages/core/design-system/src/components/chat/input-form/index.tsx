@@ -1,5 +1,5 @@
 import { FormEvent, forwardRef, InputHTMLAttributes, useImperativeHandle, useRef } from 'react';
-import { ChatPlus, ChatSendButton } from '../../../icons';
+import { ChatPlus, ChatSendButton, PartnerChatPlus } from '../../../icons';
 import { input, wrapper, inputWrapper } from './index.styles';
 
 export interface InputFormRef {
@@ -8,11 +8,12 @@ export interface InputFormRef {
 }
 
 interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onSubmit'> {
+  service?: 'daengle' | 'partner';
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
 }
 
 export const ChatInputForm = forwardRef<InputFormRef, Props>(
-  ({ spellCheck = false, autoComplete = 'off', onSubmit, ...props }, ref) => {
+  ({ service = 'daengle', spellCheck = false, autoComplete = 'off', onSubmit, ...props }, ref) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     useImperativeHandle(ref, () => ({
@@ -36,7 +37,11 @@ export const ChatInputForm = forwardRef<InputFormRef, Props>(
             {...props}
           />
           <button type="submit">
-            <ChatSendButton width={24} height={24} cursor="pointer" />
+            {service === 'daengle' ? (
+              <ChatSendButton width={24} height={24} />
+            ) : (
+              <PartnerChatPlus width={24} height={24} />
+            )}
           </button>
         </form>
       </div>

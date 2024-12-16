@@ -6,7 +6,7 @@ import { ChatListItem } from '../chat-list-item';
 
 export function GroomerChatList() {
   const router = useRouter();
-  const { data: chats } = useGetChatUserGroomerListQuery();
+  const { data: chats, refetch: refetchRoomList } = useGetChatUserGroomerListQuery();
 
   return (
     <>
@@ -23,9 +23,10 @@ export function GroomerChatList() {
             onChatItemClick={() =>
               router.push({
                 pathname: ROUTES.CHATS_DETAIL(chat.roomId),
-                query: { partnerId: chat.partnerId.toString() },
+                query: { otherId: chat.partnerId.toString() },
               })
             }
+            refetchRoomList={refetchRoomList}
           />
         ))
       )}

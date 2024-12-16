@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { FormEvent, Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/react';
 import {
   AppBar,
@@ -15,33 +15,67 @@ import {
 import { DefaultImage } from '@daengle/design-system/icons';
 import { useStomp } from '@daengle/services/hooks';
 import { ROUTES } from '~/constants/commons';
-import { Message, MessageInfos } from '~/interfaces';
-import { useGetChatQuery, usePostChatMessages } from '~/queries';
+import { MessageInfos, ReceivedMessage } from '~/interfaces';
+import { useGetChatWithQuery, usePostChatMessages } from '~/queries';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 
 export default function ChatRoom() {
   const router = useRouter();
-  const chatId = router.query.chatId as string;
-
-  const inputRef = useRef<InputFormRef>(null);
-
-  // TODO: 미용사/병원 상세에서 query string으로 partnerId를 받아오도록
-  const partnerId = router.query.partnerId as string;
+  const chatRoomId = router.query.chatRoomId as string;
+  const otherId = router.query.otherId as string;
 
   const [messages, setMessages] = useState<MessageInfos[]>([]);
+
+  const inputRef = useRef<InputFormRef>(null);
   const chatListRef = useRef<HTMLDivElement>(null);
 
-  const { data } = useGetChatQuery(partnerId);
-  const partnerName = data?.partnerName;
-
   const { mutate } = usePostChatMessages();
+  const { data: chatHistory } = useGetChatWithQuery(otherId);
+  const otherName = chatHistory?.otherName;
 
   const { sendMessage, connect } = useStomp({
-    url: `${process.env.NEXT_PUBLIC_API_URL}/chat/`,
-    topic: `/sub`,
-    onMessage: (message: MessageInfos) => {
-      setMessages((prev) => [...prev, message]);
+    url: `${process.env.NEXT_PUBLIC_API_URL}/chat`,
+    topic: `/sub/${chatRoomId}`,
+    onMessage: (message: ReceivedMessage) => {
+      const currentDate = dayjs().format('YYYY-MM-DD');
+
+      setMessages((prevMessages) => {
+        const lastGroup = prevMessages[prevMessages.length - 1];
+
+        if (lastGroup && lastGroup.date === currentDate) {
+          return [
+            ...prevMessages.slice(0, -1),
+            {
+              ...lastGroup,
+              messages: [
+                ...lastGroup.messages,
+                {
+                  messageType: message.messageType,
+                  messageContent: message.content,
+                  isSender: message.senderId === Number(chatHistory?.userId),
+                  messageTime: message.timestamp,
+                },
+              ],
+            },
+          ];
+        } else {
+          return [
+            ...prevMessages,
+            {
+              date: currentDate || '',
+              messages: [
+                {
+                  messageType: message.messageType,
+                  messageContent: message.content,
+                  isSender: message.senderId === Number(chatHistory?.userId),
+                  messageTime: message.timestamp,
+                },
+              ],
+            },
+          ];
+        }
+      });
     },
   });
 
@@ -49,12 +83,12 @@ export default function ChatRoom() {
     const inputValue = inputRef.current?.getValue();
 
     if (inputValue) {
-      const currentDate = new Date().toISOString().split('T')[0];
+      const currentDate = dayjs().locale('ko').format('YYYY-MM-DD');
 
-      const messageData: Message = {
+      const messageData = {
         messageType: 'TEXT_MESSAGE',
         messageContent: inputValue,
-        sender: 'user',
+        isSender: true,
         messageTime: new Date().toISOString(),
       };
 
@@ -80,13 +114,14 @@ export default function ChatRoom() {
         }
       });
 
-      sendMessage(`/api/chat/${chatId}`, messageData);
+      sendMessage(`/pub/${chatRoomId}`, messageData);
+
       mutate({
-        roomId: Number(chatId),
+        roomId: Number(chatRoomId),
         body: {
           messageType: 'TEXT_MESSAGE',
           messageContent: inputValue,
-          senderId: Number(data?.userId),
+          senderId: Number(chatHistory?.userId),
         },
       });
 
@@ -94,7 +129,7 @@ export default function ChatRoom() {
         inputRef.current.reset();
       }
     }
-  }, [sendMessage, chatId, data?.userId]);
+  }, [sendMessage, chatRoomId, chatHistory?.userId]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -102,20 +137,22 @@ export default function ChatRoom() {
   };
 
   useEffect(() => {
-    if (!data) return;
+    if (!chatHistory) return;
 
     setMessages(
-      data.messagesGroupedByDate.map((message) => ({
-        ...message,
-        messages: message.messages.map((msg) => ({
-          messageType: msg.messageType,
-          messageContent: msg.messageContent,
-          sender: msg.messageSenderId === data.userId ? 'user' : 'partner',
-          messageTime: msg.messageTime,
-        })),
+      chatHistory.messagesGroupedByDate.map(({ date, messages }) => ({
+        date,
+        messages: messages?.map(
+          ({ messageType, messageContent, messageSenderId, messageTime }) => ({
+            messageType,
+            messageContent,
+            isSender: messageSenderId === chatHistory.userId,
+            messageTime,
+          })
+        ),
       }))
     );
-  }, [data]);
+  }, [chatHistory]);
 
   useEffect(() => {
     connect();
@@ -131,22 +168,22 @@ export default function ChatRoom() {
 
   return (
     <Layout>
-      <AppBar title={partnerName} suffix={<></>} onBackClick={router.back} />
+      <AppBar title={otherName} suffix={<></>} onBackClick={router.back} />
 
       <section css={wrapper}>
-        {data?.estimateId && (
+        {chatHistory?.estimateId && (
           <div css={estimateWrapper}>
             <div css={profileWrapper}>
               <DefaultImage width={32} height={32} />
               <Text typo="body5" color="black">
-                {partnerName}
+                {otherName}
               </Text>
             </div>
 
-            {data?.estimateId && (
+            {chatHistory?.estimateId && (
               <CapsuleButton
                 size="S"
-                onClick={() => router.push(ROUTES.ESTIMATE_DETAIL(data.estimateId!))}
+                onClick={() => router.push(ROUTES.ESTIMATE_DETAIL(chatHistory.estimateId!))}
               >
                 <Text typo="body2" color="gray500">
                   견적서 상세보기
@@ -157,41 +194,42 @@ export default function ChatRoom() {
         )}
 
         <section css={chatList} ref={chatListRef}>
-          {messages?.map((message) => (
-            <>
+          {messages?.map((messageInfo, index) => (
+            <Fragment key={`${messageInfo.date}${index}`}>
               <div css={tagWrapper}>
-                <Tag variant="line">
-                  <Text typo="body2" color="blue200">
-                    {dayjs(message.date).format('YYYY년 MM월 DD일')}
+                <Tag variant="solid" service="partner">
+                  <Text typo="body2" color="green200">
+                    {dayjs(messageInfo.date).format('YYYY년 MM월 DD일')}
                   </Text>
                 </Tag>
               </div>
-              {message.messages.map((msg) =>
-                msg.sender === 'user' ? (
+
+              {messageInfo.messages?.map((message) =>
+                message.isSender ? (
                   <Bubble.Sender
-                    key={msg.messageTime}
+                    key={message.messageTime}
                     message={{
-                      content: msg.messageContent,
-                      sentAt: dayjs(msg.messageTime).locale('ko').format('A HH:mm'),
+                      content: message.messageContent,
+                      sentAt: dayjs(message.messageTime).locale('ko').format('A HH:mm'),
                     }}
                   />
                 ) : (
                   <Bubble.Receiver
-                    key={msg.messageTime}
-                    partnerName={partnerName ?? ''}
+                    key={message.messageTime}
+                    partnerName={otherName ?? ''}
                     message={{
-                      content: msg.messageContent,
-                      sentAt: dayjs(msg.messageTime).locale('ko').format('A HH:mm'),
+                      content: message.messageContent,
+                      sentAt: dayjs(message.messageTime).locale('ko').format('A HH:mm'),
                     }}
                   />
                 )
               )}
-            </>
+            </Fragment>
           ))}
         </section>
       </section>
 
-      <ChatInputForm ref={inputRef} onSubmit={handleSubmit} />
+      <ChatInputForm ref={inputRef} onSubmit={handleSubmit} service="partner" />
     </Layout>
   );
 }

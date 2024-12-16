@@ -11,7 +11,7 @@ interface Props {
   lastMessage: string;
   messageTime: string;
   onChatItemClick: () => void;
-  refetchRoomList: () => void;
+  refetchChatList: () => void;
 }
 
 export function ChatListItem({
@@ -20,7 +20,7 @@ export function ChatListItem({
   lastMessage,
   messageTime,
   onChatItemClick,
-  refetchRoomList,
+  refetchChatList,
 }: Props) {
   const [isFABOpen, setIsFABOpen] = useState<boolean>(false);
   const { mutateAsync } = useDeleteChatDeleteMutation();
@@ -71,7 +71,7 @@ export function ChatListItem({
               onClick={async (e) => {
                 e.stopPropagation();
                 await mutateAsync({ roomId });
-                refetchRoomList;
+                refetchChatList();
               }}
             >
               <Text typo="body12" color="black">

@@ -17,6 +17,7 @@ export const ROUTES = {
 
   // Chats
   CHATS: '/chats',
+  CHATS_DETAIL: (roomId: number) => `/chats/${roomId}`,
 
   // Mypage
   MYPAGE: '/mypage',

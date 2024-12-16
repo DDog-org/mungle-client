@@ -6,7 +6,7 @@ import { ChatListItem } from '../chat-list-item';
 
 export function VetChatList() {
   const router = useRouter();
-  const { data: chats } = useGetChatUserVetListQuery();
+  const { data: chats, refetch: refetchRoomList } = useGetChatUserVetListQuery();
 
   return (
     <>
@@ -23,9 +23,10 @@ export function VetChatList() {
             onChatItemClick={() =>
               router.push({
                 pathname: ROUTES.CHATS_DETAIL(chat.roomId),
-                query: { partnerId: chat.partnerId.toString() },
+                query: { otherId: chat.partnerId.toString() },
               })
             }
+            refetchRoomList={refetchRoomList}
           />
         ))
       )}
