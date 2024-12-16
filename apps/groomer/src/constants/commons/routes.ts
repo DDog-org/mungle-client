@@ -22,5 +22,5 @@ export const ROUTES = {
   MYPAGE: '/mypage',
   MYPAGE_REVIEWS: '/mypage/reviews',
   MYPAGE_PROFILE: '/mypage/profile',
-  MYPAGE_SHOP: '/mypage/my-shop',
+  MYPAGE_MY_SHOP: '/mypage/my-shop',
 } as const;
