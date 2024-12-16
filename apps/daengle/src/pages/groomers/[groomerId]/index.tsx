@@ -1,66 +1,100 @@
-// 미용사 상세정보
-
 import { AppBar, Layout, RoundButton, Text, TextButton, theme } from '@daengle/design-system';
 import { ButtonTextButtonArrow, DefaultProfile, ToolTip } from '@daengle/design-system/icons';
 import { css } from '@emotion/react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { ROUTES } from '~/constants/commons';
+import { GetUserGroomerDetailRequestParams } from '~/models/detail';
+import { useGetUserGroomerDetailQuery } from '~/queries/detail';
 
 export default function GroomerInfo() {
+  const router = useRouter();
+  const { groomerId } = router.query;
+  const getGroomerId = Number(groomerId);
+  const groomerParams: GetUserGroomerDetailRequestParams = { groomerId: getGroomerId };
+
+  const { data: GroomerDetail } = useGetUserGroomerDetailQuery(groomerParams);
+
+  console.log('GroomerDetail:', GroomerDetail);
+
   return (
     <Layout>
-      <AppBar />
+      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
       <section css={topSection}>
         <Text typo="title1">상세보기</Text>
         <section css={groomerProfile}>
-          <DefaultProfile width={101} height={117} css={imageStyle} />
+          {GroomerDetail?.groomerImage ? (
+            <Image
+              src={GroomerDetail?.groomerImage}
+              alt="미용사 프로필이미지"
+              width={101}
+              height={117}
+              css={imageStyle}
+            />
+          ) : (
+            <DefaultProfile width={101} height={117} css={imageStyle} />
+          )}
           <div css={infoBox}>
-            <Text typo="title2">문소연 디자이너</Text>
+            <Text typo="title2">{GroomerDetail?.groomerName}</Text>
             <div css={tags}>
               <Text typo="body12" color="blue200" css={tag}>
+                {/*  TODO: keywords DB에 값 넣고 연동하기 */}
                 #대형견
               </Text>
               <Text typo="body12" color="blue200" css={tag}>
                 #노견
               </Text>
             </div>
-            <TextButton icons={{ suffix: <ButtonTextButtonArrow width={6} /> }}>
+            <TextButton
+              icons={{ suffix: <ButtonTextButtonArrow width={6} /> }}
+              onClick={() => router.push(ROUTES.GROOMER_SHOP_DETAIL(getGroomerId))}
+            >
               <Text typo="body9" color="gray500">
-                꼬꼬마 관리샵
+                {GroomerDetail?.shopName}
               </Text>
             </TextButton>
           </div>
         </section>
         <section css={infoText}>
           <Text typo="body1">소개</Text>
-          <Text typo="body10">
-            모든 견종의 가위컷에 자신이 있으며, 특히, 푸들 테디베어컷, 비숑 귀툭튀컷, 포메 곰돌이컷
-            등 디자인컷 완성도에 자신이 있습니다.
-          </Text>
+          <Text typo="body10">{GroomerDetail?.introduction}</Text>
         </section>
         <section css={daengleMeter}>
           <div css={textBox}>
             <Text typo="body1">댕글미터</Text>
             <ToolTip width={14} />
             <Text typo="body1" color="red200" css={meter}>
-              43m
+              {GroomerDetail?.daengleMeter}m
             </Text>
           </div>
           <div css={graph} />
         </section>
         <div css={button}>
-          <RoundButton fullWidth={true}>바로 예약</RoundButton>
-          <RoundButton fullWidth={true}>채팅하기</RoundButton>
+          <RoundButton
+            fullWidth={true}
+            onClick={() => router.push(ROUTES.ESTIMATE_GROOMING(getGroomerId))}
+          >
+            바로 예약
+          </RoundButton>
+          <RoundButton
+            fullWidth={true}
+            onClick={() => router.push(ROUTES.CHATS_DETAIL(getGroomerId))}
+          >
+            채팅하기
+          </RoundButton>
         </div>
       </section>
       <section css={bottomSection}>
-        <div css={menu}>
+        <div css={menu} onClick={() => router.push(ROUTES.GROOMER_REVIEWS(getGroomerId))}>
           <div css={review}>
             <Text typo="subtitle1">받은 리뷰</Text>
-            <Text typo="subtitle1">38</Text>
+            <Text typo="subtitle1">{GroomerDetail?.reviewCount}</Text>
           </div>
           <ButtonTextButtonArrow width={6} />
         </div>
         <div css={line} />
         <div css={menu}>
+          {/* TODO: 인스타 api연동 */}
           <Text typo="subtitle1">포트폴리오</Text>
           <ButtonTextButtonArrow width={6} />
         </div>

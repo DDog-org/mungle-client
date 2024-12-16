@@ -13,7 +13,7 @@ export const ROUTES = {
   // Estimates
   ESTIMATES: '/estimates',
   ESTIMATE_DETAIL: (estimateId: number) => `/estimates/detail/${estimateId}`,
-  ESTIMATE_GROOMING: '/estimates/grooming',
+  ESTIMATE_GROOMING: (groomerId: number) => `/estimates/grooming/${groomerId}`,
   ESTIMATE_VET: 'estimates/care',
   ESTIMATE_FORM_COMPLETE: '/estimates/complete',
   ESTIMATE_REQUEST: (estimateId: number) => `estimates/request/${estimateId}`,
@@ -22,7 +22,8 @@ export const ROUTES = {
   GROOMER_DETAIL: (groomerId: number) => `/groomers/${groomerId}`,
   GROOMER_REVIEWS: (groomerId: number) => `/groomers/${groomerId}/reviews`,
   GROOMER_ESTIMATE_FORM: '/groomers/estimate-form',
-  GROOMER_REVIEW_FORM_EDIT: (reveiwId: number) => `/groomers/review/${reveiwId}/edit`,
+  GROOMER_REVIEW_FORM_EDIT: (reviewId: number) => `/groomers/review/${reviewId}/edit`,
+  GROOMER_SHOP_DETAIL: (shopId: number) => `/groomers/shops/${shopId}`,
 
   // Vets
   VET_DETAIL: (vetId: number) => `/vets/${vetId}`,
