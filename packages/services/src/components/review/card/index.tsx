@@ -1,4 +1,4 @@
-import { CapsuleButton, Text, TextButton } from '@daengle/design-system';
+import { CapsuleButton, Rating, Text, TextButton } from '@daengle/design-system';
 import {
   wrapper,
   userImage,
@@ -65,9 +65,9 @@ export function ReviewCard({
         <div css={userInfo}>
           <img src={reviewerImageUrl} alt={`${reviewerName} 프로필`} css={userImage} />
           <Text typo="subtitle2">{reviewerName}</Text>
-          <ReviewStars rating={starRating} />
+          <Rating rate={Math.floor(starRating) as 1 | 2 | 3 | 4 | 5} size="S" />
         </div>
-        {!flagged && <CapsuleButton onClick={onReport}>수정하기</CapsuleButton>}
+        {!flagged && <CapsuleButton onClick={onReport}>신고하기</CapsuleButton>}
       </div>
       <div css={reviewImages}>
         {imageUrlList.map((image, index) => (
