@@ -1,70 +1,197 @@
-import { css } from '@emotion/react';
-import { AppBar, CapsuleButton, Layout, Text, theme } from '@daengle/design-system';
-import { ChatPlus, ChatSendButton, DefaultImage } from '@daengle/design-system/icons';
-import { Bubble } from '~/components/chats/bubble';
 import { useRouter } from 'next/router';
+import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { css } from '@emotion/react';
+import {
+  AppBar,
+  Bubble,
+  CapsuleButton,
+  ChatInputForm,
+  InputFormRef,
+  Layout,
+  Tag,
+  Text,
+  theme,
+} from '@daengle/design-system';
+import { DefaultImage } from '@daengle/design-system/icons';
+import { useStomp } from '@daengle/services/hooks';
 import { ROUTES } from '~/constants/commons';
-import { useEffect, useRef } from 'react';
+import { Message, MessageInfos } from '~/interfaces';
+import { useGetChatQuery, usePostChatMessages } from '~/queries';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 export default function ChatRoom() {
   const router = useRouter();
+  const chatId = router.query.chatId as string;
+
+  const inputRef = useRef<InputFormRef>(null);
+
+  // TODO: 미용사/병원 상세에서 query string으로 partnerId를 받아오도록
+  const partnerId = router.query.partnerId as string;
+
+  const [messages, setMessages] = useState<MessageInfos[]>([]);
   const chatListRef = useRef<HTMLDivElement>(null);
+
+  const { data } = useGetChatQuery(partnerId);
+  const partnerName = data?.partnerName;
+
+  const { mutate } = usePostChatMessages();
+
+  const { sendMessage, connect } = useStomp({
+    url: `${process.env.NEXT_PUBLIC_API_URL}/chat/`,
+    topic: `/sub`,
+    onMessage: (message: MessageInfos) => {
+      setMessages((prev) => [...prev, message]);
+    },
+  });
+
+  const handleSendMessage = useCallback(() => {
+    const inputValue = inputRef.current?.getValue();
+
+    if (inputValue) {
+      const currentDate = new Date().toISOString().split('T')[0];
+
+      const messageData: Message = {
+        messageType: 'TEXT_MESSAGE',
+        messageContent: inputValue,
+        sender: 'user',
+        messageTime: new Date().toISOString(),
+      };
+
+      setMessages((prevMessages) => {
+        const lastGroup = prevMessages[prevMessages.length - 1];
+
+        if (lastGroup && lastGroup.date === currentDate) {
+          return [
+            ...prevMessages.slice(0, -1),
+            {
+              ...lastGroup,
+              messages: [...lastGroup.messages, messageData],
+            },
+          ];
+        } else {
+          return [
+            ...prevMessages,
+            {
+              date: currentDate || '',
+              messages: [messageData],
+            },
+          ];
+        }
+      });
+
+      sendMessage(`/api/chat/${chatId}`, messageData);
+      mutate({
+        roomId: Number(chatId),
+        body: {
+          messageType: 'TEXT_MESSAGE',
+          messageContent: inputValue,
+          senderId: Number(data?.userId),
+        },
+      });
+
+      if (inputRef.current) {
+        inputRef.current.reset();
+      }
+    }
+  }, [sendMessage, chatId, data?.userId]);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSendMessage();
+  };
+
+  useEffect(() => {
+    if (!data) return;
+
+    setMessages(
+      data.messagesGroupedByDate.map((message) => ({
+        ...message,
+        messages: message.messages.map((msg) => ({
+          messageType: msg.messageType,
+          messageContent: msg.messageContent,
+          sender: msg.messageSenderId === data.userId ? 'user' : 'partner',
+          messageTime: msg.messageTime,
+        })),
+      }))
+    );
+  }, [data]);
+
+  useEffect(() => {
+    connect();
+  }, [connect]);
 
   useEffect(() => {
     if (!chatListRef.current) return;
-    chatListRef.current.scrollTo(0, chatListRef.current.scrollHeight);
-  }, []);
+    chatListRef.current.scrollTo({
+      top: chatListRef.current.scrollHeight,
+      behavior: 'smooth',
+    });
+  }, [messages]);
 
   return (
     <Layout>
-      <AppBar title="문소연 디자이너" suffix={<></>} onBackClick={router.back} />
+      <AppBar title={partnerName} suffix={<></>} onBackClick={router.back} />
 
       <section css={wrapper}>
-        <div css={estimateWrapper}>
-          <div css={profileWrapper}>
-            <DefaultImage width={32} height={32} />
-            <Text typo="body5" color="black">
-              문소연 디자이너
-            </Text>
-          </div>
+        {data?.estimateId && (
+          <div css={estimateWrapper}>
+            <div css={profileWrapper}>
+              <DefaultImage width={32} height={32} />
+              <Text typo="body5" color="black">
+                {partnerName}
+              </Text>
+            </div>
 
-          <CapsuleButton size="S" onClick={() => router.push(ROUTES.ESTIMATE_DETAIL(1))}>
-            <Text typo="body2" color="gray500">
-              견적서 상세보기
-            </Text>
-          </CapsuleButton>
-        </div>
+            {data?.estimateId && (
+              <CapsuleButton
+                size="S"
+                onClick={() => router.push(ROUTES.ESTIMATE_DETAIL(data.estimateId!))}
+              >
+                <Text typo="body2" color="gray500">
+                  견적서 상세보기
+                </Text>
+              </CapsuleButton>
+            )}
+          </div>
+        )}
 
         <section css={chatList} ref={chatListRef}>
-          <Bubble.Sender />
-          <Bubble.Receiver />
-          <Bubble.Sender />
-          <Bubble.Receiver />
-          <Bubble.Sender />
-          <Bubble.Receiver />
-          <Bubble.Sender />
-          <Bubble.Receiver />
-          <Bubble.Sender />
-          <Bubble.Sender />
-          <Bubble.Sender />
-          <Bubble.Receiver />
-          <Bubble.Sender />
-          <Bubble.Receiver />
-          <Bubble.Sender />
-          <Bubble.Receiver />
+          {messages?.map((message) => (
+            <>
+              <div css={tagWrapper}>
+                <Tag variant="line">
+                  <Text typo="body2" color="blue200">
+                    {dayjs(message.date).format('YYYY년 MM월 DD일')}
+                  </Text>
+                </Tag>
+              </div>
+              {message.messages.map((msg) =>
+                msg.sender === 'user' ? (
+                  <Bubble.Sender
+                    key={msg.messageTime}
+                    message={{
+                      content: msg.messageContent,
+                      sentAt: dayjs(msg.messageTime).locale('ko').format('A HH:mm'),
+                    }}
+                  />
+                ) : (
+                  <Bubble.Receiver
+                    key={msg.messageTime}
+                    partnerName={partnerName ?? ''}
+                    message={{
+                      content: msg.messageContent,
+                      sentAt: dayjs(msg.messageTime).locale('ko').format('A HH:mm'),
+                    }}
+                  />
+                )
+              )}
+            </>
+          ))}
         </section>
       </section>
 
-      <div css={inputFieldWrapper}>
-        <ChatPlus width={32} height={32} />
-
-        <form css={inputWrapper}>
-          <input css={input} placeholder="메시지를 입력해 주세요" />
-          <button type="submit">
-            <ChatSendButton width={24} height={24} cursor="pointer" />
-          </button>
-        </form>
-      </div>
+      <ChatInputForm ref={inputRef} onSubmit={handleSubmit} />
     </Layout>
   );
 }
@@ -116,42 +243,14 @@ export const chatList = css`
   width: 100%;
   height: 100%;
   padding: calc(56px + 24px) 18px calc(78px + 18px) 18px;
+
+  border-bottom: 1px solid ${theme.colors.gray200};
 `;
 
-export const inputFieldWrapper = css`
+export const tagWrapper = css`
   display: flex;
-  align-items: center;
-  gap: 4px;
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  justify-content: center;
 
   width: 100%;
-  max-width: ${theme.size.maxWidth};
-  margin: 0 auto;
-  padding: 20px 18px;
-
-  background: white;
-  box-shadow: 0 -4px 10px 0 rgb(0 0 0 / 5%);
-`;
-
-export const inputWrapper = css`
-  display: flex;
-  align-items: center;
-
-  width: 100%;
-  padding: 8px 8px 8px 18px;
-  border: 1px solid ${theme.colors.gray200};
-  border-radius: 21px;
-`;
-
-export const input = css`
-  width: 100%;
-  height: 100%;
-  ${theme.typo.body12};
-
-  ::placeholder {
-    color: ${theme.colors.gray200};
-  }
+  margin: 0 8px;
 `;

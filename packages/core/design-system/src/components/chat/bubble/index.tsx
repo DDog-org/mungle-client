@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Text } from '@daengle/design-system';
 import { ChatDefaultProfileImage } from '@daengle/design-system/icons';
+import { ReceiverBubbleProps, SenderBubbleProps } from './index.types';
 import {
   receiverBubble,
   receiverBubbleWrapper,
@@ -19,45 +20,43 @@ function BubbleWrapper({ children }: Props) {
   return <div css={wrapper}>{children}</div>;
 }
 
-function ReceiverBubble() {
+function ReceiverBubble({ message, partnerName }: ReceiverBubbleProps) {
   return (
     <div css={receiverBubbleWrapper}>
       <ChatDefaultProfileImage width={28} height={28} />
 
       <div css={receiverBubbleInfo}>
         <Text typo="body12" color="black">
-          문소연 디자이너
+          {partnerName}
         </Text>
         <div css={receiverBubble}>
           <Text tag="p" typo="body7" color="black100">
-            안녕하세요 반갑습니다 안녕안녕 하하 안녕하세요 반갑습니다 안녕안녕 하하 안녕하세요
-            반갑습니다 안녕안녕 하하
+            {message.content}
           </Text>
         </div>
       </div>
 
       <div css={timeWrapper}>
-        <Text typo="body12" color="gray300">
-          오후 12:25
+        <Text typo="body12" color="gray400">
+          {message.sentAt}
         </Text>
       </div>
     </div>
   );
 }
 
-function SenderBubble() {
+function SenderBubble({ message }: SenderBubbleProps) {
   return (
     <div css={senderBubbleWrapper}>
       <div css={timeWrapper}>
-        <Text typo="body12" color="gray300">
-          오후 12:25
+        <Text typo="body12" color="gray400">
+          {message.sentAt}
         </Text>
       </div>
 
       <div css={senderBubble}>
         <Text tag="p" typo="body7" color="white">
-          안녕하세요 반갑습니다 안녕안녕 하하 안녕하세요 반갑습니다 안녕안녕 하하 안녕하세요
-          반갑습니다 안녕안녕 하하
+          {message.content}
         </Text>
       </div>
     </div>

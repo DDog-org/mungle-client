@@ -1,5 +1,5 @@
-import { theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
+import { theme } from '../../../foundation';
 
 export const wrapper = css`
   width: 100%;

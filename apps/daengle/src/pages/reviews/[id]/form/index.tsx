@@ -85,7 +85,7 @@ export default function ReviewPage() {
       }
     }
     const handleError = (error: any) => {
-      console.log('Error 객체:', error);
+      'Error 객체:', error;
 
       const { code, message } = error;
 

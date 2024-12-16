@@ -84,8 +84,6 @@ export function VetReviewEdit() {
     }
 
     const handleError = (error: any) => {
-      console.log('Error 객체:', error);
-
       const { code, message } = error;
 
       if (code === 4000) {
