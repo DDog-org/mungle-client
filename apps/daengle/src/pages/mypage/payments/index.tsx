@@ -21,7 +21,7 @@ export default function Payments() {
   const { tab = 'groomer' } = router.query;
 
   const handleTabChange = (activeTabId: string) => {
-    router.push({ pathname: '/estimates', query: { tab: activeTabId } }, undefined, {
+    router.push({ pathname: '/mypage/payments', query: { tab: activeTabId } }, undefined, {
       shallow: true,
     });
   };

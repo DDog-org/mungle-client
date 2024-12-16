@@ -84,7 +84,7 @@ export const useUserEstimateGeneralCarePetsQuery = () => {
 
 export const useUserEstimateGeneralCareQuery = (petId: number | undefined) => {
   return useInfiniteQuery({
-    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_CARE,
+    queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_CARE, petId],
     initialPageParam: 0,
     queryFn: ({ pageParam = 0 }) => {
       if (!petId) {
@@ -155,7 +155,7 @@ export const useUerEstimateRequestGroomingQuery = (
 
 export const useUserEstimateDesignationCareQuery = (petId: number | undefined) => {
   return useInfiniteQuery({
-    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_DESIGNATION_CARE,
+    queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_DESIGNATION_CARE, petId],
     initialPageParam: 0,
     queryFn: ({ pageParam = 0 }) => {
       if (!petId) {
