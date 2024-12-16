@@ -28,6 +28,7 @@ export * from './PartnerGnbHomeActive';
 export * from './PartnerGnbMyActive';
 export * from './PartnerGnbReservationActive';
 export * from './PartnerHomeNavigate';
+export * from './ProfileArrowButton';
 export * from './RegistrationPending';
 export * from './ReviewFold';
 export * from './ReviewStarFilled';
