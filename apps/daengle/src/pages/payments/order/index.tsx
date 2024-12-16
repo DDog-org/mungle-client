@@ -109,8 +109,6 @@ export default function Order() {
         visitorPhoneNumber,
       });
 
-      setOrderUid(orderResponse.orderUId);
-
       // PG 결제 창 띄우기
       if (orderResponse && orderResponse.orderUId) {
         if (!IMP_UID) {
@@ -133,7 +131,7 @@ export default function Order() {
           const validateResponse = await postPaymentValidate({
             paymentUid: response.imp_uid,
             estimateId: String(estimateId),
-            orderUid: orderUid,
+            orderUid: String(orderResponse.orderUId),
           });
 
           if (validateResponse) {
@@ -153,8 +151,6 @@ export default function Order() {
       setIsLoading(false);
     }
   };
-  // 잠시 개발동안은 필요합니다!
-  console.log('My orderUid', orderUid);
 
   return (
     <Layout>
