@@ -15,14 +15,12 @@ export function useStomp({ url, topic, onMessage }: Props) {
     const client = new Client({
       webSocketFactory: () => new SockJS(url),
       onConnect: () => {
-        console.log('WebSocket connected');
-
         client.subscribe(topic, (message: IMessage) => {
           const parsedMessage = JSON.parse(message.body);
           onMessage(parsedMessage);
         });
       },
-      onDisconnect: () => console.log('WebSocket disconnected'),
+      onDisconnect: () => {},
     });
 
     client.activate();

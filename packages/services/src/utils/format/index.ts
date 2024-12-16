@@ -22,7 +22,6 @@ export const formatPhoneNumberWithRegionNumber = (phoneNumber: string) => {
 };
 
 export const formatLastSendTime = (lastSendTime: string) => {
-  console.log(lastSendTime);
   const now = dayjs();
   const lastSend = dayjs(lastSendTime);
 
