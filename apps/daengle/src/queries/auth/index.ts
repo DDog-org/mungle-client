@@ -13,6 +13,7 @@ import {
   postUserPet,
   patchUserPetInfo,
   deleteUserPet,
+  getUserMypage,
 } from '~/apis';
 import {
   PatchUserInfoRequestBody,
@@ -147,5 +148,12 @@ export const useGetUserValidateQuery = () => {
   return useQuery({
     queryKey: QUERY_KEYS.GET_USER_VALIDATE,
     queryFn: getUserValidate,
+  });
+};
+
+export const useGetUserMypageQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_USER_MYPAGE,
+    queryFn: getUserMypage,
   });
 };

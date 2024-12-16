@@ -22,6 +22,7 @@ export * from './GnbReservationInactive';
 export * from './ImageUploadPlus';
 export * from './LoginKakaoLogo';
 export * from './MainLogo';
+export * from './MypageAddButton';
 export * from './PartnerGnbChattingActive';
 export * from './PartnerGnbEstimateActive';
 export * from './PartnerGnbHomeActive';

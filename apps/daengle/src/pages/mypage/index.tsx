@@ -1,16 +1,18 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
-import { AppBar, Layout, Text, theme } from '@daengle/design-system';
+import { Layout, Text, theme } from '@daengle/design-system';
 import { ROUTES } from '~/constants/commons';
 import { GNB } from '~/components/commons';
-import { DefaultImage, ProfileArrowButton } from '@daengle/design-system/icons';
+import { DefaultImage, MypageAddButton, ProfileArrowButton } from '@daengle/design-system/icons';
 import Image from 'next/image';
 import { PetInfo } from '~/interfaces/auth';
+import { useGetUserMypageQuery } from '~/queries';
 
 export default function Mypage() {
   const [petInfos, setPetInfos] = useState<PetInfo[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
+  const { data: getUserMypage } = useGetUserMypageQuery();
 
   const router = useRouter();
 
@@ -23,13 +25,15 @@ export default function Mypage() {
   const handlePetEditClick = () => {
     router.push(ROUTES.MYPAGE_PET_PROFILE_EDIT);
   };
-  const handlePetClick = () => {
-    router.push(ROUTES.MYPAGE_PET_PROFILE);
-  };
-
   const handlePetSelect = (petId: number) => {
     setSelectedPetId(petId);
+    router.push(ROUTES.MYPAGE_PET_PROFILE);
   };
+  useEffect(() => {
+    if (getUserMypage?.petInfos) {
+      setPetInfos(getUserMypage.petInfos);
+    }
+  }, [getUserMypage]);
   return (
     <Layout isAppBarExist={false}>
       <div css={wrapper}>
@@ -37,8 +41,20 @@ export default function Mypage() {
           마이페이지
         </Text>
         <section css={profileWrapper}>
-          <div>프로필 이미지</div>
-          <div css={nickname}>닉네임</div>
+          {getUserMypage?.image ? (
+            <Image
+              src={getUserMypage.image}
+              alt="프로필 이미지"
+              width={68}
+              height={68}
+              css={profileImageStyle}
+            />
+          ) : (
+            <DefaultImage css={profileImageStyle} />
+          )}
+          <Text typo="title2" css={nickname}>
+            {getUserMypage?.nickname}
+          </Text>
           <button css={editButton} onClick={handleGoToClick}>
             <Text typo="body5" color="gray500">
               편집
@@ -46,12 +62,12 @@ export default function Mypage() {
           </button>
         </section>
         <section css={requestInfoWrapper}>
-          <div css={requestInfo}>
+          <div css={requestInfo} onClick={() => router.push(ROUTES.ESTIMATES)}>
             <Text typo="body10" color="gray600">
               견적 요청 내역
             </Text>
             <Text typo="title1" color="blue200">
-              0
+              {getUserMypage?.estimateCount}
             </Text>
           </div>
           <div css={requestInfo} onClick={() => router.push(ROUTES.MYPAGE_REVIEWS)}>
@@ -59,7 +75,7 @@ export default function Mypage() {
               리뷰
             </Text>
             <Text typo="title1" color="blue200">
-              0
+              {getUserMypage?.reviewCount}
             </Text>
           </div>
         </section>
@@ -73,54 +89,56 @@ export default function Mypage() {
             </Text>
           </button>
         </section>
-        <div css={petProfileWrapper}>
-          <section css={section}>
-            <div css={petList}>
-              {petInfos && petInfos.length > 0 ? (
-                <>
-                  <div css={petList}>
-                    {petInfos.map((pet, index) => (
-                      <div
-                        key={pet.petId}
-                        css={[petProfile, petItemStyle(index, petInfos.length)]}
-                        onClick={() => handlePetSelect(pet.petId)}
-                      >
-                        {pet.petImage ? (
-                          <Image
-                            src={pet.petImage}
-                            alt="반려견 프로필"
-                            width={86}
-                            height={86}
-                            css={profileImage({ isSelected: selectedPetId === pet.petId })}
-                          />
-                        ) : (
-                          <DefaultImage
-                            css={profileImage({ isSelected: selectedPetId === pet.petId })}
-                          />
-                        )}
-                        <Text
-                          typo="body1"
-                          color={selectedPetId === pet.petId ? 'blue200' : 'gray400'}
-                          css={petName}
-                        >
-                          {pet.petName}
-                        </Text>
-                      </div>
-                    ))}
-                  </div>
-                  <div>추가</div>
-                </>
-              ) : (
-                <div css={petTitle}>
-                  <Text typo="body3" color="gray400">
-                    반려견 정보를 불러오지 못했습니다.
-                  </Text>
-                </div>
-              )}
-            </div>
-          </section>
-        </div>
       </div>
+      <div css={petProfileWrapper}>
+        <section css={section}>
+          <div css={petList}>
+            {petInfos && petInfos.length > 0 ? (
+              <>
+                <div css={petList}>
+                  {petInfos.map((pet, index) => (
+                    <div
+                      key={pet.petId}
+                      css={[petProfile, petItemStyle(index)]}
+                      onClick={() => handlePetSelect(pet.petId)}
+                    >
+                      {pet.petImage ? (
+                        <Image
+                          src={pet.petImage}
+                          alt="반려견 프로필"
+                          width={86}
+                          height={86}
+                          css={profileImage}
+                        />
+                      ) : (
+                        <DefaultImage css={profileImage} />
+                      )}
+                      <Text typo="body1" css={petName}>
+                        {pet.petName}
+                      </Text>
+                    </div>
+                  ))}
+                  <div css={petProfileAdd} onClick={handlePetCreateClick}>
+                    <div css={addButton}>
+                      <MypageAddButton width={59} />
+                    </div>
+                    <Text typo="body1" color="gray400" css={petName}>
+                      추가
+                    </Text>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div css={petTitle}>
+                <Text typo="body3" color="gray400">
+                  반려견 정보를 불러오지 못했습니다.
+                </Text>
+              </div>
+            )}
+          </div>
+        </section>
+      </div>
+
       <div css={line} />
       <div css={itemWrapper}>
         <div css={item} onClick={() => router.push(ROUTES.MYPAGE_PAYMENTS)}>
@@ -130,9 +148,11 @@ export default function Mypage() {
           <ProfileArrowButton width={4} height={8} />
         </div>
         <div css={endItem}>
-          <Text typo="body4" color="black">
-            회원 탈퇴
-          </Text>
+          <button>
+            <Text typo="body4" color="black">
+              회원 탈퇴
+            </Text>
+          </button>
         </div>
       </div>
       <GNB />
@@ -149,6 +169,13 @@ const profileWrapper = css`
 
   width: 100%;
   padding: 24px 0;
+`;
+const profileImageStyle = css`
+  width: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  background: ${theme.colors.gray200};
 `;
 const nickname = css`
   flex: 1;
@@ -189,6 +216,7 @@ const requestInfo = css`
   & + & {
     border-left: 1px solid ${theme.colors.gray200};
   }
+  cursor: pointer;
 `;
 const petProfileEdit = css`
   display: flex;
@@ -218,14 +246,12 @@ const petProfile = css`
 
   cursor: pointer;
 `;
-const petItemStyle = (index: number, length: number) => css`
+const petItemStyle = (index: number) => css`
   ${index === 0 && 'padding: 0 0 0 18px;'}
-  ${index === length - 1 && 'padding: 0 18px 0 0;'}
 `;
-const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
-  width: 86px;
-  height: 86px;
-  border: 4px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
+const profileImage = () => css`
+  width: 59px;
+  height: 59px;
   border-radius: 50px;
 
   background-color: ${theme.colors.gray200};
@@ -237,6 +263,7 @@ const petName = css`
 `;
 const line = css`
   width: 100%;
+  margin: 24px 0 0;
   border: 3.5px solid ${theme.colors.gray100};
 `;
 const petTitle = css`
@@ -253,6 +280,8 @@ const item = css`
 
   padding: 18px 0;
   border-bottom: 1px solid ${theme.colors.gray100};
+
+  cursor: pointer;
 `;
 const endItem = css`
   display: flex;
@@ -260,4 +289,18 @@ const endItem = css`
   justify-content: space-between;
 
   padding: 18px 0;
+`;
+const addButton = css`
+  display: flex;
+`;
+
+const petProfileAdd = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0 18px 0 0;
+
+  cursor: pointer;
 `;
