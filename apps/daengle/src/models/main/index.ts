@@ -1,5 +1,6 @@
 export interface GetUserShopsResponse {
   allShops: GetAllShops[];
+  userAddress: string;
 }
 
 export interface GetAllShops {
@@ -13,6 +14,7 @@ export interface GetAllShops {
 
 export interface GetUserVetsResponse {
   allVets: GetAllVets[];
+  userAddress: string;
 }
 
 export interface GetAllVets {

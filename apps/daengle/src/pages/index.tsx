@@ -2,7 +2,7 @@ import { AppBar, Layout, RoundButton, Tabs, Text, theme, useDialog } from '@daen
 import { MainLogo, SearchIcon, SelectUnfoldInactive } from '@daengle/design-system/icons';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GNB } from '~/components/commons';
 import ActionSheet from '~/components/main/action-sheet';
 import { GroomerListComponent } from '~/components/main/groomer-list-component';
@@ -12,6 +12,7 @@ import { useGetUserValidateQuery } from '~/queries';
 import { useAddressFormStore } from '~/stores/main';
 import dogGif from '/public/images/main-dog.gif';
 import Image from 'next/image';
+import { useGetUserShopsQuery } from '~/queries/main';
 
 const TABS = [
   {
@@ -29,7 +30,7 @@ export default function Home() {
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const { data: getUserValidate } = useGetUserValidateQuery();
-  const { addressForm } = useAddressFormStore();
+  const { addressForm, setAddressForm } = useAddressFormStore();
 
   const { open } = useDialog();
 
