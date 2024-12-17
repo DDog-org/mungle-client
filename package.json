@@ -10,7 +10,6 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "preview": "turbo preview",
     "prepare": "husky",
-    "admin": "turbo dev --filter admin",
     "daengle": "turbo dev --filter daengle",
     "groomer": "turbo dev --filter groomer",
     "vet": "turbo dev --filter vet",
