@@ -21,11 +21,11 @@ type DetailData = GetUserReservationGroomingDetailResponse | GetUserReservationC
 
 export default function Detail() {
   const router = useRouter();
-  const { id, tab } = router.query;
+  const { id, service } = router.query;
   const estimateId = Number(id);
 
-  const isGrooming = tab === 'groomer';
-  const isCare = tab === 'vet';
+  const isGrooming = service === 'groomer';
+  const isCare = service === 'vet';
 
   const groomingParams: GetUserReservationGroomingDetailRequestParams = {
     estimateId: estimateId,
