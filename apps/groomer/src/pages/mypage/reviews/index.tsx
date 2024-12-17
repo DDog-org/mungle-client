@@ -4,7 +4,12 @@ import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { useIntersectionLoad } from '~/hooks/review';
-import { getGroomerReviewListQuery, getGroomerReviewReportListQuery } from '~/queries/review';
+import {
+  GroomerReviewList,
+  GroomerReviewReportList,
+  PartnersReviewListType,
+} from '~/interfaces/review';
+import { useGetGroomerReviewListQuery, useGetGroomerReviewReportListQuery } from '~/queries/review';
 
 const TABS = [
   {
@@ -17,6 +22,37 @@ const TABS = [
   },
 ];
 
+function transformGroomingReviewList(data: GroomerReviewList): PartnersReviewListType {
+  return {
+    reviewId: data.groomingReviewId,
+    userId: data.groomerId,
+    reviewerName: data.reviewerName,
+    reviewerImageUrl: data.reviewerImageUrl,
+    revieweeName: data.revieweeName,
+    createdAt: data.createdAt,
+    starRating: data.starRating,
+    content: data.content,
+    imageUrlList: data.imageUrlList,
+    keywordsList: data.groomingKeywordList,
+  };
+}
+function transformGroomingReviewReportList(data: GroomerReviewReportList): PartnersReviewListType {
+  return {
+    reviewId: data.groomingReviewId,
+    userId: data.groomerId,
+    reviewerName: data.reviewerName,
+    reviewerImageUrl: data.reviewerImageUrl,
+    revieweeName: data.revieweeName,
+    createdAt: data.createdAt,
+    starRating: data.starRating,
+    content: data.content,
+    imageUrlList: data.imageUrlList,
+    reportType: data.reportType,
+    reportContent: data.reportContent,
+    keywordsList: data.groomingKeywordList,
+  };
+}
+
 export default function ReviewsPage() {
   const router = useRouter();
 
@@ -25,9 +61,10 @@ export default function ReviewsPage() {
     fetchNextPage: fetchNextReceivedPage,
     hasNextPage: hasNextReceivedPage,
     isFetchingNextPage: isFetchingNextReceivedPage,
-  } = getGroomerReviewListQuery();
+  } = useGetGroomerReviewListQuery();
 
-  const receivedReviews = receivedData?.pages.flatMap((page) => page.reviewList) || [];
+  const receivedReviews: PartnersReviewListType[] =
+    receivedData?.pages.flatMap((page) => page.reviewList.map(transformGroomingReviewList)) || [];
   const receivedReviewCount = receivedData?.pages[0]?.reviewCount || 0;
 
   const { loadMoreRef: loadMoreReceivedRef } = useIntersectionLoad({
@@ -41,9 +78,11 @@ export default function ReviewsPage() {
     fetchNextPage: fetchNextFlaggedPage,
     hasNextPage: hasNextFlaggedPage,
     isFetchingNextPage: isFetchingNextFlaggedPage,
-  } = getGroomerReviewReportListQuery();
+  } = useGetGroomerReviewReportListQuery();
 
-  const flaggedReviews = flaggedData?.pages.flatMap((page) => page.reviewList) || [];
+  const flaggedReviews: PartnersReviewListType[] =
+    flaggedData?.pages.flatMap((page) => page.reviewList.map(transformGroomingReviewReportList)) ||
+    [];
   const flaggedReviewCount = flaggedData?.pages[0]?.reviewCount || 0;
 
   const { loadMoreRef: loadMoreFlaggedRef } = useIntersectionLoad({
@@ -60,7 +99,12 @@ export default function ReviewsPage() {
             <ReviewSummary total={receivedReviewCount} />
             <ReviewCardList
               reviews={receivedReviews}
-              onReport={() => router.push(ROUTES.MYPAGE_REVIEWS_REPORT)}
+              onReport={(reviewId, userId) =>
+                router.push({
+                  pathname: ROUTES.MYPAGE_REVIEWS_REPORT(reviewId),
+                  query: { groomerId: userId },
+                })
+              }
             />
             <div ref={loadMoreReceivedRef} css={bottom} />
           </div>
@@ -71,8 +115,7 @@ export default function ReviewsPage() {
             <ReviewSummary total={flaggedReviewCount} />
             <ReviewCardList
               reviews={flaggedReviews}
-              flagged={true}
-              onReport={() => router.push(ROUTES.MYPAGE_REVIEWS_REPORT)}
+              onReport={(reviewId) => router.push(ROUTES.MYPAGE_REVIEWS_REPORT(reviewId))}
             />
             <div ref={loadMoreFlaggedRef} css={bottom} />
           </div>
@@ -83,7 +126,7 @@ export default function ReviewsPage() {
             <ReviewSummary total={receivedReviewCount} />
             <ReviewCardList
               reviews={receivedReviews}
-              onReport={() => router.push(ROUTES.MYPAGE_REVIEWS_REPORT)}
+              onReport={(reviewId) => router.push(ROUTES.MYPAGE_REVIEWS_REPORT(reviewId))}
             />
             <div ref={loadMoreReceivedRef} css={bottom} />
           </div>

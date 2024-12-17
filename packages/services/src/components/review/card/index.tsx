@@ -22,37 +22,31 @@ import {
   SelectUnfoldInactive,
 } from '@daengle/design-system/icons';
 import { useState } from 'react';
+import { PartnersReviewListType } from '~/interface';
 
-interface Props {
-  groomingReviewId: number;
-  groomerId: number;
-  groomingKeywordList: string[];
-  reviewerName: string;
-  reviewerImageUrl: string;
-  revieweeName: string;
-  createdAt: string;
-  starRating: number;
-  content: string;
-  imageUrlList: string[];
-
+interface Props<T extends PartnersReviewListType> {
+  review: T;
   flagged?: boolean;
   reportType?: string;
   reportContent?: string;
-  onReport: () => void;
+  onReport: (event: React.MouseEvent<HTMLButtonElement>, reviewId: number, userId: number) => void;
 }
 
-export function ReviewCard({
-  reviewerImageUrl,
-  reviewerName,
-  starRating,
-  imageUrlList,
-  groomingKeywordList,
-  content,
+export function ReviewCard<T extends PartnersReviewListType>({
+  review,
   flagged = false,
-  reportType,
-  reportContent,
   onReport,
-}: Props) {
+}: Props<T>) {
+  const {
+    reviewerImageUrl,
+    reviewerName,
+    starRating,
+    imageUrlList,
+    keywordsList,
+    content,
+    reportType,
+    reportContent,
+  } = review;
   const [isUnrolled, setIsUnrolled] = useState(false);
 
   function handleCheckAllContent() {
@@ -67,7 +61,11 @@ export function ReviewCard({
           <Text typo="subtitle2">{reviewerName}</Text>
           <ReviewStars rating={starRating} />
         </div>
-        {!flagged && <CapsuleButton onClick={onReport}>수정하기</CapsuleButton>}
+        {!flagged && (
+          <CapsuleButton onClick={(event) => onReport(event, review.reviewId, review.userId)}>
+            신고하기
+          </CapsuleButton>
+        )}
       </div>
       <div css={reviewImages}>
         {imageUrlList.map((image, index) => (
@@ -76,7 +74,7 @@ export function ReviewCard({
       </div>
       <div css={tagsContainer}>
         <Text typo="body2" color="green200" css={tags}>
-          {groomingKeywordList.map((keyword, index) => (
+          {keywordsList.map((keyword, index) => (
             <span key={index}>#{keyword}</span>
           ))}
         </Text>
