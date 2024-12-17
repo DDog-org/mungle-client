@@ -37,7 +37,7 @@ export default function groomerProfile() {
     handleSubmit,
     setValue,
     control,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<GroomerProfileForm>({
     defaultValues: {
       phoneNumber: getGroomerShopInfo?.phoneNumber,
@@ -200,7 +200,7 @@ export default function groomerProfile() {
               />
             </li>
           </ul>
-          <CTAButton type="submit" service="partner">
+          <CTAButton type="submit" service="partner" disabled={isValid}>
             수정하기
           </CTAButton>
         </form>
