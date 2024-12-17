@@ -3,7 +3,7 @@ import { addTitle, inputSection, textarea } from './index.styles';
 import { TextareaHTMLAttributes } from 'react';
 
 interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  title: string;
+  title?: string;
   placeholder: string;
   height?: number;
 }
@@ -16,14 +16,18 @@ export function AddInput({
   onChange,
   ...rest
 }: Props): JSX.Element {
+  const hasTitle = !!title;
+
   return (
     <div>
-      <div css={addTitle}>
-        <Text typo="body4" color="gray400">
-          {title}
-        </Text>
-      </div>
-      <section css={inputSection}>
+      {hasTitle && (
+        <div css={addTitle}>
+          <Text typo="body4" color="gray400">
+            {title}
+          </Text>
+        </div>
+      )}
+      <section css={inputSection(hasTitle)}>
         <textarea
           css={[textarea, height && { minHeight: `${height}px` }]}
           placeholder={placeholder}

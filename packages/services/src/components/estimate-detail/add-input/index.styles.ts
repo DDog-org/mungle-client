@@ -5,14 +5,14 @@ export const addTitle = css`
   padding: 24px 18px 14px;
 `;
 
-export const inputSection = css`
+export const inputSection = (hasTitle: boolean) => css`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
   margin-bottom: 8px;
-  padding: 0 18px;
+  padding: ${hasTitle ? '0 18px' : '0'};
 `;
 
 export const textarea = css`

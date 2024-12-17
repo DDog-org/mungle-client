@@ -48,7 +48,7 @@ export const useGetGroomerReviewReportQuery = (params: GetGroomerReviewReportReq
   });
 };
 
-export const usePostVetReviewReportMutation = () => {
+export const usePostGroomerReviewReportMutation = () => {
   return useMutation({
     mutationKey: [QUERY_KEYS.POST_GROOMER_REVIEW_REPORT],
     mutationFn: (body: PostGroomerReviewReportRequestBody) => {
