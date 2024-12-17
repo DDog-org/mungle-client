@@ -2,7 +2,7 @@
 
 ![Header](https://github.com/user-attachments/assets/02a1beaa-e38c-4287-b13a-42faef2ac270)
 
-댕글 🐾 은 반려견을 위한 견적 매칭 플랫폼입니다.
+댕글 🐾 은 반려견을 위한 견적 매칭 플랫폼입니다.  
 반려견 미용 서비스✂️와 동물병원🏥 가격비교 및 예약 서비스를 제공합니다.
 
 <br/>
