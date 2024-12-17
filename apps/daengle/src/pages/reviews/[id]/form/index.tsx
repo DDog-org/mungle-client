@@ -122,6 +122,7 @@ export default function ReviewPage() {
         content: reviewText,
         imageUrlList: uploadedImageUrls,
       };
+      console.log(body);
 
       postCareReview.mutate(body, {
         onSuccess: (response) => {
@@ -137,7 +138,11 @@ export default function ReviewPage() {
 
   return (
     <Layout>
-      <AppBar backgroundColor={theme.colors.background} />
+      <AppBar
+        backgroundColor={theme.colors.background}
+        onBackClick={() => router.back}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+      />
       <div css={wrapper}>
         <div css={header}>
           <Text typo="title1">

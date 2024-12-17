@@ -5,6 +5,7 @@ import { Card } from '~/components/mypage';
 import { useIntersectionLoad } from '~/hooks/review';
 import { deleteUserCareReviewMutation, getUserCareMyReviewListInfiniteQuery } from '~/queries';
 import { bottom, wrapper } from './index.styles';
+import { VET_REVIEW_KEYWORDS } from '~/constants/review';
 
 export function VetCardList() {
   const router = useRouter();
@@ -34,7 +35,9 @@ export function VetCardList() {
                   key={careReviewId}
                   reviewId={careReviewId}
                   revieweeId={vetId}
-                  keywordReviewList={careKeywordList}
+                  keywordReviewList={careKeywordList
+                    .map((keyword) => VET_REVIEW_KEYWORDS[keyword])
+                    .filter((keyword): keyword is string => !!keyword)}
                   revieweeName={revieweeName}
                   starRating={starRating}
                   content={content}

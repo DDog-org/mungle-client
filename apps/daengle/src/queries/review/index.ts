@@ -35,8 +35,8 @@ import { AxiosError } from 'axios';
 export const getUserGroomingMyReviewListInfiniteQuery = () => {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.GET_USER_GROOMING_MY_REVIEW_LIST,
-    initialPageParam: 1,
-    queryFn: ({ pageParam = 1 }) => {
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
       return getUserGroomingMyReviewList({ page: pageParam, size: PAGE_SIZE });
     },
     getNextPageParam: (lastPage, allPages) => {
@@ -48,8 +48,8 @@ export const getUserGroomingMyReviewListInfiniteQuery = () => {
 export const getUserCareMyReviewListInfiniteQuery = () => {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.GET_USER_CARE_MY_REVIEW_LIST,
-    initialPageParam: 1,
-    queryFn: ({ pageParam = 1 }) => {
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
       return getUserCareMyReviewList({ page: pageParam, size: PAGE_SIZE });
     },
     getNextPageParam: (lastPage, allPages) => {
@@ -76,8 +76,8 @@ export const deleteUserCareReviewMutation = () => {
 export const getUserGroomerReviewListInfiniteQuery = (groomerId: number) => {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.GET_USER_GROOMER_REVIEW_LIST,
-    initialPageParam: 1,
-    queryFn: ({ pageParam = 1 }) => {
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
       return getUserGroomerReviewList({ groomerId, params: { page: pageParam, size: PAGE_SIZE } });
     },
     getNextPageParam: (lastPage, allPages) => {
@@ -90,8 +90,8 @@ export const getUserGroomerReviewListInfiniteQuery = (groomerId: number) => {
 export const getUserVetReviewListInfiniteQuery = (vetId: number) => {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.GET_USER_VET_REVIEW_LIST,
-    initialPageParam: 1,
-    queryFn: ({ pageParam = 1 }) => {
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
       return getUserVetReviewList({ vetId, params: { page: pageParam, size: PAGE_SIZE } });
     },
     getNextPageParam: (lastPage, allPages) => {

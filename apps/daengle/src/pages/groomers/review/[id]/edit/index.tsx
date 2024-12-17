@@ -18,7 +18,7 @@ import { ROUTES } from '~/constants/commons';
 
 const KEYWORDS = Object.values(GROOMER_REVIEW_KEYWORDS);
 
-export function GroomerReviewEdit() {
+export default function GroomerReviewEdit() {
   const [rating, setRating] = useState<number>(0);
   const [reviewText, setReviewText] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -123,7 +123,11 @@ export function GroomerReviewEdit() {
 
   return (
     <Layout>
-      <AppBar backgroundColor={theme.colors.background} />
+      <AppBar
+        backgroundColor={theme.colors.background}
+        onBackClick={() => router.back()}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+      />
       <div css={wrapper}>
         <div css={header}>
           <Text typo="title1">{data?.shopName || '알 수 없음'}</Text>

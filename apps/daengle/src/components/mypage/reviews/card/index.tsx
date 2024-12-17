@@ -9,6 +9,7 @@ import {
   groomerText,
   imageWrapper,
   tag,
+  tagsWrapper,
   tagWrapper,
   top,
   wrapper,
@@ -62,14 +63,15 @@ export function Card({
         {imageUrlList?.map((url) => <Image src={url} alt="리뷰 이미지" width={101} height={101} />)}
       </div>
 
-      <div css={tagWrapper}>
-        <div css={tag}>
-          {keywordReviewList?.map((tag) => (
-            <Text typo="body2" color="blue200">
-              {tag}
-            </Text>
+      <div css={tagsWrapper}>
+        {keywordReviewList.length > 0 &&
+          keywordReviewList.map((tag) => (
+            <div css={tagWrapper}>
+              <Text typo="body12" color="blue200">
+                {`#${tag}`}
+              </Text>
+            </div>
           ))}
-        </div>
       </div>
 
       {content && (
