@@ -26,7 +26,6 @@ export interface GetChatWithResponse {
   otherId: number;
   otherProfile: string | null;
   otherName: string;
-  estimateId: number | null;
   messagesGroupedByDate: MessagesGroupedByDate[];
 }
 

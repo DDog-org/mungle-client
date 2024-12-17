@@ -24,6 +24,7 @@ export default function ChatRoom() {
   const router = useRouter();
   const chatRoomId = router.query.chatRoomId as string;
   const otherId = router.query.otherId as string;
+  const estimateId = router.query.estimateId;
 
   const [messages, setMessages] = useState<MessageInfos[]>([]);
 
@@ -171,7 +172,7 @@ export default function ChatRoom() {
       <AppBar title={otherName} suffix={<></>} onBackClick={router.back} />
 
       <section css={wrapper}>
-        {chatHistory?.estimateId && (
+        {estimateId && (
           <div css={estimateWrapper}>
             <div css={profileWrapper}>
               <DefaultImage width={32} height={32} />
@@ -180,10 +181,10 @@ export default function ChatRoom() {
               </Text>
             </div>
 
-            {chatHistory?.estimateId && (
+            {estimateId && (
               <CapsuleButton
                 size="S"
-                onClick={() => router.push(ROUTES.ESTIMATE_DETAIL(chatHistory.estimateId!))}
+                onClick={() => router.push(ROUTES.ESTIMATE_DETAIL(Number(estimateId)))}
               >
                 <Text typo="body2" color="gray500">
                   견적서 상세보기
