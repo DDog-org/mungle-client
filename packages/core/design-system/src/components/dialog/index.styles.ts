@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-import { SecondaryActionType } from '.';
 import { theme } from '../../foundation';
 
 export const wrapper = css`
@@ -53,20 +52,4 @@ export const button = css`
   & + & {
     border-left: 1px solid ${theme.colors.gray100};
   }
-`;
-
-export const secondaryButton = ({
-  secondaryActionType,
-}: {
-  secondaryActionType: SecondaryActionType;
-}) => css`
-  ${secondaryActionType === 'neutral' &&
-  css`
-    background: ${theme.colors.gray200};
-    color: ${theme.colors.white};
-
-    &:hover {
-      background: ${theme.colors.gray300};
-    }
-  `}
 `;

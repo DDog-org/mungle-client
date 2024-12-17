@@ -5,14 +5,14 @@ import { Text } from '../text';
 import { Portal } from '../portal';
 import { toast } from './index.styles';
 
-interface Props {
+export interface ToastProps {
   isShow: boolean;
   title: string;
   time?: number;
   service?: 'daengle' | 'partner';
 }
 
-export function Toast({ isShow, title, time = 3000, service = 'daengle' }: Props) {
+export function Toast({ isShow, title, time = 3000, service = 'daengle' }: ToastProps) {
   const [isOpen, setIsOpen] = useState<boolean>(isShow);
 
   useEffect(() => {
