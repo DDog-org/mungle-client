@@ -20,7 +20,7 @@ export const ImageInput = forwardRef(({ onChange, defaultValue = [], maxLength }
   const [files, setFiles] = useState<File[]>(defaultValue);
 
   useEffect(() => {
-    if (JSON.stringify(filesRef.current) !== JSON.stringify(defaultValue)) {
+    if (defaultValue && defaultValue.length > 0) {
       filesRef.current = defaultValue;
       setFiles(defaultValue);
     }
