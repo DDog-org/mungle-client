@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { api } from '~/apis';
+import { api, guestApi } from '~/apis';
 import {
   GetGroomerModifyPageResponse,
   PatchGroomerInfoRequestBody,
@@ -10,6 +10,8 @@ import {
   PostKakaoRequestBody,
   PostKakaoResponse,
   GetGroomerWithdrawInfoResponse,
+  DeleteGroomerResponse,
+  GetGroomerValidateResponse,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -27,11 +29,11 @@ export const postOauthToken = async (code: string) => {
 };
 
 export const postKakao = async (body: PostKakaoRequestBody) => {
-  return await api.post<PostKakaoResponse>('/groomer/kakao', body);
+  return await guestApi.post<PostKakaoResponse>('/groomer/kakao', body);
 };
 
 export const postJoin = async (body: PostJoinRequestBody) => {
-  return await api.post<PostJoinResponse>('/groomer/join', body);
+  return await guestApi.post<PostJoinResponse>('/groomer/join', body);
 };
 
 export const getGroomerModifyPage = async () => {
@@ -48,4 +50,12 @@ export const getGroomerInfo = async () => {
 
 export const getGroomerWithdrawInfo = async () => {
   return await api.get<GetGroomerWithdrawInfoResponse>('/groomer/withdraw-info');
+};
+
+export const deleteGroomer = async () => {
+  return await api.delete<DeleteGroomerResponse>('/groomer');
+};
+
+export const getGroomerValidate = async () => {
+  return await api.get<GetGroomerValidateResponse>('/groomer/validate');
 };

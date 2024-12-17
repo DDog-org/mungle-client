@@ -1,15 +1,32 @@
 import { css } from '@emotion/react';
-import { AppBar, Empty, Layout, Text, theme } from '@daengle/design-system';
+import { AppBar, Empty, Layout, Text, theme, useDialog } from '@daengle/design-system';
 import { AppBarPartnerLogo } from '@daengle/design-system/icons';
 import { GNB } from '~/components/commons';
 import { ReservationItem } from '~/components/home';
-import { useGetGroomerSchedule } from '~/queries';
+import { useGetGroomerSchedule, useGetGroomerValidateQuery } from '~/queries';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants';
+import { useEffect } from 'react';
 
 export default function Home() {
   const router = useRouter();
   const { data: schedule } = useGetGroomerSchedule();
+
+  const { data } = useGetGroomerValidateQuery();
+
+  const { open } = useDialog();
+
+  useEffect(() => {
+    if (data?.isValidateMember === false) {
+      open({
+        title: '로그인 후 이용 가능합니다',
+        primaryActionLabel: '로그인 하기',
+        onPrimaryAction: () => router.replace(ROUTES.LOGIN),
+      });
+
+      router.replace(ROUTES.LOGIN);
+    }
+  }, [data?.isValidateMember]);
 
   return (
     <Layout isAppBarExist={false}>
