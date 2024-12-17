@@ -3,17 +3,19 @@
 ![Header](https://github.com/user-attachments/assets/02a1beaa-e38c-4287-b13a-42faef2ac270)
 
 댕글 🐾 은 반려견을 위한 견적 매칭 플랫폼입니다.  
-반려견 미용 서비스✂️와 동물병원🏥 가격비교 및 예약 서비스를 제공합니다.
+반려견 미용 서비스✂️ 와 동물병원🏥 가격비교 및 예약 서비스를 제공합니다.
 
 <br/>
 
 ## 서비스 이용해 보기 🔗
 
-| Type           | URL                         |
-| -------------- | --------------------------- |
-| 🐾 일반 사용자 | www.daengle.com             |
-| ✂️ 미용사      | https://groomer.daengle.com |
-| 🏥 동물병원    | https://vet.daengle.com     |
+| Type           | URL                           |
+| -------------- | ----------------------------- |
+| 🐾 일반 사용자 | www.daengle.com               |
+| ✂️ 미용사      | https://groomer.daengle.com   |
+| 🏥 동물병원    | https://vet.daengle.com       |
+| -------------- | ---------------------------   |
+| 📖 Storybook   | https://storybook.daengle.com |
 
 <br/>
 
@@ -24,6 +26,12 @@
 - emotion
 - Zustand, Tanstack-query
 - Storybook
+
+<br/>
+
+## 프론트엔드 아키텍처
+
+![daengle_frontend_architecture](https://github.com/user-attachments/assets/ca7cec93-cc50-47dd-88e9-1ad00e1b4303)
 
 <br/>
 
