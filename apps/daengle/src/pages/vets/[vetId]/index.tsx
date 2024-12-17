@@ -8,6 +8,7 @@ import {
   Paw,
   ToolTip,
 } from '@daengle/design-system/icons';
+import { VetDefaultImage } from '@daengle/design-system/images';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
@@ -29,6 +30,7 @@ export default function VetInfo() {
       <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
       <div css={wrapper}>
         <div css={imageSection(VetDetail?.vetImage)}>
+          {VetDetail?.vetImage ? null : <VetDefaultImage />}
           {/* TODO: 캐러셀 구현 */}
           <Text typo="title2" color="white" css={vetName}>
             {VetDetail?.vetName}
@@ -257,18 +259,24 @@ const graphBar = (daengleMeter: number | undefined) => css`
   transition: width 0.3s ease;
 
   clip-path: inset(0 0 0 0 round 10px);
+
+  z-index: 5px;
 `;
 
 const heart = css`
   position: absolute;
   top: 4px;
   right: 6px;
+
+  z-index: 10px;
 `;
 
 const paw = css`
   position: absolute;
   top: 4px;
   right: 6px;
+
+  z-index: 1px;
 
   fill: ${theme.colors.gray600};
 `;
