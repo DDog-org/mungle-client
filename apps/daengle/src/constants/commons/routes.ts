@@ -13,8 +13,8 @@ export const ROUTES = {
   // Estimates
   ESTIMATES: '/estimates',
   ESTIMATE_DETAIL: (estimateId: number) => `/estimates/detail/${estimateId}`,
-  ESTIMATE_GROOMING: '/estimates/grooming',
-  ESTIMATE_VET: 'estimates/care',
+  ESTIMATE_GROOMING: (groomerId: number) => `/estimates/grooming/${groomerId}`,
+  ESTIMATE_VET: (vetId: number) => `/estimates/care/${vetId}`,
   ESTIMATE_FORM_COMPLETE: '/estimates/complete',
   ESTIMATE_REQUEST: (estimateId: number) => `estimates/request/${estimateId}`,
 
