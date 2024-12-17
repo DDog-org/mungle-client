@@ -10,6 +10,7 @@ export interface GetAllShops {
   shopImage: string;
   startTime: string;
   endTime: string;
+  closedDay: string[];
 }
 
 export interface GetUserVetsResponse {
@@ -24,4 +25,5 @@ export interface GetAllVets {
   vetImage: string;
   startTime: string;
   endTime: string;
+  closedDay: string[];
 }

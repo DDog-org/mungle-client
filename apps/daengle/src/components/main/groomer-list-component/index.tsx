@@ -5,6 +5,7 @@ import { Empty } from '@daengle/design-system';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { wrapper, cardBox, emptyBox } from './index.styles';
+import { VET_DAT_OFF } from '~/constants/main';
 
 export function GroomerListComponent() {
   const router = useRouter();
@@ -26,7 +27,13 @@ export function GroomerListComponent() {
               image={shop.shopImage}
               name={shop.shopName}
               address={shop.shopAddress}
-              schedule={`매일 ${shop.startTime.substring(0, 5)} - ${shop.endTime.substring(0, 5)}`}
+              schedule={
+                shop.closedDay.length > 0
+                  ? `${shop?.startTime.substring(0, 5)} - ${shop?.endTime.substring(0, 5)} ${shop.closedDay
+                      .map((day) => VET_DAT_OFF.find((item) => item.value === day)?.label || day)
+                      .join(', ')} 휴무`
+                  : `매일 ${shop?.startTime.substring(0, 5)} - ${shop?.endTime.substring(0, 5)}`
+              }
               onClick={() => handleCardClick(shop.shopId)}
             />
           ))

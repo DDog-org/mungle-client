@@ -2,7 +2,7 @@ import { AppBar, Layout, RoundButton, Tabs, Text, theme, useDialog } from '@daen
 import { MainLogo, SearchIcon, SelectUnfoldInactive } from '@daengle/design-system/icons';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { GNB } from '~/components/commons';
 import ActionSheet from '~/components/main/action-sheet';
 import { GroomerListComponent } from '~/components/main/groomer-list-component';
@@ -12,7 +12,6 @@ import { useGetUserValidateQuery } from '~/queries';
 import { useAddressFormStore } from '~/stores/main';
 import dogGif from '/public/images/main-dog.gif';
 import Image from 'next/image';
-import { useGetUserShopsQuery } from '~/queries/main';
 
 const TABS = [
   {
@@ -27,10 +26,11 @@ const TABS = [
 
 export default function Home() {
   // TODO: 무한스크롤 구현
+  // TODO: 회원인 경우 기본 주소값으로 회원 정보에 저장된 주소값을 가져오기(에러나서 아직 해결 못함..)
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const { data: getUserValidate } = useGetUserValidateQuery();
-  const { addressForm, setAddressForm } = useAddressFormStore();
+  const { addressForm } = useAddressFormStore();
 
   const { open } = useDialog();
 
