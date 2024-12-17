@@ -31,7 +31,6 @@ export function DesignationCardList() {
     <div>
       {estimates.map((data) => (
         <Card
-          id={data.id}
           onDetailClick={() =>
             router.push({ pathname: ROUTES.ESTIMATE_DETAIL(data.id), query: { tab: tab } })
           }
