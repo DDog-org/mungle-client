@@ -1,4 +1,4 @@
-import { AppBar, Layout, RoundButton, Tabs, Text, theme } from '@daengle/design-system';
+import { AppBar, Dialog, Layout, RoundButton, Tabs, Text, theme } from '@daengle/design-system';
 import { MainLogo, SearchIcon, SelectUnfoldInactive } from '@daengle/design-system/icons';
 import { DaengleDog } from '@daengle/design-system/images';
 import { css } from '@emotion/react';
