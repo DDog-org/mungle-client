@@ -10,6 +10,8 @@ export const wrapper = css`
   width: 100%;
   height: 80%;
 
+  text-align: center;
+
   button {
     margin: 20px 0 0;
   }

@@ -1,9 +1,9 @@
-import { box, dateSelect, text } from './index.styles';
-import { Text } from '@daengle/design-system';
-import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
 import { useState } from 'react';
+import { Dayjs } from 'dayjs';
+import { Text } from '@daengle/design-system';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import { box, dateSelect, text } from './index.styles';
 
 interface TimePickerComponentProps {
   onStartTimeChange: (date: Dayjs | null) => void;

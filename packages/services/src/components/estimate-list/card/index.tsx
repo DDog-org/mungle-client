@@ -17,7 +17,6 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 
 interface EstimateGeneralListType {
-  id: number;
   imageUrl: string;
   nickname: string;
   proposal: 'GENERAL' | 'DESIGNATION';
@@ -27,7 +26,6 @@ interface EstimateGeneralListType {
 }
 
 export function Card({
-  id,
   imageUrl,
   nickname,
   proposal,

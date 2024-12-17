@@ -1,5 +1,6 @@
 import { TextButton, Text } from '@daengle/design-system';
 import { ButtonTextButtonArrow, DefaultProfile } from '@daengle/design-system/icons';
+import { PET_SIZE } from '../../../constants';
 import {
   wrapper,
   profile,
@@ -11,9 +12,13 @@ import {
 } from './index.styles';
 
 interface Props {
-  image: string;
-  name: string;
-  attributes: (string | number | null)[];
+  image?: string;
+  name?: string;
+  attributes: {
+    age: number;
+    weight: keyof typeof PET_SIZE;
+    significant: string;
+  };
 }
 
 const LABELS = ['나이', '몸무게', '특이사항'];
@@ -50,11 +55,9 @@ export function PetDetails({ image, name, attributes }: Props): JSX.Element {
           </TextButton>
         </div>
         <div css={valueWrapper}>
-          {attributes.map((attribute, index) => (
-            <Text typo="body9" key={`value-${index}`}>
-              {attribute}
-            </Text>
-          ))}
+          <Text typo="body9">{attributes.age}</Text>
+          <Text typo="body9">{PET_SIZE[attributes.weight]}</Text>
+          <Text typo="body9">{attributes.significant}</Text>
         </div>
       </div>
     </div>

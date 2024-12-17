@@ -12,7 +12,6 @@ export const createHttpClient = ({ baseURL, role }: Props) => {
   const axiosInstance = axios.create({ baseURL });
   const api: HttpClient = axiosInstance;
 
-  // TODO: 추후 로그인 로직 변경
   api.interceptors.request.use((config) => {
     const token = localStorage.getItem('accessToken');
 

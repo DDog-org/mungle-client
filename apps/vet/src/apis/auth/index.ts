@@ -1,14 +1,15 @@
 import axios from 'axios';
-import { api } from '~/apis';
+import { api, guestApi } from '~/apis';
 import {
   GetVetModifyPageResponse,
+  GetVetValidateResponse,
   PatchVetInfoRequestBody,
   PatchVetInfoResponse,
   PostKakaoRequestBody,
   PostKakaoResponse,
   PostVetJoinRequestBody,
   PostVetJoinResponse,
-} from '~/models/auth';
+} from '~/models';
 
 export const postOauthToken = async (code: string) => {
   return await axios.post('https://kauth.kakao.com/oauth/token', null, {
@@ -25,11 +26,11 @@ export const postOauthToken = async (code: string) => {
 };
 
 export const postKakao = async (body: PostKakaoRequestBody) => {
-  return await api.post<PostKakaoResponse>('/vet/kakao', body);
+  return await guestApi.post<PostKakaoResponse>('/vet/kakao', body);
 };
 
 export const postVetJoin = async (body: PostVetJoinRequestBody) => {
-  return await api.post<PostVetJoinResponse>('/vet/join', body);
+  return await guestApi.post<PostVetJoinResponse>('/vet/join', body);
 };
 
 export const getVetModifyPage = async () => {
@@ -38,4 +39,8 @@ export const getVetModifyPage = async () => {
 
 export const patchVetInfo = async (body: PatchVetInfoRequestBody) => {
   return await api.patch<PatchVetInfoResponse>('/vet/info', body);
+};
+
+export const getVetValidate = async () => {
+  return await api.get<GetVetValidateResponse>('/vet/validate');
 };

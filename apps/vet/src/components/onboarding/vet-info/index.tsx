@@ -4,10 +4,10 @@ import { useForm } from 'react-hook-form';
 import { CTAButton, ImageInput, Input, Text } from '@daengle/design-system';
 import { formatPhoneNumberWithRegionNumber } from '@daengle/services/utils';
 import { useS3 } from '@daengle/services/hooks';
-import { ROUTES } from '~/constants/commons/routes';
-import { VetInfoForm } from '~/interfaces/auth';
+import { ROUTES } from '~/constants/commons';
+import { VetInfoForm } from '~/interfaces';
 import { useValidateOnboardingForm } from '~/hooks';
-import { useVetInfoFormStore } from '~/stores/auth';
+import { useVetInfoFormStore } from '~/stores';
 import { usePostVetJoinMutation } from '~/queries';
 import { address, certificatesWrapper, imageInputWrapper, section, wrapper } from './index.styles';
 

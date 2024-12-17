@@ -28,6 +28,7 @@ export const Input = forwardRef<InputRef, Props>(
       suffix,
       confirmMessage,
       errorMessage,
+      required,
       service = 'daengle',
       ...props
     },
@@ -39,9 +40,16 @@ export const Input = forwardRef<InputRef, Props>(
     return (
       <div css={wrapper}>
         {label && (
-          <Text typo="subtitle3" css={labelCss}>
-            {label}
-          </Text>
+          <>
+            <Text typo="subtitle3" css={labelCss}>
+              {label}{' '}
+              {required && (
+                <Text typo="body12" color="red200">
+                  *
+                </Text>
+              )}
+            </Text>
+          </>
         )}
 
         <div css={inputWrapper}>

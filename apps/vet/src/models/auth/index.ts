@@ -46,3 +46,7 @@ export interface PatchVetInfoRequestBody {
   phoneNumber: string;
   introduction: string;
 }
+
+export interface GetVetValidateResponse {
+  isValidateMember: boolean;
+}

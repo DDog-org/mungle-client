@@ -49,6 +49,8 @@ export const button = css`
   width: 100%;
   padding: 20px 0;
 
+  cursor: pointer;
+
   & + & {
     border-left: 1px solid ${theme.colors.gray100};
   }
