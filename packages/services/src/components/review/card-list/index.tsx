@@ -1,27 +1,38 @@
+import { Empty } from '@daengle/design-system';
 import { ReviewCard } from '../card';
-import { wrapper } from './index.styles';
+import { wrapper, empty } from './index.styles';
+import { PartnersReviewListType } from '~/interface';
 
-interface Props {
-  reviews: {
-    id: number;
-    reviewerName: string;
-    profileImage: string;
-    rating: number;
-    images: string[];
-    tag: string;
-    content: string;
-    reportType?: string;
-    reportContent?: string;
-  }[];
+interface Props<T extends PartnersReviewListType> {
+  reviews: T[];
   flagged?: boolean;
-  onReport: () => void;
+  onReport: (reviewId: number, userId: number) => void;
 }
 
-export function ReviewCardList({ reviews, flagged, onReport }: Props) {
+export function ReviewCardList<T extends PartnersReviewListType>({
+  reviews,
+  flagged,
+  onReport,
+}: Props<T>) {
+  if (reviews.length === 0) {
+    return (
+      <div css={empty}>
+        <Empty title="받은 리뷰가 없습니다" />
+      </div>
+    );
+  }
   return (
     <div css={wrapper}>
       {reviews.map((review) => (
-        <ReviewCard key={review.id} {...review} flagged={flagged} onReport={onReport} />
+        <ReviewCard
+          key={review.reviewId}
+          review={review}
+          flagged={flagged}
+          onReport={(event) => {
+            event.preventDefault();
+            onReport(review.reviewId, review.userId);
+          }}
+        />
       ))}
     </div>
   );

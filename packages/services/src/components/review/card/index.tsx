@@ -22,32 +22,31 @@ import {
   SelectUnfoldInactive,
 } from '@daengle/design-system/icons';
 import { useState } from 'react';
+import { PartnersReviewListType } from '~/interface';
 
-interface Props {
-  reviewerName: string;
-  profileImage: string;
-  rating: number;
-  images: string[];
-  tag: string;
-  content: string;
+interface Props<T extends PartnersReviewListType> {
+  review: T;
   flagged?: boolean;
   reportType?: string;
   reportContent?: string;
-  onReport: () => void;
+  onReport: (event: React.MouseEvent<HTMLButtonElement>, reviewId: number, userId: number) => void;
 }
 
-export function ReviewCard({
-  reviewerName,
-  profileImage,
-  rating,
-  images,
-  tag,
-  content,
+export function ReviewCard<T extends PartnersReviewListType>({
+  review,
   flagged = false,
-  reportType,
-  reportContent,
   onReport,
-}: Props) {
+}: Props<T>) {
+  const {
+    reviewerImageUrl,
+    reviewerName,
+    starRating,
+    imageUrlList,
+    keywordsList,
+    content,
+    reportType,
+    reportContent,
+  } = review;
   const [isUnrolled, setIsUnrolled] = useState(false);
 
   function handleCheckAllContent() {
@@ -58,20 +57,26 @@ export function ReviewCard({
     <div css={wrapper}>
       <div css={reviewerInfo}>
         <div css={userInfo}>
-          <img src={profileImage} alt={`${reviewerName} 프로필`} css={userImage} />
+          <img src={reviewerImageUrl} alt={`${reviewerName} 프로필`} css={userImage} />
           <Text typo="subtitle2">{reviewerName}</Text>
-          <ReviewStars rating={rating} />
+          <ReviewStars rating={starRating} />
         </div>
-        {!flagged && <CapsuleButton onClick={onReport}>수정하기</CapsuleButton>}
+        {!flagged && (
+          <CapsuleButton onClick={(event) => onReport(event, review.reviewId, review.userId)}>
+            신고하기
+          </CapsuleButton>
+        )}
       </div>
       <div css={reviewImages}>
-        {images.map((image, index) => (
+        {imageUrlList.map((image, index) => (
           <img key={index} src={image} alt={`리뷰 이미지 ${index + 1}`} />
         ))}
       </div>
       <div css={tagsContainer}>
         <Text typo="body2" color="green200" css={tags}>
-          {tag}
+          {keywordsList.map((keyword, index) => (
+            <span key={index}>#{keyword}</span>
+          ))}
         </Text>
       </div>
       <div css={contentContainer}>
