@@ -367,9 +367,6 @@ importers:
       '@daengle/typescript-config':
         specifier: workspace:*
         version: link:../../packages/core/typescript-config
-      '@hookform/devtools':
-        specifier: ^4.3.1
-        version: 4.3.1(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/node':
         specifier: ^20
         version: 20.17.6
@@ -7067,22 +7064,6 @@ snapshots:
   '@eslint/plugin-kit@0.2.3':
     dependencies:
       levn: 0.4.1
-
-  '@hookform/devtools@4.3.1(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@emotion/react': 11.13.5(@types/react@18.3.1)(react@18.3.1)
-      '@emotion/styled': 11.13.5(@emotion/react@11.13.5(@types/react@18.3.1)(react@18.3.1))(@types/react@18.3.1)(react@18.3.1)
-      '@types/lodash': 4.17.13
-      little-state-machine: 4.8.0(react@18.3.1)
-      lodash: 4.17.21
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      react-simple-animate: 3.5.2(react-dom@18.3.1(react@18.3.1))
-      use-deep-compare-effect: 1.8.1(react@18.3.1)
-      uuid: 8.3.2
-    transitivePeerDependencies:
-      - '@types/react'
-      - supports-color
 
   '@hookform/devtools@4.3.1(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
