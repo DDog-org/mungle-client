@@ -1,6 +1,5 @@
 import { AppBar, Layout, RoundButton, Tabs, Text, theme, useDialog } from '@daengle/design-system';
 import { MainLogo, SearchIcon, SelectUnfoldInactive } from '@daengle/design-system/icons';
-import { DaengleDog } from '@daengle/design-system/images';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -11,6 +10,8 @@ import { VetListComponent } from '~/components/main/vet-list-component';
 import { ROUTES } from '~/constants/commons';
 import { useGetUserValidateQuery } from '~/queries';
 import { useAddressFormStore } from '~/stores/main';
+import dogGif from '/public/images/main-dog.gif';
+import Image from 'next/image';
 
 const TABS = [
   {
@@ -103,7 +104,7 @@ export default function Home() {
               주변에서 찾기
             </Text>
           </div>
-          <DaengleDog width={149} height={132} css={daengleDog} />
+          <Image src={dogGif} alt="dogGif" width={150} height={150} css={daengleDog} />
           <RoundButton size="XL" onClick={handleOpenActionSheet}>
             견적 요청하기
           </RoundButton>
@@ -140,7 +141,7 @@ const topSection = css`
   position: relative;
 
   margin-top: 60px;
-  padding: 18px;
+  padding: 5px 18px 18px;
 `;
 
 const textBox = css`
@@ -148,7 +149,7 @@ const textBox = css`
   flex-direction: column;
   gap: 6px;
 
-  margin-bottom: 33px;
+  margin-bottom: 24px;
 `;
 
 const address = css`
@@ -161,8 +162,8 @@ const address = css`
 
 const daengleDog = css`
   position: absolute;
-  right: 25px;
-  bottom: 65px;
+  right: 20px;
+  bottom: 54px;
   z-index: 3;
 `;
 
