@@ -1,5 +1,5 @@
 import { createContext, HTMLAttributes, ReactNode } from 'react';
-import { button, buttonWrapper, secondaryButton, text, wrapper } from './index.styles';
+import { button, buttonWrapper, text, wrapper } from './index.styles';
 import { Text } from '../text';
 import { Dim } from '../dim';
 import { Portal } from '../portal';

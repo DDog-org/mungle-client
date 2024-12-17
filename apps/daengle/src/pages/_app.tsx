@@ -1,16 +1,18 @@
 import type { AppProps } from 'next/app';
-import { GlobalStyle, DialogProvider } from '@daengle/design-system';
+import { GlobalStyle, DialogProvider, ToastProvider } from '@daengle/design-system';
 import { QueryProvider } from '@daengle/services/providers';
 import { initMSW } from '~/mocks/init-msw';
 
 initMSW();
 
-export default function MyApp({ Component, pageProps }: AppProps & { isAppBarExist?: boolean }) {
+export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryProvider>
       <GlobalStyle>
         <DialogProvider>
-          <Component {...pageProps} />
+          <ToastProvider>
+            <Component {...pageProps} />
+          </ToastProvider>
         </DialogProvider>
       </GlobalStyle>
     </QueryProvider>
