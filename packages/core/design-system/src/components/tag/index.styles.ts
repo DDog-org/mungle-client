@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 import { theme } from '../../foundation';
-import { Variant } from './index.types';
+import { Service, Variant } from './index.types';
 
-export const wrapper = ({ variant }: { variant: Variant }) => css`
+export const wrapper = ({ variant, service }: { variant: Variant; service: Service }) => css`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,17 +12,17 @@ export const wrapper = ({ variant }: { variant: Variant }) => css`
   padding: 4px 10px;
   border-radius: 30px;
 
-  ${variant === 'solid' && solid};
-  ${variant === 'line' && line};
+  ${variant === 'solid' && solid({ service })};
+  ${variant === 'line' && line({ service })};
   ${variant === 'ghost' && ghost};
 `;
 
-export const solid = css`
-  background: ${theme.colors.blue100};
+export const solid = ({ service }: { service: Service }) => css`
+  background: ${service === 'daengle' ? theme.colors.blue200 : theme.colors.green100};
 `;
 
-export const line = css`
-  border: 1px solid ${theme.colors.blue200};
+export const line = ({ service }: { service: Service }) => css`
+  border: 1px solid ${service === 'daengle' ? theme.colors.blue200 : theme.colors.green200};
 `;
 
 export const ghost = css`

@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useEffect } from 'react';
 import { Client, IMessage } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
@@ -12,6 +12,10 @@ export function useStomp({ url, topic, onMessage }: Props) {
   const clientRef = useRef<Client | null>(null);
 
   const connect = useCallback(() => {
+    if (clientRef.current) {
+      return;
+    }
+
     const client = new Client({
       webSocketFactory: () => new SockJS(url),
       onConnect: () => {
@@ -33,10 +37,16 @@ export function useStomp({ url, topic, onMessage }: Props) {
         destination,
         body: JSON.stringify(body),
       });
-    } else {
-      console.error('STOMP connection is not established.');
     }
   };
+
+  useEffect(() => {
+    connect();
+    return () => {
+      clientRef.current?.deactivate();
+      clientRef.current = null;
+    };
+  }, [connect]);
 
   return { connect, sendMessage };
 }

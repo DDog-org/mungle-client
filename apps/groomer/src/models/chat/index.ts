@@ -1,20 +1,4 @@
-export interface GetChatUserGroomerListResponse {
-  roomList: ChatUserListItem[];
-}
-
-export interface GetChatUserVetListResponse {
-  roomList: ChatUserListItem[];
-}
-
-export interface ChatUserListItem {
-  roomId: number;
-  otherId: number;
-  otherName: string;
-  otherProfile: string | null;
-  messageTime: string;
-  lastMessage: string;
-  partnerType: 'GROOMER_PARTNER' | 'VET_PARTNER';
-}
+export type MessageType = 'TEXT_MESSAGE' | 'PICTURE_MESSAGE';
 
 export interface GetChatWithParams {
   otherId: number;
@@ -39,7 +23,7 @@ export interface GetChatResponseMessage {
   messageSenderId: number;
   messageContent: string;
   messageTime: string;
-  messageType: 'TEXT_MESSAGE' | 'PICTURE_MESSAGE';
+  messageType: MessageType;
 }
 
 export interface PostChatMessagesRequestArgs {
@@ -48,11 +32,24 @@ export interface PostChatMessagesRequestArgs {
 }
 
 export interface PostChatMessagesRequestBody {
-  messageType: 'TEXT_MESSAGE' | 'PICTURE_MESSAGE';
+  messageType: MessageType;
   messageContent: string;
   senderId: number;
 }
 
 export interface DeleteChatDeleteRequestParams {
   roomId: number;
+}
+
+export interface GetChatGroomerListResponse {
+  roomList: GetChatGroomerChatListItem[];
+}
+
+export interface GetChatGroomerChatListItem {
+  roomId: number;
+  otherId: number;
+  otherName: string;
+  otherProfile: string | null;
+  messageTime: string;
+  lastMessage: string;
 }

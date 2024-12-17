@@ -1,27 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import {
-  deleteChatDelete,
-  getChatUserGroomerList,
-  getChatUserVetList,
-  getChatWith,
-  postChatMessages,
-} from '~/apis';
-import { PostChatMessagesRequestArgs } from '~/models/chat';
+import { deleteChatDelete, getChatGroomerList, getChatWith, postChatMessages } from '~/apis';
 import { QUERY_KEYS } from '../query-keys';
-
-export const useGetChatUserGroomerListQuery = () => {
-  return useQuery({
-    queryKey: QUERY_KEYS.GET_CHAT_USER_GROOMER_LIST,
-    queryFn: getChatUserGroomerList,
-  });
-};
-
-export const useGetChatUserVetListQuery = () => {
-  return useQuery({
-    queryKey: QUERY_KEYS.GET_CHAT_USER_VET_LIST,
-    queryFn: getChatUserVetList,
-  });
-};
+import { PostChatMessagesRequestArgs } from '~/models';
 
 export const useGetChatWithQuery = (otherId?: string) => {
   return useQuery({
@@ -43,5 +23,12 @@ export const useDeleteChatDeleteMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.DELETE_CHAT_DELETE,
     mutationFn: deleteChatDelete,
+  });
+};
+
+export const useGetChatGroomerList = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_CHAT_GROOMER_LIST,
+    queryFn: getChatGroomerList,
   });
 };

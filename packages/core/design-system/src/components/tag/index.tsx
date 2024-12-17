@@ -1,16 +1,17 @@
 import { ReactNode } from 'react';
 import { Text } from '../text';
 import { wrapper } from './index.styles';
-import { Variant } from './index.types';
+import { Service, Variant } from './index.types';
 
 interface Props {
   children: ReactNode;
   variant?: Variant;
+  service?: Service;
 }
 
-export function Tag({ children, variant = 'solid' }: Props) {
+export function Tag({ children, variant = 'solid', service = 'daengle' }: Props) {
   return (
-    <div css={wrapper({ variant })}>
+    <div css={wrapper({ variant, service })}>
       <Text typo="body2">{children}</Text>
     </div>
   );
