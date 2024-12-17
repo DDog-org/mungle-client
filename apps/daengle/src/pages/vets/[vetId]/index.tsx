@@ -11,6 +11,7 @@ import {
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
+import { VET_DAT_OFF } from '~/constants/detail';
 import { GetUserVetDetailRequestParams } from '~/models/detail';
 import { useGetUserVetDetailQuery } from '~/queries/detail';
 
@@ -21,6 +22,7 @@ export default function VetInfo() {
   const vetParams: GetUserVetDetailRequestParams = { vetId: getVetId };
 
   const { data: VetDetail } = useGetUserVetDetailQuery(vetParams);
+  console.log('VetDetail:', VetDetail);
 
   return (
     <Layout isAppBarExist={false}>
@@ -47,14 +49,16 @@ export default function VetInfo() {
               <div css={time}>
                 <DetailTime width={20} />
                 <Text typo="body9">
-                  {/* TODO: 휴무일 받기 */}
-                  매일 {VetDetail?.startTime.substring(0, 5)} - {VetDetail?.endTime.substring(0, 5)}
+                  {VetDetail?.closedDay
+                    ? `${VetDetail?.startTime.substring(0, 5)} - ${VetDetail?.endTime.substring(0, 5)} ${VetDetail.closedDay
+                        .map((day) => VET_DAT_OFF.find((item) => item.value === day)?.label || day)
+                        .join(', ')} 휴무`
+                    : `매일 ${VetDetail?.startTime.substring(0, 5)} - ${VetDetail?.endTime.substring(0, 5)}`}
                 </Text>
               </div>
               <div css={call}>
-                {/* TODO: 전화번호 받기 */}
                 <DetailCall width={20} />
-                <Text typo="body9">02-000-0000</Text>
+                <Text typo="body9">{VetDetail?.vetNumber}</Text>
               </div>
               <div css={address}>
                 <DetailLocation width={20} />
@@ -63,7 +67,7 @@ export default function VetInfo() {
             </section>
             <section css={infoText}>
               <Text typo="body1">소개</Text>
-              <Text typo="body10">{VetDetail?.introductions}</Text>
+              <Text typo="body10">{VetDetail?.introduction}</Text>
             </section>
             <section css={daengleMeter}>
               <div css={textBox}>
@@ -330,10 +334,4 @@ const menu = css`
 const review = css`
   display: flex;
   gap: 4px;
-`;
-
-const line = css`
-  height: 1px;
-
-  background-color: ${theme.colors.gray100};
 `;
