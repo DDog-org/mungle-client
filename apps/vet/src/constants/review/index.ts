@@ -1,3 +1,5 @@
+export const PAGE_SIZE = 20 as const;
+
 export const REPORT_KEYWORDS: Record<string, string> = {
   BAD_WORDS: '욕설',
   SLANDER: '비방',

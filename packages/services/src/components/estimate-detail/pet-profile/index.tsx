@@ -24,7 +24,7 @@ interface Props {
 
 const LABELS = ['나이', '몸무게', '특이사항'];
 
-export function PetDetails({ image, name, attributes }: Props): JSX.Element {
+export function PetDetails({ image, name, attributes, onClick }: Props): JSX.Element {
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
     event.currentTarget.onerror = null;
     event.currentTarget.src = '';
@@ -32,7 +32,7 @@ export function PetDetails({ image, name, attributes }: Props): JSX.Element {
 
   return (
     <div css={wrapper}>
-      <div css={profile}>
+      <div css={profile} onClick={onClick}>
         {image ? (
           <img src={image} alt={`${name} 프로필`} css={imageUrl} onError={handleImageError} />
         ) : (

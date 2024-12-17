@@ -3,3 +3,4 @@ export * from './chat';
 export * from './config';
 export * from './estimate';
 export * from './notification';
+export * from './review';
