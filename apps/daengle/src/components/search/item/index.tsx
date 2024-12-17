@@ -22,7 +22,7 @@ interface Props {
 export function Item({ image, name = '윤일', tag, onClick }: Props) {
   return (
     <div css={wrapper} onClick={onClick}>
-      {image === '' ? (
+      {!image ? (
         <>
           <DefaultProfile width={170} height={200} css={imageStyle} />
           <div css={DetailsWrapper}>
@@ -31,7 +31,7 @@ export function Item({ image, name = '윤일', tag, onClick }: Props) {
             </Text>
             <div css={tags}>
               {tag.map((hashTag, index) => (
-                <Tag key={index} service="search" variant="search">
+                <Tag key={index} service="search" variant="line">
                   #{hashTag}
                 </Tag>
               ))}
@@ -39,24 +39,22 @@ export function Item({ image, name = '윤일', tag, onClick }: Props) {
           </div>
         </>
       ) : (
-        <>
-          <div css={profileWrapper}>
-            <div css={opacity} />
-            <Image src={image} alt="이미지" width={170} height={200} css={imageStyle} />
-            <div css={DetailsWrapper}>
-              <Text typo="subtitle1" color="white">
-                {name}
-              </Text>
-              <div css={tags}>
-                {tag.map((hashTag, index) => (
-                  <Tag key={index} service="search" variant="search">
-                    #{hashTag}
-                  </Tag>
-                ))}
-              </div>
+        <div css={profileWrapper}>
+          <div css={opacity} />
+          <Image src={image} alt="이미지" width={170} height={200} css={imageStyle} />
+          <div css={DetailsWrapper}>
+            <Text typo="subtitle1" color="white">
+              {name}
+            </Text>
+            <div css={tags}>
+              {tag.map((hashTag, index) => (
+                <Tag key={index} service="search" variant="line">
+                  #{hashTag}
+                </Tag>
+              ))}
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

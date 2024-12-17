@@ -15,7 +15,6 @@ export const wrapper = ({ variant, service }: { variant: Variant; service: Servi
   ${variant === 'solid' && solid({ service })};
   ${variant === 'line' && line({ service })};
   ${variant === 'ghost' && ghost};
-  ${variant === 'search' && search({ service })}
 `;
 
 export const solid = ({ service }: { service: Service }) => css`
@@ -23,16 +22,17 @@ export const solid = ({ service }: { service: Service }) => css`
 `;
 
 export const line = ({ service }: { service: Service }) => css`
-  border: 1px solid ${service === 'daengle' ? theme.colors.blue200 : theme.colors.green200};
+  border: 1px solid
+    ${service === 'daengle'
+      ? theme.colors.blue200
+      : service === 'partner'
+        ? theme.colors.green200
+        : theme.colors.white};
+
+  background: ${service === 'search' && theme.colors.whiteOpacity};
+  color: ${service === 'search' && theme.colors.white} !important;
 `;
 
 export const ghost = css`
   background: ${theme.colors.gray200};
-`;
-
-export const search = ({ service }: { service: Service }) => css`
-  border: 1px solid ${service === 'search' && theme.colors.white};
-
-  background: ${service === 'search' && theme.colors.whiteOpacity};
-  color: ${service === 'search' && theme.colors.white} !important;
 `;
