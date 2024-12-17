@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { HttpClient } from './index.types';
 
-type Role = 'admin' | 'user' | 'groomer' | 'vet';
+type Role = 'user' | 'groomer' | 'vet';
 
 interface Props {
   baseURL: string;

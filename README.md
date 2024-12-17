@@ -20,7 +20,6 @@
 .
 ├── README.md
 ├── apps
-│   ├── admin
 │   ├── daengle
 │   ├── groomer
 │   ├── storybook
@@ -40,7 +39,6 @@
 
 ## 패키지 설명
 
-- `apps/admin` 관리자 서비스입니다.
 - `apps/daengle` 일반 사용자들이 이용하는 서비스입니다.
 - `apps/groomer` 미용사들이 이용하는 서비스입니다.
 - `apps/vet` 병원이 이용하는 서비스입니다.
@@ -69,10 +67,6 @@
   - 모든 서비스가 각각 다른 포트번호로 실행됩니다.
     ```bash
     pnpm dev
-    ```
-  - 관리자 서비스(admin)를 실행합니다.
-    ```bash
-    pnpm admin
     ```
   - 사용자 서비스(daengle)를 실행합니다.
     ```bash

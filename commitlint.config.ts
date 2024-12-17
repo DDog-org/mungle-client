@@ -14,7 +14,7 @@ const Configuration: UserConfig = {
     'scope-enum': [
       1,
       'always',
-      ['admin', 'daengle', 'groomer', 'storybook', 'vet', 'design-system', 'services', 'utils'],
+      ['daengle', 'groomer', 'storybook', 'vet', 'design-system', 'services', 'utils', 'README'],
     ],
     'scope-case': [2, 'always', 'kebab-case'],
     'scope-empty': [2, 'never'],
