@@ -1,37 +1,38 @@
-import { HTMLAttributes } from 'react';
+import { createContext, HTMLAttributes, ReactNode } from 'react';
 import { button, buttonWrapper, secondaryButton, text, wrapper } from './index.styles';
 import { Text } from '../text';
 import { Dim } from '../dim';
 import { Portal } from '../portal';
 
-export type DialogType = 'action' | 'error';
-export type SecondaryActionType = 'neutral';
+interface DialogContext {
+  open: (content: ReactNode) => void;
+  close: () => void;
+}
+const DialogContext = createContext<DialogContext | null>(null);
 
 export interface DialogProps extends HTMLAttributes<HTMLDivElement> {
-  type?: DialogType;
   title: string;
   description?: string;
   primaryActionLabel: string;
   secondaryActionLabel?: string;
-  secondaryActionType?: SecondaryActionType;
   onPrimaryAction?: () => void;
   onSecondaryAction?: () => void;
+  onClose?: () => void;
 }
 
 export function Dialog({
-  type = 'action',
   title,
   description,
   primaryActionLabel,
   secondaryActionLabel,
-  secondaryActionType = 'neutral',
   onPrimaryAction,
   onSecondaryAction,
+  onClose,
   ...props
 }: DialogProps) {
   return (
     <Portal>
-      <Dim fullScreen />
+      <Dim fullScreen onClick={onClose} />
 
       <div {...props} css={wrapper}>
         <div css={text}>

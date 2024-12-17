@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import { GlobalStyle } from '@daengle/design-system';
+import { GlobalStyle, DialogProvider } from '@daengle/design-system';
 import { QueryProvider } from '@daengle/services/providers';
 import { initMSW } from '~/mocks/init-msw';
 
@@ -9,7 +9,9 @@ export default function MyApp({ Component, pageProps }: AppProps & { isAppBarExi
   return (
     <QueryProvider>
       <GlobalStyle>
-        <Component {...pageProps} />
+        <DialogProvider>
+          <Component {...pageProps} />
+        </DialogProvider>
       </GlobalStyle>
     </QueryProvider>
   );
