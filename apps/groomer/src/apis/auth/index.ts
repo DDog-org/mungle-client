@@ -9,7 +9,8 @@ import {
   PostJoinResponse,
   PostKakaoRequestBody,
   PostKakaoResponse,
-} from '~/models/auth';
+  GetGroomerWithdrawInfoResponse,
+} from '~/models';
 
 export const postOauthToken = async (code: string) => {
   return await axios.post('https://kauth.kakao.com/oauth/token', null, {
@@ -43,4 +44,8 @@ export const patchGroomerInfo = async (body: PatchGroomerInfoRequestBody) => {
 
 export const getGroomerInfo = async () => {
   return await api.get<GetGroomerInfoResponse>('/groomer/info');
+};
+
+export const getGroomerWithdrawInfo = async () => {
+  return await api.get<GetGroomerWithdrawInfoResponse>('/groomer/withdraw-info');
 };

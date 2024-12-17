@@ -1,81 +1,84 @@
-import { AppBar, CTAButton, ImageInputBox, Layout, Text, Input } from '@daengle/design-system';
-import { theme } from '@daengle/design-system';
-import { useS3 } from '@daengle/services/hooks';
-import { css } from '@emotion/react';
+import { useEffect, useState } from 'react';
 import router from 'next/router';
-import { useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import useValidateGroomerForm from '~/hooks/mypage/use-validate-groomer-form';
-import { GroomerModifyPageForm } from '~/interfaces/auth';
+import { css } from '@emotion/react';
+import { useS3 } from '@daengle/services/hooks';
+import { TextField, theme } from '@daengle/design-system';
+import { AppBar, CTAButton, ImageInputBox, Layout, Text, Input } from '@daengle/design-system';
+import { useForm } from 'react-hook-form';
+import { useValidateGroomerForm } from '~/hooks';
+import { GroomerModifyPageForm } from '~/interfaces';
 import { useGetGroomerModifyPageQuery, usePatchGroomerInfoMutation } from '~/queries';
+import { ROUTES } from '~/constants';
+import { convertURLToFile } from '@daengle/services/utils';
 
 export default function EditProfile() {
-  const { data: getGroomerModifyPage } = useGetGroomerModifyPageQuery();
-  const { mutateAsync: patchGroomerInfo } = usePatchGroomerInfoMutation();
+  const { data: groomerInfo } = useGetGroomerModifyPageQuery();
+  const { mutate: patchGroomerInfo } = usePatchGroomerInfoMutation();
 
   const { uploadToS3, deleteFromS3 } = useS3({ targetFolderPath: 'groomer/profile-images' });
+
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+
+  useEffect(() => {
+    const fetchFile = async () => {
+      if (groomerInfo?.image) {
+        const file = await convertURLToFile(groomerInfo.image, 'profile-image');
+        setProfileImage(file);
+      }
+    };
+
+    fetchFile();
+  }, [groomerInfo?.image]);
 
   const validation = useValidateGroomerForm();
   const {
     handleSubmit,
-    watch,
-    control,
     register,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<GroomerModifyPageForm>({
     mode: 'onChange',
     defaultValues: {
-      image: null,
-      introduction: '',
-      instagramId: getGroomerModifyPage?.instagramId || '',
+      image: profileImage,
+      introduction: groomerInfo?.introduction,
+      instagramId: groomerInfo?.instagramId || '',
     },
   });
 
   const onSubmit = async (data: GroomerModifyPageForm) => {
-    let imageString = '';
-
-    if (getGroomerModifyPage?.image) {
-      const fileName = getGroomerModifyPage.image.split('/').pop();
-      if (fileName) {
-        await deleteFromS3(fileName);
-      }
-    }
+    let profileImage = null;
 
     if (data.image) {
-      const uploadedImages = await uploadToS3([data.image]);
-      if (uploadedImages && uploadedImages.length > 0) {
-        imageString = uploadedImages[0] ?? '';
+      if (groomerInfo?.image) {
+        await deleteFromS3(groomerInfo.image.split('/').pop()!);
       }
-    } else {
-      imageString = getGroomerModifyPage?.image || '';
+
+      profileImage = await uploadToS3([data.image]);
     }
 
     const payload = {
-      ...data,
-      image: imageString,
-      introduction: data.introduction || '',
+      image: profileImage?.[0] ?? groomerInfo?.image ?? '',
+      introduction: data.introduction || null,
+      instagramId: data.instagramId || null,
     };
 
-    await patchGroomerInfo(payload);
+    patchGroomerInfo(payload);
   };
 
-  useEffect(() => {
-    if (getGroomerModifyPage?.introduction) {
-      setValue('introduction', getGroomerModifyPage.introduction || '');
-      setValue('instagramId', getGroomerModifyPage.instagramId || '');
-    }
-  }, [getGroomerModifyPage, setValue]);
   return (
     <Layout isAppBarExist={true}>
-      <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
+      <AppBar
+        onBackClick={router.back}
+        backgroundColor={theme.colors.white}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+      />
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div css={wrapper}>
           <Text typo="title1">프로필 관리</Text>
           <div css={profileImageWrapper}>
             <ImageInputBox
               onChange={(files) => setValue('image', files, { shouldValidate: true })}
-              defaultValue={getGroomerModifyPage?.image || ''}
             />
           </div>
           <section css={inputWrapper}>
@@ -84,72 +87,61 @@ export default function EditProfile() {
                 프로필 정보
               </Text>
             </div>
+
             <div css={readOnlyTextBox}>
               <Text typo="subtitle3">이름</Text>
-              <Text typo="body3" color="gray400">
-                {getGroomerModifyPage?.name}
+              <Text typo="body8" color="gray400">
+                {groomerInfo?.name}
               </Text>
             </div>
+
             <div css={readOnlyTextBox}>
               <Text typo="subtitle3">휴대폰번호</Text>
-              <Text typo="body3" color="gray400">
-                {getGroomerModifyPage?.phoneNumber}
+              <Text typo="body8" color="gray400">
+                {groomerInfo?.phoneNumber}
               </Text>
             </div>
+
             <div css={readOnlyTextBox}>
               <Text typo="subtitle3">이메일</Text>
-              <Text typo="body3" color="gray400">
-                {getGroomerModifyPage?.email}
+              <Text typo="body8" color="gray400">
+                {groomerInfo?.email}
               </Text>
             </div>
 
             <div css={readOnlyTextBox}>
               <Input
+                service="partner"
                 label="인스타그램 아이디"
+                prefix="@"
                 maxLength={30}
-                value={watch('instagramId')}
-                {...register('instagramId', {
-                  ...validation.instagramId,
-                })}
+                {...register('instagramId', { ...validation.instagramId })}
                 onChange={(e) => setValue('instagramId', e.target.value, { shouldValidate: true })}
                 errorMessage={errors.instagramId?.message}
               />
             </div>
+
             <div css={textareaWrapper}>
               <Text typo="subtitle3">소개</Text>
-              <Controller
-                name="introduction"
-                control={control}
-                rules={validation.introduction}
-                render={({ field }) => (
-                  <>
-                    <textarea
-                      css={detailInput}
-                      placeholder="소개글을 작성해주세요"
-                      maxLength={50}
-                      onChange={field.onChange}
-                      value={field.value ?? ''}
-                    />
-                    {errors.introduction && (
-                      <div css={infoTextWrapper}>
-                        <Text typo="body12" color="red200">
-                          {errors.introduction?.message}
-                        </Text>
-                      </div>
-                    )}
-                  </>
-                )}
+              <TextField
+                placeholder="소개글을 작성해 주세요"
+                maxLength={50}
+                rows={4}
+                {...register('introduction', { ...validation.introduction })}
               />
             </div>
           </section>
         </div>
+
         <div css={line} />
+
         <div css={footerWrapper}>
           <div css={licenseWrapper}>
             <Text typo="subtitle3">자격증 관리</Text>
+
             <div css={licenseBox}>
-              {getGroomerModifyPage?.licenses?.map((license, index) => (
-                <div css={licenseStyle} key={index}>
+              {groomerInfo?.licenses?.map((license) => (
+                <div css={licenseStyle} key={license.name}>
                   <Text typo="body4" color="green200">
                     {license.name}
                   </Text>
@@ -160,10 +152,11 @@ export default function EditProfile() {
               ))}
             </div>
           </div>
-          <CTAButton type="submit" service="partner">
-            수정하기
-          </CTAButton>
         </div>
+
+        <CTAButton type="submit" service="partner">
+          수정하기
+        </CTAButton>
       </form>
     </Layout>
   );
@@ -209,28 +202,18 @@ const line = css`
   background-color: ${theme.colors.gray100};
 `;
 
-const detailInput = css`
-  height: 136px;
-  padding: 14px;
-  border-radius: 10px;
-
-  background-color: ${theme.colors.gray100};
-
-  ::placeholder {
-    color: ${theme.colors.gray200};
-    font-size: ${theme.typo.body9};
-  }
-`;
 const licenseWrapper = css`
   display: flex;
   flex-direction: column;
   gap: 15px;
 `;
+
 const licenseBox = css`
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
+
 const licenseStyle = css`
   display: flex;
   align-items: center;
@@ -246,11 +229,4 @@ const licenseStyle = css`
     color: ${theme.colors.black};
     font-size: ${theme.typo.body9};
   }
-`;
-const infoTextWrapper = css`
-  position: absolute;
-  bottom: -20px;
-  left: 2px;
-
-  padding: 0 2px;
 `;

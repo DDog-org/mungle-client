@@ -25,9 +25,9 @@ export const contentContainer = css`
 
 export const detailContainer = css`
   display: flex;
-  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 `;
 
 export const cardHeader = css`
@@ -77,6 +77,6 @@ export const specials = css`
 `;
 
 export const specialsNot = css`
-  ${theme.typo.subtitle1};
-  color: ${theme.colors.gray200};
+  ${theme.typo.body4};
+  color: ${theme.colors.gray400};
 `;

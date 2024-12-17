@@ -4,8 +4,11 @@ import { AppBarPartnerLogo } from '@daengle/design-system/icons';
 import { GNB } from '~/components/commons';
 import { ReservationItem } from '~/components/home';
 import { useGetGroomerSchedule } from '~/queries';
+import { useRouter } from 'next/router';
+import { ROUTES } from '~/constants';
 
 export default function Home() {
+  const router = useRouter();
   const { data: schedule } = useGetGroomerSchedule();
 
   return (
@@ -31,7 +34,7 @@ export default function Home() {
           </div>
 
           <div css={requestInfoWrapper}>
-            <div css={requestInfo}>
+            <div css={requestInfo} onClick={() => router.push(ROUTES.ESTIMATES)}>
               <Text typo="body5" color="gray600">
                 전체
               </Text>
@@ -39,7 +42,15 @@ export default function Home() {
                 {schedule?.totalScheduleCount}
               </Text>
             </div>
-            <div css={requestInfo}>
+            <div
+              css={requestInfo}
+              onClick={() =>
+                router.push({
+                  pathname: ROUTES.ESTIMATES,
+                  query: { tab: 'designation' },
+                })
+              }
+            >
               <Text typo="body5" color="gray600">
                 지정 요청
               </Text>
@@ -47,7 +58,7 @@ export default function Home() {
                 {schedule?.designationCount}
               </Text>
             </div>
-            <div css={requestInfo}>
+            <div css={requestInfo} onClick={() => router.push(ROUTES.RESERVATIONS)}>
               <Text typo="body5" color="gray600">
                 예약
               </Text>
@@ -127,6 +138,8 @@ const requestInfo = css`
   gap: 6px;
 
   width: 33%;
+
+  cursor: pointer;
 
   & + & {
     border-left: 1px solid ${theme.colors.gray200};

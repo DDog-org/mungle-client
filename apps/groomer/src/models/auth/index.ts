@@ -58,3 +58,12 @@ export interface GetGroomerInfoResponse {
   introduction: string;
   daengleMeter: number;
 }
+
+export interface GetGroomerWithdrawInfoResponse {
+  waitingForServiceCount: number;
+}
+
+export interface DeleteGroomerResponse {
+  accountId: number;
+  withdrawDate: string;
+}

@@ -10,7 +10,7 @@ interface Props {
 export function Section({ title, children }: Props): JSX.Element {
   return (
     <section css={wrapper}>
-      <Text typo="body4" color="gray600">
+      <Text typo="body4" color="gray500">
         {title}
       </Text>
       <div css={content}>{children}</div>

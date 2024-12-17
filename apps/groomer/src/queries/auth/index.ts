@@ -5,6 +5,8 @@ import {
   getGroomerInfo,
   postJoin,
   postKakao,
+  getGroomerWithdrawInfo,
+  deleteGroomer,
 } from '~/apis';
 import {
   PatchGroomerInfoRequestBody,
@@ -45,9 +47,7 @@ export const useGetGroomerModifyPageQuery = () => {
 export const usePatchGroomerInfoMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.PATCH_GROOMER_INFO,
-    mutationFn: async (body: PatchGroomerInfoRequestBody) => {
-      return await patchGroomerInfo(body);
-    },
+    mutationFn: async (body: PatchGroomerInfoRequestBody) => await patchGroomerInfo(body),
   });
 };
 
@@ -55,5 +55,19 @@ export const useGetGroomerInfoQuery = () => {
   return useQuery({
     queryKey: QUERY_KEYS.GET_GROOMER_INFO,
     queryFn: getGroomerInfo,
+  });
+};
+
+export const useGetGroomerWithdrawInfoQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_GROOMER_WITHDRAW_INFO,
+    queryFn: getGroomerWithdrawInfo,
+  });
+};
+
+export const useDeleteGroomerMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.DELETE_GROOMER,
+    mutationFn: deleteGroomer,
   });
 };

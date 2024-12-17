@@ -23,6 +23,7 @@ export const textarea = css`
 
   ${theme.typo.body9};
   color: ${theme.colors.black};
+  line-height: 1.4;
 
   &::placeholder {
     color: ${theme.colors.gray400};

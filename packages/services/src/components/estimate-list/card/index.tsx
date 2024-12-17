@@ -59,24 +59,20 @@ export function Card({
         </div>
 
         <div css={cardContent}>
-          <p css={[specials, significant === null && specialsNot]}>
+          <p css={[specials, !significant && specialsNot]}>
             {significant ? significant : '특이사항 없음'}
           </p>
-          <Text typo="body11" color="gray500">
+          <Text typo="body11" color="gray600">
             {dayjs(reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
           </Text>
         </div>
       </div>
 
       <div css={detailContainer}>
-        <TextButton
-          icons={{ suffix: <ButtonTextButtonArrow width="6px" stroke="#BEBEBE" /> }}
-          onClick={onDetailClick}
-        >
-          <Text typo="body7" color="gray400">
-            자세히보기
-          </Text>
-        </TextButton>
+        <Text typo="body6" color="gray400">
+          자세히보기
+        </Text>
+        <ButtonTextButtonArrow width={5} onClick={onDetailClick} />
       </div>
     </div>
   );
