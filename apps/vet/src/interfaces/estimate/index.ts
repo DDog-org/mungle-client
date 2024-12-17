@@ -15,3 +15,11 @@ export interface VetEstimateDesignationList {
   significant: string;
   reservedDate: string;
 }
+
+export interface VetEstimateForm {
+  id: number;
+  reservedDate: string;
+  diagnosis: string;
+  cause: string;
+  treatment: string;
+}

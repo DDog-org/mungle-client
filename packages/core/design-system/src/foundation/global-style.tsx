@@ -4,6 +4,14 @@ import theme from './theme';
 import './normalize.css';
 
 const defaultStyles = css`
+  @font-face {
+    font-family: Pretendard;
+    src: url('../../public/fonts/Pretendard.woff2') format('woff2');
+
+    font-weight: normal;
+    font-style: normal;
+  }
+
   :root {
     width: 100%;
     height: 100%;

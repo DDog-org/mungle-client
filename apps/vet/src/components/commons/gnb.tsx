@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { GNB as DaengleGNB } from '@daengle/design-system';
-import { MENUS } from '~/constants/commons';
+import { MENUS } from '~/constants';
 
 export function GNB() {
   const router = useRouter();

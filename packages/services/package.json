@@ -9,6 +9,10 @@
       "import": "./src/apis/index.ts",
       "require": "./src/apis/index.ts"
     },
+    "./constants": {
+      "import": "./src/constants/index.ts",
+      "require": "./src/constants/index.ts"
+    },
     "./hooks": {
       "import": "./src/hooks/index.ts",
       "require": "./src/hooks/index.ts"

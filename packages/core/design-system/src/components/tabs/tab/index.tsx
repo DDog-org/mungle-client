@@ -17,7 +17,7 @@ export function Tab({ label, isActive, onClick }: Props) {
           {label}
         </Text>
       ) : (
-        <Text tag="h2" typo="subtitle3" color="gray400">
+        <Text tag="h2" typo="subtitle3" color="gray500">
           {label}
         </Text>
       )}

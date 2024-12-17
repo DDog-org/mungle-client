@@ -1,9 +1,9 @@
+import { useState, useEffect, useRef } from 'react';
 import { Text } from '@daengle/design-system';
 import { ChatItemMenu, DefaultImage } from '@daengle/design-system/icons';
 import { formatLastSendTime } from '@daengle/services/utils';
-import { chatItem, chatItemText, chatMenu, fab, fabWrapper, wrapper } from './index.styles';
-import { useState, useEffect, useRef } from 'react';
 import { useDeleteChatDeleteMutation } from '~/queries';
+import { chatItem, chatItemText, chatMenu, fab, fabWrapper, wrapper } from './index.styles';
 
 interface Props {
   roomId: number;
@@ -81,7 +81,7 @@ export function ChatListItem({
           )}
         </div>
 
-        <Text typo="body11" color="gray300">
+        <Text typo="body11" color="gray400">
           {formatLastSendTime(messageTime)}
         </Text>
       </div>

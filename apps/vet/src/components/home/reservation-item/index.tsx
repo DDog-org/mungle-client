@@ -3,9 +3,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Text } from '@daengle/design-system';
 import { DefaultProfile, PartnerHomeNavigate } from '@daengle/design-system/icons';
+import { ROUTES } from '~/constants';
 import { VetScheduleReservation } from '~/interfaces';
 import { profileTextWrapper, profileWrapper, wrapper, info } from './index.styles';
-import { ROUTES } from '~/constants';
 
 interface Props {
   reservation: VetScheduleReservation;

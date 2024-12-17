@@ -1,5 +1,6 @@
 import { TextButton, Text } from '@daengle/design-system';
 import { ButtonTextButtonArrow, DefaultProfile } from '@daengle/design-system/icons';
+import { PET_SIZE } from '../../../constants';
 import {
   wrapper,
   profile,
@@ -8,12 +9,17 @@ import {
   detail,
   labelWrapper,
   valueWrapper,
+  labelItems,
 } from './index.styles';
 
 interface Props {
-  image: string;
-  name: string;
-  attributes: (string | number | null)[];
+  image?: string;
+  name?: string;
+  attributes: {
+    age: number;
+    weight: keyof typeof PET_SIZE;
+    significant: string;
+  };
 }
 
 const LABELS = ['나이', '몸무게', '특이사항'];
@@ -38,23 +44,24 @@ export function PetDetails({ image, name, attributes }: Props): JSX.Element {
       </div>
       <div css={detail}>
         <div css={labelWrapper}>
-          {LABELS.map((label, index) => (
-            <Text typo="body9" color="gray500" key={`label-${index}`}>
-              {label}
-            </Text>
-          ))}
-          <TextButton icons={{ suffix: <ButtonTextButtonArrow width={'6px'} stroke="#BEBEBE" /> }}>
-            <Text color="gray400" typo="body9">
-              자세히보기
+          <div css={labelItems}>
+            {LABELS.map((label) => (
+              <Text typo="body9" color="gray700" key={label}>
+                {label}
+              </Text>
+            ))}
+          </div>
+
+          <TextButton icons={{ suffix: <ButtonTextButtonArrow width={5} /> }}>
+            <Text color="gray500" typo="body10">
+              자세히 보기
             </Text>
           </TextButton>
         </div>
         <div css={valueWrapper}>
-          {attributes.map((attribute, index) => (
-            <Text typo="body9" key={`value-${index}`}>
-              {attribute}
-            </Text>
-          ))}
+          <Text typo="body9">{attributes.age}</Text>
+          <Text typo="body9">{PET_SIZE[attributes.weight]}</Text>
+          <Text typo="body9">{attributes.significant}</Text>
         </div>
       </div>
     </div>

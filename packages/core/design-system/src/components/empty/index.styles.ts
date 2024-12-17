@@ -10,6 +10,9 @@ export const wrapper = css`
   width: 100%;
   height: 80%;
 
+  line-height: 1.4;
+  text-align: center;
+
   button {
     margin: 20px 0 0;
   }

@@ -3,8 +3,8 @@ import { wrapper, image } from './index.styles';
 import { DefaultProfile } from '@daengle/design-system/icons';
 
 interface Props {
-  userImage: string;
-  userName: string;
+  userImage?: string;
+  userName?: string;
 }
 
 export function UserProfile({ userImage, userName }: Props): JSX.Element {

@@ -200,8 +200,8 @@ export default function ChatRoom() {
           {messages?.map((messageInfo, index) => (
             <Fragment key={`${messageInfo.date}${index}`}>
               <div css={tagWrapper}>
-                <Tag variant="line">
-                  <Text typo="body2" color="blue200">
+                <Tag variant="line" service="partner">
+                  <Text typo="body2" color="green200">
                     {dayjs(messageInfo.date).format('YYYY년 MM월 DD일')}
                   </Text>
                 </Tag>

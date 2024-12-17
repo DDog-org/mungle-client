@@ -25,6 +25,9 @@ export const colors = {
   gray400: '#BEBEBE',
   gray500: '#979797',
   gray600: '#6E6E6E',
+  gray700: '#4d4d4d',
+  gray800: '#333333',
+  gray900: '#2A2A2A',
 
   grayOpacity50: 'rgba(0, 0, 0, 0.05)',
   grayOpacity100: 'rgba(0, 0, 0, 0.1)',

@@ -1,8 +1,8 @@
 import { useState } from 'react';
+import { PetDetails, Section, UserProfile } from '@daengle/services/components';
+import { AppBar, Layout, RoundButton, Text, TextField, theme } from '@daengle/design-system';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
-import { AddInput, PetDetails, Section, UserProfile } from '@daengle/services/components';
-import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
 
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
@@ -99,16 +99,24 @@ export default function EstimateDetail() {
           <PetDetails
             image={petData.petImageUrl}
             name={petData.petName}
-            attributes={petAttributes}
+            attributes={{
+              age: petData.age,
+              weight: petData.weight,
+              significant: petData.significant ?? '없음',
+            }}
           />
         </Section>
         <Section title="원하는 미용">{petData.desiredStyle}</Section>
         <Section title="추가 요청사항">{petData.requirements}</Section>
         <div css={sectionDivider}></div>
-        <AddInput
-          title="안내사항"
-          placeholder="추가 안내사항을 입력해주세요."
-          height={120}
+
+        <TextField
+          label="안내사항"
+          placeholder="추가 안내사항을 입력해 주세요"
+          required
+          service="partner"
+          minLength={1}
+          maxLength={50}
           value={petData.overallOpinion}
           onChange={(e) => {
             setInput(e.target.value);

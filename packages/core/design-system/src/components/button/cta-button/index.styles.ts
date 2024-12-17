@@ -11,7 +11,7 @@ export const wrapper = css`
   z-index: ${theme.zIndex.ctaButton};
 
   width: 100%;
-  max-width: calc(${theme.size.maxWidth} - 36px);
+  max-width: ${theme.size.maxWidth};
   margin: 0 auto;
   padding: 0 18px 21px;
 

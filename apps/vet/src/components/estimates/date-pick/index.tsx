@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import { TextField } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
-import { TextField } from '@mui/material';
 
 interface Props {
   onChange: (dateTime: Dayjs) => void;
@@ -47,7 +47,7 @@ export function DatePick({ onChange, placeholderText, isEditable }: Props): JSX.
         ampm={false}
         slotProps={{
           textField: {
-            placeholder: placeholderText || '날짜를 선택해주세요',
+            placeholder: placeholderText || '날짜를 선택해 주세요',
             fullWidth: true,
             InputProps: {
               sx: {

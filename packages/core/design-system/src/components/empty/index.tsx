@@ -14,7 +14,7 @@ export function Empty({ title, actionLabel, onActionButtonClick, css }: Props) {
   return (
     <div css={[wrapper, css]}>
       <EmptyLogo width={42} height={47} />
-      <Text typo="subtitle3" color="gray400">
+      <Text tag="p" typo="subtitle3" color="gray400">
         {title}
       </Text>
 
