@@ -1,22 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { getVetModifyPage, getVetValidate, patchVetInfo, postKakao, postVetJoin } from '~/apis';
-import {
-  PatchVetInfoRequestBody,
-  PostKakaoRequestBody,
-  PostVetJoinRequestBody,
-} from '~/models/auth';
+import { PatchVetInfoRequestBody, PostVetJoinRequestBody } from '~/models/auth';
 import { QUERY_KEYS } from '~/queries/query-keys';
 
 export const usePostKakaoMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_KAKAO,
-    mutationFn: async (body: PostKakaoRequestBody) => {
-      try {
-        return await postKakao(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: postKakao,
   });
 };
 

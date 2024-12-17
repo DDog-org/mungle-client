@@ -3,11 +3,13 @@ export interface PostKakaoRequestBody {
 }
 
 export interface PostKakaoResponse {
-  isOnboarding: boolean;
-  isPending: boolean;
-  email: string | null;
-  grantType: 'Bearer' | null;
-  accessToken: string | null;
+  response: {
+    isOnboarding: boolean;
+    isPending: boolean;
+    email: string | null;
+    grantType: 'Bearer' | null;
+    accessToken: string | null;
+  };
 }
 
 export interface PostVetJoinRequestBody {
