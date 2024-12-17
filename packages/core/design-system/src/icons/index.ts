@@ -1,3 +1,4 @@
+export * from './Heart';
 export * from './AddButton';
 export * from './AppBarBack';
 export * from './AppBarHome';
@@ -5,6 +6,8 @@ export * from './AppBarPartnerLogo';
 export * from './AuthLogo';
 export * from './BlackUnfoldArrow';
 export * from './ButtonTextButtonArrow';
+export * from './CarouselLeft';
+export * from './CarouselRight';
 export * from './ChatDefaultProfileImage';
 export * from './ChatItemMenu';
 export * from './ChatPlus';

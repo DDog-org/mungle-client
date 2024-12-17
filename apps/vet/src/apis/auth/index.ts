@@ -5,6 +5,7 @@ import {
   GetVetValidateResponse,
   PatchVetInfoRequestBody,
   PatchVetInfoResponse,
+  GetVetInfoResponse,
   PostKakaoRequestBody,
   PostKakaoResponse,
   PostVetJoinRequestBody,
@@ -43,4 +44,8 @@ export const patchVetInfo = async (body: PatchVetInfoRequestBody) => {
 
 export const getVetValidate = async () => {
   return await api.get<GetVetValidateResponse>('/vet/validate');
+};
+
+export const getVetInfo = async () => {
+  return await api.get<GetVetInfoResponse>('/vet/info');
 };
