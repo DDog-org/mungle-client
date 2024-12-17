@@ -23,6 +23,7 @@ export * from './GnbMyActive';
 export * from './GnbMyInactive';
 export * from './GnbReservationActive';
 export * from './GnbReservationInactive';
+export * from './GraySearchIcon';
 export * from './Heart';
 export * from './ImageUploadPlus';
 export * from './LoginKakaoLogo';

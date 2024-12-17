@@ -79,11 +79,12 @@ export const wrapper = ({
         color: ${theme.colors.blue200};
       `
     : css`
-        color: ${theme.colors.gray500};
         border: 1px solid ${disabled ? theme.colors.gray300 : theme.colors.gray200};
 
         color: ${theme.colors.gray500};
+        color: ${theme.colors.gray500};
       `}
+      
   ${isPartnerSelected
     ? css`
         border: none;
