@@ -19,20 +19,11 @@ export const wrapper = ({ variant, service }: { variant: Variant; service: Servi
 `;
 
 export const solid = ({ service }: { service: Service }) => css`
-  background: ${service === 'daengle'
-    ? theme.colors.blue200
-    : service === 'partner'
-      ? theme.colors.green100
-      : theme.colors.whiteOpacity};
+  background: ${service === 'daengle' ? theme.colors.blue200 : theme.colors.green100};
 `;
 
 export const line = ({ service }: { service: Service }) => css`
-  border: 1px solid
-    ${service === 'daengle'
-      ? theme.colors.blue200
-      : service === 'partner'
-        ? theme.colors.green200
-        : theme.colors.white};
+  border: 1px solid ${service === 'daengle' ? theme.colors.blue200 : theme.colors.green200};
 `;
 
 export const ghost = css`

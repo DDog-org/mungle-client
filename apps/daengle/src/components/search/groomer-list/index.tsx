@@ -4,8 +4,8 @@ import { Empty } from '@daengle/design-system';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { cardBox, emptyBox, wrapper, tag } from './index.styles';
-import { Item } from '../item';
-import { TagButton } from '../tag-button';
+import { Item } from '~/components/search/item';
+import { TagButton } from '~/components/search/tag-button';
 import { useState } from 'react';
 
 export function GroomerList() {
