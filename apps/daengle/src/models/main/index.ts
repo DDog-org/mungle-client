@@ -1,5 +1,6 @@
 export interface GetUserShopsResponse {
   allShops: GetAllShops[];
+  userAddress: string;
 }
 
 export interface GetAllShops {
@@ -9,10 +10,12 @@ export interface GetAllShops {
   shopImage: string;
   startTime: string;
   endTime: string;
+  closedDay: string[];
 }
 
 export interface GetUserVetsResponse {
   allVets: GetAllVets[];
+  userAddress: string;
 }
 
 export interface GetAllVets {
@@ -22,4 +25,5 @@ export interface GetAllVets {
   vetImage: string;
   startTime: string;
   endTime: string;
+  closedDay: string[];
 }

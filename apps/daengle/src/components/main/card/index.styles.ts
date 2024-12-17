@@ -7,7 +7,7 @@ export const wrapper = css`
   gap: 15px;
 
   width: 100%;
-  height: 153px;
+  padding: 15px 0;
 
   border-bottom: 1px solid ${theme.colors.gray200};
 
@@ -24,9 +24,9 @@ export const textBox = css`
   display: flex;
   flex-direction: column;
 
-  margin-top: 25px;
+  margin-top: 10px;
 `;
 
 export const addressStyle = css`
-  margin: 6px 0 19px;
+  margin: 4px 0 12px;
 `;
