@@ -7,9 +7,6 @@ const nextConfig = {
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
     AWS_BUCKET: process.env.AWS_BUCKET,
   },
-  images: {
-    domains: ['daengle.s3.ap-northeast-2.amazonaws.com'],
-  },
 };
 
 export default nextConfig;
