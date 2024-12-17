@@ -1,3 +1,4 @@
+import { api } from '~/apis';
 import {
   GetGroomerReviewListRequestParams,
   GetGroomerReviewListResponse,
@@ -8,7 +9,6 @@ import {
   PostGroomerReviewReportRequestBody,
   PostGroomerReviewReportResponse,
 } from '~/models';
-import { api } from '../config';
 
 export const getGroomerReviewList = async (params: GetGroomerReviewListRequestParams) => {
   return await api.get<GetGroomerReviewListResponse>('/groomer/review/list', params);
