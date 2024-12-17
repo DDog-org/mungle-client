@@ -14,7 +14,6 @@ import { useForkRef } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { VetEstimateForm } from '~/interfaces';
 import { useValidateEstimateForm } from '~/hooks';
-import { DevTool } from '@hookform/devtools';
 
 export default function EstimateDetail() {
   const router = useRouter();
@@ -31,7 +30,6 @@ export default function EstimateDetail() {
     register,
     handleSubmit,
     watch,
-    control,
     formState: { errors, isValid },
   } = useForm<VetEstimateForm>({
     defaultValues: {
@@ -124,8 +122,6 @@ export default function EstimateDetail() {
         </div>
 
         <form css={form} onSubmit={handleSubmit(onSubmit)}>
-          <DevTool control={control} />
-
           <div css={textFieldWrapper}>
             <TextField
               label="추정 병명"
