@@ -9,6 +9,29 @@ import { TagButton } from '../tag-button';
 import { useState } from 'react';
 
 export function GroomerList() {
+  const mockShops = [
+    {
+      shopId: 1,
+      shopImage:
+        'https://daengle.s3.ap-northeast-2.amazonaws.com/groomer/profile-images/XNFJar9K8V4h4syHLspqT',
+      shopName: '멋진 샵 1호점',
+      tag: ['냥냐', '웅야'],
+    },
+    {
+      shopId: 2,
+      shopImage:
+        'https://daengle.s3.ap-northeast-2.amazonaws.com/groomer/profile-images/XNFJar9K8V4h4syHLspqT',
+      shopName: '귀여운 샵 2호점',
+      tag: ['냥냐', '웅야'],
+    },
+    {
+      shopId: 3,
+      shopImage:
+        'https://daengle.s3.ap-northeast-2.amazonaws.com/groomer/profile-images/XNFJar9K8V4h4syHLspqT',
+      shopName: '럭셔리 샵 3호점',
+      tag: ['냥냐', '웅야'],
+    },
+  ];
   const router = useRouter();
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const { data: shops } = useGetUserShopsQuery();
@@ -33,23 +56,24 @@ export function GroomerList() {
           #겸둥이
         </TagButton>
       </section>
-      <button>안녕</button>
       <div css={cardBox}>
-        {filteredShops && filteredShops.length > 0 ? (
-          filteredShops?.map((shop) => (
-            <Item
-              key={shop.shopId}
-              image={shop.shopImage}
-              name={shop.shopName}
-              address={shop.shopAddress}
-              onClick={() => handleCardClick(shop.shopId)}
-            />
-          ))
+        {/* {/* {filteredShops && filteredShops.length > 0 ? ( */}
+        {mockShops?.map((shop) => (
+          <Item
+            key={shop.shopId}
+            image={shop.shopImage}
+            name={shop.shopName}
+            tag={shop.tag}
+            onClick={() => handleCardClick(shop.shopId)}
+          />
+        ))}
+
+        {/* ))
         ) : (
           <div css={emptyBox}>
             <Empty title="해당 주소 주변에 샵이 없어요" />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

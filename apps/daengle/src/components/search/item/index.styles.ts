@@ -4,16 +4,41 @@ import { css } from '@emotion/react';
 export const wrapper = css`
   display: flex;
   align-items: center;
-  gap: 15px;
 
   width: 100%;
-  height: 153px;
-
-  border-bottom: 1px solid ${theme.colors.gray200};
+  width: fit-content;
+  height: fit-content;
 
   cursor: pointer;
 `;
 
+export const profileWrapper = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  width: 100%;
+  height: 100%;
+`;
+export const opacity = css`
+  background: ${theme.colors.grayOpacity200};
+`;
+export const DetailsWrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 100%;
+  padding: 15px;
+
+  color: white;
+`;
 export const imageStyle = css`
   border-radius: 86px 86px 0 0;
 
@@ -27,6 +52,7 @@ export const textBox = css`
   margin-top: 25px;
 `;
 
-export const addressStyle = css`
-  margin: 6px 0 19px;
+export const tags = css`
+  display: flex;
+  gap: 6px;
 `;

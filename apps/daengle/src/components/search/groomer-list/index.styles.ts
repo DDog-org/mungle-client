@@ -12,6 +12,10 @@ export const tag = css`
 `;
 
 export const cardBox = css`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 17px;
+
   padding: 0 18px;
 `;
 
