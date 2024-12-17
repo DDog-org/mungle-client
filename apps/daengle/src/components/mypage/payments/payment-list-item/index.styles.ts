@@ -32,3 +32,12 @@ export const top = css`
   align-items: center;
   gap: 8px;
 `;
+
+export const image = css`
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  background-color: ${theme.colors.background};
+`;

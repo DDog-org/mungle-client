@@ -6,7 +6,7 @@ import { DefaultImage } from '@daengle/design-system/icons';
 import { ROUTES } from '~/constants/commons';
 import { GROOMER_PAYMENT_STATUS, VET_PAYMENT_STATUS } from '~/constants/payment';
 import { GroomerPaymentHistoryItem } from '~/interfaces/payment';
-import { infoWrapper, top, wrapper } from './index.styles';
+import { image, infoWrapper, top, wrapper } from './index.styles';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 
@@ -39,7 +39,9 @@ export function PaymentListItem({
 
           <Tag variant="solid">
             <Text typo="body2" color="blue200">
-              {isGroomer ? GROOMER_PAYMENT_STATUS[status] : VET_PAYMENT_STATUS[status]}
+              {isGroomer
+                ? GROOMER_PAYMENT_STATUS.PAYMENT_COMPLETED
+                : VET_PAYMENT_STATUS.PAYMENT_COMPLETED}
             </Text>
           </Tag>
         </div>
@@ -54,9 +56,9 @@ export function PaymentListItem({
       </div>
 
       {recipientImageUrl ? (
-        <Image src={recipientImageUrl} alt="recipient" width={70} height={70} />
+        <Image src={recipientImageUrl} alt="recipient" width={70} height={70} css={image} />
       ) : (
-        <DefaultImage width={70} height={70} />
+        <DefaultImage width={70} height={70} css={image} />
       )}
     </div>
   );
