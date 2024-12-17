@@ -1,5 +1,11 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getGroomerModifyPage, patchGroomerInfo, postJoin, postKakao } from '~/apis';
+import {
+  getGroomerModifyPage,
+  patchGroomerInfo,
+  getGroomerInfo,
+  postJoin,
+  postKakao,
+} from '~/apis';
 import {
   PatchGroomerInfoRequestBody,
   PostJoinRequestBody,
@@ -42,5 +48,12 @@ export const usePatchGroomerInfoMutation = () => {
     mutationFn: async (body: PatchGroomerInfoRequestBody) => {
       return await patchGroomerInfo(body);
     },
+  });
+};
+
+export const useGetGroomerInfoQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_GROOMER_INFO,
+    queryFn: getGroomerInfo,
   });
 };
