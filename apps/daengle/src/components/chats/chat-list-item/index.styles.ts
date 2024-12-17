@@ -9,6 +9,8 @@ export const wrapper = css`
   width: 100%;
   padding: 12px 18px;
 
+  cursor: pointer;
+
   & + & {
     border-top: 1px solid ${theme.colors.gray200};
   }
