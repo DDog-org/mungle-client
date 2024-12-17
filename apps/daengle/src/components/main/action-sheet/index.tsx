@@ -6,6 +6,9 @@ import { wrapper, actionSheetTitle, selectBox } from './index.styles';
 
 export default function ActionSheet() {
   const router = useRouter();
+  const { groomerId, vetId } = router.query;
+  const getGroomerId = Number(groomerId);
+  const getVetId = Number(vetId);
 
   return (
     <div css={wrapper}>
@@ -16,7 +19,7 @@ export default function ActionSheet() {
         typo="body1"
         css={selectBox}
         onClick={() => {
-          router.push(ROUTES.ESTIMATE_GROOMING);
+          router.push(ROUTES.ESTIMATE_GROOMING(getGroomerId));
         }}
       >
         미용사
@@ -25,7 +28,7 @@ export default function ActionSheet() {
         typo="body1"
         css={selectBox}
         onClick={() => {
-          router.push(ROUTES.ESTIMATE_VET);
+          router.push(ROUTES.ESTIMATE_VET(getVetId));
         }}
       >
         병원

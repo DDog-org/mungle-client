@@ -22,7 +22,8 @@ interface Props {
 
 export function VetEstimateList({ isDesignation }: Props) {
   const router = useRouter();
-  const { petId } = router.query;
+  const { petId, vetId } = router.query;
+  const getVetId = Number(vetId);
   const [selectedPetId, setSelectedPetId] = useState<number | undefined>(
     petId ? Number(petId) : undefined
   );
@@ -83,7 +84,7 @@ export function VetEstimateList({ isDesignation }: Props) {
         <EmptyState
           isEmptyEstimates={false}
           hasOptions={false}
-          onClick={() => router.push(ROUTES.ESTIMATE_VET)}
+          onClick={() => router.push(ROUTES.ESTIMATE_VET(getVetId))}
         />
       ) : (
         <>

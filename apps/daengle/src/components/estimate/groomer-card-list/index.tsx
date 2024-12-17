@@ -24,7 +24,8 @@ interface Props {
 
 export function GroomerEstimateList({ isDesignation }: Props) {
   const router = useRouter();
-  const { petId } = router.query;
+  const { petId, groomerId } = router.query;
+  const getGroomerId = Number(groomerId);
 
   const [selectedPetId, setSelectedPetId] = useState<number | undefined>(
     petId ? Number(petId) : undefined
@@ -87,7 +88,7 @@ export function GroomerEstimateList({ isDesignation }: Props) {
         <EmptyState
           isEmptyEstimates={false}
           hasOptions={false}
-          onClick={() => router.push(ROUTES.ESTIMATE_GROOMING)}
+          onClick={() => router.push(ROUTES.ESTIMATE_GROOMING(getGroomerId))}
         />
       ) : (
         <>
