@@ -73,3 +73,30 @@ export interface DeleteGroomerResponse {
 export interface GetGroomerValidateResponse {
   isValidateMember: boolean;
 }
+
+export interface GetGroomerShopInfoResponse {
+  imageUrlList: string[];
+  shopId: number;
+  shopName: string;
+  startTime: string;
+  endTime: string;
+  closedDays: string[];
+  phoneNumber: string;
+  address: string;
+  detailAddress: string;
+  introduction: string;
+}
+
+export interface PatchGroomerShopInfoRequestBody {
+  shopId: number;
+  imageUrlList: string[];
+  startTime: string;
+  endTime: string;
+  closedDays: string[];
+  phoneNumber: string;
+  introduction: string;
+}
+
+export interface PatchGroomerShopInfoResponse {
+  requestResult: string;
+}

@@ -18,8 +18,8 @@ import { useGetGroomerShopInfoQuery, usePatchGroomerShopInfoMutation } from '~/q
 import dayjs, { Dayjs } from 'dayjs';
 import { GROOMER_DAT_OFF } from '~/constants/mypage';
 import TimePickerComponent from '~/components/mypage/time-picker';
-import { useValidateMyPageForm } from '~/hooks/mypage/use-validate-mypage-form';
 import { GroomerProfileForm } from '~/interfaces';
+import { useValidateMyPageForm } from '~/hooks/mypage/use-validate-mypage-form';
 
 export default function groomerProfile() {
   const [selectedStartTime, setSelectedStartTime] = useState<Dayjs | null>(null);

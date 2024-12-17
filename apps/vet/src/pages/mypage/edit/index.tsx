@@ -79,7 +79,7 @@ export default function vetProfile() {
     if (!imageUrls?.length) return;
 
     if (!selectedStartTime || !selectedEndTime) {
-      alert('시작 시간과 종료 시간을 모두 선택해야 전송할 수 있습니다.');
+      alert('시작 시간과 종료 시간을 모두 선택해야 수정할 수 있습니다.');
       return;
     }
 
