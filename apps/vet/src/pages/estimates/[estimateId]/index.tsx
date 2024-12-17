@@ -8,12 +8,11 @@ import { DatePick } from '~/components/estimates';
 import { usePostVetEstimateMutation, useVetEstimateDetailQuery } from '~/queries';
 import { GetVetEstimateDetailRequestParams } from '~/models';
 import { ROUTES } from '~/constants/commons';
-import dayjs, { Dayjs } from 'dayjs';
-import 'dayjs/locale/ko';
-import { useForkRef } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { VetEstimateForm } from '~/interfaces';
 import { useValidateEstimateForm } from '~/hooks';
+import dayjs, { Dayjs } from 'dayjs';
+import 'dayjs/locale/ko';
 
 export default function EstimateDetail() {
   const router = useRouter();
@@ -116,7 +115,7 @@ export default function EstimateDetail() {
         <div css={sectionDivider} />
 
         <div css={allTitle}>
-          <Text typo="subtitle3" color="gray500">
+          <Text typo="subtitle3" color="gray700">
             종합 소견
           </Text>
         </div>

@@ -47,7 +47,7 @@ export function DatePick({ onChange, placeholderText, isEditable }: Props): JSX.
         ampm={false}
         slotProps={{
           textField: {
-            placeholder: placeholderText || '날짜를 선택해주세요',
+            placeholder: placeholderText || '날짜를 선택해 주세요',
             fullWidth: true,
             InputProps: {
               sx: {

@@ -22,7 +22,7 @@ export const TextField = forwardRef<TextFieldRef, Props>(
       <div css={wrapper}>
         {label && (
           <label htmlFor={name}>
-            <Text typo="body4" color="gray400">
+            <Text typo="body4" color="gray600">
               {label}
               {required && (
                 <Text typo="body4" color={service === 'daengle' ? 'blue200' : 'green200'}>

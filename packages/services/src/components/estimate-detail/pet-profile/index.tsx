@@ -9,6 +9,7 @@ import {
   detail,
   labelWrapper,
   valueWrapper,
+  labelItems,
 } from './index.styles';
 
 interface Props {
@@ -43,14 +44,17 @@ export function PetDetails({ image, name, attributes }: Props): JSX.Element {
       </div>
       <div css={detail}>
         <div css={labelWrapper}>
-          {LABELS.map((label, index) => (
-            <Text typo="body9" color="gray500" key={`label-${index}`}>
-              {label}
-            </Text>
-          ))}
-          <TextButton icons={{ suffix: <ButtonTextButtonArrow width={'6px'} stroke="#BEBEBE" /> }}>
-            <Text color="gray400" typo="body9">
-              자세히보기
+          <div css={labelItems}>
+            {LABELS.map((label) => (
+              <Text typo="body9" color="gray700" key={label}>
+                {label}
+              </Text>
+            ))}
+          </div>
+
+          <TextButton icons={{ suffix: <ButtonTextButtonArrow width={5} /> }}>
+            <Text color="gray500" typo="body10">
+              자세히 보기
             </Text>
           </TextButton>
         </div>

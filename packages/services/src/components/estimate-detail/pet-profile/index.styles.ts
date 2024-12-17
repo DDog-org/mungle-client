@@ -45,6 +45,12 @@ export const detail = css`
 export const labelWrapper = css`
   display: flex;
   flex-direction: column;
+  gap: 11px;
+`;
+
+export const labelItems = css`
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 `;
 

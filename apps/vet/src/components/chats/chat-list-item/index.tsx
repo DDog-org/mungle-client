@@ -81,7 +81,7 @@ export function ChatListItem({
           )}
         </div>
 
-        <Text typo="body11" color="gray300">
+        <Text typo="body11" color="gray400">
           {formatLastSendTime(messageTime)}
         </Text>
       </div>
