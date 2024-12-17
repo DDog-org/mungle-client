@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { FormEvent, Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { FormEvent, Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { css } from '@emotion/react';
 import {
   AppBar,
@@ -22,6 +22,7 @@ import 'dayjs/locale/ko';
 
 export default function ChatRoom() {
   const router = useRouter();
+
   const chatRoomId = router.query.chatRoomId as string;
   const otherId = router.query.otherId as string;
   const estimateId = router.query.estimateId;
@@ -33,7 +34,8 @@ export default function ChatRoom() {
 
   const { mutate } = usePostChatMessages();
   const { data: chatHistory } = useGetChatWithQuery(otherId);
-  const otherName = chatHistory?.otherName;
+
+  const otherName = useMemo(() => chatHistory?.otherName, [chatHistory]);
 
   const { sendMessage, connect } = useStomp({
     url: `${process.env.NEXT_PUBLIC_API_URL}/chat`,
@@ -198,8 +200,8 @@ export default function ChatRoom() {
           {messages?.map((messageInfo, index) => (
             <Fragment key={`${messageInfo.date}${index}`}>
               <div css={tagWrapper}>
-                <Tag variant="solid" service="partner">
-                  <Text typo="body2" color="green200">
+                <Tag variant="line">
+                  <Text typo="body2" color="blue200">
                     {dayjs(messageInfo.date).format('YYYY년 MM월 DD일')}
                   </Text>
                 </Tag>
@@ -284,6 +286,7 @@ export const chatList = ({ isEstimateExist }: { isEstimateExist: boolean }) => c
   padding: ${isEstimateExist
     ? 'calc(56px + 24px) 18px calc(78px + 18px) 18px'
     : '24px 18px calc(78px + 18px) 18px'};
+
   border-bottom: 1px solid ${theme.colors.gray200};
 `;
 

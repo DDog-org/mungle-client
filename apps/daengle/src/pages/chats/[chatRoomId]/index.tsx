@@ -199,7 +199,7 @@ export default function ChatRoom() {
           </div>
         )}
 
-        <section css={chatList} ref={chatListRef}>
+        <section css={chatList({ isEstimateExist: !!estimateId })} ref={chatListRef}>
           {messages?.map((messageInfo, index) => (
             <Fragment key={`${messageInfo.date}${index}`}>
               <div css={tagWrapper}>
@@ -278,7 +278,7 @@ export const profileWrapper = css`
   gap: 10px;
 `;
 
-export const chatList = css`
+export const chatList = ({ isEstimateExist }: { isEstimateExist: boolean }) => css`
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -286,7 +286,9 @@ export const chatList = css`
 
   width: 100%;
   height: 100%;
-  padding: calc(56px + 24px) 18px calc(78px + 18px) 18px;
+  padding: ${isEstimateExist
+    ? 'calc(56px + 24px) 18px calc(78px + 18px) 18px'
+    : '24px 18px calc(78px + 18px) 18px'};
 
   border-bottom: 1px solid ${theme.colors.gray200};
 `;
