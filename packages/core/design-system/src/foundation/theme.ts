@@ -21,6 +21,7 @@ const theme = {
     actionSheet: 30,
     bottomSheet: 30,
     dialog: 40,
+    toast: 50,
   },
 } as const;
 
