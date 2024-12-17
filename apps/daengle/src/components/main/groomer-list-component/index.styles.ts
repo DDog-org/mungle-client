@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 
 export const wrapper = css`
-  padding-bottom: 75px;
+  padding-bottom: 28px;
 `;
 
 export const cardBox = css`
