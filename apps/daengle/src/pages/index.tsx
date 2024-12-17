@@ -1,4 +1,4 @@
-import { AppBar, Layout, RoundButton, Tabs, Text, theme } from '@daengle/design-system';
+import { AppBar, Layout, RoundButton, Tabs, Text, theme, useDialog } from '@daengle/design-system';
 import { MainLogo, SearchIcon, SelectUnfoldInactive } from '@daengle/design-system/icons';
 import { DaengleDog } from '@daengle/design-system/images';
 import { css } from '@emotion/react';
@@ -30,13 +30,22 @@ export default function Home() {
   const { data: getUserValidate } = useGetUserValidateQuery();
   const { addressForm } = useAddressFormStore();
 
+  const { open } = useDialog();
+
   const handleSearchAddress = () => {
+    open({
+      title: '로그인 후 이용해 주세요',
+      primaryActionLabel: '로그인 하기',
+      onPrimaryAction: () => router.push(ROUTES.LOGIN),
+    });
     if (getUserValidate) {
       router.push(ROUTES.SEARCH_ADDRESS);
     } else {
-      // TODO: 모달창으로 변경
-      alert('로그인 해주세요');
-      router.push(ROUTES.LOGIN);
+      open({
+        title: '로그인 후 이용해 주세요',
+        primaryActionLabel: '로그인 하기',
+        onPrimaryAction: () => router.push(ROUTES.LOGIN),
+      });
     }
   };
 
@@ -44,9 +53,11 @@ export default function Home() {
     if (getUserValidate) {
       setIsVisible(true);
     } else {
-      // TODO: 모달창으로 변경
-      alert('로그인 해주세요');
-      router.push(ROUTES.LOGIN);
+      open({
+        title: '로그인 후 이용해 주세요',
+        primaryActionLabel: '로그인 하기',
+        onPrimaryAction: () => router.push(ROUTES.LOGIN),
+      });
     }
   };
 
