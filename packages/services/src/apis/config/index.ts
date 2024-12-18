@@ -1,5 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
-import { HttpClient } from './index.types';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { ERROR_CODES } from '../../constants';
 
 type Role = 'user' | 'groomer' | 'vet';
 
@@ -25,7 +25,14 @@ export const createHttpClient = ({ baseURL, role }: Props) => {
     async (error) => {
       const originalRequest = error.config;
 
-      if (error.response && error.response.status === 401 && !originalRequest._retry) {
+      const daengleError = error.response.data.error;
+
+      if (daengleError.code === ERROR_CODES.FORBIDDEN) {
+        window.location.href = '/login';
+        return Promise.reject(error);
+      }
+
+      if (daengleError.cdoe === ERROR_CODES.TOKEN_EXPIRED) {
         originalRequest._retry = true;
 
         try {
@@ -33,7 +40,6 @@ export const createHttpClient = ({ baseURL, role }: Props) => {
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return api(originalRequest);
         } catch (err) {
-          console.error('Failed to refresh token:', err);
           window.location.href = '/login';
           return Promise.reject(err);
         }
@@ -64,3 +70,11 @@ export const createHttpClient = ({ baseURL, role }: Props) => {
 
   return { api };
 };
+
+export interface HttpClient extends AxiosInstance {
+  get<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>;
+  post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>;
+  put<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>;
+  patch<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>;
+  delete<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>;
+}

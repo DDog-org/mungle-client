@@ -1,5 +1,5 @@
 import { Card } from '../card';
-import { useGetUserShopsQuery } from '~/queries/main';
+import { useGetUserShopsQuery } from '~/queries/home';
 import { useAddressFormStore } from '~/stores/main';
 import { Empty } from '@daengle/design-system';
 import { useRouter } from 'next/router';

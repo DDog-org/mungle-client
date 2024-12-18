@@ -78,6 +78,7 @@ export default function EditProfile() {
           <Text typo="title1">프로필 관리</Text>
           <div css={profileImageWrapper}>
             <ImageInputBox
+              defaultValue={groomerInfo?.image}
               onChange={(files) => setValue('image', files, { shouldValidate: true })}
             />
           </div>
