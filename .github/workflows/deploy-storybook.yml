@@ -27,7 +27,7 @@ jobs:
 
       - name: 📂 Install dependencies
         run: |
-          pnpm install --filter storybook
+          pnpm install
 
       - name: 🏗️ Build project
         run: |
