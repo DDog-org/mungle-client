@@ -1,5 +1,4 @@
-import { Text, TextButton } from '@daengle/design-system';
-import { EmptyState } from '@daengle/services/components'; // EmptyState import
+import { Empty, Text, TextButton } from '@daengle/design-system';
 import {
   wrapper,
   card,
@@ -28,54 +27,57 @@ export function CardList({ mode, category, estimateData, onCardClick }: Props): 
     event.currentTarget.src = '';
   };
 
-  if (estimateData.length === 0) {
-    return <EmptyState isEmptyEstimates={false} hasOptions={true} />;
-  }
-
   const isDesignation = mode === 'designation';
 
   return (
     <div css={wrapper}>
-      {estimateData.map((item) => (
-        <div key={item.id} css={card}>
-          <div css={contentContainer} onClick={() => onCardClick?.(item.id)}>
-            <div css={cardHeader}>
-              <Text css={nameStyle} typo="subtitle3">
-                {item.name}
-              </Text>
-              <div css={distanceStyle(item.daengleMeter)}>
-                {isDesignation ? '진행 중' : `🐾 ${item.daengleMeter}m`}
+      {estimateData.length ? (
+        estimateData?.map((item) => (
+          <div key={item.id} css={card}>
+            <div css={contentContainer} onClick={() => onCardClick?.(item.id)}>
+              <div css={cardHeader}>
+                <Text css={nameStyle} typo="subtitle3">
+                  {item.name}
+                </Text>
+                <div css={distanceStyle(item.daengleMeter)}>
+                  {isDesignation ? '진행 중' : `🐾 ${item.daengleMeter}m`}
+                </div>
+              </div>
+              <div css={cardContent} onClick={() => onCardClick?.(item.id)}>
+                <Text typo="body11" color="gray400">
+                  {item.shopName || (category === 'vet' ? '' : '미용실 정보 없음')}
+                </Text>
+                <Text typo="body12" color="gray600">
+                  {item.reservedDate}
+                </Text>
+                <div css={tagsContainer}>
+                  {item.keywords?.map((keyword) => (
+                    <TextButton key={item.id} css={tagButtonStyle}>
+                      #{keyword}
+                    </TextButton>
+                  ))}
+                </div>
               </div>
             </div>
-            <div css={cardContent} onClick={() => onCardClick?.(item.id)}>
-              <Text typo="body11" color="gray400">
-                {item.shopName || (category === 'vet' ? '' : '미용실 정보 없음')}
-              </Text>
-              <Text typo="body12" color="gray600">
-                {item.reservedDate}
-              </Text>
-              <div css={tagsContainer}>
-                {item.keywords?.map((keyword) => (
-                  <TextButton key={item.id} css={tagButtonStyle}>
-                    #{keyword}
-                  </TextButton>
-                ))}
-              </div>
-            </div>
+            {item.imageUrl ? (
+              <img
+                src={item.imageUrl}
+                alt={`${item.name} 프로필`}
+                css={profileImage}
+                onError={handleImageError}
+                onClick={() => onCardClick?.(item.id)}
+              />
+            ) : (
+              <DefaultProfile css={profileImage} />
+            )}
           </div>
-          {item.imageUrl ? (
-            <img
-              src={item.imageUrl}
-              alt={`${item.name} 프로필`}
-              css={profileImage}
-              onError={handleImageError}
-              onClick={() => onCardClick?.(item.id)}
-            />
-          ) : (
-            <DefaultProfile css={profileImage} />
-          )}
-        </div>
-      ))}
+        ))
+      ) : (
+        <>
+          {/* TODO: 문구 변경 */}
+          <Empty title="견적서가 존재하지 않아요" />
+        </>
+      )}
     </div>
   );
 }
