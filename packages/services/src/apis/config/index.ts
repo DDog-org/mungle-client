@@ -25,7 +25,7 @@ export const createHttpClient = ({ baseURL, role }: Props) => {
     async (error) => {
       const originalRequest = error.config;
 
-      const daengleError = error.response.data.error;
+      const daengleError = error.response.error;
 
       if (daengleError.code === ERROR_CODES.FORBIDDEN) {
         window.location.href = '/login';

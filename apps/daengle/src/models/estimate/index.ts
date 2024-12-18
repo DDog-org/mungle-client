@@ -177,7 +177,7 @@ export interface PostUserEstimateVetUserInfoRequestBody {
 }
 
 export interface PostUserEstimateVetUserInfoResponse {
-  vetImage: string;
+  vetImageUrl: string;
   vetName: string;
   address: string;
   petInfos: PetInfo[];
@@ -189,7 +189,7 @@ export interface PostUserEstimateCareRequestBody {
   address: string;
   reservedDate: string;
   symptoms: string;
-  requirements: string;
+  requirements: string | null;
 }
 
 export interface PostUserEstimateCareResponse {

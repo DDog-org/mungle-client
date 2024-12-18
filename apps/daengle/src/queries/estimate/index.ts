@@ -227,29 +227,19 @@ export const usePostUserEstimateGroomingMutation = () => {
   });
 };
 
-export const usePostUserEstimateVetUserInfoMutation = () => {
+export const usePostUserEstimateVetUserInfoMutation = ({ vetId }: { vetId: number }) => {
   return useMutation({
-    mutationKey: [QUERY_KEYS.POST_USER_ESTIMATE_VET_USER_INFO],
-    mutationFn: async (body: PostUserEstimateVetUserInfoRequestBody) => {
-      try {
-        return await postUserEstimateVetUserInfo(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationKey: [...QUERY_KEYS.POST_USER_ESTIMATE_VET_USER_INFO, vetId],
+    mutationFn: () => postUserEstimateVetUserInfo({ vetId }),
   });
 };
+
+//
 
 export const usePostUserEstimateCareMutation = () => {
   return useMutation({
     mutationKey: [QUERY_KEYS.POST_USER_ESTIMATE_CARE],
-    mutationFn: async (body: PostUserEstimateCareRequestBody) => {
-      try {
-        return await postUserEstimateCare(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: postUserEstimateCare,
   });
 };
 

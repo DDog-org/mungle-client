@@ -7,14 +7,14 @@ import { useEffect, useState } from 'react';
 import { ROUTES } from '~/constants/commons';
 import { useRouter } from 'next/router';
 
-import EstimateSelectComponent from '~/components/estimate/estimate-select-component';
+import EstimateSelectComponent from '~/components/estimate/estimate-select';
 import {
   usePostUserEstimateGroomingMutation,
   usePostUserEstimateGroomerUserInfoMutation,
 } from '~/queries/estimate';
 import { PostUserEstimateGroomerUserInfoResponse } from '~/models/estimate';
 
-import DatePickerComponent from '~/components/estimate/date-picker-component';
+import DatePickerComponent from '~/components/estimate/date-picker';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 import { PetInfo } from '~/interfaces/estimate';
@@ -120,7 +120,7 @@ export default function EstimateCreate() {
             지역
           </Text>
           <Text typo="title2" color="black">
-            {address || '주소 불러오는 중..(ᐡ- ﻌ •ᐡ)'}
+            {address}
           </Text>
         </section>
         <section css={section}>

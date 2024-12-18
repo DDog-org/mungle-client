@@ -59,3 +59,19 @@ export interface UserEstimateCareDetailData {
   treatment: string;
   tags?: string[];
 }
+
+export interface GeneralVetEstimateDefaultUserData {
+  vetImageUrl: string;
+  vetName: string;
+  address: string;
+  petInfos: PetInfo[];
+}
+
+export interface UserEstimateCareForm {
+  vetId: number;
+  petId: number | null;
+  address: string;
+  reservedDate: string;
+  symptoms: string;
+  requirements: string;
+}

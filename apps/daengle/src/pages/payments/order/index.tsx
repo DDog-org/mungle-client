@@ -282,8 +282,6 @@ export default function Order() {
   );
 }
 
-//////////// emotion(css) ///////////
-
 const wrapper = css`
   padding: 18px 0 104px;
 `;

@@ -1,36 +1,35 @@
-import { box, dateSelect } from './index.styles';
-import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import { useEffect, useState } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
+import { DatePicker as MuiDatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import { box, dateSelect } from './index.styles';
 import 'dayjs/locale/ko';
-import { useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
 
-interface DatePickerComponentProps {
-  onDateChange: (date: Dayjs | null) => void;
-  onTimeChange: (time: Dayjs | null) => void;
+interface Props {
+  onChange: (date: string | null) => void;
 }
 
-export default function DatePickerComponent({
-  onDateChange,
-  onTimeChange,
-}: DatePickerComponentProps) {
+export function DatePicker({ onChange }: Props) {
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(dayjs());
 
   const handleDateChange = (newValue: Dayjs | null) => {
     setSelectedDate(newValue);
-    onDateChange(newValue);
   };
+
   const handleTimeChange = (newValue: Dayjs | null) => {
     setSelectedTime(newValue);
-    onTimeChange(newValue);
   };
+
+  useEffect(() => {
+    onChange(`${selectedDate?.format('YYYY-MM-DD')} ${selectedTime?.format('HH:mm:ss')}`);
+  }, [selectedDate, selectedTime]);
 
   return (
     <div css={box}>
       <div css={dateSelect}>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-          <DatePicker
+          <MuiDatePicker
             format="YYYY.MM.DD"
             value={selectedDate}
             onChange={handleDateChange}
@@ -49,6 +48,7 @@ export default function DatePickerComponent({
           />
         </LocalizationProvider>
       </div>
+
       <div css={dateSelect}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker

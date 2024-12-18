@@ -12,7 +12,7 @@ import {
 import { PostUserEstimateVetUserInfoResponse } from '~/models/estimate';
 import { useEffect, useState } from 'react';
 
-import DatePickerComponent from '~/components/estimate/date-picker-component';
+import DatePickerComponent from '~/components/estimate/date-picker';
 import dayjs, { Dayjs } from 'dayjs';
 import { PetInfo } from '~/interfaces/estimate';
 
@@ -114,7 +114,7 @@ export default function EstimateCare() {
             지역
           </Text>
           <Text typo="title2" color="black">
-            {address || '주소 불러오는 중..(ᐡ- ﻌ •ᐡ)'}
+            {address}
           </Text>
         </section>
         <section css={section}>
@@ -127,7 +127,7 @@ export default function EstimateCare() {
           <Text tag="h2" typo="subtitle3" color="black">
             어떤 아이가 진료를 받을 예정인가요?
           </Text>
-          {petInfos ? (
+          {petInfos?.length > 0 ? (
             <div css={listBox}>
               <div css={petList}>
                 {petInfos.map((pet) => (
@@ -205,8 +205,6 @@ export default function EstimateCare() {
     </Layout>
   );
 }
-
-/////////// emotion(css) ///////////
 
 const wrapper = css`
   display: flex;

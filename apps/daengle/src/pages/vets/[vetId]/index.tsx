@@ -28,7 +28,7 @@ export default function VetInfo() {
       <div css={wrapper}>
         <div css={imageSection}>
           {vetInfo?.vetImage ? (
-            <Image src={vetInfo.vetImage} alt="동물병원 이미지" />
+            <Image src={vetInfo.vetImage} alt="동물병원 이미지" objectFit="cover" />
           ) : (
             <VetDefaultImage />
           )}
@@ -132,19 +132,25 @@ export default function VetInfo() {
 }
 
 const wrapper = css`
+  display: flex;
+  flex-direction: column;
   position: relative;
 
   width: 100%;
   height: 100%;
-
-  background-color: aliceblue;
 `;
 
 const imageSection = css`
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
 
   width: 100%;
   height: 416px;
+
+  background: ${theme.colors.gray200};
 `;
 
 const vetName = css`
@@ -176,13 +182,17 @@ const topSection = css`
 `;
 
 const infoBox = css`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   position: absolute;
-  bottom: 0;
+  top: 376px;
+  z-index: 2;
 
   width: 100%;
   border-radius: 20px 20px 0 0;
 
-  background-color: white;
+  background: ${theme.colors.white};
 `;
 
 const infoSection = css`

@@ -7,22 +7,27 @@ export const selectBox = css`
 `;
 
 export const selectItem = (isSelected: boolean) => css`
-  border: 1px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
-  border-radius: 10px;
-  width: 100%;
-  height: 195px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 17px;
+  justify-content: center;
   gap: 35px;
-  cursor: pointer;
+
+  width: 100%;
+  height: 195px;
+  padding: 17px;
+  border: 1px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
+  border-radius: 10px;
+
   background-color: ${isSelected ? theme.colors.blue100 : 'transparent'};
+
   transition: background-color 0.2s ease;
+
+  cursor: pointer;
 
   :hover {
     background-color: ${isSelected ? theme.colors.blue100 : theme.colors.gray100};
+
     transition: 0.3s;
   }
 `;
