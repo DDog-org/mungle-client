@@ -151,8 +151,6 @@ export default function Order() {
       setIsLoading(false);
     }
   };
-  // 잠시 개발동안은 필요합니다!
-  console.log('My orderUid', orderUid);
 
   return (
     <Layout>
