@@ -1,3 +1,4 @@
+import { PET_SIZE } from '@daengle/services/constants';
 import {
   GroomingEstimateDesignationList,
   GroomingEstimateGeneralList,
@@ -21,7 +22,7 @@ export interface GetGroomerEstimateDetailResponse {
   petImageUrl: string;
   petName: string;
   age: number;
-  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
+  weight: keyof typeof PET_SIZE;
   significant: string | null;
   desiredStyle: string;
   requirements: string;

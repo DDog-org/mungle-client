@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
-import { Card, EmptyState } from 'node_modules/@daengle/services/src/components/estimate-list';
+import { Card } from 'node_modules/@daengle/services/src/components/estimate-list';
 import { css } from '@emotion/react';
 import { ROUTES } from '~/constants/commons';
 import { useVetEstimateGeneralListQuery } from '~/queries/estimate';
+import { Empty } from '@daengle/design-system';
 
 export function GeneralCardList() {
   const router = useRouter();
@@ -25,14 +26,13 @@ export function GeneralCardList() {
   }
 
   if (estimates.length === 0) {
-    return <EmptyState isEmptyEstimates={true} hasOptions={false} />;
+    return <Empty title="아직 도착한 견적서가 없어요" />;
   }
 
   return (
     <div css={wrapper}>
       {estimates.map((data) => (
         <Card
-          id={data.id}
           onDetailClick={() =>
             router.push({ pathname: ROUTES.ESTIMATE_DETAIL(data.id), query: { type: type } })
           }
