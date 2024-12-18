@@ -17,6 +17,7 @@ import {
   useUserReservationGroomingDetailQuery,
 } from '~/queries/reservation';
 import { ROUTES } from '~/constants/commons';
+import { Loading } from '~/components/commons';
 
 type DetailData = GetUserReservationGroomingDetailResponse | GetUserReservationCareDetailResponse;
 
@@ -45,7 +46,7 @@ export default function Detail() {
     error: careError,
   } = useUserReservationCareDetailQuery(careParams, isCare);
 
-  if (groomerLoading || careLoading) return <div>Loading...</div>;
+  if (groomerLoading || careLoading) return <Loading title="예약 내역을 불러오고 있어요" />;
 
   if (groomerError || careError || (!groomingData && !careData)) {
     return <div>데이터를 불러오지 못했습니다.</div>;

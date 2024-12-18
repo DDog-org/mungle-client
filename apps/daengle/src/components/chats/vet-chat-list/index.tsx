@@ -3,10 +3,18 @@ import { Empty, useDialog } from '@daengle/design-system';
 import { useGetChatUserVetListQuery } from '~/queries';
 import { ROUTES } from '~/constants/commons';
 import { ChatListItem } from '../chat-list-item';
+import { Loading } from '~/components/commons';
 
 export function VetChatList() {
   const router = useRouter();
-  const { data: chats, refetch: refetchRoomList, isError } = useGetChatUserVetListQuery();
+  const {
+    data: chats,
+    refetch: refetchRoomList,
+    isError,
+    isLoading,
+  } = useGetChatUserVetListQuery();
+
+  if (isLoading) return <Loading title="채팅 내역을 불러오고 있어요" />;
 
   if (isError) {
     alert('로그인 후 이용해 주세요');

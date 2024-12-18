@@ -1,22 +1,23 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { Empty } from '@daengle/design-system';
 import {
   useUserEstimateDesignationGroomingPetsQuery,
   useUserEstimateDesignationGroomingQuery,
   useUserEstimateGeneralGroomingPetsQuery,
   useUserEstimateGeneralGroomingQuery,
 } from '~/queries';
-import { ProfileSelector } from '../pet-profile';
-import { CardList } from '../card-list';
 import {
   GetUserEstimateDesignationGroomingList,
   GetUserEstimateGeneralGroomingList,
 } from '~/models';
+import { ROUTES } from '~/constants';
 import { useIntersectionLoad } from '~/hooks';
-import { bottom, wrapper } from './index.styles';
-import { useRouter } from 'next/router';
-import { ROUTES } from '~/constants/commons';
+import { Loading } from '~/components/commons';
 import { OptionSelector } from '../option';
-import { Empty } from '@daengle/design-system';
+import { ProfileSelector } from '../pet-profile';
+import { CardList } from '../card-list';
+import { bottom, wrapper } from './index.styles';
 
 interface Props {
   isDesignation: boolean;
@@ -24,8 +25,7 @@ interface Props {
 
 export function GroomerEstimateList({ isDesignation }: Props) {
   const router = useRouter();
-  const { petId, groomerId } = router.query;
-  const getGroomerId = Number(groomerId);
+  const { petId } = router.query;
 
   const [selectedPetId, setSelectedPetId] = useState<number | undefined>(
     petId ? Number(petId) : undefined
@@ -87,7 +87,7 @@ export function GroomerEstimateList({ isDesignation }: Props) {
   return (
     <div css={wrapper}>
       {petLoading ? (
-        <div>로딩 중...</div>
+        <Loading title="견적서를 불러오고 있어요" />
       ) : petError ? (
         <div>펫 정보를 불러오는데 실패했습니다.</div>
       ) : petInfos.length === 0 ? (
@@ -104,7 +104,7 @@ export function GroomerEstimateList({ isDesignation }: Props) {
           />
           <OptionSelector estimateId={selectedEstimateId} />
           {estimateLoading ? (
-            <div>견적 데이터를 불러오는 중...</div>
+            <Loading title="견적서를 불러오고 있어요" />
           ) : estimateError ? (
             <div>견적 데이터를 불러오는데 실패했습니다.</div>
           ) : flattenedEstimates.length === 0 ? (

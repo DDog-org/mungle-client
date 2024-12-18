@@ -15,6 +15,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { ROUTES } from '~/constants/commons';
 import { css } from '@emotion/react';
+import { Loading } from '~/components/commons';
 
 const KEYWORDS = Object.values(GROOMER_REVIEW_KEYWORDS);
 
@@ -134,7 +135,7 @@ export default function GroomerReviewEdit() {
         </div>
         <div css={container}>
           {isLoading ? (
-            <Text typo="body11">로딩 중...</Text>
+            <Loading title="리뷰 내역을 불러오고 있어요" />
           ) : error ? (
             <Text typo="body11">리뷰 데이터를 불러오는 데 실패했습니다.</Text>
           ) : (

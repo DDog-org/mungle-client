@@ -15,6 +15,7 @@ import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { OptionSelector } from '../option';
 import { Empty, useDialog } from '@daengle/design-system';
+import { Loading } from '~/components/commons';
 
 interface Props {
   isDesignation: boolean;
@@ -100,7 +101,7 @@ export function VetEstimateList({ isDesignation }: Props) {
           />
           <OptionSelector estimateId={selectedEstimateId} />
           {estimateLoading ? (
-            <div>견적 데이터를 불러오는 중...</div>
+            <Loading title="견적서를 불러오고 있어요" />
           ) : estimateError ? (
             <div>견적 데이터를 불러오는데 실패했습니다.</div>
           ) : flattenedEstimates.length === 0 ? (
