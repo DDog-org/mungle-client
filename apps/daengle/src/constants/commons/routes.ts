@@ -19,7 +19,7 @@ export const ROUTES = {
   ESTIMATE_REQUEST: (estimateId: number) => `estimates/request/${estimateId}`,
 
   // Groomers
-  GROOMER_SHOP_DETAIL: (shopId: number) => `/groomers/shops/${shopId}`,
+  GROOMER_SHOP_DETAIL: (shopId: number) => `/shops/${shopId}`,
   GROOMER_DETAIL: (groomerId: number) => `/groomers/${groomerId}`,
   GROOMER_REVIEWS: (groomerId: number) => `/groomers/${groomerId}/reviews`,
   GROOMER_ESTIMATE_FORM: '/groomers/estimate-form',

@@ -44,4 +44,5 @@ export const tag = css`
 
 export const paw = css`
   margin-right: 1px;
+  fill: ${theme.colors.red200};
 `;
