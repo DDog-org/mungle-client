@@ -8,7 +8,7 @@ import {
 import { UserProfileInfoEditForm } from '~/interfaces/auth';
 import { useValidateUserInfoForm } from '~/hooks/mypage';
 import { useS3 } from '@daengle/services/hooks';
-import { ImageInputBox } from '~/components/mypage/user-profile/imageInput';
+import { ImageInputBox } from '~/components/mypage';
 import router from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { css } from '@emotion/react';

@@ -198,3 +198,12 @@ export interface PetInfo {
   petImage: string;
   petName: string;
 }
+
+export interface GetUserWithdrawInfoResponse {
+  waitingForServiceCount: number;
+}
+
+export interface DeleteUserResponse {
+  accountId: number;
+  withdrawDate: string;
+}

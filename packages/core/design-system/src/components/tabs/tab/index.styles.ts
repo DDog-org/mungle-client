@@ -11,7 +11,6 @@ export const wrapper = css`
   width: 100%;
   padding: 10px 0;
 
-  background: powderblue;
   text-align: center;
 `;
 

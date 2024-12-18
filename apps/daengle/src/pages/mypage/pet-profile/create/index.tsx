@@ -22,8 +22,8 @@ import {
 } from '~/constants/mypage';
 import { useGetBreedListQuery, usePostUserPetMutation } from '~/queries';
 import { useState } from 'react';
-import { ImageInputBox } from '~/components/mypage/pet-profile/image-input';
-import { ChipToggleButton } from '~/components/mypage/pet-profile/chip-toggle-button';
+import { ImageInputBox } from '~/components/mypage/profile/image-input';
+import { ChipToggleButton } from '~/components/mypage/profile/chip-toggle-button';
 import { useS3 } from '@daengle/services/hooks';
 import { ROUTES } from '~/constants/commons';
 import router from 'next/router';

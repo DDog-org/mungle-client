@@ -1,38 +1,46 @@
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { css } from '@emotion/react';
-import { Layout, Text, theme } from '@daengle/design-system';
-import { ROUTES } from '~/constants/commons';
-import { GNB } from '~/components/commons';
-import {
-  AddButton,
-  DefaultImage,
-  MypageAddButton,
-  ProfileArrowButton,
-} from '@daengle/design-system/icons';
 import Image from 'next/image';
-import { PetInfoForm } from '~/interfaces/auth';
-import { useGetUserMypageQuery } from '~/queries';
+import { useRouter } from 'next/router';
+import { useEffect, useMemo, useState } from 'react';
+import { css } from '@emotion/react';
+import { Layout, Text, theme, useDialog, useToast } from '@daengle/design-system';
+import { DefaultImage, NeedLoginArrow } from '@daengle/design-system/icons';
+import { RegisterPetProfile } from '@daengle/services/components';
+import { ROUTES } from '~/constants';
+import { GNB } from '~/components/commons';
+import { Tab } from '~/components/mypage';
+import { ProfileSelector } from '~/components/estimate';
+import { PetInfoForm } from '~/interfaces';
+import {
+  useDeleteUserMutation,
+  useGetUserMypageQuery,
+  useGetUserWithdrawInfoQuery,
+} from '~/queries';
 
 export default function Mypage() {
-  const [petInfos, setPetInfos] = useState<PetInfoForm[] | null>(null);
-  const [selectedPetId, setSelectedPetId] = useState<number>(0);
-  const { data: getUserMypage, isError } = useGetUserMypageQuery();
-
   const router = useRouter();
 
-  const handleGoToClick = () => {
-    router.push(ROUTES.MYPAGE_USER_INFO_EDIT);
-  };
-  const handlePetCreateClick = () => {
-    router.push(ROUTES.MYPAGE_PET_PROFILE_CREATE);
-  };
-  const handlePetEditClick = () => {
-    router.push(ROUTES.MYPAGE_PET_PROFILE_EDIT);
-  };
-  const handlePetSelect = (petId: number) => {
-    setSelectedPetId(petId);
-    router.push(ROUTES.MYPAGE_PET_PROFILE);
+  const [petInfos, setPetInfos] = useState<PetInfoForm[] | null>(null);
+  const [selectedPetId, setSelectedPetId] = useState<number>(0);
+
+  const { data: getUserMypage, refetch: refetchUserMypage } = useGetUserMypageQuery();
+  const { data: getUserWithdrawInfo } = useGetUserWithdrawInfoQuery();
+  const { mutateAsync: deleteUser } = useDeleteUserMutation();
+
+  const { showToast } = useToast();
+  const { open } = useDialog();
+
+  const isLoggedInUser = useMemo(() => !!getUserMypage?.id, [getUserMypage]);
+
+  const openNeedLoginDialog = ({ to }: { to: string }) => {
+    if (isLoggedInUser) {
+      router.push(ROUTES.MYPAGE_PAYMENTS);
+    } else {
+      open({
+        title: '로그인 후 이용할 수 있어요',
+        primaryActionLabel: '로그인하기',
+        onPrimaryAction: () => router.push(ROUTES.LOGIN),
+      });
+    }
   };
 
   useEffect(() => {
@@ -47,6 +55,7 @@ export default function Mypage() {
         <Text tag="h1" typo="title1" color="black">
           마이페이지
         </Text>
+
         <section css={profileWrapper}>
           {getUserMypage?.id ? (
             <>
@@ -64,104 +73,94 @@ export default function Mypage() {
               <Text typo="title2" css={nickname}>
                 {getUserMypage?.nickname}
               </Text>
-              <button css={editButton} onClick={handleGoToClick}>
+              <button
+                css={editButton}
+                onClick={() => openNeedLoginDialog({ to: ROUTES.MYPAGE_USER_INFO_EDIT })}
+              >
                 <Text typo="body5" color="gray500">
                   편집
                 </Text>
               </button>
             </>
           ) : (
-            <Text
-              typo="title1"
-              color="black100"
-              onClick={() => router.push(ROUTES.LOGIN)}
-            >{`로그인 해 주세요 >`}</Text>
+            <div css={needLoginWrapper} onClick={() => router.push(ROUTES.LOGIN)}>
+              <Text typo="title1" color="black100" onClick={() => router.push(ROUTES.LOGIN)}>
+                로그인 해 주세요
+              </Text>
+              <NeedLoginArrow width={8} height={16} />
+            </div>
           )}
         </section>
+
         <section css={requestInfoWrapper}>
-          <div css={requestInfo} onClick={() => router.push(ROUTES.ESTIMATES)}>
+          <div css={requestInfo} onClick={() => openNeedLoginDialog({ to: ROUTES.ESTIMATES })}>
             <Text typo="body10" color="gray600">
               견적 요청 내역
             </Text>
-            <Text typo="title1" color="blue200">
-              {getUserMypage?.estimateCount}
-            </Text>
+            {getUserMypage?.estimateCount ? (
+              <Text typo="title1" color="blue200">
+                {getUserMypage.estimateCount}
+              </Text>
+            ) : (
+              <Text typo="title1" color="gray300">
+                0
+              </Text>
+            )}
           </div>
-          <div css={requestInfo} onClick={() => router.push(ROUTES.MYPAGE_REVIEWS)}>
+
+          <div css={requestInfo} onClick={() => openNeedLoginDialog({ to: ROUTES.MYPAGE_REVIEWS })}>
             <Text typo="body10" color="gray600">
               리뷰
             </Text>
-            <Text typo="title1" color="blue200">
-              {getUserMypage?.reviewCount}
-            </Text>
+            {getUserMypage?.reviewCount ? (
+              <Text typo="title1" color="blue200">
+                {getUserMypage.reviewCount}
+              </Text>
+            ) : (
+              <Text typo="title1" color="gray300">
+                0
+              </Text>
+            )}
           </div>
         </section>
+
         <section css={petProfileEdit}>
           <Text tag="h2" typo="subtitle1">
             내 아이
           </Text>
-          <button css={editButton} onClick={handlePetEditClick}>
-            <Text typo="body5" color="gray500">
-              편집
-            </Text>
-          </button>
+          {getUserMypage?.petInfos && getUserMypage.petInfos.length > 0 && (
+            <button
+              css={editButton}
+              onClick={() => openNeedLoginDialog({ to: ROUTES.MYPAGE_PET_PROFILE_EDIT })}
+            >
+              <Text typo="body5" color="gray500">
+                편집
+              </Text>
+            </button>
+          )}
         </section>
       </div>
+
       <div css={petProfileWrapper}>
         <section css={section}>
           <div css={petList}>
             {petInfos && petInfos.length > 0 ? (
-              <>
-                <div css={petList}>
-                  {petInfos.map((pet, index) => (
-                    <div
-                      key={pet.petId}
-                      css={[petProfile, petItemStyle(index)]}
-                      onClick={() => handlePetSelect(pet.petId)}
-                    >
-                      {pet.petImage ? (
-                        <Image
-                          src={pet.petImage}
-                          alt="반려견 프로필"
-                          width={86}
-                          height={86}
-                          css={profileImage}
-                        />
-                      ) : (
-                        <DefaultImage css={profileImage} />
-                      )}
-                      <Text typo="body1" css={petName}>
-                        {pet.petName}
-                      </Text>
-                    </div>
-                  ))}
-                  <div css={petProfileAdd} onClick={handlePetCreateClick}>
-                    <div css={addButton}>
-                      <MypageAddButton width={59} />
-                    </div>
-                    <Text typo="body1" color="gray400" css={petName}>
-                      추가
-                    </Text>
-                  </div>
-                </div>
-              </>
+              <ProfileSelector
+                petInfos={petInfos.map((pet) => ({
+                  ...pet,
+                  name: pet.petName,
+                  imageURL: pet.petImage,
+                }))}
+                selectedPetId={selectedPetId}
+                onSelectPet={(petId) => {
+                  setSelectedPetId(petId);
+                  router.push({ pathname: router.pathname, query: { ...router.query, petId } });
+                }}
+              />
             ) : (
-              <div css={registerPetWrapper}>
-                <div css={registerPet}>
-                  <div css={circle}>
-                    <AddButton
-                      width={12}
-                      height={12}
-                      onClick={() => {
-                        router.push(ROUTES.MYPAGE_PET_PROFILE);
-                      }}
-                    />
-                  </div>
-                  <Text typo="body11" color="gray400">
-                    반려견을 등록해주세요
-                  </Text>
-                </div>
-              </div>
+              <RegisterPetProfile
+                onClick={() => openNeedLoginDialog({ to: ROUTES.MYPAGE_PET_PROFILE_CREATE })}
+              />
             )}
           </div>
         </section>
@@ -169,19 +168,49 @@ export default function Mypage() {
 
       <div css={line} />
       <div css={itemWrapper}>
-        <div css={item} onClick={() => router.push(ROUTES.MYPAGE_PAYMENTS)}>
-          <Text typo="body4" color="black">
-            결제 내역
-          </Text>
-          <ProfileArrowButton width={4} height={8} />
-        </div>
-        <div css={endItem}>
-          <button>
-            <Text typo="body4" color="black">
-              회원 탈퇴
-            </Text>
-          </button>
-        </div>
+        <Tab
+          title="결제 내역"
+          onClick={() => openNeedLoginDialog({ to: ROUTES.MYPAGE_PAYMENTS })}
+        />
+        <Tab title="리뷰 내역" onClick={() => openNeedLoginDialog({ to: ROUTES.MYPAGE_REVIEWS })} />
+        {isLoggedInUser && (
+          <>
+            <Tab
+              title="로그아웃"
+              isArrow={false}
+              onClick={() => {
+                localStorage.clear();
+                router.push(ROUTES.HOME);
+                refetchUserMypage();
+                showToast({ title: '정상적으로 로그아웃 되었어요' });
+              }}
+            />
+            <Tab
+              isArrow={false}
+              variant="ghost"
+              title="회원 탈퇴"
+              onClick={() => {
+                const waitingForServiceCount = getUserWithdrawInfo?.waitingForServiceCount;
+
+                open({
+                  type: 'warn',
+                  title: '회원 탈퇴',
+                  description: waitingForServiceCount
+                    ? `현재 예약 중인 서비스가 ${waitingForServiceCount}건 있어요.\n탈퇴 시 예약금은 전액환불 처리될 예정이에요.`
+                    : '정말로 탈퇴하시겠어요?\n탈퇴된 계정은 다시 복구할 수 없어요',
+                  primaryActionLabel: '탈퇴하기',
+                  onPrimaryAction: async () => {
+                    await deleteUser();
+                    router.push(ROUTES.HOME);
+                    showToast({ title: '탈퇴 처리가 완료되었어요. 다음에 다시 만나요 🐾' });
+                  },
+                  secondaryActionLabel: '취소',
+                });
+                localStorage.clear();
+              }}
+            />
+          </>
+        )}
       </div>
       <GNB />
     </Layout>
@@ -198,6 +227,7 @@ const profileWrapper = css`
   width: 100%;
   padding: 24px 0;
 `;
+
 const profileImageStyle = css`
   width: 68px;
   border-radius: 50%;
@@ -205,6 +235,7 @@ const profileImageStyle = css`
 
   background: ${theme.colors.gray200};
 `;
+
 const nickname = css`
   flex: 1;
 
@@ -220,6 +251,16 @@ const editButton = css`
 
   background: ${theme.colors.gray100};
 `;
+
+const needLoginWrapper = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  padding: 21px 0 16px;
+`;
+
 const requestInfoWrapper = css`
   display: flex;
   align-items: center;
@@ -227,25 +268,30 @@ const requestInfoWrapper = css`
 
   width: 100%;
   margin: 0 0 27px;
-  padding: 22px 0;
   border: 1px solid ${theme.colors.gray200};
   border-radius: 15px;
 
   background: ${theme.colors.white};
 `;
+
 const requestInfo = css`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  overflow: hidden;
 
   width: 50%;
+  height: 100%;
+  padding: 22px 0;
+
+  cursor: pointer;
 
   & + & {
     border-left: 1px solid ${theme.colors.gray200};
   }
-  cursor: pointer;
 `;
+
 const petProfileEdit = css`
   display: flex;
   align-items: center;
@@ -255,6 +301,8 @@ const petProfileWrapper = css`
   display: flex;
   flex-direction: column;
   gap: 15px;
+
+  padding: 0 18px;
 `;
 const section = css`
   display: flex;
@@ -274,33 +322,17 @@ const petProfile = css`
 
   cursor: pointer;
 `;
-const petItemStyle = (index: number) => css`
-  ${index === 0 && 'padding: 0 0 0 18px;'}
-`;
-const profileImage = () => css`
-  width: 59px;
-  height: 59px;
-  border-radius: 50px;
 
-  background-color: ${theme.colors.gray200};
-
-  transition: border 0.2s ease;
-`;
-const petName = css`
-  transition: 0.2s ease;
-`;
 const line = css`
   width: 100%;
   margin: 24px 0 0;
   border: 3.5px solid ${theme.colors.gray100};
 `;
-const petTitle = css`
-  padding: 18px;
-`;
 
 const itemWrapper = css`
   padding: 0 18px;
 `;
+
 const item = css`
   display: flex;
   align-items: center;
@@ -331,41 +363,4 @@ const petProfileAdd = css`
   padding: 0 18px 0 0;
 
   cursor: pointer;
-`;
-
-const registerPet = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-
-  width: 100%;
-  height: 109px;
-  border: 1px solid ${theme.colors.gray200};
-  border-radius: 10px;
-`;
-
-const circle = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 40px;
-  height: 40px;
-  border: 1px solid ${theme.colors.gray200};
-  border-radius: 20px;
-
-  cursor: pointer;
-
-  :hover {
-    background-color: ${theme.colors.gray100};
-
-    transition: 0.3s;
-  }
-`;
-
-const registerPetWrapper = css`
-  width: 100%;
-  padding: 0 18px;
 `;

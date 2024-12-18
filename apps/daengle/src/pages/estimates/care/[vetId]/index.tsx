@@ -159,7 +159,7 @@ export default function EstimateCare() {
             errorMessage={errors.requirements?.message}
           />
 
-          <CTAButton type="submit" disabled={!isValid}>
+          <CTAButton type="submit" disabled={!isValid || !watch('petId')}>
             요청하기
           </CTAButton>
         </form>

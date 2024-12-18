@@ -127,7 +127,7 @@ export default function EstimateCare() {
           <Text tag="h2" typo="subtitle3" color="black">
             어떤 아이가 진료를 받을 예정인가요?
           </Text>
-          {petInfos?.length > 0 ? (
+          {petInfos && petInfos?.length > 0 ? (
             <div css={listBox}>
               <div css={petList}>
                 {petInfos.map((pet) => (

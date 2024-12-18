@@ -14,6 +14,8 @@ import {
   patchUserPetInfo,
   deleteUserPet,
   getUserMypage,
+  getUserWithdrawInfo,
+  deleteUser,
 } from '~/apis';
 import {
   PatchUserInfoRequestBody,
@@ -135,5 +137,19 @@ export const useGetUserMypageQuery = () => {
   return useQuery({
     queryKey: QUERY_KEYS.GET_USER_MYPAGE,
     queryFn: getUserMypage,
+  });
+};
+
+export const useGetUserWithdrawInfoQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_USER_WITHDRAW_INFO,
+    queryFn: getUserWithdrawInfo,
+  });
+};
+
+export const useDeleteUserMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.DELETE_USER,
+    mutationFn: deleteUser,
   });
 };

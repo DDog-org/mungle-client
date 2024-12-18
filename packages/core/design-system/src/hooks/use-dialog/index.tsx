@@ -30,6 +30,7 @@ export function DialogProvider({ children }: { children: ReactNode }) {
 
       {dialogProps?.isOpen && (
         <Dialog
+          type={dialogProps.type}
           title={dialogProps.title}
           description={dialogProps.description}
           primaryActionLabel={dialogProps.primaryActionLabel}

@@ -92,7 +92,7 @@ export function VetEstimateList({ isDesignation }: Props) {
         <>
           <ProfileSelector
             petInfos={petInfos}
-            selectedPetId={selectedPetId}
+            selectedPetId={selectedPetId!}
             onSelectPet={(petId) => {
               setSelectedPetId(petId);
               router.push({ pathname: router.pathname, query: { ...router.query, petId } });

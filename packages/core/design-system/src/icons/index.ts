@@ -38,6 +38,7 @@ export * from './ImageUploadPlus';
 export * from './LoginKakaoLogo';
 export * from './MainLogo';
 export * from './MypageAddButton';
+export * from './NeedLoginArrow';
 export * from './PartnerAuthLogo';
 export * from './PartnerChatPlus';
 export * from './PartnerGnbChattingActive';

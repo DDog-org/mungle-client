@@ -16,7 +16,7 @@ import {
   PET_IS_NEUTERED,
   PET_SIGNIFICANTTAG,
   PET_WEIGHT,
-} from '~/constants/mypage';
+} from '~/constants';
 import {
   useDeleteUserPetMutation,
   useGetBreedListQuery,
@@ -29,7 +29,7 @@ import { css } from '@emotion/react';
 import useValidatePetEdit from '~/hooks/mypage/use-validate-pet-form';
 import { useEffect, useState } from 'react';
 import { PetProfile } from '~/models/auth';
-import { ImageInputBox } from '~/components/mypage/user-profile/imageInput';
+import { ImageInputBox } from '~/components/mypage';
 import { useS3 } from '@daengle/services/hooks';
 import { DefaultImage } from '@daengle/design-system/icons';
 import { PetProfileEditType } from '~/interfaces/auth';

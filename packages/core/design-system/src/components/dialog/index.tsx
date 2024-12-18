@@ -11,6 +11,7 @@ interface DialogContext {
 const DialogContext = createContext<DialogContext | null>(null);
 
 export interface DialogProps extends HTMLAttributes<HTMLDivElement> {
+  type?: 'confirm' | 'warn';
   title: string;
   description?: string;
   primaryActionLabel: string;
@@ -21,6 +22,7 @@ export interface DialogProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function Dialog({
+  type = 'confirm',
   title,
   description,
   primaryActionLabel,
@@ -52,7 +54,7 @@ export function Dialog({
           )}
 
           <button onClick={onPrimaryAction} css={button}>
-            <Text typo="body1" color="blue200">
+            <Text typo="body1" color={type === 'confirm' ? 'blue200' : 'red200'}>
               {primaryActionLabel}
             </Text>
           </button>
