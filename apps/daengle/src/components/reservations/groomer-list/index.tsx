@@ -1,16 +1,17 @@
 import { wrapper } from './index.styles';
 import { ReservationsCard } from '../reservations-card';
-import { Empty } from '@daengle/design-system';
+import { Empty, useDialog } from '@daengle/design-system';
 import { useUserReservationGroomingListQuery } from '~/queries/reservation';
+import { useRouter } from 'next/router';
+import { ROUTES } from '~/constants/commons';
 
 export function GroomerList() {
-  const { data, isLoading, error } = useUserReservationGroomingListQuery();
-  if (isLoading) {
-    return <div>로딩 중...</div>;
-  }
+  const router = useRouter();
+  const { data, isError } = useUserReservationGroomingListQuery();
 
-  if (error) {
-    return <div>데이터를 불러오는 중 오류가 발생했습니다.</div>;
+  if (isError) {
+    alert('로그인 후 이용해 주세요');
+    router.back();
   }
 
   const reservations = data?.contents || [];

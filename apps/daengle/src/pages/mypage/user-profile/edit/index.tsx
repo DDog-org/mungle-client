@@ -53,7 +53,7 @@ export default function EditProfile() {
     }
 
     const response = await postAvailableNickname({ nickname });
-    if (response.isAvailable) {
+    if (response.data.response.isAvailable) {
       setValue('isAvailableNickname', true);
     } else {
       setError('nickname', { message: '이미 사용 중인 닉네임입니다.' });

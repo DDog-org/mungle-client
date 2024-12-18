@@ -42,7 +42,7 @@ export function UserInfo({ onNext }: Props) {
     }
 
     const response = await postAvailableNickname({ nickname });
-    if (!response.isAvailable) {
+    if (!response.data.response.isAvailable) {
       setError('nickname', { message: '이미 사용 중인 닉네임입니다' });
       setUserInfoForm({ ...watch(), isAvailableNickname: false });
     } else {

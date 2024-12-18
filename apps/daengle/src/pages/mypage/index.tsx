@@ -4,7 +4,12 @@ import { css } from '@emotion/react';
 import { Layout, Text, theme } from '@daengle/design-system';
 import { ROUTES } from '~/constants/commons';
 import { GNB } from '~/components/commons';
-import { DefaultImage, MypageAddButton, ProfileArrowButton } from '@daengle/design-system/icons';
+import {
+  AddButton,
+  DefaultImage,
+  MypageAddButton,
+  ProfileArrowButton,
+} from '@daengle/design-system/icons';
 import Image from 'next/image';
 import { PetInfoForm } from '~/interfaces/auth';
 import { useGetUserMypageQuery } from '~/queries';
@@ -12,7 +17,7 @@ import { useGetUserMypageQuery } from '~/queries';
 export default function Mypage() {
   const [petInfos, setPetInfos] = useState<PetInfoForm[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
-  const { data: getUserMypage } = useGetUserMypageQuery();
+  const { data: getUserMypage, isError } = useGetUserMypageQuery();
 
   const router = useRouter();
 
@@ -29,11 +34,13 @@ export default function Mypage() {
     setSelectedPetId(petId);
     router.push(ROUTES.MYPAGE_PET_PROFILE);
   };
+
   useEffect(() => {
     if (getUserMypage?.petInfos) {
       setPetInfos(getUserMypage.petInfos);
     }
   }, [getUserMypage]);
+
   return (
     <Layout isAppBarExist={false}>
       <div css={wrapper}>
@@ -41,25 +48,35 @@ export default function Mypage() {
           마이페이지
         </Text>
         <section css={profileWrapper}>
-          {getUserMypage?.image ? (
-            <Image
-              src={getUserMypage.image}
-              alt="프로필 이미지"
-              width={68}
-              height={68}
-              css={profileImageStyle}
-            />
+          {getUserMypage?.id ? (
+            <>
+              {getUserMypage?.image ? (
+                <Image
+                  src={getUserMypage.image}
+                  alt="프로필 이미지"
+                  width={68}
+                  height={68}
+                  css={profileImageStyle}
+                />
+              ) : (
+                <DefaultImage css={profileImageStyle} />
+              )}
+              <Text typo="title2" css={nickname}>
+                {getUserMypage?.nickname}
+              </Text>
+              <button css={editButton} onClick={handleGoToClick}>
+                <Text typo="body5" color="gray500">
+                  편집
+                </Text>
+              </button>
+            </>
           ) : (
-            <DefaultImage css={profileImageStyle} />
+            <Text
+              typo="title1"
+              color="black100"
+              onClick={() => router.push(ROUTES.LOGIN)}
+            >{`로그인 해 주세요 >`}</Text>
           )}
-          <Text typo="title2" css={nickname}>
-            {getUserMypage?.nickname}
-          </Text>
-          <button css={editButton} onClick={handleGoToClick}>
-            <Text typo="body5" color="gray500">
-              편집
-            </Text>
-          </button>
         </section>
         <section css={requestInfoWrapper}>
           <div css={requestInfo} onClick={() => router.push(ROUTES.ESTIMATES)}>
@@ -129,10 +146,21 @@ export default function Mypage() {
                 </div>
               </>
             ) : (
-              <div css={petTitle}>
-                <Text typo="body3" color="gray400">
-                  반려견 정보를 불러오지 못했습니다.
-                </Text>
+              <div css={registerPetWrapper}>
+                <div css={registerPet}>
+                  <div css={circle}>
+                    <AddButton
+                      width={12}
+                      height={12}
+                      onClick={() => {
+                        router.push(ROUTES.MYPAGE_PET_PROFILE);
+                      }}
+                    />
+                  </div>
+                  <Text typo="body11" color="gray400">
+                    반려견을 등록해주세요
+                  </Text>
+                </div>
               </div>
             )}
           </div>
@@ -303,4 +331,41 @@ const petProfileAdd = css`
   padding: 0 18px 0 0;
 
   cursor: pointer;
+`;
+
+const registerPet = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+  width: 100%;
+  height: 109px;
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: 10px;
+`;
+
+const circle = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: 20px;
+
+  cursor: pointer;
+
+  :hover {
+    background-color: ${theme.colors.gray100};
+
+    transition: 0.3s;
+  }
+`;
+
+const registerPetWrapper = css`
+  width: 100%;
+  padding: 0 18px;
 `;
