@@ -12,7 +12,7 @@ import {
   GetUserEstimateGeneralGroomingList,
 } from '~/models';
 import { useIntersectionLoad } from '~/hooks';
-import { bottom } from './index.styles';
+import { bottom, wrapper } from './index.styles';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { OptionSelector } from '../option';
@@ -85,7 +85,7 @@ export function GroomerEstimateList({ isDesignation }: Props) {
         .filter((estimate): estimate is GetUserEstimateGeneralGroomingList => !!estimate) || [];
 
   return (
-    <>
+    <div css={wrapper}>
       {petLoading ? (
         <div>로딩 중...</div>
       ) : petError ? (
@@ -125,6 +125,6 @@ export function GroomerEstimateList({ isDesignation }: Props) {
           <div ref={loadMoreRef} css={bottom} />
         </>
       )}
-    </>
+    </div>
   );
 }

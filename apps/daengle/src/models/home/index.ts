@@ -1,5 +1,9 @@
 export interface GetUserShopsResponse {
   allShops: GetAllShops[];
+  allVets: null;
+  totalPages: number;
+  totalElements: number;
+  currentPage: number;
   userAddress: string;
 }
 
@@ -14,7 +18,11 @@ export interface GetAllShops {
 }
 
 export interface GetUserVetsResponse {
+  allShops: null;
   allVets: GetAllVets[];
+  totalPages: number;
+  totalElements: number;
+  currentPage: number;
   userAddress: string;
 }
 
@@ -26,4 +34,16 @@ export interface GetAllVets {
   startTime: string;
   endTime: string;
   closedDay: string[];
+}
+
+export interface GetUserShopsParams {
+  page?: number;
+  size?: number;
+  address?: string;
+}
+
+export interface GetUserVetsParams {
+  page?: number;
+  size?: number;
+  address?: string;
 }

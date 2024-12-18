@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { Empty } from '@daengle/design-system';
 import { PaymentListItem } from '~/components/mypage';
 import { useIntersectionLoad } from '~/hooks';

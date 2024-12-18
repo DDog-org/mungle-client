@@ -1,10 +1,15 @@
 import { guestApi } from '~/apis';
-import { GetUserShopsResponse, GetUserVetsResponse } from '~/models/home';
+import {
+  GetUserShopsParams,
+  GetUserShopsResponse,
+  GetUserVetsParams,
+  GetUserVetsResponse,
+} from '~/models';
 
-export const getUserShops = async () => {
-  return await guestApi.get<GetUserShopsResponse>('/user/shops');
+export const getUserShops = async (params: GetUserShopsParams) => {
+  return await guestApi.get<GetUserShopsResponse>('/user/shops', { params });
 };
 
-export const getUserVets = async () => {
-  return await guestApi.get<GetUserVetsResponse>('/user/vets');
+export const getUserVets = async (params: GetUserVetsParams) => {
+  return await guestApi.get<GetUserVetsResponse>('/user/vets', { params });
 };

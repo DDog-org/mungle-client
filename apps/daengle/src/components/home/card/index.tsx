@@ -15,10 +15,10 @@ interface Props {
 export function Card({ image, name, address, schedule, onClick }: Props) {
   return (
     <div css={wrapper} onClick={onClick}>
-      {image === '' ? (
+      {!image ? (
         <DefaultProfile width={80} height={94} css={imageStyle} />
       ) : (
-        <Image src={image} alt="이미지" width={80} height={94} css={imageStyle} />
+        <Image src={image} alt="파트너 이미지" width={80} height={94} css={imageStyle} />
       )}
 
       <div css={textBox}>

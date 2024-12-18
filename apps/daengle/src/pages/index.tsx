@@ -175,7 +175,7 @@ const content = css`
   flex: 1;
 
   width: 100%;
-  padding: 18px 0;
+  padding: 18px 0 ${theme.size.gnbHeight};
   border-radius: 30px 30px 0 0;
 
   background-color: ${theme.colors.white};

@@ -8,11 +8,10 @@ export const cardBox = css`
   padding: 10px 18px;
 `;
 
-export const emptyBox = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
+export const bottom = css`
+  position: absolute;
+  bottom: 0;
 
-  margin-top: 150px;
+  width: 100%;
+  height: 18px;
 `;

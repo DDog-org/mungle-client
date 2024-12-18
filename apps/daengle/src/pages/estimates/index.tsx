@@ -68,6 +68,7 @@ export default function EstimateList() {
           <Text typo="title1">{isDesignation ? '바로 예약' : '견적'}</Text>
           <BlackUnfoldArrow width={14} height={8} />
         </div>
+
         {isModalOpen && (
           <>
             <div css={modalOverlay} onClick={handleModal}></div>

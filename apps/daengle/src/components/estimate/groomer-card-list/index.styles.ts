@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
 
+export const wrapper = css`
+  width: 100%;
+
+  background: pink;
+`;
+
 export const bottom = css`
   position: absolute;
   bottom: 0;

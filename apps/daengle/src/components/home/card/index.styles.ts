@@ -9,9 +9,11 @@ export const wrapper = css`
   width: 100%;
   padding: 15px 0;
 
-  border-bottom: 1px solid ${theme.colors.gray200};
-
   cursor: pointer;
+
+  & + & {
+    border-top: 1px solid ${theme.colors.gray200};
+  }
 `;
 
 export const imageStyle = css`

@@ -3,10 +3,9 @@ import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { AppBar, Layout, Text, theme, Empty } from '@daengle/design-system';
 import { Card } from '~/components/reviews';
-import { VET_REVIEW_KEYWORDS } from '~/constants/review';
+import { VET_REVIEW_KEYWORDS, ROUTES } from '~/constants';
 import { useIntersectionLoad } from '~/hooks';
 import { getUserVetReviewListInfiniteQuery } from '~/queries';
-import { ROUTES } from '~/constants/commons';
 
 export default function VetReviews() {
   const router = useRouter();
@@ -21,10 +20,7 @@ export default function VetReviews() {
 
   return (
     <Layout isAppBarExist={false}>
-      <AppBar
-        onBackClick={() => router.push(ROUTES.MYPAGE_REVIEWS)}
-        onHomeClick={() => router.push(ROUTES.HOME)}
-      />
+      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
 
       <section css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
