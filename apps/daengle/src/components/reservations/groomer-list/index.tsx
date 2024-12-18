@@ -1,12 +1,12 @@
-import { wrapper } from './index.styles';
-import { ReservationsCard } from '../reservations-card';
-import { Empty, useDialog } from '@daengle/design-system';
-import { useUserReservationGroomingListQuery } from '~/queries/reservation';
 import { useRouter } from 'next/router';
-import { ROUTES } from '~/constants/commons';
+import { Empty } from '@daengle/design-system';
+import { useUserReservationGroomingListQuery } from '~/queries/reservation';
+import { ReservationsCard } from '../reservations-card';
+import { wrapper } from './index.styles';
 
 export function GroomerList() {
   const router = useRouter();
+
   const { data, isError } = useUserReservationGroomingListQuery();
 
   if (isError) {

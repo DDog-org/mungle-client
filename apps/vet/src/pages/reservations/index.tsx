@@ -46,12 +46,14 @@ export default function Reservations() {
         <header css={headerContainer}>
           <Text typo="title1">예약</Text>
         </header>
+
         <WeekDateTabs selectedDate={selectedDate} onSelectDate={setSelectedDate} dates={DATES} />
         <ReservationList
           reservations={reservations}
           onClick={(id: number) => router.push(ROUTES.RESERVATIONS_DETAIL(id))}
         />
       </div>
+
       <GNB />
     </Layout>
   );
@@ -60,6 +62,7 @@ export default function Reservations() {
 const wrapper = css`
   height: 100vh;
   padding-bottom: 104px;
+
   background-color: ${theme.colors.background};
 `;
 
