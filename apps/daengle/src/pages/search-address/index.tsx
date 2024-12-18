@@ -1,23 +1,23 @@
 import { useRouter } from 'next/router';
+import { css } from '@emotion/react';
 import { AppBar, Layout } from '@daengle/design-system';
 import { DaumPostcode, Address } from '@daengle/services/libs';
-import { ROUTES } from '~/constants/commons/routes';
-import { css } from '@emotion/react';
-import { useAddressFormStore } from '~/stores/main';
+import { ROUTES } from '~/constants/commons';
+import { useAddressStore } from '~/stores';
 
 export default function SearchAddress() {
   const router = useRouter();
-  const { setAddressForm } = useAddressFormStore();
+  const { setAddress } = useAddressStore();
 
   const handleSearchAddress = (address: Address) => {
     const jibunAddress = `${address.sido} ${address.sigungu} ${address.bname}`;
-    setAddressForm(jibunAddress);
+    setAddress(jibunAddress);
     router.push(ROUTES.HOME);
   };
 
   return (
     <Layout>
-      <AppBar onBackClick={router.back} />
+      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
       <section css={wrapper}>
         <DaumPostcode onComplete={handleSearchAddress} />
       </section>

@@ -1,16 +1,16 @@
 import { Card } from '../card';
 import { useGetUserVetsQuery } from '~/queries/home';
-import { useAddressFormStore } from '~/stores/main';
+import { useAddressStore } from '~/stores/home';
 import { Empty } from '@daengle/design-system';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { emptyBox, cardBox, wrapper } from './index.styles';
 
-export function VetListComponent() {
+export function VetList() {
   const router = useRouter();
   const { data: vets } = useGetUserVetsQuery();
-  const { addressForm } = useAddressFormStore();
-  const filteredVets = vets?.allVets.filter((vet) => vet.vetAddress.includes(addressForm));
+  const { address } = useAddressStore();
+  const filteredVets = vets?.allVets.filter((vet) => vet.vetAddress.includes(address));
 
   const handleCardClick = (id: number) => {
     router.push(ROUTES.VET_DETAIL(id));

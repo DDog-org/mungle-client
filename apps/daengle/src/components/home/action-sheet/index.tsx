@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { wrapper, actionSheetTitle, selectBox } from './index.styles';
 
-export default function ActionSheet() {
+export function ActionSheet() {
   const router = useRouter();
   const { groomerId, vetId } = router.query;
   const getGroomerId = Number(groomerId);

@@ -17,9 +17,7 @@ import {
 } from '~/apis';
 import {
   PatchUserInfoRequestBody,
-  PostJoinWithoutPetRequestBody,
   PostJoinWithPetRequestBody,
-  PostKakaoRequestBody,
   PostUserPetRequestBody,
   DeleteUserPetRequestData,
   PatchUserPetInfoRequestBody,
@@ -28,7 +26,7 @@ import {
 export const usePostKakaoMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_KAKAO,
-    mutationFn: async (body: PostKakaoRequestBody) => await postKakao(body),
+    mutationFn: postKakao,
   });
 };
 
@@ -50,7 +48,7 @@ export const useGetBreedListQuery = () => {
   return useQuery({
     queryKey: QUERY_KEYS.GET_BREED_LIST,
     queryFn: getBreedList,
-    select: (response) => response.data?.breedList,
+    select: (response) => response.breedList,
   });
 };
 

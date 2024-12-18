@@ -1,17 +1,17 @@
 import { Card } from '../card';
 import { useGetUserShopsQuery } from '~/queries/home';
-import { useAddressFormStore } from '~/stores/main';
+import { useAddressStore } from '~/stores/home';
 import { Empty } from '@daengle/design-system';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { wrapper, cardBox, emptyBox } from './index.styles';
-import { VET_DAT_OFF } from '~/constants/main';
+import { VET_DAT_OFF } from '~/constants/home';
 
-export function GroomerListComponent() {
+export function GroomerList() {
   const router = useRouter();
   const { data: shops } = useGetUserShopsQuery();
-  const { addressForm } = useAddressFormStore();
-  const filteredShops = shops?.allShops.filter((shop) => shop.shopAddress.includes(addressForm));
+  const { address } = useAddressStore();
+  const filteredShops = shops?.allShops.filter((shop) => shop.shopAddress.includes(address));
 
   const handleCardClick = (id: number) => {
     router.push(ROUTES.GROOMER_SHOP_DETAIL(id));

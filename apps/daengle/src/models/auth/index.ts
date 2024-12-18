@@ -3,12 +3,10 @@ export interface PostKakaoRequestBody {
 }
 
 export interface PostKakaoResponse {
-  response: {
-    isOnboarding: boolean;
-    email: string | null;
-    grantType: 'Bearer' | null;
-    accessToken: string | null;
-  };
+  isOnboarding: boolean;
+  email: string | null;
+  grantType: 'Bearer' | null;
+  accessToken: string | null;
 }
 
 export interface PostJoinWithoutPetRequestBody {
@@ -28,9 +26,7 @@ export interface PostAvailableNicknameRequestBody {
 }
 
 export interface PostAvailableNicknameResponse {
-  response: {
-    isAvailable: boolean;
-  };
+  isAvailable: boolean;
 }
 
 export interface GetBreedListResponse {

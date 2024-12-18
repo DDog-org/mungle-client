@@ -6,7 +6,7 @@ import {
   usePatchUserInfoMutation,
 } from '~/queries';
 import { UserProfileInfoEditForm } from '~/interfaces/auth';
-import { useValidateUserForm } from '~/hooks/mypage';
+import { useValidateUserInfoForm } from '~/hooks/mypage';
 import { useS3 } from '@daengle/services/hooks';
 import { ImageInputBox } from '~/components/mypage/user-profile/imageInput';
 import router from 'next/router';
@@ -17,7 +17,7 @@ export default function EditProfile() {
   const { data: getUserInfo } = useGetUserProfileInfoQuery();
   const { mutateAsync: postAvailableNickname } = usePostAvailableNicknameMutation();
   const { mutate: patchUserInfo } = usePatchUserInfoMutation();
-  const validation = useValidateUserForm();
+  const validation = useValidateUserInfoForm();
 
   const { uploadToS3, deleteFromS3 } = useS3({ targetFolderPath: 'user/profile-images' });
 
