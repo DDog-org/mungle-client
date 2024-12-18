@@ -14,7 +14,7 @@ export function GroomerListComponent() {
   const filteredShops = shops?.allShops.filter((shop) => shop.shopAddress.includes(addressForm));
 
   const handleCardClick = (id: number) => {
-    router.push(ROUTES.GROOMER_DETAIL(id));
+    router.push(ROUTES.GROOMER_SHOP_DETAIL(id));
   };
 
   return (
