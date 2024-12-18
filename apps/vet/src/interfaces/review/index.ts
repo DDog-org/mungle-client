@@ -16,7 +16,7 @@ export interface PartnersReviewListType {
 export interface CareReviewList {
   careReviewId: number;
   vetId: number;
-  carekeywordList: string[];
+  careKeywordList: string[];
   reviewerName: string;
   reviewerImageUrl: string;
   revieweeName: string;

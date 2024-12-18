@@ -1,13 +1,23 @@
 import { useRouter } from 'next/router';
-import { AppBar, Input, Layout, RoundButton, Select, Text, theme } from '@daengle/design-system';
+import {
+  AppBar,
+  Input,
+  Layout,
+  RoundButton,
+  Select,
+  Text,
+  TextField,
+  theme,
+} from '@daengle/design-system';
 import { ROUTES } from '~/constants/commons';
 
 import { css } from '@emotion/react';
 import { useState } from 'react';
 import { REPORT_KEYWORDS } from '~/constants';
-import { AddInput } from '@daengle/services/components';
+
 import { useGetVetReviewReportQuery, usePostVetReviewReportMutation } from '~/queries';
 import { DefaultProfile } from '@daengle/design-system/icons';
+import { PostVetReviewReportRequestBody } from '~/models';
 
 const options = Object.entries(REPORT_KEYWORDS).map(([key, value]) => ({
   value: key,
@@ -18,6 +28,7 @@ export default function Mypage() {
   const router = useRouter();
   const { id, vetId } = router.query;
   const careReviewId = Number(id);
+  const careId = Number(vetId);
 
   const { data, isLoading, isError } = useGetVetReviewReportQuery({ careReviewId });
   const mutation = usePostVetReviewReportMutation();
@@ -36,14 +47,14 @@ export default function Mypage() {
       alert('신고 유형과 내용을 모두 입력해주세요.');
       return;
     }
-    const reportData = {
-      vetId: Number(vetId),
+    const body: PostVetReviewReportRequestBody = {
+      vetId: careId,
       reviewId: careReviewId,
       reportType: selectedKeyword,
-      reportContent,
+      reportContent: reportContent,
     };
 
-    mutation.mutate(reportData, {
+    mutation.mutate(body, {
       onSuccess: () => {
         alert('신고가 성공적으로 접수되었습니다.');
         router.push(ROUTES.HOME);
@@ -106,9 +117,8 @@ export default function Mypage() {
         </div>
         <div css={section}>
           <Text typo="subtitle1">신고 내용</Text>
-          <AddInput
+          <TextField
             placeholder="예) 부적절한 사진이 올라와있고, 협의되지 않은 무리한 요구를 했습니다."
-            height={100}
             value={reportContent}
             onChange={handleChange(setReportContent)}
           />

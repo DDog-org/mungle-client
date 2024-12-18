@@ -2,6 +2,7 @@ import { Layout, AppBar, Text, theme, Tabs } from '@daengle/design-system';
 import { ReviewCardList, ReviewSummary } from '@daengle/services/components';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
+import { REPORT_KEYWORDS, VET_REVIEW_KEYWORDS } from '~/constants';
 import { ROUTES } from '~/constants/commons';
 import { useIntersectionLoad } from '~/hooks/review';
 import { CareReviewList, CareReviewReportList, PartnersReviewListType } from '~/interfaces';
@@ -30,7 +31,9 @@ function transformCareReviewList(data: CareReviewList): PartnersReviewListType {
     starRating: data.starRating,
     content: data.content,
     imageUrlList: data.imageUrlList,
-    keywordsList: data.carekeywordList, // carekeywordList를 keywordList로 변환
+    keywordsList: data.careKeywordList
+      .map((keyword) => VET_REVIEW_KEYWORDS[keyword])
+      .filter((keyword): keyword is string => !!keyword),
   };
 }
 function transformCareReviewReportList(data: CareReviewReportList): PartnersReviewListType {
@@ -44,9 +47,11 @@ function transformCareReviewReportList(data: CareReviewReportList): PartnersRevi
     starRating: data.starRating,
     content: data.content,
     imageUrlList: data.imageUrlList,
-    reportType: data.reportType, // 신고 유형
-    reportContent: data.reportContent, // 신고 내용
-    keywordsList: data.careKeywordList, // careKeywordList를 keywordList로 변환
+    reportType: REPORT_KEYWORDS[data.reportType] || data.reportType,
+    reportContent: data.reportContent,
+    keywordsList: data.careKeywordList
+      .map((keyword) => VET_REVIEW_KEYWORDS[keyword])
+      .filter((keyword): keyword is string => !!keyword),
   };
 }
 
@@ -134,7 +139,11 @@ export default function ReviewsPage() {
 
   return (
     <Layout>
-      <AppBar backgroundColor={theme.colors.background} />
+      <AppBar
+        backgroundColor={theme.colors.background}
+        onBackClick={() => router.push(ROUTES.MYPAGE)}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+      />
       <div css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
           리뷰 관리

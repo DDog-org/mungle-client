@@ -23,5 +23,5 @@ export const getVetReviewReport = async (params: GetVetReviewReportRequestParams
 };
 
 export const postVetReviewReport = async (body: PostVetReviewReportRequestBody) => {
-  return await api.post<PostVetReviewReportResponse>('/vet/review/report');
+  return await api.post<PostVetReviewReportResponse>('/vet/review/report', body);
 };

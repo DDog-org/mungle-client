@@ -1,18 +1,14 @@
 import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import Image from 'next/image';
-<<<<<<< HEAD
 import { useRouter } from 'next/router';
-=======
->>>>>>> 20334329 (feat(vet): 병원 리뷰 관리 api 연동)
+
 import { ROUTES } from '~/constants/commons';
 import { useOrderInfoStore } from '~/stores/payment';
 
 export default function PaymentComplete() {
-
   const router = useRouter();
   const { estimateId, recipientName, shopName, schedule } = useOrderInfoStore();
-
 
   const date = schedule.split('T', 1);
   const time = schedule.substring(11, 16);
@@ -42,7 +38,7 @@ export default function PaymentComplete() {
         <RoundButton
           size="S"
           onClick={() => {
-            ROUTES.RESERVATIONS_DETAIL(estimateId);
+            router.push(ROUTES.RESERVATIONS_DETAIL(estimateId));
           }}
         >
           예약 내역 보기
