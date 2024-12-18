@@ -112,7 +112,7 @@ export function VetEstimateList({ isDesignation }: Props) {
               estimateData={flattenedEstimates}
               onCardClick={(id: number) =>
                 router.push({
-                  pathname: ROUTES.ESTIMATE_DETAIL(id),
+                  pathname: ROUTES.ESTIMATES_DETAIL(id),
                   query: { service: 'vet', petId: selectedPetId },
                 })
               }

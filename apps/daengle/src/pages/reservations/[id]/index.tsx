@@ -92,7 +92,7 @@ export default function Detail() {
           </div>
           <PartnersInfo
             profile={designerData}
-            onClick={() => router.push(ROUTES.GROOMER_SHOP_DETAIL(detailData.shopId))}
+            onClick={() => router.push(ROUTES.GROOMERS_SHOPS_DETAIL(detailData.shopId))}
           />
           <section css={section}>
             <Text typo="body1">소개</Text>

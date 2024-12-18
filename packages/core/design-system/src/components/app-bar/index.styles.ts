@@ -14,7 +14,7 @@ export const wrapper = (backgroundColor?: string) => css`
   background: ${backgroundColor || 'none'};
 `;
 
-export const contents = css`
+export const contents = ({ isPrefix, isSuffix }: { isPrefix: boolean; isSuffix: boolean }) => css`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -23,7 +23,8 @@ export const contents = css`
 
   width: 100%;
   height: 100%;
-  padding: 0 12px 0 8px;
+  padding-right: ${isSuffix ? '18px' : '12px'};
+  padding-left: ${isPrefix ? '18px' : '8px'};
 
   #title {
     position: absolute;

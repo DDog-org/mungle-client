@@ -34,7 +34,7 @@ export const useGroomerEstimateDesignationListQuery = () => {
 
 export const useGroomerEstimateDetailQuery = (params: GetGroomerEstimateDetailRequestParams) => {
   return useQuery<GetGroomerEstimateDetailResponse>({
-    queryKey: [QUERY_KEYS.GET_GROOMER_ESTIMATE_DETAIL, params],
+    queryKey: [QUERY_KEYS.GET_GROOMER_ESTIMATES_DETAIL, params],
     queryFn: () => {
       return getGroomerEstimateDetail(params);
     },

@@ -126,7 +126,7 @@ export default function Detail() {
             profile={designerData}
             onClick={() => {
               if (detailData.shopId) {
-                router.push(ROUTES.GROOMER_SHOP_DETAIL(detailData.shopId));
+                router.push(ROUTES.GROOMERS_SHOPS_DETAIL(detailData.shopId));
               } else {
                 alert('샵 정보를 찾을 수 없습니다.');
               }

@@ -4,10 +4,9 @@ import { ShopDefaultImage } from '@daengle/design-system/images';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import ProfileCard from '~/components/groomers/profile-card';
-import { ROUTES } from '~/constants/commons';
-import { VET_DAT_OFF } from '~/constants/detail';
-import { GetUserShopDetailRequestParams } from '~/models/detail';
-import { useGetUserShopDetailQuery } from '~/queries/detail';
+import { DAY_OFF, ROUTES } from '~/constants';
+import { GetUserShopDetailRequestParams } from '~/models';
+import { useGetUserShopDetailQuery } from '~/queries';
 
 export default function ShopInfo() {
   const router = useRouter();
@@ -18,7 +17,7 @@ export default function ShopInfo() {
   const { data: ShopDetail } = useGetUserShopDetailQuery(shopParams);
 
   const handleCardClick = (id: number) => {
-    router.push(ROUTES.GROOMER_DETAIL(id));
+    router.push(ROUTES.GROOMERS_DETAIL(id));
   };
 
   return (
@@ -40,7 +39,7 @@ export default function ShopInfo() {
                 <Text typo="body9">
                   {ShopDetail?.closedDay?.length
                     ? `${ShopDetail?.startTime.substring(0, 5)} - ${ShopDetail?.endTime.substring(0, 5)} ${ShopDetail?.closedDay
-                        .map((day) => VET_DAT_OFF.find((item) => item.value === day)?.label || day)
+                        .map((day) => DAY_OFF.find((item) => item.value === day)?.label || day)
                         .join(', ')} 휴무`
                     : `매일 ${ShopDetail?.startTime.substring(0, 5)} - ${ShopDetail?.endTime.substring(0, 5)}`}
                 </Text>

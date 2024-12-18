@@ -108,7 +108,7 @@ export default function ReviewPage() {
       postGroomingReview.mutate(body, {
         onSuccess: (response) => {
           alert('리뷰가 성공적으로 등록되었습니다!');
-          router.push(ROUTES.GROOMER_REVIEWS(response.revieweeId));
+          router.push(ROUTES.GROOMERS_REVIEWS(response.revieweeId));
         },
         onError: handleError,
       });

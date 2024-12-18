@@ -28,7 +28,7 @@ export const useGetUserShopDetailQuery = (params: GetUserShopDetailRequestParams
 
 export const useGetUserGroomerDetailQuery = (params: GetUserGroomerDetailRequestParams) => {
   return useQuery<GetUserGroomerDetailResponse>({
-    queryKey: QUERY_KEYS.GET_USER_GROOMER_DETAIL,
+    queryKey: QUERY_KEYS.GET_USER_GROOMERS_DETAIL,
     queryFn: () => {
       return getUserGroomerDetail(params);
     },

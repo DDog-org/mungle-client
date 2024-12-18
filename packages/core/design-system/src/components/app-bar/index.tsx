@@ -22,7 +22,7 @@ export function AppBar({
 }: Props) {
   return (
     <header css={wrapper(backgroundColor)}>
-      <div css={contents}>
+      <div css={contents({ isPrefix: !!prefix, isSuffix: !!suffix })}>
         {prefix ? (
           prefix
         ) : (

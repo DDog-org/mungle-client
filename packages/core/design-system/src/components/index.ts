@@ -1,3 +1,4 @@
+export * from './action-sheet';
 export * from './app-bar';
 export * from './button';
 export * from './chips';

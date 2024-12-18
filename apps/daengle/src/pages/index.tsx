@@ -2,20 +2,34 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { css } from '@emotion/react';
-import { AppBar, Layout, RoundButton, Tabs, Text, theme, useDialog } from '@daengle/design-system';
+import {
+  ActionSheet,
+  AppBar,
+  Layout,
+  RoundButton,
+  Tabs,
+  Text,
+  theme,
+  useDialog,
+} from '@daengle/design-system';
 import { MainLogo, SearchIcon, SelectUnfoldInactive } from '@daengle/design-system/icons';
 import { ROUTES, TABS } from '~/constants';
 import { GNB } from '~/components/commons';
-import { ActionSheet, GroomerList, VetList } from '~/components/home';
+import { GroomerList, VetList } from '~/components/home';
 import { useGetUserValidateQuery } from '~/queries';
 import { useAddressStore } from '~/stores';
 import dogGif from '/public/images/main-dog.gif';
+
+const ACTION_SHEET_MENUS = [
+  { id: 'groomer', label: '미용사', to: ROUTES.ESTIMATES_GROOMING },
+  { id: 'vet', label: '병원', to: ROUTES.ESTIMATES_VET },
+];
 
 export default function Home() {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState<string>('groomer');
-  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [isActionSheetOpen, setIsActionSheetOpen] = useState<boolean>(false);
 
   const { data: getUserValidate } = useGetUserValidateQuery();
   const { address } = useAddressStore();
@@ -36,7 +50,7 @@ export default function Home() {
 
   const handleOpenActionSheet = () => {
     if (isLoggedInUser) {
-      setIsVisible(true);
+      setIsActionSheetOpen(true);
     } else {
       open({
         title: '로그인 후 이용해 주세요',
@@ -47,7 +61,7 @@ export default function Home() {
   };
 
   const handleCloseActionSheet = () => {
-    setIsVisible(false);
+    setIsActionSheetOpen(false);
   };
 
   const renderContent = (activeTabId: string) => {
@@ -116,9 +130,16 @@ export default function Home() {
           />
         </section>
 
-        {isVisible && (
+        {isActionSheetOpen && (
           <>
-            <ActionSheet />
+            <ActionSheet
+              title="누구에게 견적을 요청할까요?"
+              menus={ACTION_SHEET_MENUS.map((menu) => ({
+                ...menu,
+                onClick: () => router.push(menu.to()),
+              }))}
+              onClose={() => setIsActionSheetOpen(false)}
+            />
             <div css={overlay} onClick={handleCloseActionSheet} />
           </>
         )}

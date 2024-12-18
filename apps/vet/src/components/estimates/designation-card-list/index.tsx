@@ -20,7 +20,7 @@ export function DesignationCardList() {
           <Card
             key={data.id}
             onDetailClick={() =>
-              router.push({ pathname: ROUTES.ESTIMATE_DETAIL(data.id), query: { tab: tab } })
+              router.push({ pathname: ROUTES.ESTIMATES_DETAIL(data.id), query: { tab: tab } })
             }
             imageUrl={data.imageUrl}
             nickname={data.nickname}

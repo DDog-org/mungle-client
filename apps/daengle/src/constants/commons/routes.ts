@@ -12,19 +12,21 @@ export const ROUTES = {
 
   // Estimates
   ESTIMATES: '/estimates',
-  ESTIMATE_DETAIL: (estimateId: number) => `/estimates/detail/${estimateId}`,
-  ESTIMATE_GROOMING: (groomerId: number) => `/estimates/grooming/${groomerId}`,
-  ESTIMATE_VET: (vetId: number) => `/estimates/care/${vetId}`,
-  ESTIMATE_FORM_COMPLETE: '/estimates/complete',
-  ESTIMATE_REQUEST: (estimateId: number) => `estimates/request/${estimateId}`,
+  ESTIMATES_DETAIL: (estimateId: number) => `/estimates/detail/${estimateId}`,
+  ESTIMATES_GROOMING: (groomerId?: number) =>
+    groomerId ? `/estimates/grooming/${groomerId}` : `/estimates/grooming`,
+  ESTIMATES_VET: (vetId?: number) => (vetId ? `/estimates/care/${vetId}` : `/estimates/care`),
+  ESTIMATES_FORM_COMPLETE: '/estimates/complete',
+  ESTIMATES_REQUEST: (estimateId: number) => `estimates/request/${estimateId}`,
 
   // Groomers
-  GROOMER_SHOP_DETAIL: (shopId: number) => `/shops/${shopId}`,
-  GROOMER_DETAIL: (groomerId: number) => `/groomers/${groomerId}`,
-  GROOMER_REVIEWS: (groomerId: number) => `/groomers/${groomerId}/reviews`,
-  GROOMER_ESTIMATE_FORM: '/groomers/estimate-form',
-  GROOMER_REVIEW_FORM_EDIT: (reviewId: number) => `/groomers/review/${reviewId}/edit`,
-  GROOMER_PORFOLIO: (groomerId: number) => `/groomers/${groomerId}/porfolio`,
+  GROOMERS_SHOPS_DETAIL: (shopId: number) => `/shops/${shopId}`,
+  GROOMERS_DETAIL: (groomerId: number) => `/groomers/${groomerId}`,
+  GROOMERS_REVIEWS: (groomerId: number) => `/groomers/${groomerId}/reviews`,
+
+  GROOMERS_ESTIMATE_FORM: '/groomers/estimate-form',
+  GROOMERS_REVIEW_FORM_EDIT: (reviewId: number) => `/groomers/review/${reviewId}/edit`,
+  GROOMERS_PORFOLIO: (groomerId: number) => `/groomers/${groomerId}/porfolio`,
 
   // Vets
   VET_DETAIL: (vetId: number) => `/vets/${vetId}`,

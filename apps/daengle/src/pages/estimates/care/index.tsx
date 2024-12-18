@@ -97,7 +97,7 @@ export default function EstimateCare() {
 
     postUserEstimateCare(requestBody, {
       onSuccess: () => {
-        router.push(ROUTES.ESTIMATE_FORM_COMPLETE);
+        router.push(ROUTES.ESTIMATES_FORM_COMPLETE);
       },
     });
   };

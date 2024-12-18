@@ -114,7 +114,7 @@ export default function GroomerReviewEdit() {
           queryClient.refetchQueries({ queryKey: QUERY_KEYS.GET_USER_GROOMING_REVIEW });
 
           alert('리뷰가 성공적으로 수정되었습니다!');
-          router.push(ROUTES.GROOMER_REVIEWS(groomerId));
+          router.push(ROUTES.GROOMERS_REVIEWS(groomerId));
         },
         onError: handleError,
       }

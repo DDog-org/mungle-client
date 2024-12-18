@@ -16,7 +16,7 @@ import { bottom, wrapper } from './index.styles';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { OptionSelector } from '../option';
-import { Empty, useDialog } from '@daengle/design-system';
+import { Empty } from '@daengle/design-system';
 
 interface Props {
   isDesignation: boolean;
@@ -96,7 +96,7 @@ export function GroomerEstimateList({ isDesignation }: Props) {
         <>
           <ProfileSelector
             petInfos={petInfos}
-            selectedPetId={selectedPetId}
+            selectedPetId={selectedPetId ?? null}
             onSelectPet={(petId) => {
               setSelectedPetId(petId);
               router.push({ pathname: router.pathname, query: { ...router.query, petId } });
@@ -116,7 +116,7 @@ export function GroomerEstimateList({ isDesignation }: Props) {
               estimateData={flattenedEstimates}
               onCardClick={(id: number) =>
                 router.push({
-                  pathname: ROUTES.ESTIMATE_DETAIL(id),
+                  pathname: ROUTES.ESTIMATES_DETAIL(id),
                   query: { service: 'groomer', petId: selectedPetId },
                 })
               }
