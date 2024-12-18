@@ -18,7 +18,7 @@ export const wrapper = ({ variant, service }: { variant: Variant; service: Servi
 `;
 
 export const solid = ({ service }: { service: Service }) => css`
-  background: ${service === 'daengle' ? theme.colors.blue200 : theme.colors.green100};
+  background: ${service === 'daengle' ? theme.colors.blue100 : theme.colors.green100};
 `;
 
 export const line = ({ service }: { service: Service }) => css`

@@ -8,6 +8,7 @@ import {
   getUserGroomingMyReviewListInfiniteQuery,
 } from '~/queries';
 import { bottom, wrapper } from './index.styles';
+import { GROOMER_REVIEW_KEYWORDS } from '~/constants/review';
 
 export function GroomerCardList() {
   const router = useRouter();
@@ -37,14 +38,16 @@ export function GroomerCardList() {
                   key={groomingReviewId}
                   reviewId={groomingReviewId}
                   revieweeId={groomerId}
-                  keywordReviewList={groomingKeywordList}
+                  keywordReviewList={groomingKeywordList
+                    .map((keyword) => GROOMER_REVIEW_KEYWORDS[keyword])
+                    .filter((keyword): keyword is string => !!keyword)}
                   revieweeName={`${revieweeName} 디자이너`}
                   starRating={starRating}
                   content={content}
                   imageUrlList={imageUrlList}
-                  onRevieweeNameClick={() => router.push(ROUTES.VET_DETAIL(groomerId))}
+                  onRevieweeNameClick={() => router.push(ROUTES.GROOMER_DETAIL(groomerId))}
                   onDelete={() => deleteUserGroomingReview({ reviewId: groomingReviewId })}
-                  onEdit={() => router.push(ROUTES.VET_REVIEW_FORM_EDIT(groomingReviewId))}
+                  onEdit={() => router.push(ROUTES.GROOMER_REVIEW_FORM_EDIT(groomingReviewId))}
                 />
               )
             )

@@ -6,6 +6,7 @@ import { Card } from '~/components/reviews';
 import { GROOMER_REVIEW_KEYWORDS } from '~/constants/review';
 import { useIntersectionLoad } from '~/hooks';
 import { getUserGroomerReviewListInfiniteQuery } from '~/queries';
+import { ROUTES } from '~/constants/commons';
 
 export default function GroomerReviews() {
   const router = useRouter();
@@ -20,7 +21,10 @@ export default function GroomerReviews() {
 
   return (
     <Layout isAppBarExist={false}>
-      <AppBar />
+      <AppBar
+        onBackClick={() => router.push(ROUTES.MYPAGE_REVIEWS)}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+      />
 
       <section css={wrapper}>
         <Text tag="h1" typo="title1" color="black">

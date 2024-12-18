@@ -1,24 +1,21 @@
 import { useState, useEffect } from 'react';
 import { AppBar, Layout, Text, RoundButton, theme } from '@daengle/design-system';
 import { KeywordCard, PartnersCard, RatingCard, ReviewInputCard } from '~/components/review';
-import {
-  useGetUserGroomingReviewQuery,
-  usePatchUserGroomingReviewMutation,
-} from '~/queries/review';
+import { useGetUserCareReviewQuery, usePatchUserCareReviewMutation } from '~/queries/review';
 import { useRouter } from 'next/router';
 import { useS3 } from '@daengle/services/hooks';
-import { GetUserGroomingReviewParams, PatchUserGroomingReviewRequestBody } from '~/models/review';
+import { GetUserCareReviewParams, PatchUserCareReviewRequestBody } from '~/models/review';
 import { QUERY_KEYS } from '~/queries/query-keys';
 import { queryClient } from '@daengle/services/providers';
-import { GROOMER_REVIEW_KEYWORDS } from '~/constants/review';
+import { VET_REVIEW_KEYWORDS } from '~/constants/review';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { container, header, submitButton, wrapper } from './index.styles';
 import { ROUTES } from '~/constants/commons';
+import { css } from '@emotion/react';
 
-const KEYWORDS = Object.values(GROOMER_REVIEW_KEYWORDS);
+const KEYWORDS = Object.values(VET_REVIEW_KEYWORDS);
 
-export function GroomerReviewEdit() {
+export default function VetReviewEdit() {
   const [rating, setRating] = useState<number>(0);
   const [reviewText, setReviewText] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -29,13 +26,13 @@ export function GroomerReviewEdit() {
   const { id } = router.query;
   const reviewId = Number(id);
 
-  const params: GetUserGroomingReviewParams = { reviewId: reviewId };
+  const params: GetUserCareReviewParams = { reviewId: reviewId };
 
-  const { data, isLoading, error } = useGetUserGroomingReviewQuery(params);
+  const { data, isLoading, error } = useGetUserCareReviewQuery(params);
   const reservationId = data?.reservationId || 0;
-  const groomerId = data?.groomerId || 0;
+  const vetId = data?.vetId || 0;
 
-  const { mutate: patchReview } = usePatchUserGroomingReviewMutation();
+  const { mutate: patchReview } = usePatchUserCareReviewMutation();
   const { uploadToS3 } = useS3({ targetFolderPath: 'user/review-images' });
 
   useEffect(() => {
@@ -56,7 +53,7 @@ export function GroomerReviewEdit() {
       setRating(data.starRating);
       setReviewText(data.content);
       setSelectedTags(
-        data.groomingKeywordList.map((keyword) => GROOMER_REVIEW_KEYWORDS[keyword] || keyword)
+        data.careKeywordList.map((keyword) => VET_REVIEW_KEYWORDS[keyword] || keyword)
       );
     }
   }, [data]);
@@ -96,12 +93,11 @@ export function GroomerReviewEdit() {
       }
     };
 
-    const body: PatchUserGroomingReviewRequestBody = {
+    const body: PatchUserCareReviewRequestBody = {
       reservationId,
       starRating: rating,
-      groomingKeywordList: selectedTags.map(
-        (tag) =>
-          Object.entries(GROOMER_REVIEW_KEYWORDS).find(([, value]) => value === tag)?.[0] || ''
+      careKeywordList: selectedTags.map(
+        (tag) => Object.entries(VET_REVIEW_KEYWORDS).find(([, value]) => value === tag)?.[0] || ''
       ),
       content: reviewText,
       imageUrlList: uploadedImageUrls,
@@ -111,10 +107,10 @@ export function GroomerReviewEdit() {
       { reviewId, body },
       {
         onSuccess: () => {
-          queryClient.refetchQueries({ queryKey: QUERY_KEYS.GET_USER_GROOMING_REVIEW });
+          queryClient.refetchQueries({ queryKey: QUERY_KEYS.GET_USER_CARE_REVIEW });
 
           alert('리뷰가 성공적으로 수정되었습니다!');
-          router.push(ROUTES.GROOMER_REVIEWS(groomerId));
+          router.push(ROUTES.VET_REVIEWS(vetId));
         },
         onError: handleError,
       }
@@ -123,10 +119,14 @@ export function GroomerReviewEdit() {
 
   return (
     <Layout>
-      <AppBar backgroundColor={theme.colors.background} />
+      <AppBar
+        backgroundColor={theme.colors.background}
+        onBackClick={() => router.back()}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+      />
       <div css={wrapper}>
         <div css={header}>
-          <Text typo="title1">{data?.shopName || '알 수 없음'}</Text>
+          <Text typo="title1">{data?.revieweeName || '알 수 없음'}</Text>
         </div>
         <div css={container}>
           {isLoading ? (
@@ -137,7 +137,7 @@ export function GroomerReviewEdit() {
             <>
               <PartnersCard
                 partnerName={data?.revieweeName || '알 수 없음'}
-                shopName={data?.shopName || '알 수 없음'}
+                shopName={data?.shopName || ''}
                 schedule={dayjs(data?.schedule).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
               />
 
@@ -176,3 +176,28 @@ export function GroomerReviewEdit() {
     </Layout>
   );
 }
+
+const wrapper = css`
+  display: flex;
+  flex-direction: column;
+
+  background-color: ${theme.colors.background};
+`;
+
+const header = css`
+  margin-bottom: 6px;
+  padding: 18px;
+`;
+
+const container = css`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 0 18px;
+`;
+
+const submitButton = css`
+  margin-top: 14px;
+  padding: 18px;
+`;

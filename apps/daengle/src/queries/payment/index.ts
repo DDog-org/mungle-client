@@ -12,8 +12,8 @@ import { QUERY_KEYS } from '../query-keys';
 export const useGetPaymentGroomingHistoryListInfiniteQuery = () => {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.GET_PAYMENT_GROOMING_HISTORY_LIST,
-    initialPageParam: 1,
-    queryFn: ({ pageParam = 1 }) => {
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
       return getPaymentGroomingHistoryList({ page: pageParam, size: PAGE_SIZE });
     },
     getNextPageParam: (lastPage, allPages) => {
@@ -34,8 +34,8 @@ export const usePostPaymentOrderMutation = () => {
 export const useGetPaymentCareHistoryListInfiniteQuery = () => {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.GET_PAYMENT_CARE_HISTORY_LIST,
-    initialPageParam: 1,
-    queryFn: ({ pageParam = 1 }) => {
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => {
       return getPaymentCareHistoryList({ page: pageParam, size: PAGE_SIZE });
     },
     getNextPageParam: (lastPage, allPages) => {
