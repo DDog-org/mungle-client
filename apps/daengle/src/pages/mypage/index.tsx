@@ -149,7 +149,7 @@ export default function Mypage() {
                 petInfos={petInfos.map((pet) => ({
                   ...pet,
                   name: pet.petName,
-                  imageURL: pet.petImage,
+                  imageUrl: pet.petImage,
                 }))}
                 selectedPetId={selectedPetId}
                 onSelectPet={(petId) => {

@@ -1,4 +1,12 @@
-import { PetEstimateId, PetInfo } from '~/interfaces/estimate';
+export interface PetInfo {
+  petId: number;
+  imageUrl: string | null;
+  name: string;
+}
+
+export interface PetEstimateId extends PetInfo {
+  estimateId: number;
+}
 
 export interface GetUserEstimateGeneralGroomingPetsResponse {
   pets?: PetEstimateId[];
@@ -152,7 +160,7 @@ export interface PostUserEstimateGroomerUserInfoRequestBody {
 }
 
 export interface PostUserEstimateGroomerUserInfoResponse {
-  groomerImage: string;
+  groomerImageUrl: string;
   groomerName: string;
   shopName: string;
   address: string;
@@ -160,12 +168,12 @@ export interface PostUserEstimateGroomerUserInfoResponse {
 }
 
 export interface PostUserEstimateGroomingRequestBody {
-  groomerId: number;
+  groomerId: number | null;
   petId: number;
   address: string;
   reservedDate: string;
   desiredStyle: string;
-  requirements: string;
+  requirements: string | null;
 }
 
 export interface PostUserEstimateGroomingResponse {

@@ -10,18 +10,11 @@ export function useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNext
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log('useEffect triggered');
-    console.log('hasNextPage:', hasNextPage);
-    console.log('isFetchingNextPage:', isFetchingNextPage);
-    console.log('loadMoreRef.current:', loadMoreRef.current);
-
     if (!hasNextPage || isFetchingNextPage || !loadMoreRef.current) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        console.log('Observer callback triggered:', entries);
         if (entries[0]?.isIntersecting) {
-          console.log('Fetching next page');
           fetchNextPage();
         }
       },
@@ -31,7 +24,6 @@ export function useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNext
     observer.observe(loadMoreRef.current);
 
     return () => {
-      console.log('Cleaning up observer');
       observer.disconnect();
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);

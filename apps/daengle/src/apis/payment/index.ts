@@ -35,7 +35,6 @@ export const postPaymentOrder = async (body: PostPaymentOrderRequestBody) => {
       'Idempotency-Key': generatedUuid,
     },
   });
-  console.log('uuid:', generatedUuid);
   return response;
 };
 

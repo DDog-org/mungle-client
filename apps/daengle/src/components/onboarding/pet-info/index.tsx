@@ -126,6 +126,7 @@ export function PetInfo({ onNext }: Props) {
                 <>
                   {PET_IS_NEUTERED.map((item) => (
                     <ChipRadio
+                      key={item.label}
                       name={field.name}
                       value={item.value}
                       label={item.label}

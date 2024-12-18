@@ -17,7 +17,6 @@ import { PetInfo, UserEstimateCareForm } from '~/interfaces';
 import { DatePicker, ProfileSelector } from '~/components/estimate';
 import { usePostUserEstimateCareMutation, usePostUserEstimateVetUserInfoMutation } from '~/queries';
 import { useForm, Controller } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
 
 export default function EstimateCare() {
   const router = useRouter();
@@ -94,8 +93,6 @@ export default function EstimateCare() {
         <Text tag="h1" typo="title1" color="black">
           견적 요청서
         </Text>
-
-        <DevTool control={control} />
 
         <form css={formWrapper} onSubmit={handleSubmit(onSubmit)}>
           <section css={section}>
@@ -189,39 +186,4 @@ const section = css`
   display: flex;
   flex-direction: column;
   gap: 15px;
-`;
-
-const listBox = css`
-  overflow: auto;
-
-  width: 100%;
-`;
-
-const petList = css`
-  display: flex;
-  gap: 14px;
-`;
-
-const petProfile = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-
-  cursor: pointer;
-`;
-
-const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
-  width: 86px;
-  height: 86px;
-  border: 4px solid ${isSelected ? theme.colors.blue200 : theme.colors.gray200};
-  border-radius: 50px;
-
-  background-color: ${theme.colors.gray200};
-
-  transition: border 0.2s ease;
-`;
-
-const petName = css`
-  transition: 0.2s ease;
 `;

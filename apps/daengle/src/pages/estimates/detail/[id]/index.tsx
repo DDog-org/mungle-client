@@ -77,7 +77,7 @@ export default function Detail() {
           petId: selectedPetId || undefined,
           serviceType: 'GROOMING',
           recipientId: detailData.groomerId,
-          recipientImageUrl: detailData.imageURL,
+          recipientImageUrl: detailData.imageUrl,
           recipientName: detailData.name,
           shopName: detailData.shopName ?? undefined,
           schedule: dayjs(detailData.reservedDate).format('YYYY-MM-DDTHH:mm:ss'),
@@ -105,7 +105,7 @@ export default function Detail() {
       name: detailData.name,
       shopId: detailData.shopId,
       shopName: detailData.shopName,
-      image: detailData.imageURL,
+      image: detailData.imageUrl,
       daengleMeter: detailData.daengleMeter,
     };
 

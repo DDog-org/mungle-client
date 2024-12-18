@@ -25,14 +25,14 @@ export const createHttpClient = ({ baseURL, role }: Props) => {
     async (error) => {
       const originalRequest = error.config;
 
-      const daengleError = error.response.error;
+      const daengleError = error.response.data.error;
 
       if (daengleError.code === ERROR_CODES.FORBIDDEN) {
         window.location.href = '/login';
         return Promise.reject(error);
       }
 
-      if (daengleError.cdoe === ERROR_CODES.TOKEN_EXPIRED) {
+      if (daengleError.code === ERROR_CODES.TOKEN_EXPIRED) {
         originalRequest._retry = true;
 
         try {

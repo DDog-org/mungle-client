@@ -122,7 +122,6 @@ export default function ReviewPage() {
         content: reviewText,
         imageUrlList: uploadedImageUrls,
       };
-      console.log(body);
 
       postCareReview.mutate(body, {
         onSuccess: (response) => {

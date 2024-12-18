@@ -53,7 +53,7 @@ export function GroomerList() {
             />
           ))
         ) : (
-          <Empty title="해당 주소 주변에 샵이 없어요" />
+          <Empty key={page.currentPage} title="해당 주소 주변에 샵이 없어요" />
         )
       )}
 

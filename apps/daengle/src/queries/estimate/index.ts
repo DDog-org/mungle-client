@@ -204,26 +204,14 @@ export const usePostEstimateCancelCareMutation = () => {
 export const usePostUserEstimateGroomerUserInfoMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_ESTIMATE_GROOMER_USER_INFO,
-    mutationFn: async (body: PostUserEstimateGroomerUserInfoRequestBody) => {
-      try {
-        return await postUserEstimateGroomerUserInfo(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: postUserEstimateGroomerUserInfo,
   });
 };
 
 export const usePostUserEstimateGroomingMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_ESTIMATES_GROOMING,
-    mutationFn: async (body: PostUserEstimateGroomingRequestBody) => {
-      try {
-        return await postUserEstimateGrooming(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: postUserEstimateGrooming,
   });
 };
 

@@ -7,17 +7,16 @@ import { useEffect, useState } from 'react';
 import { ROUTES } from '~/constants/commons';
 import { useRouter } from 'next/router';
 
-import EstimateSelectComponent from '~/components/estimate/estimate-select';
 import {
   usePostUserEstimateGroomingMutation,
   usePostUserEstimateGroomerUserInfoMutation,
 } from '~/queries/estimate';
 import { PostUserEstimateGroomerUserInfoResponse } from '~/models/estimate';
 
-import DatePickerComponent from '~/components/estimate/date-picker';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 import { PetInfo } from '~/interfaces/estimate';
+import { DatePicker, EstimateSelect } from '~/components/estimate';
 
 export default function EstimateCreate() {
   const router = useRouter();
@@ -127,7 +126,7 @@ export default function EstimateCreate() {
           <Text tag="h2" typo="subtitle3" color="black">
             시술 희망 날짜 및 시간
           </Text>
-          <DatePickerComponent onDateChange={handleDateChange} onTimeChange={handleTimeChange} />
+          <DatePicker onDateChange={handleDateChange} onTimeChange={handleTimeChange} />
         </section>
         <section css={section}>
           <Text tag="h2" typo="subtitle3" color="black">
@@ -138,9 +137,9 @@ export default function EstimateCreate() {
               <div css={petList}>
                 {petInfos.map((pet) => (
                   <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
-                    {pet.imageURL ? (
+                    {pet.imageUrl ? (
                       <Image
-                        src={pet.imageURL}
+                        src={pet.imageUrl}
                         alt="반려견 프로필"
                         width={86}
                         height={86}
@@ -185,13 +184,13 @@ export default function EstimateCreate() {
             원하는 미용
           </Text>
           <div css={selectBox}>
-            <EstimateSelectComponent
+            <EstimateSelect
               title="전체 클리핑"
               componentName="GroomingFullClipping"
               onClick={() => handleDesiredStyleSelect('전체 클리핑')}
               isSelected={desiredStyle === '전체 클리핑'}
             />
-            <EstimateSelectComponent
+            <EstimateSelect
               title="전체 클리핑 + 얼굴 컷"
               componentName="GroomingFaceCut"
               onClick={() => handleDesiredStyleSelect('전체 클리핑 + 얼굴 컷')}
@@ -199,13 +198,13 @@ export default function EstimateCreate() {
             />
           </div>
           <div css={selectBox}>
-            <EstimateSelectComponent
+            <EstimateSelect
               title="전체 가위컷"
               componentName="GroomingFullScissorCut"
               onClick={() => handleDesiredStyleSelect('전체 가위컷')}
               isSelected={desiredStyle === '전체 가위컷'}
             />
-            <EstimateSelectComponent
+            <EstimateSelect
               title="스포팅 + 얼굴 컷"
               componentName="GroomingSpotting"
               onClick={() => handleDesiredStyleSelect('스포팅 + 얼굴 컷')}

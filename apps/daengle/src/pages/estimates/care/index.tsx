@@ -132,9 +132,9 @@ export default function EstimateCare() {
               <div css={petList}>
                 {petInfos.map((pet) => (
                   <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
-                    {pet.imageURL ? (
+                    {pet.imageUrl ? (
                       <Image
-                        src={pet.imageURL}
+                        src={pet.imageUrl}
                         alt="반려견 프로필"
                         width={86}
                         height={86}

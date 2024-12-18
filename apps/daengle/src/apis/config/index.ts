@@ -8,6 +8,7 @@ export const { api } = createHttpClient({
 
 export const guestApi: HttpClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL ?? '',
+  timeout: 5000,
 });
 
 guestApi.interceptors.response.use(

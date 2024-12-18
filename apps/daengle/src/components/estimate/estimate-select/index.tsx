@@ -1,5 +1,4 @@
 import { Text } from '@daengle/design-system';
-import Image from 'next/image';
 import { selectItem } from './index.style';
 import {
   GroomingFaceCut,
@@ -22,12 +21,7 @@ const components = {
   GroomingSpotting,
 };
 
-export default function EstimateSelectComponent({
-  title,
-  componentName,
-  isSelected,
-  onClick,
-}: Props) {
+export function EstimateSelect({ title, componentName, isSelected, onClick }: Props) {
   const SelectedComponent = components[componentName];
   return (
     <div onClick={onClick} css={selectItem(isSelected)}>

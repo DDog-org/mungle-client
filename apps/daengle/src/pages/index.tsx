@@ -115,7 +115,7 @@ export default function Home() {
             </Text>
           </div>
 
-          <Image src={dogGif} alt="dogGif" width={150} height={150} css={daengleDog} />
+          <Image src={dogGif} alt="dogGif" width={150} height={150} css={daengleDog} priority />
           <RoundButton size="XL" onClick={handleOpenActionSheet}>
             견적 요청하기
           </RoundButton>

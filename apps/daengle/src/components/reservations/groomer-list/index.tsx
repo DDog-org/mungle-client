@@ -23,7 +23,7 @@ export function GroomerList() {
   return (
     <div css={wrapper}>
       {reservations ? (
-        reservations?.map((item) => <ReservationsCard item={item} />)
+        reservations?.map((item) => <ReservationsCard key={item.estimateId} item={item} />)
       ) : (
         <Empty title="예약 내역이 없어요" />
       )}
