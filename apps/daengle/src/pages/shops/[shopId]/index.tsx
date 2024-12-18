@@ -5,16 +5,13 @@ import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import ProfileCard from '~/components/groomers/profile-card';
 import { DAY_OFF, ROUTES } from '~/constants';
-import { GetUserShopDetailRequestParams } from '~/models';
 import { useGetUserShopDetailQuery } from '~/queries';
 
 export default function ShopInfo() {
   const router = useRouter();
-  const { shopId } = router.query;
-  const getShopId = Number(shopId);
-  const shopParams: GetUserShopDetailRequestParams = { shopId: getShopId };
+  const getShopId = router.query.shopId;
 
-  const { data: ShopDetail } = useGetUserShopDetailQuery(shopParams);
+  const { data: shopInfo } = useGetUserShopDetailQuery({ shopId: Number(getShopId) });
 
   const handleCardClick = (id: number) => {
     router.push(ROUTES.GROOMERS_DETAIL(id));
@@ -23,54 +20,66 @@ export default function ShopInfo() {
   return (
     <Layout isAppBarExist={false}>
       <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
+
       <div css={wrapper}>
-        <div css={imageSection(ShopDetail?.imageUrlList[0])}>
-          {/* TODO: 캐러셀 기능 구현 */}
-          {ShopDetail?.imageUrlList[0] ? null : <ShopDefaultImage />}
-          <Text typo="title2" color="white" css={shopName}>
-            {ShopDetail?.shopName}
+        <div css={imageSection}>
+          {shopInfo?.imageUrlList[0] ? null : <ShopDefaultImage />}
+          <Text
+            typo="title2"
+            color={shopInfo?.imageUrlList[0] ? 'white' : 'gray700'}
+            css={shopName}
+          >
+            {shopInfo?.shopName}
           </Text>
         </div>
+
         <div css={infoBox}>
           <section css={topSection}>
             <section css={infoSection}>
               <div css={time}>
                 <DetailTime width={20} />
                 <Text typo="body9">
-                  {ShopDetail?.closedDay?.length
-                    ? `${ShopDetail?.startTime.substring(0, 5)} - ${ShopDetail?.endTime.substring(0, 5)} ${ShopDetail?.closedDay
+                  {shopInfo?.closedDay?.length
+                    ? `${shopInfo?.startTime.substring(0, 5)} - ${shopInfo?.endTime.substring(0, 5)} ${shopInfo?.closedDay
                         .map((day) => DAY_OFF.find((item) => item.value === day)?.label || day)
                         .join(', ')} 휴무`
-                    : `매일 ${ShopDetail?.startTime.substring(0, 5)} - ${ShopDetail?.endTime.substring(0, 5)}`}
+                    : `매일 ${shopInfo?.startTime.substring(0, 5)} - ${shopInfo?.endTime.substring(0, 5)}`}
                 </Text>
               </div>
-              <div css={call}>
-                <DetailCall width={20} />
-                <Text typo="body9">{ShopDetail?.shopNumber}</Text>
-              </div>
+
+              {shopInfo?.shopNumber && (
+                <div css={call}>
+                  <DetailCall width={20} />
+                  <Text typo="body9">{shopInfo?.shopNumber}</Text>
+                </div>
+              )}
+
               <div css={address}>
                 <DetailLocation width={20} />
-                <Text typo="body9">{ShopDetail?.shopAddress}</Text>
+                <Text typo="body9">{shopInfo?.shopAddress}</Text>
               </div>
             </section>
+
             <div css={line} />
+
             <section css={infoText}>
               <Text typo="body1">소개</Text>
-              <Text typo="body10">{ShopDetail?.introduction}</Text>
+              <Text typo="body10">{shopInfo?.introduction}</Text>
             </section>
           </section>
+
           <section css={bottomSection}>
             <div css={textBox}>
               <Text typo="title2">디자이너</Text>
-              <Text typo="title2">{ShopDetail?.groomers.length}</Text>
+              <Text typo="title2">{shopInfo?.groomers.length}</Text>
             </div>
             <section css={groomerList}>
-              {ShopDetail?.groomers.length === 0 ? (
+              {shopInfo?.groomers.length === 0 ? (
                 <div css={emptyBox}>
                   <Empty title="해당 샵에 등록된 디자이너가 없습니다." />
                 </div>
               ) : (
-                ShopDetail?.groomers.map((groomer) => (
+                shopInfo?.groomers.map((groomer) => (
                   <ProfileCard
                     key={groomer.groomerAccountId}
                     groomerName={groomer.groomerName}
@@ -90,41 +99,45 @@ export default function ShopInfo() {
 }
 
 const wrapper = css`
+  display: flex;
+  flex-direction: column;
   position: relative;
 
   width: 100%;
   height: 100%;
-
-  background-color: aliceblue;
 `;
 
-const imageSection = (shopImage: string | undefined) => css`
-  position: relative;
+const imageSection = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
 
   width: 100%;
-  height: 416px;
+  height: 260px;
 
-  background-image: url(${shopImage});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: ${theme.colors.gray200};
 `;
 
 const shopName = css`
   position: absolute;
-  bottom: 180px;
+  bottom: 48px;
   left: 24px;
 `;
 
 const infoBox = css`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   position: absolute;
-  bottom: 0;
+  top: 228px;
+  z-index: 2;
 
   width: 100%;
-  height: 540px;
   border-radius: 20px 20px 0 0;
 
-  background-color: white;
+  background: ${theme.colors.white};
 `;
 
 const topSection = css`

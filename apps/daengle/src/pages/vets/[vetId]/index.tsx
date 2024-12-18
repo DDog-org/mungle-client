@@ -33,7 +33,6 @@ export default function VetInfo() {
             <VetDefaultImage />
           )}
 
-          {/* TODO: 캐러셀 구현 */}
           <Text typo="title2" color="white" css={vetName}>
             {vetInfo?.vetName}
           </Text>

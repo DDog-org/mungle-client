@@ -20,7 +20,7 @@ export default function ProfileCard({
 }: Props) {
   return (
     <div css={profileCard} onClick={onClick}>
-      {groomerImage === null ? (
+      {!groomerImage ? (
         <DefaultProfile width={80} height={94} css={imageStyle} />
       ) : (
         <Image src={groomerImage} alt="이미지" width={80} height={94} css={imageStyle} />
