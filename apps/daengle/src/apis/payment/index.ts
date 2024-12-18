@@ -11,6 +11,7 @@ import {
   GetPaymentHistoryRequestParams,
   GetPaymentHistoryResponse,
 } from '~/models';
+import { v4 as uuidv4 } from 'uuid';
 
 export const getPaymentGroomingHistoryList = async (
   params: GetPaymentGroomingHistoryListRequestParams
@@ -27,7 +28,15 @@ export const getPaymentCareHistoryList = async (params: GetPaymentCareHistoryLis
 };
 
 export const postPaymentOrder = async (body: PostPaymentOrderRequestBody) => {
-  return await api.post<PostPaymentOrderResponse>('/payment/order', body);
+  const generatedUuid = uuidv4(); // UUID 생성
+
+  const response = await api.post<PostPaymentOrderResponse>('/payment/order', body, {
+    headers: {
+      'Idempotency-Key': generatedUuid,
+    },
+  });
+  console.log('uuid:', generatedUuid);
+  return response;
 };
 
 export const postPaymentValidate = async (body: PostPaymentValidateRequestBody) => {
