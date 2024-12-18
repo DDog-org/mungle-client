@@ -16,7 +16,9 @@ const nextConfig = {
 export default withSentryConfig(nextConfig, {
   org: 'corinthionia',
   project: 'daengle',
-  silent: !process.env.CI,
+  silent: true,
+  sourcemaps: { disable: true },
+  deleteSourceMapsAfterUpload: true,
   widenClientFileUpload: true,
   tunnelRoute: '/monitoring',
   hideSourceMaps: true,
