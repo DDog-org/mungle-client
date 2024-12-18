@@ -27,3 +27,10 @@ export const emptyBox = css`
 
   margin-top: 50%;
 `;
+export const bottom = css`
+  position: absolute;
+  bottom: 0;
+
+  width: 100%;
+  height: 18px;
+`;
