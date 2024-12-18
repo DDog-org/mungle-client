@@ -1,11 +1,18 @@
 import { useRouter } from 'next/router';
-import { AppBar, Input, Layout, RoundButton, Select, Text, theme } from '@daengle/design-system';
+import {
+  AppBar,
+  Layout,
+  RoundButton,
+  Select,
+  Text,
+  TextField,
+  theme,
+} from '@daengle/design-system';
 import { ROUTES } from '~/constants/commons';
 
 import { css } from '@emotion/react';
 import { useState } from 'react';
 import { REPORT_KEYWORDS } from '~/constants';
-import { AddInput } from '@daengle/services/components';
 
 import { DefaultProfile } from '@daengle/design-system/icons';
 import {
@@ -49,7 +56,7 @@ export default function Mypage() {
     mutation.mutate(reportData, {
       onSuccess: () => {
         alert('신고가 성공적으로 접수되었습니다.');
-        router.push(ROUTES.HOME);
+        router.push(ROUTES.MYPAGE_REVIEWS);
       },
       onError: () => {
         alert('신고 접수에 실패했습니다. 다시 시도해주세요.');
@@ -108,9 +115,8 @@ export default function Mypage() {
         </div>
         <div css={section}>
           <Text typo="subtitle1">신고 내용</Text>
-          <AddInput
+          <TextField
             placeholder="예) 부적절한 사진이 올라와있고, 협의되지 않은 무리한 요구를 했습니다."
-            height={100}
             value={reportContent}
             onChange={handleChange(setReportContent)}
           />
@@ -155,6 +161,8 @@ const profileImage = css`
   height: 70px;
   border-radius: 50%;
   object-fit: cover;
+
+  background-color: ${theme.colors.gray200};
 `;
 const section = css`
   display: flex;
