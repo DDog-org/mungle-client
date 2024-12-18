@@ -27,5 +27,5 @@ export const getGroomerReviewReport = async (params: GetGroomerReviewReportReque
 };
 
 export const postGroomerReviewReport = async (body: PostGroomerReviewReportRequestBody) => {
-  return await api.post<PostGroomerReviewReportResponse>('/groomer/review/report');
+  return await api.post<PostGroomerReviewReportResponse>('/groomer/review/report', body);
 };

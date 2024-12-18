@@ -145,7 +145,7 @@ export default function ReviewsPage() {
       <AppBar
         backgroundColor={theme.colors.background}
         onBackClick={() => {
-          router.back();
+          router.push(ROUTES.MYPAGE);
         }}
         onHomeClick={() => router.push(ROUTES.HOME)}
       />
