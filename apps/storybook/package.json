@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
+    "build": "storybook build",
     "build-storybook": "storybook build",
     "deploy-storybook": "storybook build && touch ./storybook-static/.nojekyll && gh-pages -d ./storybook-static -t true -b deploy-storybook",
     "lint:styles": "stylelint \"**/*.styles.ts\""
