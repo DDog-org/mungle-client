@@ -57,6 +57,26 @@ export const tagsContainer = css`
   margin-bottom: 12px;
 `;
 
+export const tagsWrapper = css`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  width: 100%;
+  margin: 13px 0 0;
+  margin: 11px 0 0;
+`;
+
+export const tagWrapper = css`
+  display: flex;
+
+  padding: 4px 12px;
+  border: 1px solid ${theme.colors.blue200};
+  border-radius: 14px;
+
+  background: ${theme.colors.blue100};
+`;
+
 export const tags = css`
   padding: 3px 10px;
   border: 0.5px solid ${theme.colors.green200};

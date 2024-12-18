@@ -13,6 +13,8 @@ import {
   contentUnrolled,
   unroll,
   report,
+  tagsWrapper,
+  tagWrapper,
 } from './index.styles';
 import { ReviewStars } from '../star';
 import {
@@ -72,12 +74,15 @@ export function ReviewCard<T extends PartnersReviewListType>({
           <img key={index} src={image} alt={`리뷰 이미지 ${index + 1}`} />
         ))}
       </div>
-      <div css={tagsContainer}>
-        <Text typo="body2" color="green200" css={tags}>
-          {keywordsList.map((keyword, index) => (
-            <span key={index}>#{keyword}</span>
+      <div css={tagsWrapper}>
+        {keywordsList.length > 0 &&
+          keywordsList.map((tag) => (
+            <div css={tagWrapper}>
+              <Text typo="body12" color="blue200">
+                {`#${tag}`}
+              </Text>
+            </div>
           ))}
-        </Text>
       </div>
       <div css={contentContainer}>
         <Text
