@@ -10,12 +10,12 @@ import { queryClient } from '@daengle/services/providers';
 import { VET_REVIEW_KEYWORDS } from '~/constants/review';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { container, header, submitButton, wrapper } from './index.styles';
 import { ROUTES } from '~/constants/commons';
+import { css } from '@emotion/react';
 
 const KEYWORDS = Object.values(VET_REVIEW_KEYWORDS);
 
-export function VetReviewEdit() {
+export default function VetReviewEdit() {
   const [rating, setRating] = useState<number>(0);
   const [reviewText, setReviewText] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -176,3 +176,28 @@ export function VetReviewEdit() {
     </Layout>
   );
 }
+
+const wrapper = css`
+  display: flex;
+  flex-direction: column;
+
+  background-color: ${theme.colors.background};
+`;
+
+const header = css`
+  margin-bottom: 6px;
+  padding: 18px;
+`;
+
+const container = css`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 0 18px;
+`;
+
+const submitButton = css`
+  margin-top: 14px;
+  padding: 18px;
+`;
