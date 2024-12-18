@@ -1,14 +1,11 @@
-import { AppBar, Layout, Text, theme } from '@daengle/design-system';
-import {
-  DefaultProfile,
-  DetailCall,
-  DetailLocation,
-  DetailTime,
-} from '@daengle/design-system/icons';
+import { AppBar, Empty, Layout, Text, theme } from '@daengle/design-system';
+import { DetailCall, DetailLocation, DetailTime } from '@daengle/design-system/icons';
+import { ShopDefaultImage } from '@daengle/design-system/images';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import ProfileCard from '~/components/groomers/profile-card';
 import { ROUTES } from '~/constants/commons';
+import { VET_DAT_OFF } from '~/constants/detail';
 import { GetUserShopDetailRequestParams } from '~/models/detail';
 import { useGetUserShopDetailQuery } from '~/queries/detail';
 
@@ -24,14 +21,13 @@ export default function ShopInfo() {
     router.push(ROUTES.GROOMER_DETAIL(id));
   };
 
-  console.log('ShopDetail:', ShopDetail);
-
   return (
     <Layout isAppBarExist={false}>
       <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
       <div css={wrapper}>
         <div css={imageSection(ShopDetail?.imageUrlList[0])}>
           {/* TODO: 캐러셀 기능 구현 */}
+          {ShopDetail?.imageUrlList[0] ? null : <ShopDefaultImage />}
           <Text typo="title2" color="white" css={shopName}>
             {ShopDetail?.shopName}
           </Text>
@@ -42,14 +38,16 @@ export default function ShopInfo() {
               <div css={time}>
                 <DetailTime width={20} />
                 <Text typo="body9">
-                  {/* TODO: 휴무일 받기 */}
-                  매일 {ShopDetail?.startTime.substring(0, 5)} -{' '}
-                  {ShopDetail?.endTime.substring(0, 5)}
+                  {ShopDetail?.closedDay?.length
+                    ? `${ShopDetail?.startTime.substring(0, 5)} - ${ShopDetail?.endTime.substring(0, 5)} ${ShopDetail?.closedDay
+                        .map((day) => VET_DAT_OFF.find((item) => item.value === day)?.label || day)
+                        .join(', ')} 휴무`
+                    : `매일 ${ShopDetail?.startTime.substring(0, 5)} - ${ShopDetail?.endTime.substring(0, 5)}`}
                 </Text>
               </div>
               <div css={call}>
                 <DetailCall width={20} />
-                <Text typo="body9">02-000-0000</Text>
+                <Text typo="body9">{ShopDetail?.shopNumber}</Text>
               </div>
               <div css={address}>
                 <DetailLocation width={20} />
@@ -68,16 +66,22 @@ export default function ShopInfo() {
               <Text typo="title2">{ShopDetail?.groomers.length}</Text>
             </div>
             <section css={groomerList}>
-              {ShopDetail?.groomers.map((groomer) => (
-                <ProfileCard
-                  key={groomer.groomerAccountId}
-                  groomerName={groomer.groomerName}
-                  groomerImage={groomer.grommerImage}
-                  keywords={groomer.keywords}
-                  daengleMeter={groomer.daengleMeter}
-                  onClick={() => handleCardClick(groomer.groomerAccountId)}
-                />
-              ))}
+              {ShopDetail?.groomers.length === 0 ? (
+                <div css={emptyBox}>
+                  <Empty title="해당 샵에 등록된 디자이너가 없습니다." />
+                </div>
+              ) : (
+                ShopDetail?.groomers.map((groomer) => (
+                  <ProfileCard
+                    key={groomer.groomerAccountId}
+                    groomerName={groomer.groomerName}
+                    groomerImage={groomer.groomerImage}
+                    keywords={groomer.keywords}
+                    daengleMeter={groomer.daengleMeter}
+                    onClick={() => handleCardClick(groomer.groomerAccountId)}
+                  />
+                ))
+              )}
             </section>
           </section>
         </div>
@@ -182,4 +186,13 @@ const textBox = css`
 
 const groomerList = css`
   cursor: pointer;
+`;
+
+export const emptyBox = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+
+  margin-top: 80px;
 `;

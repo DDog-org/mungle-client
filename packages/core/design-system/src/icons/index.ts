@@ -45,7 +45,6 @@ export * from './PartnerHomeNavigate';
 export * from './PartnerToastCheck';
 export * from './Paw';
 export * from './ProfileArrowButton';
-export * from './Paw';
 export * from './RegistrationPending';
 export * from './ReviewFold';
 export * from './ReviewStarFilled';

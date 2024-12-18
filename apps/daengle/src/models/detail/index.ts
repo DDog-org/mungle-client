@@ -22,10 +22,12 @@ export interface GetUserShopDetailResponse {
   shopId: number;
   shopName: string;
   shopAddress: string;
+  shopNumber: string;
   imageUrlList: string[];
   groomers: GroomerInfo[];
   startTime: string;
   endTime: string;
+  closedDay: string[];
   introduction: string;
   reviewCount: number;
 }
@@ -33,7 +35,7 @@ export interface GetUserShopDetailResponse {
 export interface GroomerInfo {
   groomerAccountId: number;
   groomerName: string;
-  grommerImage: string | null;
+  groomerImage: string | null;
   keywords: string[];
   daengleMeter: number;
   reviewCount: number;

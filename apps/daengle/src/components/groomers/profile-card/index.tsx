@@ -1,6 +1,7 @@
 import { DefaultProfile, Paw } from '@daengle/design-system/icons';
 import { imageStyle, meterTag, profile, profileCard, tag, tags, paw } from './index.styles';
 import { Text } from '@daengle/design-system';
+import Image from 'next/image';
 
 interface Props {
   groomerName: string;
@@ -19,7 +20,11 @@ export default function ProfileCard({
 }: Props) {
   return (
     <div css={profileCard} onClick={onClick}>
-      <DefaultProfile width={80} height={94} css={imageStyle} />
+      {groomerImage === null ? (
+        <DefaultProfile width={80} height={94} css={imageStyle} />
+      ) : (
+        <Image src={groomerImage} alt="이미지" width={80} height={94} css={imageStyle} />
+      )}
       <div css={profile}>
         <Text typo="subtitle3">{groomerName}</Text>
         <div css={tags}>
