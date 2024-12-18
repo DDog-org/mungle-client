@@ -9,16 +9,14 @@ interface Props {
 }
 
 export const createHttpClient = ({ baseURL, role }: Props) => {
-  const axiosInstance = axios.create({ baseURL });
+  const axiosInstance = axios.create({ baseURL, timeout: 5000, withCredentials: true });
   const api: HttpClient = axiosInstance;
 
   api.interceptors.request.use((config) => {
     const token = localStorage.getItem('accessToken');
-
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
-
     return config;
   });
 
@@ -31,10 +29,11 @@ export const createHttpClient = ({ baseURL, role }: Props) => {
         originalRequest._retry = true;
 
         try {
-          const newAccessToken = (await getNewAccessToken({ role })).accessToken;
+          const newAccessToken = await getNewAccessToken({ role });
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return api(originalRequest);
         } catch (err) {
+          console.error('Failed to refresh token:', err);
           window.location.href = '/login';
           return Promise.reject(err);
         }
@@ -44,9 +43,20 @@ export const createHttpClient = ({ baseURL, role }: Props) => {
     }
   );
 
-  const getNewAccessToken = async ({ role }: { role: Role }) => {
+  const getNewAccessToken = async ({ role }: { role: Role }): Promise<string> => {
     try {
-      return await api.post<{ grantType: string; accessToken: string }>(`/${role}/refresh-token`);
+      const response = await axios.post<{ accessToken: string }>(
+        `/${role}/refresh-token`,
+        {},
+        {
+          baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+          withCredentials: true,
+        }
+      );
+
+      const { accessToken } = response.data;
+      localStorage.setItem('accessToken', accessToken);
+      return accessToken;
     } catch (error) {
       throw error;
     }
