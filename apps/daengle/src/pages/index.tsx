@@ -29,37 +29,22 @@ export default function Home() {
   // TODO: 회원인 경우 기본 주소값으로 회원 정보에 저장된 주소값을 가져오기(에러나서 아직 해결 못함..)
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
-  const { data: getUserValidate } = useGetUserValidateQuery();
+  const { data: getUserValidate, isError } = useGetUserValidateQuery();
   const { addressForm } = useAddressFormStore();
 
-  const { open } = useDialog();
-
   const handleSearchAddress = () => {
-    open({
-      title: '로그인 후 이용해 주세요',
-      primaryActionLabel: '로그인 하기',
-      onPrimaryAction: () => router.push(ROUTES.LOGIN),
-    });
-    if (getUserValidate) {
+    if (getUserValidate?.data.isValidateMember) {
       router.push(ROUTES.SEARCH_ADDRESS);
     } else {
-      open({
-        title: '로그인 후 이용해 주세요',
-        primaryActionLabel: '로그인 하기',
-        onPrimaryAction: () => router.push(ROUTES.LOGIN),
-      });
+      alert('로그인 후 이용해 주세요');
     }
   };
 
   const handleOpenActionSheet = () => {
-    if (getUserValidate) {
+    if (getUserValidate?.data.isValidateMember) {
       setIsVisible(true);
     } else {
-      open({
-        title: '로그인 후 이용해 주세요',
-        primaryActionLabel: '로그인 하기',
-        onPrimaryAction: () => router.push(ROUTES.LOGIN),
-      });
+      alert('로그인 후 이용해 주세요');
     }
   };
 

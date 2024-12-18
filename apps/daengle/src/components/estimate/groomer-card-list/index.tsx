@@ -16,7 +16,7 @@ import { bottom } from './index.styles';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { OptionSelector } from '../option';
-import { Empty } from '@daengle/design-system';
+import { Empty, useDialog } from '@daengle/design-system';
 
 interface Props {
   isDesignation: boolean;
@@ -36,9 +36,15 @@ export function GroomerEstimateList({ isDesignation }: Props) {
     data: petData,
     isLoading: petLoading,
     error: petError,
+    isError,
   } = isDesignation
     ? useUserEstimateDesignationGroomingPetsQuery()
     : useUserEstimateGeneralGroomingPetsQuery();
+
+  if (isError) {
+    alert('로그인 후 이용해 주세요');
+    router.back();
+  }
 
   const petInfos = petData?.pets || [];
 

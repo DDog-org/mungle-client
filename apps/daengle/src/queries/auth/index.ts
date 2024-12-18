@@ -49,27 +49,15 @@ export const usePostAvailableNicknameMutation = () => {
 export const useGetBreedListQuery = () => {
   return useQuery({
     queryKey: QUERY_KEYS.GET_BREED_LIST,
-    queryFn: async () => {
-      try {
-        return await getBreedList();
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
-    select: (data) => data?.breedList,
+    queryFn: getBreedList,
+    select: (response) => response.data?.breedList,
   });
 };
 
 export const usePostJoinWithPetMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_JOIN_WITH_PET,
-    mutationFn: async (body: PostJoinWithPetRequestBody) => {
-      try {
-        return await postJoinWithPet(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: async (body: PostJoinWithPetRequestBody) => await postJoinWithPet(body),
   });
 };
 

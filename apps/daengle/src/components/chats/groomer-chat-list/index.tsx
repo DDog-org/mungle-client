@@ -1,12 +1,17 @@
 import { useRouter } from 'next/router';
-import { Empty } from '@daengle/design-system';
+import { Empty, useDialog } from '@daengle/design-system';
 import { useGetChatUserGroomerListQuery } from '~/queries';
 import { ROUTES } from '~/constants/commons';
 import { ChatListItem } from '../chat-list-item';
 
 export function GroomerChatList() {
   const router = useRouter();
-  const { data: chats, refetch: refetchRoomList } = useGetChatUserGroomerListQuery();
+  const { data: chats, refetch: refetchRoomList, isError } = useGetChatUserGroomerListQuery();
+
+  if (isError) {
+    alert('로그인 후 이용해 주세요');
+    router.back();
+  }
 
   return (
     <>
