@@ -11,6 +11,14 @@ export const tag = css`
   padding: 14px 18px 24px;
 `;
 
+export const itemBox = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 17px;
+
+  padding: 0 18px;
+`;
 export const cardBox = css`
   display: flex;
   flex-wrap: wrap;

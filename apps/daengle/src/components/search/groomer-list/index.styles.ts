@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 
 export const wrapper = css`
-  padding-bottom: 110px;
+  padding-bottom: 120px;
 `;
 
 export const tag = css`
@@ -11,18 +11,23 @@ export const tag = css`
   padding: 14px 18px 24px;
 `;
 
-export const cardBox = css`
+export const itemBox = css`
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
   gap: 17px;
 
   padding: 0 18px;
+`;
+export const cardBox = css`
+  flex-wrap: wrap;
 `;
 
 export const emptyBox = css`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 15px;
 
   margin-top: 50%;
