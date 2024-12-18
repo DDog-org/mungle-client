@@ -24,7 +24,7 @@ import {
   SelectUnfoldInactive,
 } from '@daengle/design-system/icons';
 import { useState } from 'react';
-import { PartnersReviewListType } from '~/interface';
+import { PartnersReviewListType } from '../../../interface';
 
 interface Props<T extends PartnersReviewListType> {
   review: T;

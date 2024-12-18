@@ -25,7 +25,7 @@ const options = Object.entries(REPORT_KEYWORDS).map(([key, value]) => ({
   label: value,
 }));
 
-export default function Mypage() {
+export default function MyReviews() {
   const router = useRouter();
   const { id, groomerId } = router.query;
   const groomingReviewId = Number(id);

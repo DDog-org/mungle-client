@@ -1,7 +1,7 @@
 import { Empty } from '@daengle/design-system';
 import { ReviewCard } from '../card';
 import { wrapper, empty } from './index.styles';
-import { PartnersReviewListType } from '~/interface';
+import { PartnersReviewListType } from '../../../interface';
 
 interface Props<T extends PartnersReviewListType> {
   reviews: T[];
