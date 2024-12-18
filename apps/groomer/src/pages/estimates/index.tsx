@@ -1,22 +1,30 @@
 import { Layout, Tabs, Text, theme } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { GNB } from '~/components/commons/gnb';
 import { DesignationCardList, GeneralCardList } from '~/components/estimate';
 
 const TABS = [
-  {
-    id: 'general',
-    label: '일반 견적서',
-  },
-  {
-    id: 'designation',
-    label: '지정 견적서',
-  },
+  { id: 'general', label: '일반 견적서' },
+  { id: 'designation', label: '지정 견적서' },
 ];
 
 export default function EstimateList(): JSX.Element {
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState(TABS[0]?.id);
+
+  useEffect(() => {
+    const queryTab = router.query.tab as string;
+    if (queryTab && TABS.some((tab) => tab.id === queryTab)) {
+      setActiveTab(queryTab);
+    }
+  }, [router.query.tab]);
+
+  const handleTabClick = (tabId: string) => {
+    router.push({ query: { tab: tabId } }, undefined, { shallow: true });
+    setActiveTab(tabId);
+  };
 
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
@@ -35,7 +43,13 @@ export default function EstimateList(): JSX.Element {
         <header css={headerContainer}>
           <Text typo="title1">견적</Text>
         </header>
-        <Tabs tabs={TABS} renderContent={renderContent} />
+
+        <Tabs
+          tabs={TABS}
+          renderContent={renderContent}
+          activeTabId={activeTab}
+          onTabClick={handleTabClick}
+        />
       </div>
       <GNB />
     </Layout>

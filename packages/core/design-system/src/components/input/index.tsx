@@ -44,7 +44,7 @@ export const Input = forwardRef<InputRef, Props>(
             <Text typo="subtitle3" css={labelCss}>
               {label}{' '}
               {required && (
-                <Text typo="body12" color="red200">
+                <Text typo="body12" color={service === 'daengle' ? 'blue200' : 'green200'}>
                   *
                 </Text>
               )}

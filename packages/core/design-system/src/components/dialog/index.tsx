@@ -37,7 +37,7 @@ export function Dialog({
       <div {...props} css={wrapper}>
         <div css={text}>
           <Text typo="body1">{title}</Text>
-          <Text typo="body11" color="gray400">
+          <Text typo="body11" color="gray500">
             {description}
           </Text>
         </div>

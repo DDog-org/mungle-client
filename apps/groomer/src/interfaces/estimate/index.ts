@@ -15,3 +15,9 @@ export interface GroomingEstimateDesignationList {
   significant: string;
   reservedDate: string;
 }
+
+export interface GroomerEstimateForm {
+  id: number;
+  reservedDate: string;
+  overallOpinion: string;
+}

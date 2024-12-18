@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { Layout, Text, TextButton, theme } from '@daengle/design-system';
+import { Layout, Text, TextButton, theme, useDialog } from '@daengle/design-system';
 import {
   ButtonTextButtonArrow,
   DefaultProfile,
@@ -11,11 +11,20 @@ import { css } from '@emotion/react';
 import { ROUTES } from '~/constants';
 import { GNB } from '~/components/commons';
 import Image from 'next/image';
-import { useGetGroomerInfoQuery } from '~/queries';
+import {
+  useDeleteGroomerMutation,
+  useGetGroomerInfoQuery,
+  useGetGroomerWithdrawInfoQuery,
+} from '~/queries';
 
 export default function GroomerInfo() {
   const { data: getGroomerInfo } = useGetGroomerInfoQuery();
+  const { data: getGroomerWithdrawInfo } = useGetGroomerWithdrawInfoQuery();
+  const { mutateAsync: deleteGroomer } = useDeleteGroomerMutation();
+
   const router = useRouter();
+
+  const { open } = useDialog();
 
   return (
     <Layout isAppBarExist={false}>
@@ -95,7 +104,20 @@ export default function GroomerInfo() {
           <Text typo="body4">마이샵 관리</Text>
           <ButtonTextButtonArrow width={6} />
         </div>
-        <div css={menu}>
+        <div
+          css={menu}
+          onClick={() => {
+            const waitingForServiceCount = getGroomerWithdrawInfo?.waitingForServiceCount;
+            open({
+              title: '회원 탈퇴',
+              description: waitingForServiceCount
+                ? `현재 예약 중인 서비스가 ${waitingForServiceCount}건 있습니다.\n탈퇴 시 고객의 예약금은 전액환불 처리됩니다.`
+                : '정말로 탈퇴하시겠습니까?',
+              primaryActionLabel: '탈퇴하기',
+              onPrimaryAction: deleteGroomer,
+            });
+          }}
+        >
           <Text typo="body4">회원 탈퇴</Text>
           <ButtonTextButtonArrow width={6} />
         </div>

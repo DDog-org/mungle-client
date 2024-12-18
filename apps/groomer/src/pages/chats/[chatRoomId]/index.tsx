@@ -277,13 +277,14 @@ export const chatList = ({ isEstimateExist }: { isEstimateExist: boolean }) => c
   display: flex;
   flex-direction: column;
   gap: 10px;
-  overflow-y: auto;
+  overflow: hidden auto;
 
   width: 100%;
   height: 100%;
   padding: ${isEstimateExist
     ? 'calc(56px + 24px) 18px calc(78px + 18px) 18px'
     : '24px 18px calc(78px + 18px) 18px'};
+
   border-bottom: 1px solid ${theme.colors.gray200};
 `;
 

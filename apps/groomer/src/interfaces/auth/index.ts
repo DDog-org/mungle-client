@@ -15,6 +15,7 @@ export interface GroomerModifyPageForm {
   licenses: License[];
   instagramId: string;
 }
+
 export interface License {
   name: string;
   acquisitionDate: string;

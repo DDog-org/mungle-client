@@ -22,7 +22,7 @@ export default function AuthKakaoCallback() {
 
       const { isOnboarding, isPending, email, accessToken } = await postKakao({
         kakaoAccessToken: access_token,
-      });
+      }).then((res) => res.data.response);
 
       if (isOnboarding && !isPending && email) {
         setGroomerInfoForm({ email });

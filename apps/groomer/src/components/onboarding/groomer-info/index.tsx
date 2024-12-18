@@ -46,8 +46,8 @@ export default function GroomerInfo() {
       businessLicenses,
       licenses,
     });
-    localStorage.setItem('accessToken', response.accessToken);
 
+    localStorage.setItem('accessToken', response.data.accessToken);
     router.replace(ROUTES.ONBOARDING_PENDING);
   };
 

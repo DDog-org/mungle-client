@@ -5,6 +5,9 @@ import {
   getGroomerInfo,
   postJoin,
   postKakao,
+  getGroomerWithdrawInfo,
+  deleteGroomer,
+  getGroomerValidate,
 } from '~/apis';
 import {
   PatchGroomerInfoRequestBody,
@@ -16,13 +19,7 @@ import { QUERY_KEYS } from '~/queries/query-keys';
 export const usePostKakaoMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_KAKAO,
-    mutationFn: async (body: PostKakaoRequestBody) => {
-      try {
-        return await postKakao(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: (body: PostKakaoRequestBody) => postKakao(body),
   });
 };
 
@@ -45,9 +42,7 @@ export const useGetGroomerModifyPageQuery = () => {
 export const usePatchGroomerInfoMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.PATCH_GROOMER_INFO,
-    mutationFn: async (body: PatchGroomerInfoRequestBody) => {
-      return await patchGroomerInfo(body);
-    },
+    mutationFn: async (body: PatchGroomerInfoRequestBody) => await patchGroomerInfo(body),
   });
 };
 
@@ -55,5 +50,26 @@ export const useGetGroomerInfoQuery = () => {
   return useQuery({
     queryKey: QUERY_KEYS.GET_GROOMER_INFO,
     queryFn: getGroomerInfo,
+  });
+};
+
+export const useGetGroomerWithdrawInfoQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_GROOMER_WITHDRAW_INFO,
+    queryFn: getGroomerWithdrawInfo,
+  });
+};
+
+export const useDeleteGroomerMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.DELETE_GROOMER,
+    mutationFn: deleteGroomer,
+  });
+};
+
+export const useGetGroomerValidateQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_GROOMER_VALIDATE,
+    queryFn: getGroomerValidate,
   });
 };

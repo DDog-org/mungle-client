@@ -1,4 +1,4 @@
-import { AuthLogo, LoginKakaoLogo } from '@daengle/design-system/icons';
+import { PartnerAuthLogo, LoginKakaoLogo } from '@daengle/design-system/icons';
 import { Layout, RoundButton, Text } from '@daengle/design-system';
 import { css } from '@emotion/react';
 
@@ -15,7 +15,7 @@ export default function Login() {
     <Layout isAppBarExist={false}>
       <div css={wrapper}>
         <div css={logoWrapper}>
-          <AuthLogo width={183} height={47} />
+          <PartnerAuthLogo width={183} height={47} />
         </div>
         <RoundButton variant="kakao" size="L" fullWidth onClick={handleKakaoLoginButtonClick}>
           <div css={loginWrapper}>

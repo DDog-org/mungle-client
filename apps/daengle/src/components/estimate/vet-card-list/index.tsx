@@ -1,4 +1,3 @@
-import { EmptyState } from '@daengle/services/components';
 import { useEffect, useState } from 'react';
 
 import { ProfileSelector } from '../pet-profile';
@@ -15,6 +14,7 @@ import { bottom } from './index.styles';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { OptionSelector } from '../option';
+import { Empty } from '@daengle/design-system';
 
 interface Props {
   isDesignation: boolean;
@@ -81,11 +81,7 @@ export function VetEstimateList({ isDesignation }: Props) {
       ) : petError ? (
         <div>펫 정보를 불러오는데 실패했습니다.</div>
       ) : petInfos.length === 0 ? (
-        <EmptyState
-          isEmptyEstimates={false}
-          hasOptions={false}
-          onClick={() => router.push(ROUTES.ESTIMATE_VET(getVetId))}
-        />
+        <Empty title="등록된 반려견이 없어요" />
       ) : (
         <>
           <ProfileSelector
@@ -102,7 +98,7 @@ export function VetEstimateList({ isDesignation }: Props) {
           ) : estimateError ? (
             <div>견적 데이터를 불러오는데 실패했습니다.</div>
           ) : flattenedEstimates.length === 0 ? (
-            <EmptyState isEmptyEstimates={true} hasOptions={true} />
+            <Empty title="견적서가 존재하지 않아요" />
           ) : (
             <CardList
               mode={isDesignation ? 'designation' : 'general'}

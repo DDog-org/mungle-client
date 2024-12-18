@@ -3,11 +3,13 @@ export interface PostKakaoRequestBody {
 }
 
 export interface PostKakaoResponse {
-  isOnboarding: boolean;
-  isPending: boolean;
-  email: string | null;
-  grantType: 'Bearer' | null;
-  accessToken: string | null;
+  response: {
+    isOnboarding: boolean;
+    isPending: boolean;
+    email: string | null;
+    grantType: 'Bearer' | null;
+    accessToken: string | null;
+  };
 }
 
 export interface PostJoinRequestBody {
@@ -57,4 +59,17 @@ export interface GetGroomerInfoResponse {
   shopName: string;
   introduction: string;
   daengleMeter: number;
+}
+
+export interface GetGroomerWithdrawInfoResponse {
+  waitingForServiceCount: number;
+}
+
+export interface DeleteGroomerResponse {
+  accountId: number;
+  withdrawDate: string;
+}
+
+export interface GetGroomerValidateResponse {
+  isValidateMember: boolean;
 }
