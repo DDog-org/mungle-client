@@ -24,4 +24,5 @@ export const ROUTES = {
   MYPAGE_REVIEWS: '/mypage/reviews',
   MYPAGE_PROFILE: '/mypage/profile',
   MYPAGE_MY_SHOP: '/mypage/my-shop',
+  MYPAGE_REVIEWS_REPORT: (reviewId: number) => `/mypage/reviews/report/${reviewId}`,
 } as const;

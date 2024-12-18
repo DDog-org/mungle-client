@@ -40,7 +40,6 @@ export function KeywordCard({
               size="full"
               isSelected={selectedTags.includes(tag)}
               onClick={() => handleTagToggle(tag)}
-              textColor="gray500"
             >
               {tag}
             </ChipToggleButton>
