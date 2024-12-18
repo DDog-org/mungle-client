@@ -119,7 +119,11 @@ export function VetReviewEdit() {
 
   return (
     <Layout>
-      <AppBar backgroundColor={theme.colors.background} />
+      <AppBar
+        backgroundColor={theme.colors.background}
+        onBackClick={() => router.back()}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+      />
       <div css={wrapper}>
         <div css={header}>
           <Text typo="title1">{data?.revieweeName || '알 수 없음'}</Text>
