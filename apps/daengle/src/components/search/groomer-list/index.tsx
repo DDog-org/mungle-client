@@ -32,7 +32,7 @@ export function GroomerList({ inputValue }: GroomerListProps) {
   const { address } = useAddressStore();
 
   const handleCardClick = (id: number) => {
-    router.push(ROUTES.GROOMER_DETAIL(id));
+    router.push(ROUTES.GROOMERS_DETAIL(id));
   };
 
   const handleTagClick = (tagValue: string) => {

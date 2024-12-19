@@ -32,7 +32,7 @@ export function VetList({ inputValue }: VetListProps) {
   const { loadMoreRef } = useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNextPage });
 
   const handleCardClick = (id: number) => {
-    router.push(ROUTES.VET_DETAIL(id));
+    router.push(ROUTES.VETS_DETAIL(id));
   };
 
   const handleTagClick = (tagValue: string) => {
