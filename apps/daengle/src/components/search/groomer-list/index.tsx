@@ -2,12 +2,12 @@ import { useAddressFormStore } from '~/stores/main';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { cardBox, emptyBox, wrapper, tag, bottom, itemBox } from './index.styles';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { GROOMER_SEARCH_TAG, GROOMER_SEARCH_TAG_BUTTON } from '~/constants/search';
-import { useGetUserSearchGroomerInfiniteQuery } from '~/queries/search';
 import { Item } from '../item';
 import { ChipToggleButton, Empty } from '@daengle/design-system';
 import { useIntersectionLoad } from '~/hooks';
+import { useGetUserSearchGroomerInfiniteQuery } from '~/queries/search';
 
 interface GroomerListProps {
   inputValue: string;

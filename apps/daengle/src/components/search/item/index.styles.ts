@@ -6,7 +6,6 @@ export const wrapper = css`
   align-items: center;
 
   width: 100%;
-  width: fit-content;
   height: fit-content;
 
   cursor: pointer;
@@ -40,7 +39,9 @@ export const DetailsWrapper = css`
   color: white;
 `;
 export const imageStyle = css`
-  border-radius: 86px 86px 0 0;
+  width: 100%;
+  height: 200px;
+  border-radius: 120px 120px 0 0;
 
   background-color: ${theme.colors.gray200};
 `;

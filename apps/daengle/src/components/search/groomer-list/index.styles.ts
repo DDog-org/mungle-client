@@ -12,25 +12,25 @@ export const tag = css`
 `;
 
 export const itemBox = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 17px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 20px;
 
   padding: 0 18px;
 `;
 export const cardBox = css`
+  display: flex;
   flex-wrap: wrap;
+
+  width: 100%;
 `;
 
 export const emptyBox = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-
-  margin-top: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 export const bottom = css`
   position: absolute;
