@@ -6,7 +6,10 @@ export const profileCard = css`
   gap: 20px;
 
   padding: 15px 0;
-  border-bottom: 1px solid ${theme.colors.gray100};
+
+  & + & {
+    border-top: 1px solid ${theme.colors.gray100};
+  }
 `;
 
 export const imageStyle = css`

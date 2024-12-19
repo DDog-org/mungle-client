@@ -1,23 +1,20 @@
-import { AppBar, CTAButton, Layout, Text, theme } from '@daengle/design-system';
-import { AddButton, DefaultProfile } from '@daengle/design-system/icons';
-import { css } from '@emotion/react';
-
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { ROUTES } from '~/constants/commons';
 import { useRouter } from 'next/router';
-
+import { useEffect, useState } from 'react';
+import { css } from '@emotion/react';
+import { AppBar, CTAButton, Layout, Text, TextField, theme } from '@daengle/design-system';
+import { ROUTES } from '~/constants/commons';
 import {
   usePostUserEstimateGroomingMutation,
   usePostUserEstimateGroomerUserInfoMutation,
-} from '~/queries/estimate';
+} from '~/queries';
 import { PostUserEstimateGroomerUserInfoResponse } from '~/models/estimate';
 
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 import { PetInfo } from '~/interfaces/estimate';
-import { DatePicker, EstimateSelect, ProfileSelector } from '~/components/estimate';
+import { DatePicker, EstimateSelect } from '~/components/estimate';
 import { RegisterPetProfile } from '@daengle/services/components';
+import { SelectPet } from '~/components/mypage';
 
 export default function EstimateCreate() {
   const router = useRouter();
@@ -110,7 +107,11 @@ export default function EstimateCreate() {
 
   return (
     <Layout>
-      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
+      <AppBar
+        onBackClick={router.back}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+        backgroundColor="white"
+      />
       <div css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
           견적 요청서
@@ -134,10 +135,15 @@ export default function EstimateCreate() {
             어떤 아이를 가꿀 예정이신가요?
           </Text>
           {petInfos && petInfos.length > 0 ? (
-            <ProfileSelector
-              petInfos={petInfos}
+            <SelectPet
+              petInfos={petInfos.map((pet) => ({
+                ...pet,
+                petName: pet.name,
+                petImage: pet.imageUrl ?? '',
+              }))}
               selectedPetId={selectedPetId}
-              onSelectPet={(petId) => setSelectedPetId(petId)}
+              handlePetSelect={handlePetSelect}
+              handlePetCreateClick={() => router.push(ROUTES.MYPAGE_PET_PROFILE_CREATE)}
             />
           ) : (
             <RegisterPetProfile onClick={() => router.push(ROUTES.MYPAGE)} />
@@ -177,12 +183,10 @@ export default function EstimateCreate() {
           </div>
         </section>
         <section css={section}>
-          <Text tag="h2" typo="subtitle3" color="black">
-            추가 요청사항
-          </Text>
-          <textarea
-            placeholder="추가 요청사항을 입력해주세요"
-            css={textField}
+          <TextField
+            label="요청사항"
+            required
+            placeholder="요청사항을 입력해 주세요"
             value={requirements}
             onChange={handleRequirementsChange}
           />
@@ -194,8 +198,6 @@ export default function EstimateCreate() {
     </Layout>
   );
 }
-
-//////////// emotion(css) //////////
 
 const wrapper = css`
   display: flex;

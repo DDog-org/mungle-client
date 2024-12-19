@@ -23,7 +23,7 @@ import {
   GetUserValidateResponse,
   GetUserMypageResponse,
   GetUserWithdrawInfoResponse,
-  DeleteUserResponse,
+  DeleteUserInfoResponse,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -96,6 +96,6 @@ export const getUserWithdrawInfo = async () => {
   return await api.get<GetUserWithdrawInfoResponse>('/user/withdraw-info');
 };
 
-export const deleteUser = async () => {
-  return await api.delete<DeleteUserResponse>('/user');
+export const deleteUserInfo = async () => {
+  return await api.delete<DeleteUserInfoResponse>('/user/info');
 };

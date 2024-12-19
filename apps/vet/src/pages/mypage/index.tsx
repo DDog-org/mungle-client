@@ -193,7 +193,10 @@ const infoSection = css`
   display: flex;
   flex-direction: column;
   gap: 11px;
-  border-bottom: 1px solid ${theme.colors.gray100};
+
+  & + & {
+    border-top: 1px solid ${theme.colors.gray100};
+  }
 `;
 
 const time = css`

@@ -15,15 +15,9 @@ import {
   deleteUserPet,
   getUserMypage,
   getUserWithdrawInfo,
-  deleteUser,
+  deleteUserInfo,
 } from '~/apis';
-import {
-  PatchUserInfoRequestBody,
-  PostJoinWithPetRequestBody,
-  PostUserPetRequestBody,
-  DeleteUserPetRequestData,
-  PatchUserPetInfoRequestBody,
-} from '~/models';
+import { PostJoinWithPetRequestBody, DeleteUserPetRequestData } from '~/models';
 
 export const usePostKakaoMutation = () => {
   return useMutation({
@@ -116,16 +110,17 @@ export const useGetUserMypageQuery = () => {
   });
 };
 
-export const useGetUserWithdrawInfoQuery = () => {
+export const useGetUserWithdrawInfoQuery = ({ enable }: { enable: boolean }) => {
   return useQuery({
     queryKey: QUERY_KEYS.GET_USER_WITHDRAW_INFO,
     queryFn: getUserWithdrawInfo,
+    enabled: enable,
   });
 };
 
-export const useDeleteUserMutation = () => {
+export const useDeleteUserInfoMutation = () => {
   return useMutation({
-    mutationKey: QUERY_KEYS.DELETE_USER,
-    mutationFn: deleteUser,
+    mutationKey: QUERY_KEYS.DELETE_USER_INFO,
+    mutationFn: deleteUserInfo,
   });
 };

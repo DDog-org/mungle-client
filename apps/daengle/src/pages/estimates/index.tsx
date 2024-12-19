@@ -27,18 +27,12 @@ const ACTION_SHEET_MENUS = [
 
 export default function EstimateList() {
   const router = useRouter();
-  const { service, isDesignation: isDesignationQuery } = router.query;
-  const isDesignation = isDesignationQuery === 'true';
-  const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
 
-  useEffect(() => {
-    if (router.isReady && !service) {
-      router.replace({
-        pathname: '/estimates',
-        query: { service: 'groomer', isDesignation: 'false' },
-      });
-    }
-  }, [router.isReady]);
+  const { isDesignation: isDesignationQuery } = router.query;
+  const isDesignation = isDesignationQuery === 'true';
+
+  const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>('groomer');
 
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
@@ -54,6 +48,18 @@ export default function EstimateList() {
 
   const handleModal = () => {
     setIsActionSheetOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const queryTab = router.query.service as string;
+    if (queryTab && TABS.some((tab) => tab.id === queryTab)) {
+      setActiveTab(queryTab);
+    }
+  }, [router.query.serviceb]);
+
+  const handleTabClick = (tabId: string) => {
+    router.push({ query: { service: tabId } }, undefined, { shallow: true });
+    setActiveTab(tabId);
   };
 
   return (
@@ -83,7 +89,12 @@ export default function EstimateList() {
             }))}
           />
         )}
-        <Tabs tabs={TABS} renderContent={renderContent} />
+        <Tabs
+          tabs={TABS}
+          renderContent={renderContent}
+          activeTabId={activeTab}
+          onTabClick={handleTabClick}
+        />
         <GNB />
       </div>
     </Layout>

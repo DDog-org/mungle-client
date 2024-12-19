@@ -60,8 +60,16 @@ export function RequestEstimate({
       primaryActionLabel: '그만 받기',
       onPrimaryAction:
         service === 'groomer'
-          ? () => cancelGroomingEstimate({ estimateId })
-          : () => cancelCareEstimate({ estimateId }),
+          ? () => {
+              cancelGroomingEstimate({ estimateId });
+              router.back();
+              showToast({ title: '견적 요청이 취소되었어요' });
+            }
+          : () => {
+              cancelCareEstimate({ estimateId });
+              router.back();
+              showToast({ title: '견적 요청이 취소되었어요' });
+            },
       secondaryActionLabel: '취소',
     });
   };
@@ -73,7 +81,11 @@ export function RequestEstimate({
 
   return (
     <Layout>
-      <AppBar backgroundColor="white" onBackClick={router.back} onHomeClick={() => router.back()} />
+      <AppBar
+        backgroundColor="white"
+        onBackClick={router.back}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+      />
 
       <div css={wrapper}>
         <div css={header}>
@@ -86,7 +98,8 @@ export function RequestEstimate({
 
         <Section title="시술 희망 날짜 및 시간">
           <Text typo="title2">
-            {dayjs(reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
+            {/* {dayjs(reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')} */}
+            2024년 12월 25일(월) • 14:00
           </Text>
         </Section>
 
@@ -101,7 +114,7 @@ export function RequestEstimate({
         </Section>
 
         <Section title={specificField.title}>
-          <Text typo="title2">{specificField.value}</Text>
+          <Text typo="subtitle1">{specificField.value}</Text>
         </Section>
 
         <Section title="추가 요청사항">

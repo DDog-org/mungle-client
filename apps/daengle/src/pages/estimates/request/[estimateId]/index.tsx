@@ -5,8 +5,8 @@ import 'dayjs/locale/ko';
 
 export default function RequestEstimate() {
   const router = useRouter();
-  const { id, service } = router.query;
-  const estimateId = Number(id);
+  const { service } = router.query;
+  const estimateId = Number(router.query.estimateId);
 
   return (
     <div>

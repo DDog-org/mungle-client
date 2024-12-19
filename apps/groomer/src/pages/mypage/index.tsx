@@ -40,7 +40,6 @@ export default function GroomerInfo() {
               width={101}
               height={117}
               css={imageStyle}
-              objectFit="cover"
             />
           ) : (
             <DefaultProfile width={101} height={117} css={imageStyle} />
@@ -146,6 +145,10 @@ const groomerProfile = css`
 
   width: 100%;
   padding: 24px 0;
+
+  img {
+    object-fit: cover;
+  }
 `;
 
 const imageStyle = css`
@@ -277,17 +280,20 @@ const line = css`
 `;
 
 const bottomSection = css`
-  padding: 0 18px;
+  padding: 0 18px calc(${theme.size.gnbHeight} + 18px) 18px;
 `;
 
 const menu = css`
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid ${theme.colors.gray100};
 
   padding: 24px 0;
 
   cursor: pointer;
+
+  & + & {
+    border-top: 1px solid ${theme.colors.gray100};
+  }
 `;
 
 const review = css`

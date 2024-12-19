@@ -27,6 +27,7 @@ export const reviewerInfo = css`
   img,
   svg {
     border-radius: 50%;
+    object-fit: cover;
   }
 `;
 

@@ -82,7 +82,7 @@ export interface PetProfile {
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
   groomingExperience: boolean;
   isBite: boolean;
-  dislikeParts: PetDislikePartValue[];
+  dislikeParts: { partName: string; part: PetDislikePartValue }[];
   significantTags: SignificantTag[];
   significant: string;
 }
@@ -159,7 +159,7 @@ export interface GetUserWithdrawInfoResponse {
   waitingForServiceCount: number;
 }
 
-export interface DeleteUserResponse {
+export interface DeleteUserInfoResponse {
   accountId: number;
   withdrawDate: string;
 }

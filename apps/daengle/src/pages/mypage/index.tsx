@@ -8,10 +8,9 @@ import { RegisterPetProfile } from '@daengle/services/components';
 import { ROUTES } from '~/constants';
 import { GNB } from '~/components/commons';
 import { SelectPet, Tab } from '~/components/mypage';
-import { ProfileSelector } from '~/components/estimate';
 import { PetInfoForm } from '~/interfaces';
 import {
-  useDeleteUserMutation,
+  useDeleteUserInfoMutation,
   useGetUserMypageQuery,
   useGetUserWithdrawInfoQuery,
 } from '~/queries';
@@ -23,8 +22,12 @@ export default function Mypage() {
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
 
   const { data: getUserMypage, refetch: refetchUserMypage } = useGetUserMypageQuery();
-  const { data: getUserWithdrawInfo } = useGetUserWithdrawInfoQuery();
-  const { mutateAsync: deleteUser } = useDeleteUserMutation();
+
+  const [isWithdrawTabClick, setIsWithdrawTabClick] = useState<boolean>(false);
+  const { data: getUserWithdrawInfo } = useGetUserWithdrawInfoQuery({
+    enable: isWithdrawTabClick,
+  });
+  const { mutateAsync: deleteUserInfo } = useDeleteUserInfoMutation();
 
   const { showToast } = useToast();
   const { open } = useDialog();
@@ -188,17 +191,18 @@ export default function Mypage() {
               variant="ghost"
               title="회원 탈퇴"
               onClick={() => {
+                setIsWithdrawTabClick(true);
                 const waitingForServiceCount = getUserWithdrawInfo?.waitingForServiceCount;
 
                 open({
                   type: 'warn',
                   title: '회원 탈퇴',
                   description: waitingForServiceCount
-                    ? `현재 예약 중인 서비스가 ${waitingForServiceCount}건 있어요.\n탈퇴 시 예약금은 전액환불 처리될 예정이에요.`
+                    ? `현재 예약 중인 서비스가 ${waitingForServiceCount}건 있어요.\n3일 전까지 취소: 예약금 100% 환불\n1일전 까지 취소:  예약금 50% 환불\n당일 취소: 예약금 환불 불가`
                     : '정말로 탈퇴하시겠어요?\n탈퇴된 계정은 다시 복구할 수 없어요',
                   primaryActionLabel: '탈퇴하기',
                   onPrimaryAction: async () => {
-                    await deleteUser();
+                    await deleteUserInfo();
                     router.push(ROUTES.HOME);
                     showToast({ title: '탈퇴 처리가 완료되었어요. 다음에 다시 만나요 🐾' });
                   },
@@ -216,7 +220,7 @@ export default function Mypage() {
   );
 }
 const wrapper = css`
-  padding: 38px 18px 18px;
+  padding: 38px 18px 15px;
 `;
 const profileWrapper = css`
   display: flex;
@@ -313,14 +317,6 @@ const petList = css`
   gap: 14px;
   overflow-x: scroll;
 `;
-const petProfile = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-
-  cursor: pointer;
-`;
 
 const line = css`
   width: 100%;
@@ -329,37 +325,5 @@ const line = css`
 `;
 
 const itemWrapper = css`
-  padding: 0 18px;
-`;
-
-const item = css`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 18px 0;
-  border-bottom: 1px solid ${theme.colors.gray100};
-
-  cursor: pointer;
-`;
-const endItem = css`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 18px 0;
-`;
-const addButton = css`
-  display: flex;
-`;
-
-const petProfileAdd = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-
-  padding: 0 18px 0 0;
-
-  cursor: pointer;
+  padding: 0 18px calc(${theme.size.gnbHeight} + 18px) 18px;
 `;

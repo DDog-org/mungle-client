@@ -7,7 +7,7 @@ export interface GetUserVetDetailResponse {
   closedDay: string[];
   startTime: string;
   endTime: string;
-  keywords: string[];
+  badges: string[];
   introduction: string | null;
   daengleMeter: number;
   reviewCount: number;
@@ -23,7 +23,7 @@ export interface GetUserShopDetailResponse {
   shopName: string;
   shopAddress: string;
   shopNumber: string | null;
-  imageUrlList: string[];
+  shopImage: string;
   groomers: GroomerInfo[];
   startTime: string;
   endTime: string;
