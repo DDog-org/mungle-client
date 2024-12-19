@@ -34,7 +34,6 @@ export default function Search() {
   };
 
   const handleValueChange = (value: string) => {
-    console.log('[Parent] 검색어 입력값:', value);
     setChildValue(value);
   };
 
