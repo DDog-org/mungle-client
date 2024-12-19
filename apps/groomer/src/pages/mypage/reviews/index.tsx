@@ -2,6 +2,7 @@ import { Layout, AppBar, Text, theme, Tabs } from '@daengle/design-system';
 import { ReviewCardList, ReviewSummary } from '@daengle/services/components';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
+import { GROOMER_REVIEW_KEYWORDS, REPORT_KEYWORDS } from '~/constants';
 import { ROUTES } from '~/constants/commons';
 import { useIntersectionLoad } from '~/hooks/review';
 import {
@@ -33,7 +34,9 @@ function transformGroomingReviewList(data: GroomerReviewList): PartnersReviewLis
     starRating: data.starRating,
     content: data.content,
     imageUrlList: data.imageUrlList,
-    keywordsList: data.groomingKeywordList,
+    keywordsList: data.groomingKeywordList
+      .map((keyword) => GROOMER_REVIEW_KEYWORDS[keyword])
+      .filter((keyword): keyword is string => !!keyword),
   };
 }
 function transformGroomingReviewReportList(data: GroomerReviewReportList): PartnersReviewListType {
@@ -47,9 +50,11 @@ function transformGroomingReviewReportList(data: GroomerReviewReportList): Partn
     starRating: data.starRating,
     content: data.content,
     imageUrlList: data.imageUrlList,
-    reportType: data.reportType,
+    reportType: REPORT_KEYWORDS[data.reportType] || data.reportType,
     reportContent: data.reportContent,
-    keywordsList: data.groomingKeywordList,
+    keywordsList: data.groomingKeywordList
+      .map((keyword) => GROOMER_REVIEW_KEYWORDS[keyword])
+      .filter((keyword): keyword is string => !!keyword),
   };
 }
 
@@ -116,6 +121,7 @@ export default function ReviewsPage() {
             <ReviewCardList
               reviews={flaggedReviews}
               onReport={(reviewId) => router.push(ROUTES.MYPAGE_REVIEWS_REPORT(reviewId))}
+              flagged={true}
             />
             <div ref={loadMoreFlaggedRef} css={bottom} />
           </div>
@@ -136,7 +142,13 @@ export default function ReviewsPage() {
 
   return (
     <Layout>
-      <AppBar backgroundColor={theme.colors.background} />
+      <AppBar
+        backgroundColor={theme.colors.background}
+        onBackClick={() => {
+          router.push(ROUTES.MYPAGE);
+        }}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+      />
       <div css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
           리뷰 관리

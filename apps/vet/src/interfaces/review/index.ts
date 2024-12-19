@@ -6,7 +6,7 @@ export interface PartnersReviewListType {
   reviewerImageUrl: string;
   revieweeName: string;
   createdAt: string;
-  starRating: number;
+  starRating: 1 | 2 | 3 | 4 | 5;
   content: string;
   imageUrlList: string[];
   reportType?: string;
@@ -21,7 +21,7 @@ export interface CareReviewList {
   reviewerImageUrl: string;
   revieweeName: string;
   createdAt: string;
-  starRating: number;
+  starRating: 1 | 2 | 3 | 4 | 5;
   content: string;
   imageUrlList: string[];
 }
@@ -34,7 +34,7 @@ export interface CareReviewReportList {
   reviewerImageUrl: string;
   revieweeName: string;
   createdAt: string;
-  starRating: number;
+  starRating: 1 | 2 | 3 | 4 | 5;
   content: string;
   imageUrlList: string[];
   reportType: string;

@@ -100,7 +100,7 @@ export const contentContainer = css`
   align-items: center;
   justify-content: space-between;
 
-  margin-bottom: 6px;
+  margin: 12px 0 6px;
 `;
 
 export const contentStyle = (flagged: boolean, isUnrolled: boolean) => css`
