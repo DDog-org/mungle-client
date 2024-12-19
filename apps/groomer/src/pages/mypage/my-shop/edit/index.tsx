@@ -16,7 +16,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useGetGroomerShopInfoQuery, usePatchGroomerShopInfoMutation } from '~/queries/auth';
 import dayjs, { Dayjs } from 'dayjs';
-import { GROOMER_DAT_OFF } from '~/constants/mypage';
+import { DAY_OFF } from '~/constants/mypage';
 import TimePickerComponent from '~/components/mypage/time-picker';
 import { GroomerProfileForm } from '~/interfaces';
 import { useValidateMyPageForm } from '~/hooks/mypage/use-validate-mypage-form';
@@ -142,7 +142,7 @@ export default function groomerProfile() {
               </Text>
 
               <div css={chipButton}>
-                {GROOMER_DAT_OFF.map((item) => {
+                {DAY_OFF.map((item) => {
                   return (
                     <ChipToggleButton
                       type="button"

@@ -16,7 +16,7 @@ import router from 'next/router';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import TimePickerComponent from '~/components/mypage/time-picker';
-import { VET_DAT_OFF } from '~/constants/mypage';
+import { DAY_OFF } from '~/constants/mypage';
 import { useValidateMyPageForm } from '~/hooks/mypage/use-validate-mypage-form';
 import { VetProfileForm } from '~/interfaces/auth';
 import { useGetVetModifyPageQuery, usePatchVetInfoMutation } from '~/queries/auth';
@@ -145,7 +145,7 @@ export default function vetProfile() {
               </Text>
 
               <div css={chipButton}>
-                {VET_DAT_OFF.map((item) => {
+                {DAY_OFF.map((item) => {
                   return (
                     <ChipToggleButton
                       type="button"
