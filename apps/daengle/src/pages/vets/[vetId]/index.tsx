@@ -29,7 +29,7 @@ export default function VetInfo() {
       <div css={wrapper}>
         <div css={imageSection}>
           {vetInfo?.vetImage ? (
-            <Image src={vetInfo.vetImage} alt="동물병원 이미지" objectFit="cover" />
+            <img src={vetInfo.vetImage} alt="동물병원 이미지" />
           ) : (
             <VetDefaultImage />
           )}
@@ -112,7 +112,10 @@ export default function VetInfo() {
                 variant="primaryLow"
                 onClick={() =>
                   chatStartInfo?.chatRoomId &&
-                  router.push(ROUTES.CHATS_DETAIL(chatStartInfo?.chatRoomId))
+                  router.push({
+                    pathname: ROUTES.CHATS_DETAIL(chatStartInfo?.chatRoomId),
+                    query: { otherId: Number(vetId), service: 'vet' },
+                  })
                 }
               >
                 채팅하기
@@ -162,6 +165,12 @@ const imageSection = css`
   height: 416px;
 
   background: ${theme.colors.gray200};
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const vetName = css`

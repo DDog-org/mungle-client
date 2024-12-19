@@ -9,7 +9,7 @@ interface Props {
 
 export function OptionSelector({ estimateId }: Props): JSX.Element {
   const router = useRouter();
-  const { tab } = router.query;
+  const { service } = router.query;
 
   return (
     <div css={wrapper}>
@@ -17,7 +17,7 @@ export function OptionSelector({ estimateId }: Props): JSX.Element {
         onClick={() =>
           router.push({
             pathname: ROUTES.ESTIMATES_REQUEST(estimateId || 0),
-            query: { service: tab },
+            query: { service },
           })
         }
         disabled={!estimateId}

@@ -21,10 +21,7 @@ export default function GroomerReviews() {
 
   return (
     <Layout isAppBarExist={false}>
-      <AppBar
-        onBackClick={() => router.push(ROUTES.MYPAGE_REVIEWS)}
-        onHomeClick={() => router.push(ROUTES.HOME)}
-      />
+      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
 
       <section css={wrapper}>
         <Text tag="h1" typo="title1" color="black">

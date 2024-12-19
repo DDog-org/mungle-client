@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { GetUserGroomerDetailRequestParams } from '~/models';
-import { useGetUserGroomerDetailQuery } from '~/queries';
+import { useGetChatStartQuery, useGetUserGroomerDetailQuery } from '~/queries';
 
 export default function GroomerInfo() {
   const router = useRouter();
@@ -19,7 +19,8 @@ export default function GroomerInfo() {
   const getGroomerId = Number(groomerId);
   const groomerParams: GetUserGroomerDetailRequestParams = { groomerId: getGroomerId };
 
-  const { data: GroomerDetail } = useGetUserGroomerDetailQuery(groomerParams);
+  const { data: groomerDetail } = useGetUserGroomerDetailQuery(groomerParams);
+  const { data: chatStartInfo } = useGetChatStartQuery({ otherId: Number(groomerId) });
 
   return (
     <Layout>
@@ -27,9 +28,9 @@ export default function GroomerInfo() {
       <section css={topSection}>
         <Text typo="title1">상세보기</Text>
         <section css={groomerProfile}>
-          {GroomerDetail?.groomerImage ? (
+          {groomerDetail?.groomerImage ? (
             <Image
-              src={GroomerDetail?.groomerImage}
+              src={groomerDetail?.groomerImage}
               alt="미용사 프로필이미지"
               width={101}
               height={117}
@@ -39,7 +40,7 @@ export default function GroomerInfo() {
             <DefaultProfile width={101} height={117} css={imageStyle} />
           )}
           <div css={infoBox}>
-            <Text typo="title2">{GroomerDetail?.groomerName}</Text>
+            <Text typo="title2">{groomerDetail?.groomerName}</Text>
             <div css={tags}>
               <Text typo="body12" color="blue200" css={tag}>
                 {/*  TODO: 뱃지 나오면 연동 */}
@@ -51,17 +52,17 @@ export default function GroomerInfo() {
             </div>
             <TextButton
               icons={{ suffix: <ButtonTextButtonArrow width={6} /> }}
-              onClick={() => router.push(ROUTES.GROOMERS_SHOPS_DETAIL(getGroomerId))}
+              onClick={() => router.push(ROUTES.GROOMERS_SHOPS_DETAIL(groomerDetail?.shopId!))}
             >
               <Text typo="body9" color="gray500">
-                {GroomerDetail?.shopName}
+                {groomerDetail?.shopName}
               </Text>
             </TextButton>
           </div>
         </section>
         <section css={infoText}>
           <Text typo="body1">소개</Text>
-          <Text typo="body10">{GroomerDetail?.introduction}</Text>
+          <Text typo="body10">{groomerDetail?.introduction}</Text>
         </section>
         <section css={daengleMeter}>
           <div css={textBox}>
@@ -77,7 +78,7 @@ export default function GroomerInfo() {
               </div>
             </div>
             <Text typo="body1" color="blue200" css={meter}>
-              {GroomerDetail?.daengleMeter}m
+              {groomerDetail?.daengleMeter}m
             </Text>
           </div>
           <div css={graph}>
@@ -96,7 +97,12 @@ export default function GroomerInfo() {
           </RoundButton>
           <RoundButton
             fullWidth={true}
-            onClick={() => router.push(ROUTES.CHATS_DETAIL(getGroomerId))}
+            onClick={() =>
+              router.push({
+                pathname: ROUTES.CHATS_DETAIL(chatStartInfo?.chatRoomId!),
+                query: { otherId: Number(groomerId), service: 'groomer' },
+              })
+            }
             variant="primaryLow"
           >
             채팅하기
@@ -107,7 +113,7 @@ export default function GroomerInfo() {
         <div css={menu} onClick={() => router.push(ROUTES.GROOMERS_REVIEWS(getGroomerId))}>
           <div css={review}>
             <Text typo="subtitle1">받은 리뷰</Text>
-            <Text typo="subtitle1">{GroomerDetail?.reviewCount}</Text>
+            <Text typo="subtitle1">{groomerDetail?.reviewCount}</Text>
           </div>
           <ButtonTextButtonArrow width={6} />
         </div>
@@ -116,7 +122,7 @@ export default function GroomerInfo() {
           css={menu}
           onClick={() =>
             router.push(
-              `${ROUTES.GROOMERS_PORFOLIO(getGroomerId)}?instagram=${GroomerDetail?.instagram}`
+              `${ROUTES.GROOMERS_PORFOLIO(getGroomerId)}?instagram=${groomerDetail?.instagram}`
             )
           }
         >

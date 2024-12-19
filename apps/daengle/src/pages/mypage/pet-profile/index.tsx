@@ -24,12 +24,13 @@ import { PetProfile } from '~/models/auth';
 import router from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { ProfileSelector } from '~/components/estimate';
+import { Loading } from '~/components/commons';
 
 export default function PetProfileDetail() {
   const [petInfos, setPetInfos] = useState<PetProfile[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
   const { data: breeds } = useGetBreedListQuery();
-  const { data: getUserPetInfo, isLoading, error } = useGetUserPetInfoQuery();
+  const { data: getUserPetInfo, isLoading } = useGetUserPetInfoQuery();
 
   const selectedPet = petInfos?.find((pet) => pet.id === selectedPetId);
 
@@ -40,24 +41,17 @@ export default function PetProfileDetail() {
   const handleGoToEdit = () => {
     router.push(ROUTES.MYPAGE_PET_PROFILE_EDIT);
   };
+
+  if (isLoading) {
+    return <Loading title="정보를 불러오고 있어요" />;
+  }
+
   useEffect(() => {
     if (getUserPetInfo && getUserPetInfo.petDetails) {
       setPetInfos(getUserPetInfo.petDetails);
       setSelectedPetId(getUserPetInfo.petDetails[0]?.id || 0);
     }
   }, [getUserPetInfo]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!getUserPetInfo) {
-    return <div>No pet information available</div>;
-  }
-
-  if (error) {
-    return <div>Error loading pet information</div>;
-  }
 
   return (
     <Layout isAppBarExist={true}>
@@ -191,7 +185,7 @@ export default function PetProfileDetail() {
           <section css={selectChipButtonBox}>
             {PET_DISLIKE_PARTS.map((item) => {
               const selectedParts = selectedPet?.dislikeParts;
-              const isSelected = selectedParts?.includes(item.value);
+              const isSelected = selectedParts?.map((part) => part.part).includes(item.value);
 
               return (
                 <ChipToggleButton key={item.value} size="fixed" isSelected={isSelected}>

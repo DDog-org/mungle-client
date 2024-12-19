@@ -43,7 +43,7 @@ export interface PetProfileEditType {
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
   groomingExperience: boolean;
   isBite: boolean;
-  dislikeParts: string[];
+  dislikeParts: PetDislikePartValue[];
   significantTags: string[];
   significant: string;
 }

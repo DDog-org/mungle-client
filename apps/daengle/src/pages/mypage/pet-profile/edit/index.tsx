@@ -8,9 +8,13 @@ import {
   Select,
   Text,
   theme,
+  useDialog,
+  useToast,
 } from '@daengle/design-system';
 import {
   BIRTH_YEAR_OPTIONS,
+  GROOMING_EXPERIENCE,
+  IS_BITE,
   PET_DISLIKE_PARTS,
   PET_GENDER,
   PET_IS_NEUTERED,
@@ -35,6 +39,7 @@ import router from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { useValidatePetEdit } from '~/hooks';
 import { ImageInputBox } from '~/components/mypage';
+import { convertURLToFile } from '@daengle/services/utils';
 
 export default function PetInfoEdit() {
   const [petInfos, setPetInfos] = useState<PetProfile[] | null>(null);
@@ -49,6 +54,9 @@ export default function PetInfoEdit() {
 
   const { uploadToS3, deleteFromS3 } = useS3({ targetFolderPath: 'user/profile-images' });
 
+  const { showToast } = useToast();
+  const { open } = useDialog();
+
   const {
     register,
     handleSubmit,
@@ -59,7 +67,6 @@ export default function PetInfoEdit() {
   } = useForm<PetProfileEditType>({
     mode: 'onChange',
     defaultValues: {
-      image: null,
       significantTags: [],
       dislikeParts: [],
     },
@@ -74,7 +81,7 @@ export default function PetInfoEdit() {
       if (defaultPet) {
         setSelectedPetId(defaultPet.id);
 
-        const dislikeParts = defaultPet.dislikeParts;
+        const dislikeParts = defaultPet.dislikeParts?.map((part) => part.part);
         const significantTags = defaultPet.significantTags.map((tag) => tag.tag);
 
         setValue('name', defaultPet.name || '');
@@ -96,7 +103,7 @@ export default function PetInfoEdit() {
 
     const selectedPet = petInfos?.find((pet) => pet.id === petId);
 
-    const dislikeParts = selectedPet?.dislikeParts;
+    const dislikeParts = selectedPet?.dislikeParts?.map((part) => part.part) ?? [];
     const significantTags = selectedPet?.significantTags.map((tag) => tag.tag);
 
     if (selectedPet) {
@@ -108,27 +115,33 @@ export default function PetInfoEdit() {
       setValue('weight', selectedPet.weight || '');
       setValue('groomingExperience', selectedPet.groomingExperience);
       setValue('isBite', selectedPet.isBite);
-      setValue('dislikeParts', dislikeParts || []);
+      setValue('dislikeParts', dislikeParts);
       setValue('significantTags', significantTags || []);
     }
   };
 
   const handleDeletePet = async () => {
-    // TODO : 모달창으로 수정
-    if (!confirm('정말로 이 반려견 정보를 삭제하시겠습니까?')) {
-      return;
-    }
-    await deleteUserPet({
-      petId: selectedPetId,
+    open({
+      title: '반려견 정보 삭제',
+      description: '정말로 반려견 정보를 삭제할까요?',
+      primaryActionLabel: '삭제',
+      onPrimaryAction: async () => {
+        await deleteUserPet({
+          petId: selectedPetId,
+        });
+
+        setPetInfos((prev) => prev?.filter((pet) => pet.id !== selectedPetId) || []);
+        setSelectedPetId(0);
+
+        router.push(ROUTES.MYPAGE);
+        showToast({ title: '반려견 정보가 삭제되었어요.' });
+      },
+      secondaryActionLabel: '취소',
     });
-
-    setPetInfos((prev) => prev?.filter((pet) => pet.id !== selectedPetId) || []);
-
-    setSelectedPetId(0);
   };
 
   const onSubmit = async (data: PetProfileEditType) => {
-    let imageString = '';
+    let imageUrl = '';
 
     if (getUserPetInfo?.image) {
       const fileName = getUserPetInfo.image.split('/').pop();
@@ -140,18 +153,21 @@ export default function PetInfoEdit() {
     if (data.image) {
       const uploadedImages = await uploadToS3([data.image]);
       if (uploadedImages && uploadedImages.length > 0) {
-        imageString = uploadedImages[0] ?? '';
+        imageUrl = uploadedImages[0] ?? '';
       }
     } else {
-      imageString = getUserPetInfo?.image || '';
+      imageUrl = getUserPetInfo?.image || '';
     }
 
     const payload = {
       ...data,
       id: selectedPetId,
-      image: imageString,
+      image: imageUrl,
     };
+
     await patchUserPetInfo(payload);
+    router.push(ROUTES.MYPAGE);
+    showToast({ title: '반려견 정보가 수정되었어요.' });
   };
 
   return (
@@ -225,6 +241,7 @@ export default function PetInfoEdit() {
             label="이름"
             placeholder="이름을 입력해 주세요"
             maxLength={10}
+            required
             {...register('name', { ...validation.name })}
             errorMessage={errors.name?.message}
           />
@@ -338,7 +355,7 @@ export default function PetInfoEdit() {
                 control={control}
                 render={({ field }) => (
                   <>
-                    {PET_IS_NEUTERED.map((item) => (
+                    {GROOMING_EXPERIENCE.map((item) => (
                       <ChipRadio
                         key={item.label}
                         name={field.name}
@@ -362,7 +379,7 @@ export default function PetInfoEdit() {
                 control={control}
                 render={({ field }) => (
                   <>
-                    {PET_IS_NEUTERED.map((item) => (
+                    {IS_BITE.map((item) => (
                       <ChipRadio
                         key={item.label}
                         name={field.name}

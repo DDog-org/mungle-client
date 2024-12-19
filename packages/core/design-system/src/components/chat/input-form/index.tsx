@@ -25,8 +25,6 @@ export const ChatInputForm = forwardRef<InputFormRef, Props>(
 
     return (
       <div css={wrapper}>
-        <ChatPlus width={32} height={32} />
-
         <form css={inputWrapper} onSubmit={onSubmit}>
           <input
             css={input}

@@ -1,8 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/react';
 import { Layout, Tabs, Text, theme } from '@daengle/design-system';
 import { GNB } from '~/components/commons';
 import { GroomerChatList, VetChatList } from '~/components/chats';
+import { useRouter } from 'next/router';
+import { ROUTES } from '~/constants';
 
 const TABS = [
   {
@@ -16,6 +18,9 @@ const TABS = [
 ];
 
 export default function Chats() {
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState(TABS[0]?.id);
+
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const renderContent = (activeTabId: string) => {
@@ -34,6 +39,18 @@ export default function Chats() {
     scrollRef.current.scrollTo(0, scrollRef.current.scrollHeight);
   }, []);
 
+  useEffect(() => {
+    const queryTab = router.query.tab as string;
+    if (queryTab && TABS.some((tab) => tab.id === queryTab)) {
+      setActiveTab(queryTab);
+    }
+  }, [router.query.tab]);
+
+  const handleTabClick = (tabId: string) => {
+    router.push({ query: { tab: tabId } }, undefined, { shallow: true });
+    setActiveTab(tabId);
+  };
+
   return (
     <Layout isAppBarExist={false}>
       <GNB />
@@ -45,7 +62,12 @@ export default function Chats() {
         </div>
 
         <div css={chatsWrapper}>
-          <Tabs tabs={TABS} renderContent={renderContent} />
+          <Tabs
+            tabs={TABS}
+            renderContent={renderContent}
+            activeTabId={activeTab}
+            onTabClick={handleTabClick}
+          />
         </div>
       </section>
     </Layout>

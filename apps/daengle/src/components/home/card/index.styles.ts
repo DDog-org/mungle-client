@@ -18,6 +18,7 @@ export const wrapper = css`
 
 export const imageStyle = css`
   border-radius: 86px 86px 0 0;
+  object-fit: cover;
 
   background-color: ${theme.colors.gray200};
 `;

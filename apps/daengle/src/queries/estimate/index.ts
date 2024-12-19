@@ -76,9 +76,7 @@ export const useUserEstimateGeneralGroomingQuery = (petId: number | undefined) =
 export const useUserEstimateGeneralCarePetsQuery = () => {
   return useQuery<GetUserEstimateGeneralCarePetsResponse>({
     queryKey: QUERY_KEYS.GET_USER_ESTIMATE_GENERAL_CARE_PETS,
-    queryFn: () => {
-      return getUserEstimateGeneralCarePets();
-    },
+    queryFn: getUserEstimateGeneralCarePets,
   });
 };
 

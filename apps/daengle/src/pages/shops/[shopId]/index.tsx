@@ -1,5 +1,5 @@
 import { AppBar, Empty, Layout, Text, theme } from '@daengle/design-system';
-import { DetailCall, DetailLocation, DetailTime } from '@daengle/design-system/icons';
+import { DefaultImage, DetailCall, DetailLocation, DetailTime } from '@daengle/design-system/icons';
 import { ShopDefaultImage } from '@daengle/design-system/images';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
@@ -23,12 +23,12 @@ export default function ShopInfo() {
 
       <div css={wrapper}>
         <div css={imageSection}>
-          {shopInfo?.imageUrlList[0] ? null : <ShopDefaultImage />}
-          <Text
-            typo="title2"
-            color={shopInfo?.imageUrlList[0] ? 'white' : 'gray700'}
-            css={shopName}
-          >
+          {shopInfo?.shopImage ? (
+            <img src={shopInfo?.shopImage} alt="미용샵 이미지" />
+          ) : (
+            <ShopDefaultImage />
+          )}
+          <Text typo="title2" color={shopInfo?.shopImage ? 'white' : 'gray700'} css={shopName}>
             {shopInfo?.shopName}
           </Text>
         </div>
@@ -118,6 +118,12 @@ const imageSection = css`
   height: 260px;
 
   background: ${theme.colors.gray200};
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const shopName = css`

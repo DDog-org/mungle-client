@@ -14,17 +14,32 @@ export const petProfileWrapper = css`
   gap: 8px;
 
   cursor: pointer;
+
+  img,
+  svg {
+    width: 59px;
+    height: 59px;
+    border-radius: 50%;
+
+    background-color: ${theme.colors.gray200};
+
+    transition: border 0.2s ease;
+  }
 `;
 
 export const petItemStyle = ({ isSelected }: { isSelected: boolean }) => css`
   ${isSelected
     ? css`
-        img {
+        img,
+        svg {
           border: 4px solid ${theme.colors.blue200};
         }
       `
     : css`
-        img,
+        img {
+          border: 4px solid white;
+        }
+
         svg {
           border: 4px solid white;
         }
@@ -48,14 +63,4 @@ export const petProfileAdd = css`
   padding: 0 18px 0 0;
 
   cursor: pointer;
-`;
-
-export const profileImage = css`
-  width: 59px;
-  height: 59px;
-  border-radius: 50px;
-
-  background-color: ${theme.colors.gray200};
-
-  transition: border 0.2s ease;
 `;

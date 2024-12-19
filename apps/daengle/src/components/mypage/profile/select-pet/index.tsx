@@ -7,7 +7,6 @@ import {
   petName,
   petProfileWrapper,
   petProfileAdd,
-  profileImage,
   wrapper,
 } from './index.styles';
 import { Text } from '@daengle/design-system';
@@ -35,17 +34,15 @@ export function SelectPet({
             onClick={() => handlePetSelect(pet.petId)}
           >
             {pet.petImage ? (
-              <Image
-                src={pet.petImage}
-                alt="반려견 프로필"
-                width={86}
-                height={86}
-                css={profileImage}
-              />
+              <Image src={pet.petImage} alt="반려견 프로필" width={59} height={59} />
             ) : (
-              <DefaultImage css={profileImage} />
+              <DefaultImage width={59} height={59} />
             )}
-            <Text typo="body1" css={petName} color="black100">
+            <Text
+              typo="body1"
+              css={petName}
+              color={selectedPetId === pet.petId ? 'blue200' : 'gray600'}
+            >
               {pet.petName}
             </Text>
           </div>
