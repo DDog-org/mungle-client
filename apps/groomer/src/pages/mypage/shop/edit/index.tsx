@@ -7,7 +7,6 @@ import {
   Layout,
   Text,
   theme,
-  useToast,
 } from '@daengle/design-system';
 import { useS3 } from '@daengle/services/hooks';
 import { formatPhoneNumberWithRegionNumber } from '@daengle/services/utils';
@@ -15,52 +14,52 @@ import { css } from '@emotion/react';
 import router from 'next/router';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import TimePickerComponent from '~/components/mypage/time-picker';
-import { DAY_OFF } from '~/constants/mypage';
-import { useValidateMyPageForm } from '~/hooks/mypage/use-validate-mypage-form';
-import { VetProfileForm } from '~/interfaces/auth';
-import { useGetVetModifyPageQuery, usePatchVetInfoMutation } from '~/queries/auth';
+import { useGetGroomerShopInfoQuery, usePatchGroomerShopInfoMutation } from '~/queries/auth';
 import dayjs, { Dayjs } from 'dayjs';
+import { DAY_OFF } from '~/constants/mypage';
+import TimePickerComponent from '~/components/mypage/time-picker';
+import { GroomerProfileForm } from '~/interfaces';
+import { useValidateMyPageForm } from '~/hooks/mypage/use-validate-mypage-form';
+import { ROUTES } from '~/constants';
 
-export default function vetProfile() {
+export default function groomerProfile() {
   const [selectedStartTime, setSelectedStartTime] = useState<Dayjs | null>(null);
   const [selectedEndTime, setSelectedEndTime] = useState<Dayjs | null>(null);
   const [selectedDaysOff, setSelectedDaysOff] = useState<string[]>([]);
 
-  const { data: getVetModifyPage } = useGetVetModifyPageQuery();
-  const { mutateAsync: patchVetInfo } = usePatchVetInfoMutation();
+  const { data: getGroomerShopInfo } = useGetGroomerShopInfoQuery();
+  const { mutateAsync: patchGroomerShopInfo } = usePatchGroomerShopInfoMutation();
 
   const validation = useValidateMyPageForm();
   const { uploadToS3 } = useS3({ targetFolderPath: 'vet/licenses' });
-
-  const { showToast } = useToast();
 
   const {
     register,
     handleSubmit,
     setValue,
     control,
-    formState: { errors },
-  } = useForm<VetProfileForm>({
+    formState: { errors, isValid },
+  } = useForm<GroomerProfileForm>({
     defaultValues: {
-      phoneNumber: getVetModifyPage?.phoneNumber,
-      closedDays: getVetModifyPage?.closedDays,
+      imageUrlList: [],
+      phoneNumber: getGroomerShopInfo?.phoneNumber,
+      closedDays: getGroomerShopInfo?.closedDays,
     },
     mode: 'onChange',
   });
 
   useEffect(() => {
-    if (getVetModifyPage) {
-      setSelectedDaysOff(getVetModifyPage.closedDays || null);
-      setValue('phoneNumber', getVetModifyPage.phoneNumber || '');
+    if (getGroomerShopInfo) {
+      setSelectedDaysOff(getGroomerShopInfo.closedDays || null);
+      setValue('phoneNumber', getGroomerShopInfo.phoneNumber || '');
       setSelectedStartTime(
-        getVetModifyPage.startTime ? dayjs(getVetModifyPage.startTime, 'HH:mm') : null
+        getGroomerShopInfo.startTime ? dayjs(getGroomerShopInfo.startTime, 'HH:mm') : null
       );
       setSelectedEndTime(
-        getVetModifyPage.endTime ? dayjs(getVetModifyPage.endTime, 'HH:mm') : null
+        getGroomerShopInfo.endTime ? dayjs(getGroomerShopInfo.endTime, 'HH:mm') : null
       );
     }
-  }, [getVetModifyPage, setValue]);
+  }, [getGroomerShopInfo, setValue]);
 
   const handleStartTimeChange = (newValue: Dayjs | null) => {
     setSelectedStartTime(newValue);
@@ -74,9 +73,9 @@ export default function vetProfile() {
       prev?.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
     );
   };
-  const onSubmit = async (data: VetProfileForm) => {
-    const imageUrls = await uploadToS3(data.imageUrls);
-    if (!imageUrls?.length) return;
+  const onSubmit = async (data: GroomerProfileForm) => {
+    const imageUrlList = await uploadToS3(data.imageUrlList);
+    if (!imageUrlList?.length) return;
 
     if (!selectedStartTime || !selectedEndTime) {
       alert('시작 시간과 종료 시간을 모두 선택해야 수정할 수 있습니다.');
@@ -86,24 +85,28 @@ export default function vetProfile() {
     const startTimeString = selectedStartTime?.format('HH:mm');
     const endTimeString = selectedEndTime?.format('HH:mm');
 
-    await patchVetInfo({
+    if (!getGroomerShopInfo?.shopId) return;
+
+    await patchGroomerShopInfo({
       ...data,
-      imageUrls,
+      shopId: getGroomerShopInfo?.shopId,
+      imageUrlList,
       startTime: startTimeString,
       endTime: endTimeString,
       closedDays: selectedDaysOff,
     });
-
-    router.push('/mypage');
-    showToast({ title: '프로필이 성공적으로 수정되었습니다' });
   };
 
   return (
     <Layout isAppBarExist={true}>
-      <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
+      <AppBar
+        onBackClick={router.back}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+        backgroundColor={theme.colors.white}
+      />
       <div css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
-          병원 프로필 관리
+          마이샵 관리
         </Text>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ul css={inputWrapper}>
@@ -113,17 +116,20 @@ export default function vetProfile() {
               </Text>
               <ImageInput
                 maxLength={10}
-                {...register('imageUrls', { ...validation.imageUrls })}
-                onChange={(files) => setValue('imageUrls', files, { shouldValidate: true })}
+                {...register('imageUrlList', { ...validation.imageUrls })}
+                onChange={(files) => {
+                  console.log('Uploaded files:', files);
+                  setValue('imageUrlList', files, { shouldValidate: true });
+                }}
               />
             </section>
 
             <li css={readOnlyTextBox}>
               <Text tag="h2" typo="subtitle3">
-                병원명
+                매장명
               </Text>
               <Text typo="body3" color="gray400">
-                {getVetModifyPage?.name}
+                {getGroomerShopInfo?.shopName}
               </Text>
             </li>
 
@@ -179,7 +185,7 @@ export default function vetProfile() {
                 위치
               </Text>
               <Text typo="body3" color="gray400">
-                {getVetModifyPage?.address} {getVetModifyPage?.detailAddress}
+                {getGroomerShopInfo?.address} {getGroomerShopInfo?.detailAddress}
               </Text>
             </li>
             <li css={readOnlyTextBox}>
@@ -194,7 +200,7 @@ export default function vetProfile() {
                     <textarea
                       css={detailInput}
                       placeholder="소개글을 작성해주세요"
-                      defaultValue={getVetModifyPage?.introduction}
+                      defaultValue={getGroomerShopInfo?.introduction}
                       value={field.value}
                       onChange={field.onChange}
                     />
@@ -203,7 +209,7 @@ export default function vetProfile() {
               />
             </li>
           </ul>
-          <CTAButton type="submit" service="partner">
+          <CTAButton type="submit" service="partner" disabled={!isValid}>
             수정하기
           </CTAButton>
         </form>

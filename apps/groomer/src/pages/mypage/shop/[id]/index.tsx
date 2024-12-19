@@ -5,7 +5,7 @@ import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import ProfileCard from '~/components/mypage/profile-card';
 import { ROUTES } from '~/constants';
-import { VET_DAT_OFF } from '~/constants/mypage';
+import { DAY_OFF } from '~/constants/mypage';
 import { GetGroomerMyPageShopInfoRequestParams } from '~/models/mypage';
 import { useGetGroomerMyPageShopInfoQuery } from '~/queries/mypage';
 
@@ -35,7 +35,7 @@ export default function GroomerMyShopInfo() {
                 <Text typo="body9">
                   {ShopInfo?.closedDay?.length
                     ? `${ShopInfo?.startTime.substring(0, 5)} - ${ShopInfo?.endTime.substring(0, 5)} ${ShopInfo?.closedDay
-                        .map((day) => VET_DAT_OFF.find((item) => item.value === day)?.label || day)
+                        .map((day) => DAY_OFF.find((item) => item.value === day)?.label || day)
                         .join(', ')} 휴무`
                     : `매일 ${ShopInfo?.startTime.substring(0, 5)} - ${ShopInfo?.endTime.substring(0, 5)}`}
                 </Text>

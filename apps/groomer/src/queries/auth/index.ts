@@ -1,8 +1,10 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
-  getGroomerModifyPage,
-  patchGroomerInfo,
   getGroomerInfo,
+  getGroomerModifyPage,
+  getGroomerShopInfo,
+  patchGroomerInfo,
+  patchGroomerShopInfo,
   postJoin,
   postKakao,
   getGroomerWithdrawInfo,
@@ -11,6 +13,7 @@ import {
 } from '~/apis';
 import {
   PatchGroomerInfoRequestBody,
+  PatchGroomerShopInfoRequestBody,
   PostJoinRequestBody,
   PostKakaoRequestBody,
 } from '~/models/auth';
@@ -43,6 +46,22 @@ export const usePatchGroomerInfoMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.PATCH_GROOMER_INFO,
     mutationFn: async (body: PatchGroomerInfoRequestBody) => await patchGroomerInfo(body),
+  });
+};
+
+export const useGetGroomerShopInfoQuery = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_GROOMER_SHOP_INFO,
+    queryFn: getGroomerShopInfo,
+  });
+};
+
+export const usePatchGroomerShopInfoMutation = () => {
+  return useMutation({
+    mutationKey: QUERY_KEYS.PATCH_GROOMER_SHOP_INFO,
+    mutationFn: async (body: PatchGroomerShopInfoRequestBody) => {
+      return await patchGroomerShopInfo(body);
+    },
   });
 };
 

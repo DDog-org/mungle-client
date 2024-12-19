@@ -2,9 +2,12 @@ import axios from 'axios';
 import { api, guestApi } from '~/apis';
 import {
   GetGroomerModifyPageResponse,
+  GetGroomerShopInfoResponse,
   PatchGroomerInfoRequestBody,
   PatchGroomerInfoResponse,
   GetGroomerInfoResponse,
+  PatchGroomerShopInfoRequestBody,
+  PatchGroomerShopInfoResponse,
   PostJoinRequestBody,
   PostJoinResponse,
   PostKakaoRequestBody,
@@ -58,4 +61,12 @@ export const deleteGroomer = async () => {
 
 export const getGroomerValidate = async () => {
   return await api.get<GetGroomerValidateResponse>('/groomer/validate');
+};
+
+export const getGroomerShopInfo = async () => {
+  return await api.get<GetGroomerShopInfoResponse>('/groomer/shop/info');
+};
+
+export const patchGroomerShopInfo = async (body: PatchGroomerShopInfoRequestBody) => {
+  return await api.patch<PatchGroomerShopInfoResponse>('/groomer/shop/info', body);
 };
