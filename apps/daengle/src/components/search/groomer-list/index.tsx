@@ -1,4 +1,4 @@
-import { useAddressFormStore } from '~/stores/main';
+import { useAddressStore } from '~/stores/home';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { cardBox, emptyBox, wrapper, tag, bottom, itemBox } from './index.styles';
@@ -19,7 +19,7 @@ export function GroomerList({ inputValue }: GroomerListProps) {
 
   const params = {
     keyword: inputValue,
-    // TODO: 시연 영상 및 테스트 후 addressForm으로 수정
+    // TODO: 시연 영상 및 테스트 후 address으로 수정
     address: '역삼동',
     tag: selectedTag || '',
     page: 0,
@@ -29,7 +29,7 @@ export function GroomerList({ inputValue }: GroomerListProps) {
     useGetUserSearchGroomerInfiniteQuery(params);
   const { loadMoreRef } = useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNextPage });
 
-  const { addressForm } = useAddressFormStore();
+  const { address } = useAddressStore();
 
   const handleCardClick = (id: number) => {
     router.push(ROUTES.GROOMER_DETAIL(id));

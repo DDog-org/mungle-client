@@ -1,4 +1,4 @@
-import { useAddressFormStore } from '~/stores/main';
+import { useAddressStore } from '~/stores/home';
 import { ChipToggleButton, Empty } from '@daengle/design-system';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
@@ -17,7 +17,7 @@ export function VetList({ inputValue }: VetListProps) {
   const router = useRouter();
   const [selectedTag, setSelectedTag] = useState<string | undefined>();
 
-  const { addressForm } = useAddressFormStore();
+  const { address } = useAddressStore();
   const params = {
     keyword: inputValue,
     // TODO: 시연 영상 및 테스트 후 addressForm으로 수정
