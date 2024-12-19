@@ -32,6 +32,10 @@
     "./components": {
       "import": "./src/components/index.ts",
       "require": "./src/components/index.ts"
+    },
+    "./interface": {
+      "import": "./src/interface/index.ts",
+      "require": "./src/interface/index.ts"
     }
   },
   "type": "module",

@@ -113,7 +113,11 @@ export default function Detail() {
 
     return (
       <Layout isAppBarExist={false}>
-        <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
+        <AppBar
+          backgroundColor={theme.colors.background}
+          onBackClick={router.back}
+          onHomeClick={() => router.push(ROUTES.HOME)}
+        />
         <div css={wrapper}>
           <div css={header}>
             <Text typo="title1">견적 상세</Text>
@@ -168,7 +172,11 @@ export default function Detail() {
     };
     return (
       <Layout isAppBarExist={false}>
-        <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
+        <AppBar
+          backgroundColor={theme.colors.background}
+          onBackClick={router.back}
+          onHomeClick={() => router.push(ROUTES.HOME)}
+        />
         <div css={wrapper}>
           <div css={header}>
             <Text typo="title1">진료 상세</Text>
@@ -184,7 +192,7 @@ export default function Detail() {
             items={[
               { title: '지역', receipt: detailData.address },
               { title: '일정', receipt: formattedDate, hasLine: true, addTitle: '종합소견' },
-              { title: '추정 병명', receipt: detailData.cause },
+              { title: '추정 병명', receipt: detailData.diagnosis },
               { title: '추정 원인', receipt: detailData.cause },
               {
                 title: '예상 진료',

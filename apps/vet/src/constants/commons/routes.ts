@@ -9,6 +9,7 @@ export const ROUTES = {
   // Estimates
   ESTIMATES: '/estimates',
   ESTIMATE_DETAIL: (estimateId: number) => `/estimates/${estimateId}`,
+  ESTIMATE_PETINFO: (petId: number) => `/estimates/pet-info/${petId}`,
   ESTIMATE_COMPLELTE: '/estimates/complete',
 
   // Reservations
@@ -24,4 +25,5 @@ export const ROUTES = {
   MYPAGE: '/mypage',
   MYPAGE_EDIT: '/mypage/edit',
   MYPAGE_REVIEWS: '/mypage/reviews',
+  MYPAGE_REVIEWS_REPORT: (reviewId: number) => `/mypage/reviews/report/${reviewId}`,
 } as const;

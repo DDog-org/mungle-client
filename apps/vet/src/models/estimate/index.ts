@@ -1,3 +1,4 @@
+import { PET_SIZE } from '@daengle/services/constants';
 import { VetEstimateDesignationList, VetEstimateGeneralList } from '~/interfaces/estimate';
 
 export interface GetVetEstimateGeneralListResponse {
@@ -22,7 +23,7 @@ export interface GetVetEstimateDetailResponse {
   petImageUrl: string;
   petName: string;
   age: number;
-  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
+  weight: keyof typeof PET_SIZE;
   significant: string;
   symptoms: string;
   requirements: string;

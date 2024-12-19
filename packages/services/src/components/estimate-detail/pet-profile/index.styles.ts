@@ -13,6 +13,8 @@ export const wrapper = css`
 export const profile = css`
   display: flex;
   flex-direction: column;
+
+  cursor: pointer;
 `;
 
 export const imageUrl = css`
