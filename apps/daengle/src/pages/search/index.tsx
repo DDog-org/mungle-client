@@ -5,6 +5,7 @@ import SearchBar from '~/components/search/search-bar';
 import { css } from '@emotion/react';
 import { GroomerList } from '~/components/search/groomer-list';
 import { VetList } from '~/components/search/vet-list';
+import { useState } from 'react';
 
 const TABS = [
   {
@@ -19,21 +20,27 @@ const TABS = [
 
 export default function Search() {
   const router = useRouter();
+  const [childValue, setChildValue] = useState('');
 
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'groomer':
-        return <GroomerList />;
+        return <GroomerList inputValue={childValue} />;
       case 'vet':
-        return <VetList />;
+        return <VetList inputValue={childValue} />;
       default:
-        return <GroomerList />;
+        return <GroomerList inputValue={childValue} />;
     }
   };
+
+  const handleValueChange = (value: string) => {
+    setChildValue(value);
+  };
+
   return (
     <Layout isAppBarExist={true}>
       <AppBar
-        searchBar={<SearchBar />}
+        searchBar={<SearchBar onValueChange={handleValueChange} />}
         onBackClick={router.back}
         onHomeClick={() => router.push(ROUTES.HOME)}
       />

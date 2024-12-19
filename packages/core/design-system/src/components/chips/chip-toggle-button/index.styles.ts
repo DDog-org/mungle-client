@@ -1,24 +1,40 @@
+import { theme, colors } from '@daengle/design-system';
 import { css } from '@emotion/react';
-import { colors, theme } from '../../../foundation';
-import { Size } from './index.types';
-import { Service } from '../../../types';
+import { Size, Service } from './index.types';
 
 export const wrapper = ({
   isSelected,
   size,
   disabled,
   isPartnerSelected,
+  isTagSelected,
   service,
 }: {
   isSelected: boolean;
   size: Size;
   disabled: boolean;
   isPartnerSelected: boolean | null;
+  isTagSelected: boolean;
   service: Service;
 }) => {
-  const borderColor = service === 'partner' ? theme.colors.green200 : theme.colors.blue200;
-  const backgroundColor = service === 'partner' ? theme.colors.green200 : theme.colors.blue100;
-  const textColor = service === 'partner' ? theme.colors.white : theme.colors.blue200;
+  const borderColor =
+    service === 'partner'
+      ? theme.colors.green200
+      : service === 'daengle'
+        ? theme.colors.blue200
+        : theme.colors.gray200;
+  const backgroundColor =
+    service === 'partner'
+      ? theme.colors.green200
+      : service === 'daengle'
+        ? theme.colors.blue100
+        : theme.colors.white;
+  const textColor =
+    service === 'partner'
+      ? theme.colors.white
+      : service === 'daengle'
+        ? theme.colors.blue200
+        : theme.colors.gray600;
 
   return css`
     ${size === 'fixed' &&
@@ -96,6 +112,14 @@ export const wrapper = ({
       border: none;
 
       background: ${theme.colors.green200};
+      color: ${theme.colors.white};
+    `}
+
+    ${isTagSelected &&
+    css`
+      border: none;
+
+      background: ${theme.colors.black};
       color: ${theme.colors.white};
     `}
   `;

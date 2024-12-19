@@ -1,14 +1,31 @@
 import { theme } from '@daengle/design-system';
 import { GraySearchIcon } from '@daengle/design-system/icons';
 import { css } from '@emotion/react';
+import { useEffect, useState } from 'react';
 
-export default function SearchBar() {
+interface SearchBarProps {
+  onValueChange: (value: string) => void;
+}
+
+export default function SearchBar({ onValueChange }: SearchBarProps) {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    onValueChange(value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      const value = (e.target as HTMLInputElement).value;
+      onValueChange(value);
+    }
+  };
+
   return (
     <div css={wrapper}>
       <button type="submit" css={button}>
         <GraySearchIcon width={16} height={16} />
       </button>
-      <input type="text" css={input} />
+      <input type="text" onChange={handleInputChange} onKeyDown={handleKeyDown} css={input} />
     </div>
   );
 }
@@ -26,7 +43,7 @@ const wrapper = css`
   background: ${theme.colors.gray100};
 `;
 const input = css`
-  width: 203px;
+  width: 250px;
 
   font-size: ${theme.typo.body11};
   text-align: left;

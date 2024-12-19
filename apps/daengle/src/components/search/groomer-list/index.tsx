@@ -1,80 +1,92 @@
-import { useGetUserShopsQuery } from '~/queries/main';
 import { useAddressFormStore } from '~/stores/main';
-import { Empty } from '@daengle/design-system';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
-import { cardBox, emptyBox, wrapper, tag } from './index.styles';
-import { Item } from '~/components/search/item';
-import { TagButton } from '~/components/search/tag-button';
+import { cardBox, emptyBox, wrapper, tag, bottom, itemBox } from './index.styles';
 import { useState } from 'react';
+import { GROOMER_SEARCH_TAG, GROOMER_SEARCH_TAG_BUTTON } from '~/constants/search';
+import { Item } from '../item';
+import { ChipToggleButton, Empty } from '@daengle/design-system';
+import { useIntersectionLoad } from '~/hooks';
+import { useGetUserSearchGroomerInfiniteQuery } from '~/queries/search';
 
-export function GroomerList() {
-  const mockShops = [
-    {
-      shopId: 1,
-      shopImage:
-        'https://daengle.s3.ap-northeast-2.amazonaws.com/groomer/profile-images/XNFJar9K8V4h4syHLspqT',
-      shopName: '멋진 샵 1호점',
-      tag: ['냥냐', '웅야'],
-    },
-    {
-      shopId: 2,
-      shopImage:
-        'https://daengle.s3.ap-northeast-2.amazonaws.com/groomer/profile-images/XNFJar9K8V4h4syHLspqT',
-      shopName: '귀여운 샵 2호점',
-      tag: ['냥냐', '웅야'],
-    },
-    {
-      shopId: 3,
-      shopImage:
-        'https://daengle.s3.ap-northeast-2.amazonaws.com/groomer/profile-images/XNFJar9K8V4h4syHLspqT',
-      shopName: '럭셔리 샵 3호점',
-      tag: ['냥냐', '웅야'],
-    },
-  ];
+interface GroomerListProps {
+  inputValue: string;
+}
+
+export function GroomerList({ inputValue }: GroomerListProps) {
   const router = useRouter();
-  const [isSelected, setIsSelected] = useState<boolean>(false);
-  const { data: shops } = useGetUserShopsQuery();
+  const [selectedTag, setSelectedTag] = useState<string | undefined>();
+
+  const params = {
+    keyword: inputValue,
+    // TODO: 시연 영상 및 테스트 후 addressForm으로 수정
+    address: '역삼동',
+    tag: selectedTag || '',
+    page: 0,
+    size: 6,
+  };
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useGetUserSearchGroomerInfiniteQuery(params);
+  const { loadMoreRef } = useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNextPage });
+
   const { addressForm } = useAddressFormStore();
-  const filteredShops = shops?.allShops.filter((shop) => shop.shopAddress.includes(addressForm));
 
   const handleCardClick = (id: number) => {
     router.push(ROUTES.GROOMER_DETAIL(id));
   };
 
-  const handletoggleButton = () => {
-    setIsSelected((prev) => !prev);
+  const handleTagClick = (tagValue: string) => {
+    setSelectedTag((prevTag) => (prevTag === tagValue ? undefined : tagValue));
   };
-
   return (
     <div css={wrapper}>
       <section css={tag}>
-        <TagButton isSelected={isSelected} onClick={handletoggleButton}>
-          #이쁘니
-        </TagButton>
-        <TagButton isSelected={isSelected} onClick={handletoggleButton}>
-          #겸둥이
-        </TagButton>
+        {GROOMER_SEARCH_TAG_BUTTON.map((item) => {
+          return (
+            <ChipToggleButton
+              key={item.value}
+              onClick={() => handleTagClick(item.value)}
+              service="tags"
+              isTagSelected={selectedTag === item.value}
+            >
+              {item.label}
+            </ChipToggleButton>
+          );
+        })}
       </section>
-      <div css={cardBox}>
-        {/* {/* {filteredShops && filteredShops.length > 0 ? ( */}
-        {mockShops?.map((shop) => (
-          <Item
-            key={shop.shopId}
-            image={shop.shopImage}
-            name={shop.shopName}
-            tag={shop.tag}
-            onClick={() => handleCardClick(shop.shopId)}
-          />
-        ))}
-
-        {/* ))
+      <section css={itemBox}>
+        {data ? (
+          data?.pages.map((page, index) =>
+            page.result.length > 0 || index > 0 ? (
+              page.result.map(({ partnerId, partnerImage, partnerName, groomingBadges }) => (
+                <div css={cardBox}>
+                  <Item
+                    key={partnerId}
+                    partnerId={partnerId}
+                    partnerImage={partnerImage}
+                    partnerName={partnerName}
+                    badges={groomingBadges
+                      .map((tag) => GROOMER_SEARCH_TAG[tag])
+                      .filter((tag): tag is string => !!tag)}
+                    onClick={() => {
+                      handleCardClick(partnerId);
+                    }}
+                  />
+                </div>
+              ))
+            ) : (
+              <div css={emptyBox}>
+                <Empty title="해당 주소 주변에 샵이 없어요" />
+              </div>
+            )
+          )
         ) : (
           <div css={emptyBox}>
             <Empty title="해당 주소 주변에 샵이 없어요" />
           </div>
-        )} */}
-      </div>
+        )}
+      </section>
+      <div ref={loadMoreRef} css={bottom} />
     </div>
   );
 }

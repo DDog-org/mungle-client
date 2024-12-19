@@ -2,37 +2,31 @@ import { DefaultProfile } from '@daengle/design-system/icons';
 import { Tag, Text } from '@daengle/design-system';
 
 import Image from 'next/image';
-import {
-  imageStyle,
-  textBox,
-  wrapper,
-  profileWrapper,
-  DetailsWrapper,
-  opacity,
-  tags,
-} from './index.styles';
+import { imageStyle, wrapper, profileWrapper, DetailsWrapper, opacity, tags } from './index.styles';
+import { Result } from '~/interfaces/search';
 
 interface Props {
-  image: string;
-  name: string;
-  tag: string[];
-  onClick: () => void;
+  partnerId: number;
+  partnerImage: string;
+  partnerName: string;
+  badges: string[];
+  onClick: (id: number) => void;
 }
 
-export function Item({ image, name = '윤일', tag, onClick }: Props) {
+export function Item({ partnerId, partnerImage, partnerName, badges, onClick }: Props) {
   return (
-    <div css={wrapper} onClick={onClick}>
-      {!image ? (
+    <div css={wrapper}>
+      {!partnerId ? (
         <>
           <DefaultProfile width={170} height={200} css={imageStyle} />
           <div css={DetailsWrapper}>
             <Text typo="subtitle1" color="white">
-              {name}
+              {partnerName}
             </Text>
             <div css={tags}>
-              {tag.map((hashTag, index) => (
+              {badges?.map((hashTag, index) => (
                 <Tag key={index} service="search" variant="line">
-                  #{hashTag}
+                  {hashTag}
                 </Tag>
               ))}
             </div>
@@ -41,15 +35,15 @@ export function Item({ image, name = '윤일', tag, onClick }: Props) {
       ) : (
         <div css={profileWrapper}>
           <div css={opacity} />
-          <Image src={image} alt="이미지" width={170} height={200} css={imageStyle} />
+          <Image src={partnerImage} alt="프로필 이미지" width={170} height={200} css={imageStyle} />
           <div css={DetailsWrapper}>
             <Text typo="subtitle1" color="white">
-              {name}
+              {partnerName}
             </Text>
             <div css={tags}>
-              {tag.map((hashTag, index) => (
+              {badges.map((hashTag, index) => (
                 <Tag key={index} service="search" variant="line">
-                  #{hashTag}
+                  {hashTag}
                 </Tag>
               ))}
             </div>
