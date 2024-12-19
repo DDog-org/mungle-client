@@ -10,8 +10,8 @@ import { css } from '@emotion/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
-import { GetUserGroomerDetailRequestParams } from '~/models/detail';
-import { useGetUserGroomerDetailQuery } from '~/queries/detail';
+import { GetUserGroomerDetailRequestParams } from '~/models';
+import { useGetUserGroomerDetailQuery } from '~/queries';
 
 export default function GroomerInfo() {
   const router = useRouter();
@@ -90,7 +90,7 @@ export default function GroomerInfo() {
         <div css={button}>
           <RoundButton
             fullWidth={true}
-            onClick={() => router.push(ROUTES.ESTIMATE_GROOMING(getGroomerId))}
+            onClick={() => router.push(ROUTES.ESTIMATES_GROOMING(getGroomerId))}
           >
             바로 예약
           </RoundButton>

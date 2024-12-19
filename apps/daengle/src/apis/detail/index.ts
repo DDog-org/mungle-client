@@ -1,4 +1,4 @@
-import { guestApi } from '~/apis';
+import { api, guestApi } from '~/apis';
 import {
   GetUserVetDetailRequestParams,
   GetUserVetDetailResponse,
@@ -6,7 +6,7 @@ import {
   GetUserShopDetailResponse,
   GetUserGroomerDetailRequestParams,
   GetUserGroomerDetailResponse,
-} from '~/models/detail';
+} from '~/models';
 
 export const getUserVetDetail = async ({ vetId }: GetUserVetDetailRequestParams) => {
   return await guestApi.get<GetUserVetDetailResponse>(`/user/vet/${vetId}`);
