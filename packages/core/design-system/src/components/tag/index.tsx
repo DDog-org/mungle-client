@@ -12,7 +12,9 @@ interface Props {
 export function Tag({ children, variant = 'solid', service = 'daengle' }: Props) {
   return (
     <div css={wrapper({ variant, service })}>
-      <Text typo="body2">{children}</Text>
+      <Text typo="body2" color="inherit">
+        {children}
+      </Text>
     </div>
   );
 }

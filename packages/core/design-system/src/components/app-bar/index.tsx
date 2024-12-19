@@ -9,6 +9,7 @@ interface Props {
   prefix?: ReactNode;
   title?: string;
   suffix?: ReactNode;
+  searchBar?: ReactNode;
   backgroundColor?: string;
 }
 
@@ -18,6 +19,7 @@ export function AppBar({
   prefix,
   title,
   suffix,
+  searchBar,
   backgroundColor,
 }: Props) {
   return (
@@ -36,6 +38,8 @@ export function AppBar({
             {title}
           </Text>
         )}
+
+        {searchBar && searchBar}
 
         {suffix ? (
           suffix

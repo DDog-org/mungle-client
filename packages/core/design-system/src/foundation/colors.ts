@@ -1,4 +1,5 @@
 export const colors = {
+  inherit: 'inherit',
   white: '#ffffff',
   black: '#000000',
 

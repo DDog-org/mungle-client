@@ -6,3 +6,4 @@ export * from './home';
 export * from './payment';
 export * from './reservation';
 export * from './review';
+export * from './search';
