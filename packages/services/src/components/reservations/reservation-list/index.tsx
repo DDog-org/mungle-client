@@ -15,15 +15,16 @@ import {
 
 interface Reservation {
   reservationId: number;
-  time: string;
-  name: string;
-  image: string;
-  description: string;
+  scheduleTime: string;
+  petId: number;
+  petName: string;
+  petProfile: string;
+  desiredStyle: string;
 }
 
 interface Props {
   reservations: Reservation[];
-  onClick: (id: number) => void;
+  onClick: (reservationId: number) => void;
 }
 
 const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
@@ -40,11 +41,11 @@ export function ReservationList({ reservations, onClick }: Props) {
           return (
             <div key={index} css={timeline}>
               <div css={dot(isLast)}></div>
-              <span css={time}>{item.time}</span>
+              <span css={time}>{item.scheduleTime}</span>
               <div css={content} onClick={() => onClick(item.reservationId)}>
-                {item.image ? (
+                {item.petProfile ? (
                   <img
-                    src={item.image}
+                    src={item.petProfile}
                     alt="profile"
                     css={profileImage}
                     onError={handleImageError}
@@ -52,10 +53,10 @@ export function ReservationList({ reservations, onClick }: Props) {
                 ) : (
                   <DefaultProfile css={profileImage} />
                 )}
-                <Text typo="subtitle3">{item.name}</Text>
+                <Text typo="subtitle3">{item.petName}</Text>
                 <div css={desiredStyle}>
                   <Text typo="body10" css={description}>
-                    {item.description === '' ? '특이사항 없음' : item.description}
+                    {item.desiredStyle === '' ? '특이사항 없음' : item.desiredStyle}
                   </Text>
                 </div>
               </div>
