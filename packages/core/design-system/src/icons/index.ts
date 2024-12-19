@@ -19,6 +19,7 @@ export * from './DetailLocation';
 export * from './DetailTime';
 export * from './EmptyLogo';
 export * from './EmptyStateBone';
+export * from './FilledStar';
 export * from './GnbChattingActive';
 export * from './GnbChattingInactive';
 export * from './GnbEstimateActive';

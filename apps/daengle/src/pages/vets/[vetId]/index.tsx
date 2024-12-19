@@ -31,7 +31,7 @@ export default function VetInfo() {
       <div css={wrapper}>
         <div css={imageSection(VetDetail?.vetImage)}>
           {VetDetail?.vetImage ? null : <VetDefaultImage />}
-          {/* TODO: 캐러셀 구현 */}
+
           <Text typo="title2" color="white" css={vetName}>
             {VetDetail?.vetName}
           </Text>
@@ -250,6 +250,7 @@ const graph = css`
 
 const graphBar = (daengleMeter: number | undefined) => css`
   position: relative;
+  z-index: 5px;
 
   width: ${daengleMeter}%;
   height: 100%;
@@ -259,15 +260,12 @@ const graphBar = (daengleMeter: number | undefined) => css`
   transition: width 0.3s ease;
 
   clip-path: inset(0 0 0 0 round 10px);
-
-  z-index: 5px;
 `;
 
 const heart = css`
   position: absolute;
   top: 4px;
   right: 6px;
-
   z-index: 10px;
 `;
 
@@ -275,7 +273,6 @@ const paw = css`
   position: absolute;
   top: 4px;
   right: 6px;
-
   z-index: 1px;
 
   fill: ${theme.colors.gray600};
