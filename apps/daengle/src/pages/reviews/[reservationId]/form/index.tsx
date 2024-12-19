@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { AppBar, Layout, Text, RoundButton } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
-import { KeywordCard, PartnersCard, RatingCard, ReviewInputCard } from '~/components/review';
 import {
   useGetUserReservationReviewQuery,
   usePostCareReviewMutation,
@@ -19,6 +18,7 @@ import { GROOMER_REVIEW_KEYWORDS, VET_REVIEW_KEYWORDS } from '~/constants/review
 import { ROUTES } from '~/constants/commons';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import { KeywordCard, PartnersCard, RatingCard, ReviewInputCard } from '~/components/reviews';
 
 const getKeywordsByService = (service: string | undefined): string[] => {
   if (service === 'groomer') {
@@ -40,8 +40,8 @@ export default function ReviewPage() {
   const { uploadToS3 } = useS3({ targetFolderPath: 'user/review-images' });
   const router = useRouter();
 
-  const { id, service } = router.query;
-  const reservationId = Number(id) || 0;
+  const { service } = router.query;
+  const reservationId = Number(router.query.reservationId);
   const keywords = getKeywordsByService(service as string);
 
   const params: GetUserReservationReviewParams = { reservationId: reservationId };

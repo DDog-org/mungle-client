@@ -190,9 +190,7 @@ export default function PetProfileDetail() {
           <Text typo="subtitle3">싫어하는 부위</Text>
           <section css={selectChipButtonBox}>
             {PET_DISLIKE_PARTS.map((item) => {
-              const selectedParts = selectedPet?.dislikeParts?.map(
-                (partItem: { part: string }) => partItem.part
-              );
+              const selectedParts = selectedPet?.dislikeParts;
               const isSelected = selectedParts?.includes(item.value);
 
               return (

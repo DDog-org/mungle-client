@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AppBar, Layout, Text, RoundButton, theme } from '@daengle/design-system';
-import { KeywordCard, PartnersCard, RatingCard, ReviewInputCard } from '~/components/review';
+import { KeywordCard, PartnersCard, RatingCard, ReviewInputCard } from '~/components/reviews';
 import { useGetUserCareReviewQuery, usePatchUserCareReviewMutation } from '~/queries/review';
 import { useRouter } from 'next/router';
 import { useS3 } from '@daengle/services/hooks';

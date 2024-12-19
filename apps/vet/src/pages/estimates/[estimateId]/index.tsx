@@ -105,7 +105,7 @@ export default function EstimateDetail() {
               weight: estimate.weight,
               significant: estimate.significant,
             }}
-            // onClick={() => {}} //TODO: pet-info 연결시 해당 경로로 라우팅
+            onClick={() => {}} //TODO: pet-info 연결시 해당 경로로 라우팅
           />
         </Section>
 

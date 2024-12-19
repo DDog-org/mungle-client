@@ -24,16 +24,16 @@ export default function EstimateCare() {
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(dayjs());
+
   const [symptoms, setSymptoms] = useState<string>('');
   const [requirements, setRequirements] = useState<string>('');
   const [ButtonActive, setButtonActive] = useState<boolean>(false);
 
-  const { id } = router.query;
-  const vetId = Number(id);
+  const vetId = Number(router.query.vetId);
 
-  const reservedDate = `${selectedDate?.format('YYYY-MM-DD')} ${selectedTime?.format('HH:mm:ss')}`;
-
-  const { mutateAsync: postUserEstimateVetUserInfo } = usePostUserEstimateVetUserInfoMutation();
+  const { mutateAsync: postUserEstimateVetUserInfo } = usePostUserEstimateVetUserInfoMutation({
+    vetId,
+  });
   const { mutate: postUserEstimateCare } = usePostUserEstimateCareMutation();
 
   useEffect(() => {
@@ -55,9 +55,7 @@ export default function EstimateCare() {
   }, [selectedPetId, address, selectedDate, selectedTime, symptoms, requirements]);
 
   const handlePostUserEstimateVetUserInfo = async () => {
-    const response: PostUserEstimateVetUserInfoResponse = await postUserEstimateVetUserInfo({
-      vetId,
-    });
+    const response = await postUserEstimateVetUserInfo();
 
     if (response?.address) setAddress(response.address);
     if (response?.petInfos) setPetInfos(response.petInfos);
@@ -91,7 +89,7 @@ export default function EstimateCare() {
       vetId: vetId,
       petId: selectedPetId,
       address: address,
-      reservedDate: reservedDate,
+      reservedDate: '',
       symptoms: symptoms,
       requirements: requirements,
     };
@@ -122,7 +120,7 @@ export default function EstimateCare() {
           <Text tag="h2" typo="subtitle3" color="black">
             시술 희망 날짜 및 시간
           </Text>
-          <DatePicker onDateChange={handleDateChange} onTimeChange={handleTimeChange} />
+          <DatePicker onChange={(date) => {}} />
         </section>
         <section css={section}>
           <Text tag="h2" typo="subtitle3" color="black">

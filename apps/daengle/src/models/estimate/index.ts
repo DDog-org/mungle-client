@@ -1,10 +1,10 @@
-export interface PetInfo {
+export interface PetProfileInfo {
   petId: number;
   imageUrl: string | null;
   name: string;
 }
 
-export interface PetEstimateId extends PetInfo {
+export interface PetEstimateId extends PetProfileInfo {
   estimateId: number;
 }
 
@@ -164,7 +164,7 @@ export interface PostUserEstimateGroomerUserInfoResponse {
   groomerName: string;
   shopName: string;
   address: string;
-  petInfos: PetInfo[];
+  petInfos: PetProfileInfo[];
 }
 
 export interface PostUserEstimateGroomingRequestBody {
@@ -188,7 +188,7 @@ export interface PostUserEstimateVetUserInfoResponse {
   vetImageUrl: string;
   vetName: string;
   address: string;
-  petInfos: PetInfo[];
+  petInfos: PetProfileInfo[];
 }
 
 export interface PostUserEstimateCareRequestBody {
