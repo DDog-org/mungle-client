@@ -16,7 +16,7 @@ import router from 'next/router';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import TimePickerComponent from '~/components/mypage/time-picker';
-import { VET_DAT_OFF } from '~/constants/mypage';
+import { DAY_OFF } from '~/constants/mypage';
 import { useValidateMyPageForm } from '~/hooks/mypage/use-validate-mypage-form';
 import { VetProfileForm } from '~/interfaces/auth';
 import { useGetVetModifyPageQuery, usePatchVetInfoMutation } from '~/queries/auth';
@@ -79,7 +79,7 @@ export default function vetProfile() {
     if (!imageUrls?.length) return;
 
     if (!selectedStartTime || !selectedEndTime) {
-      alert('시작 시간과 종료 시간을 모두 선택해야 전송할 수 있습니다.');
+      alert('시작 시간과 종료 시간을 모두 선택해야 수정할 수 있습니다.');
       return;
     }
 
@@ -145,7 +145,7 @@ export default function vetProfile() {
               </Text>
 
               <div css={chipButton}>
-                {VET_DAT_OFF.map((item) => {
+                {DAY_OFF.map((item) => {
                   return (
                     <ChipToggleButton
                       type="button"

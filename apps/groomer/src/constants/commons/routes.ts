@@ -23,6 +23,7 @@ export const ROUTES = {
   MYPAGE: '/mypage',
   MYPAGE_REVIEWS: '/mypage/reviews',
   MYPAGE_PROFILE: '/mypage/profile',
-  MYPAGE_MY_SHOP: '/mypage/my-shop',
+  MYPAGE_SHOP_EDIT: '/mypage/shop/edit',
+  MYPAGE_SHOP: (shopId: number) => `/mypage/shop/${shopId}`,
   MYPAGE_REVIEWS_REPORT: (reviewId: number) => `/mypage/reviews/report/${reviewId}`,
 } as const;

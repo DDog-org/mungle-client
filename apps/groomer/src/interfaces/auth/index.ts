@@ -20,3 +20,16 @@ export interface License {
   name: string;
   acquisitionDate: string;
 }
+
+export interface GroomerProfileForm {
+  shopId: number;
+  imageUrlList: File[];
+  name: string;
+  startTime: string;
+  endTime: string;
+  closedDays: string[];
+  phoneNumber: string;
+  address: string;
+  detailAddress: string;
+  introduction: string;
+}

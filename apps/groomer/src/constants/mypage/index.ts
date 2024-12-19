@@ -1,4 +1,4 @@
-export const VET_DAT_OFF: { value: string; label: string }[] = [
+export const DAY_OFF: { value: string; label: string }[] = [
   {
     value: 'MONDAY',
     label: '월',
