@@ -1,3 +1,6 @@
+import router from 'next/router';
+import { css } from '@emotion/react';
+import { useS3 } from '@daengle/services/hooks';
 import {
   AppBar,
   ChipRadio,
@@ -6,33 +9,38 @@ import {
   Layout,
   Select,
   Text,
+  TextField,
   theme,
+  ChipToggleButton,
+  useToast,
 } from '@daengle/design-system';
-import { css } from '@emotion/react';
-import { DislikeParts, PetProfileCreateFormType, SignificantTags } from '~/interfaces/auth';
-import { Controller, useForm } from 'react-hook-form';
-import useValidatePetEdit from '~/hooks/mypage/use-validate-pet-form';
+import { PetProfileCreateFormType } from '~/interfaces';
 import {
   BIRTH_YEAR_OPTIONS,
-  PET_DISLIKEPART,
+  GROOMING_EXPERIENCE,
+  IS_BITE,
+  PET_DISLIKE_PARTS,
   PET_GENDER,
   PET_IS_NEUTERED,
-  PET_SIGNIFICANTTAG,
+  PET_SIGNIFICANT_TAGS,
   PET_WEIGHT,
-} from '~/constants/mypage';
+  ROUTES,
+} from '~/constants';
+import { useValidatePetEdit } from '~/hooks';
+import { ImageInputBox } from '~/components/mypage';
 import { useGetBreedListQuery, usePostUserPetMutation } from '~/queries';
+import { Controller, useForm } from 'react-hook-form';
+import { RequiredLabel } from '~/components/mypage';
 import { useState } from 'react';
-import { ImageInputBox } from '~/components/mypage/profile/image-input';
-import { ChipToggleButton } from '~/components/mypage/profile/chip-toggle-button';
-import { useS3 } from '@daengle/services/hooks';
-import { ROUTES } from '~/constants/commons';
-import router from 'next/router';
+import { DevTool } from '@hookform/devtools';
 
 export default function PetProfileCreate() {
   const { data: breeds } = useGetBreedListQuery();
   const { mutateAsync: postUserPet } = usePostUserPetMutation();
-  const validation = useValidatePetEdit();
   const { uploadToS3 } = useS3({ targetFolderPath: 'user/profile-images' });
+  const { showToast } = useToast();
+
+  const [profileImage, setProfileImage] = useState<File | null>(null);
 
   const {
     register,
@@ -44,45 +52,34 @@ export default function PetProfileCreate() {
   } = useForm<PetProfileCreateFormType>({
     mode: 'onChange',
     defaultValues: {
-      image: null,
+      dislikeParts: [],
       significantTags: [],
       significant: '',
     },
   });
-
-  const [selectedParts, setSelectedParts] = useState<string[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const validation = useValidatePetEdit();
 
   const onSubmit = async (data: PetProfileCreateFormType) => {
     let imageString = '';
 
-    if (data.image) {
-      const uploadedImages = await uploadToS3([data.image]);
+    if (profileImage) {
+      const uploadedImages = await uploadToS3([profileImage]);
+
       if (uploadedImages && uploadedImages.length > 0) {
         imageString = uploadedImages[0] ?? '';
       }
     }
-    if (imageString != undefined) {
-      postUserPet({ ...data, image: imageString });
-    }
 
     const body = {
+      ...data,
       image: imageString,
-      name: watch('name'),
-      birth: Number(watch('birth')),
-      gender: watch('gender'),
-      breed: watch('breed'),
-      isNeutered: watch('isNeutered'),
-      weight: watch('weight'),
-      groomingExperience: watch('groomingExperience'),
-      isBite: watch('isBite'),
-      dislikeParts: watch('dislikeParts'),
-      significantTags: watch('significantTags'),
-      significant: watch('significant'),
+      significant: watch('significant') || null,
     };
 
     await postUserPet(body);
+
     router.push(ROUTES.MYPAGE);
+    showToast({ title: '반려견 프로필이 등록되었어요' });
   };
 
   return (
@@ -92,38 +89,40 @@ export default function PetProfileCreate() {
         onHomeClick={() => router.push(ROUTES.HOME)}
         backgroundColor={theme.colors.white}
       />
+
       <div css={wrapper}>
         <Text typo="title1">반려견 프로필 등록하기</Text>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <DevTool control={control} />
           <div css={profileImageWrapper}>
-            <ImageInputBox
-              onChange={(files) => setValue('image', files, { shouldValidate: true })}
-            />
+            <ImageInputBox onChange={setProfileImage} />
           </div>
+
           <div css={inputWrapper}>
             <Input
               label="이름"
               placeholder="이름을 입력해 주세요"
               maxLength={10}
+              required
               {...register('name', { ...validation.name })}
               errorMessage={errors.name?.message}
             />
             <section css={formBox}>
-              <Text typo="subtitle3" color="black">
-                탄생년도
-              </Text>
+              <RequiredLabel label="탄생년도" />
               <Select
                 options={BIRTH_YEAR_OPTIONS}
                 placeholder="탄생년도"
                 value={watch('birth')}
+                required
                 {...register('birth', { ...validation.birth })}
                 onChange={(e) =>
                   setValue('birth', Number(e.target.value), { shouldValidate: true })
                 }
               />
             </section>
+
             <section css={formBox}>
-              <Text typo="subtitle3">성별</Text>
+              <RequiredLabel label="성별" />
               <section css={toggleButtonBox}>
                 <Controller
                   name="gender"
@@ -147,8 +146,9 @@ export default function PetProfileCreate() {
                 />
               </section>
             </section>
+
             <section css={formBox}>
-              <Text typo="subtitle3">중성화</Text>
+              <RequiredLabel label="중성화" />
               <section css={toggleButtonBox}>
                 <Controller
                   name="isNeutered"
@@ -172,10 +172,9 @@ export default function PetProfileCreate() {
                 />
               </section>
             </section>
+
             <section css={formBox}>
-              <Text typo="subtitle3" color="black">
-                품종
-              </Text>
+              <RequiredLabel label="품종" />
               <Select
                 options={
                   breeds?.map((breed) => ({ value: breed.breed, label: breed.breedName })) ?? []
@@ -185,13 +184,14 @@ export default function PetProfileCreate() {
                 value={watch('breed')?.toString()}
               />
             </section>
+
             <section css={formBox}>
-              <Text typo="subtitle3">몸무게</Text>
+              <RequiredLabel label="몸무게" />
               <section css={chipToggleButtonBox}>
                 <Controller
                   name="weight"
                   control={control}
-                  rules={{ required: '몸무게를 선택해 주세요' }}
+                  rules={validation.weight}
                   render={({ field }) => (
                     <>
                       {PET_WEIGHT.map((item) => (
@@ -215,8 +215,9 @@ export default function PetProfileCreate() {
                 />
               </section>
             </section>
+
             <section css={formBox}>
-              <Text typo="subtitle3">미용 경험</Text>
+              <RequiredLabel label="미용경험" />
               <section css={toggleButtonBox}>
                 <Controller
                   name="groomingExperience"
@@ -224,7 +225,7 @@ export default function PetProfileCreate() {
                   rules={validation.groomingExperience}
                   render={({ field }) => (
                     <>
-                      {PET_IS_NEUTERED.map((item) => (
+                      {GROOMING_EXPERIENCE.map((item) => (
                         <ChipRadio
                           key={item.label}
                           name={field.name}
@@ -240,8 +241,9 @@ export default function PetProfileCreate() {
                 />
               </section>
             </section>
+
             <section css={formBox}>
-              <Text typo="subtitle3">입질</Text>
+              <RequiredLabel label="입질" />
               <section css={toggleButtonBox}>
                 <Controller
                   name="isBite"
@@ -249,7 +251,7 @@ export default function PetProfileCreate() {
                   rules={validation.isBite}
                   render={({ field }) => (
                     <>
-                      {PET_IS_NEUTERED.map((item) => (
+                      {IS_BITE.map((item) => (
                         <ChipRadio
                           key={item.label}
                           name={field.name}
@@ -265,102 +267,85 @@ export default function PetProfileCreate() {
                 />
               </section>
             </section>
+
             <section css={formBox}>
               <Text typo="subtitle3">싫어하는 부위</Text>
               <section css={selectChipButtonBox}>
-                <>
-                  <Controller
-                    name="dislikeParts"
-                    control={control}
-                    rules={validation.dislikeParts}
-                    render={({ field }) => (
-                      <>
-                        {PET_DISLIKEPART.map((item) => {
-                          return (
-                            <ChipToggleButton
-                              key={item.value}
-                              size="fixed"
-                              isSelected={selectedParts.includes(item.value)}
-                              itemValue={item.value}
-                              setSelectedParts={() => {
-                                const newParts =
-                                  field.value?.filter(
-                                    (t: DislikeParts) => t.partName !== item.value
-                                  ).length > 0
-                                    ? field.value.filter(
-                                        (t: DislikeParts) => t.partName !== item.value
-                                      )
-                                    : [...(field.value || []), item.value];
-
-                                field.onChange(newParts);
-                              }}
-                            >
-                              {item.label}
-                            </ChipToggleButton>
-                          );
-                        })}
-                      </>
-                    )}
-                  />
-                </>
+                <Controller
+                  name="dislikeParts"
+                  control={control}
+                  render={({ field }) => (
+                    <div css={chipCheckBoxWrapper}>
+                      {PET_DISLIKE_PARTS.map((part) => (
+                        <ChipToggleButton
+                          key={part.value}
+                          type="button"
+                          size="fixed"
+                          isSelected={field.value.includes(part.value)}
+                          onClick={() =>
+                            field.onChange(
+                              field.value.includes(part.value)
+                                ? field.value.filter((p) => p !== part.value)
+                                : [...field.value, part.value]
+                            )
+                          }
+                        >
+                          {part.label}
+                        </ChipToggleButton>
+                      ))}
+                    </div>
+                  )}
+                />
               </section>
             </section>
+
             <section css={formBox}>
               <section css={detailformBox}>
                 <Text typo="subtitle3">특이사항</Text>
                 <section css={chipButtonBox}>
-                  <>
-                    <Controller
-                      name="significantTags"
-                      control={control}
-                      render={({ field }) => (
-                        <>
-                          {PET_SIGNIFICANTTAG.map((item) => {
-                            return (
-                              <ChipToggleButton
-                                key={item.value}
-                                size="full"
-                                isSelected={selectedTags.includes(item.value)}
-                                itemValue={item.value}
-                                setSelectedTags={() => {
-                                  const newTags =
-                                    field.value?.filter(
-                                      (t: SignificantTags) => t.tag !== item.value
-                                    ).length > 0
-                                      ? field.value.filter(
-                                          (t: SignificantTags) => t.tag !== item.value
-                                        )
-                                      : [...(field.value || []), item.value];
-
-                                  field.onChange(newTags);
-                                }}
-                              >
-                                {item.label}
-                              </ChipToggleButton>
-                            );
-                          })}
-                        </>
-                      )}
-                    />
-                  </>
+                  <Controller
+                    name="significantTags"
+                    control={control}
+                    render={({ field }) => (
+                      <>
+                        {PET_SIGNIFICANT_TAGS.map((item) => (
+                          <ChipToggleButton
+                            key={item.value}
+                            type="button"
+                            size="full"
+                            isSelected={field.value.includes(item.value)}
+                            onClick={() =>
+                              field.onChange(
+                                field.value.includes(item.value)
+                                  ? field.value.filter((tag) => tag !== item.value)
+                                  : [...field.value, item.value]
+                              )
+                            }
+                          >
+                            {item.label}
+                          </ChipToggleButton>
+                        ))}
+                      </>
+                    )}
+                  />
                 </section>
+
                 <Controller
                   name="significant"
                   control={control}
                   render={({ field }) => (
-                    <>
-                      <textarea
-                        css={detailInput}
-                        placeholder="특이사항이 있다면 입력해주세요"
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </>
+                    <TextField
+                      css={detailInput}
+                      placeholder="특이사항이 있다면 입력해 주세요"
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
                   )}
-                ></Controller>
+                />
               </section>
             </section>
           </div>
+
           <CTAButton type="submit" disabled={!isValid}>
             등록하기
           </CTAButton>
@@ -387,6 +372,7 @@ const inputWrapper = css`
   flex-direction: column;
   gap: 32px;
 `;
+
 const formBox = css`
   display: flex;
   flex-direction: column;
@@ -433,4 +419,12 @@ const weightWrapper = css`
   gap: 3px;
 
   text-align: center;
+`;
+
+const chipCheckBoxWrapper = css`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  width: 100%;
 `;

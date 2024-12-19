@@ -84,7 +84,7 @@ export default function ShopInfo() {
                     key={groomer.groomerAccountId}
                     groomerName={groomer.groomerName}
                     groomerImage={groomer.groomerImage}
-                    keywords={groomer.keywords}
+                    badges={groomer.badges}
                     daengleMeter={groomer.daengleMeter}
                     onClick={() => handleCardClick(groomer.groomerAccountId)}
                   />

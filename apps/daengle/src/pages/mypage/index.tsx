@@ -33,7 +33,7 @@ export default function Mypage() {
 
   const openNeedLoginDialog = ({ to }: { to: string }) => {
     if (isLoggedInUser) {
-      router.push(ROUTES.MYPAGE_PAYMENTS);
+      router.push(to);
     } else {
       open({
         title: '로그인 후 이용할 수 있어요',

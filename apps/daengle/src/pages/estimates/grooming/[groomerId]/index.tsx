@@ -16,7 +16,8 @@ import { PostUserEstimateGroomerUserInfoResponse } from '~/models/estimate';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 import { PetInfo } from '~/interfaces/estimate';
-import { DatePicker, EstimateSelect } from '~/components/estimate';
+import { DatePicker, EstimateSelect, ProfileSelector } from '~/components/estimate';
+import { RegisterPetProfile } from '@daengle/services/components';
 
 export default function EstimateCreate() {
   const router = useRouter();
@@ -132,51 +133,14 @@ export default function EstimateCreate() {
           <Text tag="h2" typo="subtitle3" color="black">
             어떤 아이를 가꿀 예정이신가요?
           </Text>
-          {petInfos ? (
-            <div css={listBox}>
-              <div css={petList}>
-                {petInfos.map((pet) => (
-                  <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
-                    {pet.imageUrl ? (
-                      <Image
-                        src={pet.imageUrl}
-                        alt="반려견 프로필"
-                        width={86}
-                        height={86}
-                        css={profileImage({ isSelected: selectedPetId === pet.petId })}
-                      />
-                    ) : (
-                      <DefaultProfile
-                        css={profileImage({ isSelected: selectedPetId === pet.petId })}
-                      />
-                    )}
-
-                    <Text
-                      typo="body1"
-                      color={selectedPetId === pet.petId ? 'blue200' : 'gray400'}
-                      css={petName}
-                    >
-                      {pet.name}
-                    </Text>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {petInfos && petInfos.length > 0 ? (
+            <ProfileSelector
+              petInfos={petInfos}
+              selectedPetId={selectedPetId}
+              onSelectPet={(petId) => setSelectedPetId(petId)}
+            />
           ) : (
-            <div css={registerPet}>
-              <div css={circle}>
-                <AddButton
-                  width={12}
-                  height={12}
-                  onClick={() => {
-                    router.push(ROUTES.MYPAGE_PET_PROFILE);
-                  }}
-                />
-              </div>
-              <Text typo="body11" color="gray400">
-                반려견을 등록해주세요
-              </Text>
-            </div>
+            <RegisterPetProfile onClick={() => router.push(ROUTES.MYPAGE)} />
           )}
         </section>
         <section css={section}>

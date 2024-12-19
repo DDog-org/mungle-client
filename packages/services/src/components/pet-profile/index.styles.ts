@@ -12,6 +12,8 @@ export const wrapper = css`
   height: 109px;
   border: 1px solid ${theme.colors.gray200};
   border-radius: 10px;
+
+  cursor: pointer;
 `;
 
 export const circle = css`
@@ -23,8 +25,6 @@ export const circle = css`
   height: 40px;
   border: 1px solid ${theme.colors.gray200};
   border-radius: 20px;
-
-  cursor: pointer;
 
   :hover {
     background-color: ${theme.colors.gray100};

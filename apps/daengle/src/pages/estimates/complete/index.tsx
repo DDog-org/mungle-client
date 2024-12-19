@@ -1,5 +1,5 @@
 import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
-import { TransmissionComplete } from '@daengle/design-system/icons';
+import { EstimateComplete as EstimateCompleteIcon } from '@daengle/design-system/icons';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
@@ -10,9 +10,10 @@ export default function EstimateComplete() {
   return (
     <Layout>
       <AppBar prefix={<></>} suffix={<></>} />
+
       <div css={wrapper}>
         <div css={box}>
-          <TransmissionComplete width={90} height={90} color={theme.colors.blue200} />
+          <EstimateCompleteIcon width={90} height={90} />
           <section css={textSection}>
             <Text tag="h1" typo="title2">
               견적 요청이 완료되었어요!
@@ -36,8 +37,6 @@ export default function EstimateComplete() {
     </Layout>
   );
 }
-
-//////////// emotion(css) //////////
 
 export const wrapper = css`
   margin: auto;

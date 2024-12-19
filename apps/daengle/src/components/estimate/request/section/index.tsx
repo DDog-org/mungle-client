@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@daengle/design-system';
-import { wrapper, content } from './index.styles';
+import { wrapper } from './index.styles';
 
 interface Props {
   title: string;
@@ -10,8 +10,11 @@ interface Props {
 export function Section({ title, children }: Props): JSX.Element {
   return (
     <section css={wrapper}>
-      <Text typo="subtitle3">{title}</Text>
-      <div css={content}>{children}</div>
+      <Text typo="subtitle3" color="gray700">
+        {title}
+      </Text>
+
+      {children}
     </section>
   );
 }

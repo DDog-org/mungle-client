@@ -63,13 +63,16 @@ export function RequestEstimate({
   return (
     <Layout>
       <AppBar backgroundColor="white" onBackClick={router.back} onHomeClick={() => router.back()} />
+
       <div css={wrapper}>
         <div css={header}>
           <Text typo="title1">내가 보낸 요청</Text>
         </div>
+
         <Section title="지역">
           <Text typo="title2">{address}</Text>
         </Section>
+
         <Section title="시술 희망 날짜 및 시간">
           <Text typo="title2">
             {dayjs(reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
@@ -85,9 +88,11 @@ export function RequestEstimate({
         >
           <PetImage petImage={petImageUrl} petname={petName} />
         </Section>
+
         <Section title={specificField.title}>
           <Text typo="title2">{specificField.value}</Text>
         </Section>
+
         <Section title="추가 요청사항">
           <Text typo="subtitle1">{requirements}</Text>
         </Section>

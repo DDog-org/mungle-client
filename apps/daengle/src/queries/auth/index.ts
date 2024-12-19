@@ -71,51 +71,27 @@ export const useGetUserProfileInfoQuery = () => {
 export const usePatchUserInfoMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_USER_PROFILE_INFO,
-    mutationFn: async (body: PatchUserInfoRequestBody) => {
-      try {
-        return await patchUserInfo(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: patchUserInfo,
   });
 };
 export const useGetUserPetInfoQuery = () => {
   return useQuery({
     queryKey: QUERY_KEYS.GET_USER_PET_INFO,
-    queryFn: async () => {
-      try {
-        return await getUserPetInfo();
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    queryFn: getUserPetInfo,
   });
 };
 
 export const usePostUserPetMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_USER_PET,
-    mutationFn: async (body: PostUserPetRequestBody) => {
-      try {
-        return await postUserPet(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: postUserPet,
   });
 };
 
 export const usePatchUserPetInfoMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_USER_PET_INFO,
-    mutationFn: async (body: PatchUserPetInfoRequestBody) => {
-      try {
-        return await patchUserPetInfo(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: patchUserPetInfo,
   });
 };
 

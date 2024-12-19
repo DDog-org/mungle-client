@@ -12,9 +12,10 @@ import {
 import { PostUserEstimateVetUserInfoResponse } from '~/models/estimate';
 import { useEffect, useState } from 'react';
 
-import DatePickerComponent from '~/components/estimate/date-picker';
 import dayjs, { Dayjs } from 'dayjs';
 import { PetInfo } from '~/interfaces/estimate';
+import { RegisterPetProfile } from '@daengle/services/components';
+import { DatePicker, ProfileSelector } from '~/components/estimate';
 
 export default function EstimateCare() {
   const router = useRouter();
@@ -121,57 +122,20 @@ export default function EstimateCare() {
           <Text tag="h2" typo="subtitle3" color="black">
             시술 희망 날짜 및 시간
           </Text>
-          <DatePickerComponent onDateChange={handleDateChange} onTimeChange={handleTimeChange} />
+          <DatePicker onDateChange={handleDateChange} onTimeChange={handleTimeChange} />
         </section>
         <section css={section}>
           <Text tag="h2" typo="subtitle3" color="black">
             어떤 아이가 진료를 받을 예정인가요?
           </Text>
           {petInfos && petInfos?.length > 0 ? (
-            <div css={listBox}>
-              <div css={petList}>
-                {petInfos.map((pet) => (
-                  <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
-                    {pet.imageUrl ? (
-                      <Image
-                        src={pet.imageUrl}
-                        alt="반려견 프로필"
-                        width={86}
-                        height={86}
-                        css={profileImage({ isSelected: selectedPetId === pet.petId })}
-                      />
-                    ) : (
-                      <DefaultProfile
-                        css={profileImage({ isSelected: selectedPetId === pet.petId })}
-                      />
-                    )}
-
-                    <Text
-                      typo="body1"
-                      color={selectedPetId === pet.petId ? 'blue200' : 'gray400'}
-                      css={petName}
-                    >
-                      {pet.name}
-                    </Text>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <ProfileSelector
+              petInfos={petInfos}
+              selectedPetId={selectedPetId}
+              onSelectPet={(petId) => setSelectedPetId(petId)}
+            />
           ) : (
-            <div css={registerPet}>
-              <div css={circle}>
-                <AddButton
-                  width={12}
-                  height={12}
-                  onClick={() => {
-                    router.push(ROUTES.MYPAGE_PET_PROFILE);
-                  }}
-                />
-              </div>
-              <Text typo="body11" color="gray400">
-                반려견을 등록해주세요
-              </Text>
-            </div>
+            <RegisterPetProfile onClick={() => router.push(ROUTES.MYPAGE_PET_PROFILE_CREATE)} />
           )}
         </section>
         <section css={section}>

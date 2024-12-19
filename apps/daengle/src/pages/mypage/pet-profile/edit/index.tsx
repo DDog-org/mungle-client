@@ -11,10 +11,10 @@ import {
 } from '@daengle/design-system';
 import {
   BIRTH_YEAR_OPTIONS,
-  PET_DISLIKEPART,
+  PET_DISLIKE_PARTS,
   PET_GENDER,
   PET_IS_NEUTERED,
-  PET_SIGNIFICANTTAG,
+  PET_SIGNIFICANT_TAGS,
   PET_WEIGHT,
 } from '~/constants';
 import {
@@ -26,7 +26,6 @@ import {
 import Image from 'next/image';
 import { Controller, useForm } from 'react-hook-form';
 import { css } from '@emotion/react';
-import useValidatePetEdit from '~/hooks/mypage/use-validate-pet-form';
 import { useEffect, useState } from 'react';
 import { PetProfile } from '~/models/auth';
 import { ImageInputBox } from '~/components/mypage';
@@ -35,13 +34,15 @@ import { DefaultImage } from '@daengle/design-system/icons';
 import { PetProfileEditType } from '~/interfaces/auth';
 import router from 'next/router';
 import { ROUTES } from '~/constants/commons';
+import { useValidatePetEdit } from '~/hooks';
+import { convertURLToFile } from '@daengle/services/utils';
 
 export default function PetInfoEdit() {
   const [petInfos, setPetInfos] = useState<PetProfile[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
 
   const { data: breeds } = useGetBreedListQuery();
-  const { data: getUserPetInfo } = useGetUserPetInfoQuery();
+  const { data: petInfo } = useGetUserPetInfoQuery();
   const { mutateAsync: patchUserPetInfo } = usePatchUserPetInfoMutation();
   const { mutateAsync: deleteUserPet } = useDeleteUserPetMutation();
 
@@ -57,102 +58,97 @@ export default function PetInfoEdit() {
     control,
     formState: { errors },
   } = useForm<PetProfileEditType>({
-    mode: 'onChange',
-    defaultValues: {
-      image: null,
-      significantTags: [],
-      dislikeParts: [],
-    },
+    mode: 'onBlur',
   });
 
-  useEffect(() => {
-    if (getUserPetInfo && getUserPetInfo.petDetails) {
-      const defaultPet = getUserPetInfo.petDetails[0];
+  // useEffect(() => {
+  //   if (getUserPetInfo && getUserPetInfo.petDetails) {
+  //     const defaultPet = getUserPetInfo.petDetails[0];
 
-      setPetInfos(getUserPetInfo.petDetails);
+  //     setPetInfos(getUserPetInfo.petDetails);
 
-      if (defaultPet) {
-        setSelectedPetId(defaultPet.id);
+  //     if (defaultPet) {
+  //       setSelectedPetId(defaultPet.id);
 
-        const dislikeParts = defaultPet.dislikeParts.map((part) => part.part);
-        const significantTags = defaultPet.significantTags.map((tag) => tag.tag);
+  //       const dislikeParts = defaultPet.dislikeParts.map((part) => part.part);
+  //       const significantTags = defaultPet.significantTags.map((tag) => tag.tag);
 
-        setValue('name', defaultPet.name || '');
-        setValue('birth', defaultPet.birth);
-        setValue('gender', defaultPet.gender || '');
-        setValue('breed', defaultPet.breed || '');
-        setValue('isNeutered', defaultPet.isNeutered);
-        setValue('weight', defaultPet.weight || '');
-        setValue('groomingExperience', defaultPet.groomingExperience);
-        setValue('isBite', defaultPet.isBite);
-        setValue('dislikeParts', dislikeParts || []);
-        setValue('significantTags', significantTags || []);
-      }
-    }
-  }, [getUserPetInfo, setValue]);
+  //       setValue('name', defaultPet.name || '');
+  //       setValue('birth', defaultPet.birth);
+  //       setValue('gender', defaultPet.gender || '');
+  //       setValue('breed', defaultPet.breed || '');
+  //       setValue('isNeutered', defaultPet.isNeutered);
+  //       setValue('weight', defaultPet.weight || '');
+  //       setValue('groomingExperience', defaultPet.groomingExperience);
+  //       setValue('isBite', defaultPet.isBite);
+  //       setValue('dislikeParts', dislikeParts || []);
+  //       setValue('significantTags', significantTags || []);
+  //     }
+  //   }
+  // }, [getUserPetInfo, setValue]);
 
-  const handlePetSelect = (petId: number) => {
-    setSelectedPetId(petId);
+  // const handlePetSelect = (petId: number) => {
+  //   setSelectedPetId(petId);
 
-    const selectedPet = petInfos?.find((pet) => pet.id === petId);
+  //   const selectedPet = petInfos?.find((pet) => pet.id === petId);
 
-    const dislikeParts = selectedPet?.dislikeParts.map((part) => part.part);
-    const significantTags = selectedPet?.significantTags.map((tag) => tag.tag);
+  //   const dislikeParts = selectedPet?.dislikeParts.map((part) => part.part);
+  //   const significantTags = selectedPet?.significantTags.map((tag) => tag.tag);
 
-    if (selectedPet) {
-      setValue('name', selectedPet.name || '');
-      setValue('birth', selectedPet.birth);
-      setValue('gender', selectedPet.gender || '');
-      setValue('breed', selectedPet.breed || '');
-      setValue('isNeutered', selectedPet.isNeutered);
-      setValue('weight', selectedPet.weight || '');
-      setValue('groomingExperience', selectedPet.groomingExperience);
-      setValue('isBite', selectedPet.isBite);
-      setValue('dislikeParts', dislikeParts || []);
-      setValue('significantTags', significantTags || []);
-    }
-  };
+  //   if (selectedPet) {
+  //     setValue('name', selectedPet.name || '');
+  //     setValue('birth', selectedPet.birth);
+  //     setValue('gender', selectedPet.gender || '');
+  //     setValue('breed', selectedPet.breed || '');
+  //     setValue('isNeutered', selectedPet.isNeutered);
+  //     setValue('weight', selectedPet.weight || '');
+  //     setValue('groomingExperience', selectedPet.groomingExperience);
+  //     setValue('isBite', selectedPet.isBite);
+  //     setValue('dislikeParts', dislikeParts || []);
+  //     setValue('significantTags', significantTags || []);
+  //   }
+  // };
 
-  const handleDeletePet = async () => {
-    // TODO : 모달창으로 수정
-    if (!confirm('정말로 이 반려견 정보를 삭제하시겠습니까?')) {
-      return;
-    }
-    await deleteUserPet({
-      petId: selectedPetId,
-    });
+  // const handleDeletePet = async () => {
+  //   // TODO : 모달창으로 수정
+  //   if (!confirm('정말로 이 반려견 정보를 삭제하시겠습니까?')) {
+  //     return;
+  //   }
+  //   await deleteUserPet({
+  //     petId: selectedPetId,
+  //   });
 
-    setPetInfos((prev) => prev?.filter((pet) => pet.id !== selectedPetId) || []);
+  //   setPetInfos((prev) => prev?.filter((pet) => pet.id !== selectedPetId) || []);
 
-    setSelectedPetId(0);
-  };
+  //   setSelectedPetId(0);
+  // };
 
-  const onSubmit = async (data: PetProfileEditType) => {
-    let imageString = '';
+  // const onSubmit = async (data: PetProfileEditType) => {
+  //   let imageString = '';
 
-    if (getUserPetInfo?.image) {
-      const fileName = getUserPetInfo.image.split('/').pop();
-      if (fileName) {
-        await deleteFromS3(fileName);
-      }
-    }
+  //   if (getUserPetInfo?.image) {
+  //     const fileName = getUserPetInfo.image.split('/').pop();
+  //     if (fileName) {
+  //       await deleteFromS3(fileName);
+  //     }
+  //   }
 
-    if (data.image) {
-      const uploadedImages = await uploadToS3([data.image]);
-      if (uploadedImages && uploadedImages.length > 0) {
-        imageString = uploadedImages[0] ?? '';
-      }
-    } else {
-      imageString = getUserPetInfo?.image || '';
-    }
+  //   if (data.image) {
+  //     const uploadedImages = await uploadToS3([data.image]);
+  //     if (uploadedImages && uploadedImages.length > 0) {
+  //       imageString = uploadedImages[0] ?? '';
+  //     }
+  //   } else {
+  //     imageString = getUserPetInfo?.image || '';
+  //   }
 
-    const payload = {
-      ...data,
-      id: selectedPetId,
-      image: imageString,
-    };
-    await patchUserPetInfo(payload);
-  };
+  //   const payload = {
+  //     ...data,
+  //     id: selectedPetId,
+  //     image: imageString,
+  //   };
+  //   await patchUserPetInfo(payload);
+  // };
 
   return (
     <Layout isAppBarExist={true}>
@@ -161,9 +157,11 @@ export default function PetInfoEdit() {
         onHomeClick={() => router.push(ROUTES.HOME)}
         backgroundColor={theme.colors.white}
       />
-      <div css={titleBox}>
+
+      <section css={titleBox}>
         <Text typo="title1">반려견 프로필 수정</Text>
-      </div>
+      </section>
+
       <div css={petProfileWrapper}>
         <section css={section}>
           <div css={petTitle}>
@@ -387,7 +385,7 @@ export default function PetInfoEdit() {
                   control={control}
                   render={({ field }) => (
                     <>
-                      {PET_DISLIKEPART.map((item) => {
+                      {PET_DISLIKE_PARTS.map((item) => {
                         return (
                           <ChipToggleButton
                             key={item.value}
@@ -422,7 +420,7 @@ export default function PetInfoEdit() {
                     control={control}
                     render={({ field }) => (
                       <>
-                        {PET_SIGNIFICANTTAG.map((item) => {
+                        {PET_SIGNIFICANT_TAGS.map((item) => {
                           return (
                             <ChipToggleButton
                               key={item.value}

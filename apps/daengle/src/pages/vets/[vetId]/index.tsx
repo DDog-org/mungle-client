@@ -33,7 +33,7 @@ export default function VetInfo() {
             <VetDefaultImage />
           )}
 
-          <Text typo="title2" color="white" css={vetName}>
+          <Text typo="title2" color={vetInfo?.vetImage ? 'white' : 'gray700'} css={vetName}>
             {vetInfo?.vetName}
           </Text>
 

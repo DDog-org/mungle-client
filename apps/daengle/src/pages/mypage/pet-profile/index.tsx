@@ -10,21 +10,20 @@ import {
   theme,
 } from '@daengle/design-system';
 import { css } from '@emotion/react';
-import Image from 'next/image';
 import {
   BIRTH_YEAR_OPTIONS,
-  PET_DISLIKEPART,
+  PET_DISLIKE_PARTS,
   PET_GENDER,
   PET_IS_NEUTERED,
-  PET_SIGNIFICANTTAG,
+  PET_SIGNIFICANT_TAGS,
   PET_WEIGHT,
-} from '~/constants/mypage';
+} from '~/constants';
 import { useGetBreedListQuery, useGetUserPetInfoQuery } from '~/queries';
 import { useEffect, useState } from 'react';
-import { DefaultImage } from '@daengle/design-system/icons';
 import { PetProfile } from '~/models/auth';
 import router from 'next/router';
 import { ROUTES } from '~/constants/commons';
+import { ProfileSelector } from '~/components/estimate';
 
 export default function PetProfileDetail() {
   const [petInfos, setPetInfos] = useState<PetProfile[] | null>(null);
@@ -77,37 +76,16 @@ export default function PetProfileDetail() {
               내 아이
             </Text>
             <div css={petList}>
-              {petInfos && petInfos.length > 0 ? (
-                <div css={petList}>
-                  {petInfos.map((pet) => (
-                    <div key={pet.id} css={petProfile} onClick={() => handlePetSelect(pet.id)}>
-                      {pet.image ? (
-                        <Image
-                          src={pet.image}
-                          alt="반려견 프로필"
-                          width={86}
-                          height={86}
-                          css={profileImage({ isSelected: selectedPetId === pet.id })}
-                        />
-                      ) : (
-                        <DefaultImage
-                          css={profileImage({ isSelected: selectedPetId === pet.id })}
-                        />
-                      )}
-                      <Text
-                        typo="body1"
-                        color={selectedPetId === pet.id ? 'blue200' : 'gray400'}
-                        css={petName}
-                      >
-                        {pet.name}
-                      </Text>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <Text typo="body3" color="gray400">
-                  반려견 정보를 불러오지 못했습니다.
-                </Text>
+              {petInfos && petInfos?.length > 0 && (
+                <ProfileSelector
+                  petInfos={petInfos.map((item) => ({
+                    petId: item.id,
+                    name: item.name,
+                    imageUrl: item.image,
+                  }))}
+                  selectedPetId={selectedPetId}
+                  onSelectPet={handlePetSelect}
+                />
               )}
             </div>
           </section>
@@ -211,7 +189,7 @@ export default function PetProfileDetail() {
         <section css={formBox}>
           <Text typo="subtitle3">싫어하는 부위</Text>
           <section css={selectChipButtonBox}>
-            {PET_DISLIKEPART.map((item) => {
+            {PET_DISLIKE_PARTS.map((item) => {
               const selectedParts = selectedPet?.dislikeParts?.map(
                 (partItem: { part: string }) => partItem.part
               );
@@ -229,7 +207,7 @@ export default function PetProfileDetail() {
           <section css={detailformBox}>
             <Text typo="subtitle3">특이사항</Text>
             <section css={chipButtonBox}>
-              {PET_SIGNIFICANTTAG.map((item) => (
+              {PET_SIGNIFICANT_TAGS.map((item) => (
                 <ChipToggleButton
                   key={item.value}
                   size="full"

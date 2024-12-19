@@ -83,7 +83,7 @@ export default function EstimateCreate() {
       address: watch('address'),
       reservedDate: watch('reservedDate'),
       desiredStyle: watch('desiredStyle'),
-      requirements: watch('requirements') ?? null,
+      requirements: watch('requirements'),
     };
 
     postUserEstimateGrooming(payload, {

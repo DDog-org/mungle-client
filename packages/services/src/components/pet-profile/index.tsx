@@ -8,8 +8,8 @@ interface Props {
 
 export function RegisterPetProfile({ onClick }: Props) {
   return (
-    <div css={wrapper}>
-      <div css={circle} onClick={onClick}>
+    <div css={wrapper} onClick={onClick}>
+      <div css={circle}>
         <AddButton width={12} height={12} />
       </div>
       <Text typo="body11" color="gray400">

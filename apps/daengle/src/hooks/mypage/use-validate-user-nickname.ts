@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
 
-export function useValidateUserInfoForm() {
+export function useValidateUserNickname() {
   return useMemo(
     () => ({
       nickname: {
-        required: '닉네임을 입력해 주세요',
         pattern: {
           value: /^[a-zA-Zㄱ-ㅎ가-힣]{2,10}$/,
           message: '한글과 영어만 사용할 수 있어요',

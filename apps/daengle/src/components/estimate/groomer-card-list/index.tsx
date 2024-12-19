@@ -91,7 +91,7 @@ export function GroomerEstimateList({ isDesignation }: Props) {
       ) : petError ? (
         <div>펫 정보를 불러오는데 실패했습니다.</div>
       ) : petInfos.length === 0 ? (
-        <Empty title="등록된 반려견이 없어요" />
+        <Empty title="아직 도착한 견적서가 없어요" />
       ) : (
         <>
           <ProfileSelector
