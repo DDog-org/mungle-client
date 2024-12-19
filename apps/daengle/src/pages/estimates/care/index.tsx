@@ -12,9 +12,10 @@ import {
 import { PostUserEstimateVetUserInfoResponse } from '~/models/estimate';
 import { useEffect, useState } from 'react';
 
-import DatePickerComponent from '~/components/estimate/date-picker-component';
 import dayjs, { Dayjs } from 'dayjs';
 import { PetInfo } from '~/interfaces/estimate';
+import { RegisterPetProfile } from '@daengle/services/components';
+import { DatePicker, ProfileSelector } from '~/components/estimate';
 
 export default function EstimateCare() {
   const router = useRouter();
@@ -23,16 +24,16 @@ export default function EstimateCare() {
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(dayjs());
+
   const [symptoms, setSymptoms] = useState<string>('');
   const [requirements, setRequirements] = useState<string>('');
   const [ButtonActive, setButtonActive] = useState<boolean>(false);
 
-  const { id } = router.query;
-  const vetId = Number(id);
+  const vetId = Number(router.query.vetId);
 
-  const reservedDate = `${selectedDate?.format('YYYY-MM-DD')} ${selectedTime?.format('HH:mm:ss')}`;
-
-  const { mutateAsync: postUserEstimateVetUserInfo } = usePostUserEstimateVetUserInfoMutation();
+  const { mutateAsync: postUserEstimateVetUserInfo } = usePostUserEstimateVetUserInfoMutation({
+    vetId,
+  });
   const { mutate: postUserEstimateCare } = usePostUserEstimateCareMutation();
 
   useEffect(() => {
@@ -54,9 +55,7 @@ export default function EstimateCare() {
   }, [selectedPetId, address, selectedDate, selectedTime, symptoms, requirements]);
 
   const handlePostUserEstimateVetUserInfo = async () => {
-    const response: PostUserEstimateVetUserInfoResponse = await postUserEstimateVetUserInfo({
-      vetId,
-    });
+    const response = await postUserEstimateVetUserInfo();
 
     if (response?.address) setAddress(response.address);
     if (response?.petInfos) setPetInfos(response.petInfos);
@@ -90,14 +89,14 @@ export default function EstimateCare() {
       vetId: vetId,
       petId: selectedPetId,
       address: address,
-      reservedDate: reservedDate,
+      reservedDate: '',
       symptoms: symptoms,
       requirements: requirements,
     };
 
     postUserEstimateCare(requestBody, {
       onSuccess: () => {
-        router.push(ROUTES.ESTIMATE_FORM_COMPLETE);
+        router.push(ROUTES.ESTIMATES_FORM_COMPLETE);
       },
     });
   };
@@ -114,64 +113,27 @@ export default function EstimateCare() {
             지역
           </Text>
           <Text typo="title2" color="black">
-            {address || '주소 불러오는 중..(ᐡ- ﻌ •ᐡ)'}
+            {address}
           </Text>
         </section>
         <section css={section}>
           <Text tag="h2" typo="subtitle3" color="black">
             시술 희망 날짜 및 시간
           </Text>
-          <DatePickerComponent onDateChange={handleDateChange} onTimeChange={handleTimeChange} />
+          <DatePicker onChange={(date) => {}} />
         </section>
         <section css={section}>
           <Text tag="h2" typo="subtitle3" color="black">
             어떤 아이가 진료를 받을 예정인가요?
           </Text>
-          {petInfos ? (
-            <div css={listBox}>
-              <div css={petList}>
-                {petInfos.map((pet) => (
-                  <div key={pet.petId} css={petProfile} onClick={() => handlePetSelect(pet.petId)}>
-                    {pet.imageURL ? (
-                      <Image
-                        src={pet.imageURL}
-                        alt="반려견 프로필"
-                        width={86}
-                        height={86}
-                        css={profileImage({ isSelected: selectedPetId === pet.petId })}
-                      />
-                    ) : (
-                      <DefaultProfile
-                        css={profileImage({ isSelected: selectedPetId === pet.petId })}
-                      />
-                    )}
-
-                    <Text
-                      typo="body1"
-                      color={selectedPetId === pet.petId ? 'blue200' : 'gray400'}
-                      css={petName}
-                    >
-                      {pet.name}
-                    </Text>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {petInfos && petInfos?.length > 0 ? (
+            <ProfileSelector
+              petInfos={petInfos}
+              selectedPetId={selectedPetId}
+              onSelectPet={(petId) => setSelectedPetId(petId)}
+            />
           ) : (
-            <div css={registerPet}>
-              <div css={circle}>
-                <AddButton
-                  width={12}
-                  height={12}
-                  onClick={() => {
-                    router.push(ROUTES.MYPAGE_PET_PROFILE);
-                  }}
-                />
-              </div>
-              <Text typo="body11" color="gray400">
-                반려견을 등록해주세요
-              </Text>
-            </div>
+            <RegisterPetProfile onClick={() => router.push(ROUTES.MYPAGE_PET_PROFILE_CREATE)} />
           )}
         </section>
         <section css={section}>
@@ -205,8 +167,6 @@ export default function EstimateCare() {
     </Layout>
   );
 }
-
-/////////// emotion(css) ///////////
 
 const wrapper = css`
   display: flex;

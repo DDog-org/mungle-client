@@ -189,7 +189,7 @@ export default function ChatRoom() {
             {estimateId && (
               <CapsuleButton
                 size="S"
-                onClick={() => router.push(ROUTES.ESTIMATE_DETAIL(Number(estimateId)))}
+                onClick={() => router.push(ROUTES.ESTIMATES_DETAIL(Number(estimateId)))}
               >
                 <Text typo="body2" color="gray500">
                   견적서 상세보기
@@ -282,7 +282,7 @@ export const chatList = ({ isEstimateExist }: { isEstimateExist: boolean }) => c
   display: flex;
   flex-direction: column;
   gap: 10px;
-  overflow-y: auto;
+  overflow: hidden auto;
 
   width: 100%;
   height: 100%;

@@ -47,8 +47,12 @@ export const thumbnailImage = css`
   width: 116px;
   height: 116px;
   border-radius: 50%;
-  object-fit: cover;
+
+  img {
+    object-fit: cover;
+  }
 `;
+
 export const defaultImage = css`
   background-color: ${theme.colors.gray200};
 `;

@@ -186,7 +186,7 @@ export default function ChatRoom() {
             {estimateId && (
               <CapsuleButton
                 size="S"
-                onClick={() => router.push(ROUTES.ESTIMATE_DETAIL(Number(estimateId)))}
+                onClick={() => router.push(ROUTES.ESTIMATES_DETAIL(Number(estimateId)))}
               >
                 <Text typo="body2" color="gray500">
                   견적서 상세보기

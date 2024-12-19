@@ -8,12 +8,13 @@ export const wrapper = css`
   gap: 21px;
   position: fixed;
   bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: ${theme.zIndex.ctaButton};
 
-  width: calc(100% - 18px);
+  width: 100%;
   max-width: ${theme.size.maxWidth};
-  margin: 0 auto;
-  padding: 0 18px 21px 0;
+  padding: 0 18px 21px;
 
   background: ${theme.colors.whiteGradient100} !important;
 `;

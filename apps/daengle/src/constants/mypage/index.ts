@@ -1,82 +1,65 @@
-export const STEPS = {
-  USER_INFO: 'user-info',
-  SEARCH_ADDRESS: 'search-address',
-  PET_INFO: 'pet-info',
+import { PetDislikePart } from '~/interfaces';
+
+export const PET_DISLIKE_PARTS_LABELS = {
+  EYE: '눈',
+  NOSE: '코',
+  MOUTH: '입',
+  EAR: '귀',
+  NECK: '목',
+  BODY: '몸통',
+  LEG: '다리',
+  TAIL: '꼬리',
+  GENITAL: '생식기',
 } as const;
 
-export const PET_GENDER = [
-  { value: 'MALE', label: '남아' },
-  { value: 'FEMALE', label: '여아' },
-] as const;
-
-export const PET_IS_NEUTERED = [
-  { value: 'true', label: '했어요' },
-  { value: 'false', label: '안했어요' },
-] as const;
-
-export const PET_WEIGHT = [
-  {
-    value: 'SMALL',
-    label: '소형견',
-    description: '7kg 이하',
-  },
-  {
-    value: 'MEDIUM',
-    label: '중형견',
-    description: '7kg 초과 ~ 15kg 이하',
-  },
-  {
-    value: 'LARGE',
-    label: '대형견',
-    description: '15kg 초과',
-  },
-] as const;
-
-export const PET_DISLIKEPART: { value: string; label: string }[] = [
-  {
-    value: 'NONE',
-    label: '없음',
-  },
+export const PET_DISLIKE_PARTS: PetDislikePart[] = [
   {
     value: 'EYE',
-    label: '눈',
+    label: PET_DISLIKE_PARTS_LABELS.EYE,
   },
   {
     value: 'NOSE',
-    label: '코',
+    label: PET_DISLIKE_PARTS_LABELS.NOSE,
   },
   {
     value: 'MOUTH',
-    label: '입',
+    label: PET_DISLIKE_PARTS_LABELS.MOUTH,
   },
   {
     value: 'EAR',
-    label: '귀',
+    label: PET_DISLIKE_PARTS_LABELS.EAR,
   },
 
   {
     value: 'NECK',
-    label: '목',
+    label: PET_DISLIKE_PARTS_LABELS.NECK,
   },
   {
     value: 'BODY',
-    label: '몸통',
+    label: PET_DISLIKE_PARTS_LABELS.BODY,
   },
   {
     value: 'LEG',
-    label: '다리',
+    label: PET_DISLIKE_PARTS_LABELS.LEG,
   },
   {
     value: 'TAIL',
-    label: '꼬리',
+    label: PET_DISLIKE_PARTS_LABELS.TAIL,
   },
   {
     value: 'GENITAL',
-    label: '생식기',
+    label: PET_DISLIKE_PARTS_LABELS.GENITAL,
   },
 ] as const;
 
-export const PET_SIGNIFICANTTAG: { value: string; label: string }[] = [
+export const PET_SIGNIFICANT_TAGS_LABELS = {
+  SKIN_DISEASES: '피부병',
+  HEART_DISEASE: '심장질환',
+  MARKING: '마킹',
+  MOUNTING: '마운팅',
+};
+
+export const PET_SIGNIFICANT_TAGS = [
   {
     value: 'SKIN_DISEASES',
     label: '피부병',
@@ -95,7 +78,24 @@ export const PET_SIGNIFICANTTAG: { value: string; label: string }[] = [
   },
 ] as const;
 
-export const BIRTH_YEAR_OPTIONS = Array.from({ length: 30 }, (_, index) => ({
-  value: `${new Date().getFullYear() - index}`,
-  label: `${new Date().getFullYear() - index}`,
-}));
+export const GROOMING_EXPERIENCE = [
+  {
+    value: 'true',
+    label: '있어요',
+  },
+  {
+    value: 'false',
+    label: '없어요',
+  },
+] as const;
+
+export const IS_BITE = [
+  {
+    value: 'true',
+    label: '있어요',
+  },
+  {
+    value: 'false',
+    label: '없어요',
+  },
+];

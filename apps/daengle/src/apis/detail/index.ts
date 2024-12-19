@@ -1,3 +1,4 @@
+import { api, guestApi } from '~/apis';
 import {
   GetUserVetDetailRequestParams,
   GetUserVetDetailResponse,
@@ -5,15 +6,14 @@ import {
   GetUserShopDetailResponse,
   GetUserGroomerDetailRequestParams,
   GetUserGroomerDetailResponse,
-} from '~/models/detail';
-import { api } from '~/apis';
+} from '~/models';
 
 export const getUserVetDetail = async ({ vetId }: GetUserVetDetailRequestParams) => {
-  return await api.get<GetUserVetDetailResponse>(`/user/vet/${vetId}`);
+  return await guestApi.get<GetUserVetDetailResponse>(`/user/vet/${vetId}`);
 };
 
 export const getUserShopDetail = async ({ shopId }: GetUserShopDetailRequestParams) => {
-  return await api.get<GetUserShopDetailResponse>(`/user/shop/${shopId}`);
+  return await guestApi.get<GetUserShopDetailResponse>(`/user/shop/${shopId}`);
 };
 
 export const getUserGroomerDetail = async ({ groomerId }: GetUserGroomerDetailRequestParams) => {

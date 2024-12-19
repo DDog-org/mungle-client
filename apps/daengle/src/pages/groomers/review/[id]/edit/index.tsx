@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AppBar, Layout, Text, RoundButton, theme } from '@daengle/design-system';
-import { KeywordCard, PartnersCard, RatingCard, ReviewInputCard } from '~/components/review';
+import { KeywordCard, PartnersCard, RatingCard, ReviewInputCard } from '~/components/reviews';
 import {
   useGetUserGroomingReviewQuery,
   usePatchUserGroomingReviewMutation,
@@ -15,6 +15,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { ROUTES } from '~/constants/commons';
 import { css } from '@emotion/react';
+import { Loading } from '~/components/commons';
 
 const KEYWORDS = Object.values(GROOMER_REVIEW_KEYWORDS);
 
@@ -114,7 +115,7 @@ export default function GroomerReviewEdit() {
           queryClient.refetchQueries({ queryKey: QUERY_KEYS.GET_USER_GROOMING_REVIEW });
 
           alert('리뷰가 성공적으로 수정되었습니다!');
-          router.push(ROUTES.GROOMER_REVIEWS(groomerId));
+          router.push(ROUTES.GROOMERS_REVIEWS(groomerId));
         },
         onError: handleError,
       }
@@ -134,7 +135,7 @@ export default function GroomerReviewEdit() {
         </div>
         <div css={container}>
           {isLoading ? (
-            <Text typo="body11">로딩 중...</Text>
+            <Loading title="리뷰 내역을 불러오고 있어요" />
           ) : error ? (
             <Text typo="body11">리뷰 데이터를 불러오는 데 실패했습니다.</Text>
           ) : (

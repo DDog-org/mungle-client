@@ -1,4 +1,3 @@
-import { withSentryConfig } from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ['@daengle/design-system', '@daengle/services'],
@@ -13,18 +12,4 @@ const nextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
-  org: 'corinthionia',
-  project: 'daengle',
-  silent: true,
-  sourcemaps: { disable: true },
-  deleteSourceMapsAfterUpload: true,
-  widenClientFileUpload: true,
-  tunnelRoute: '/monitoring',
-  hideSourceMaps: true,
-  disableLogger: true,
-  automaticVercelMonitors: true,
-  reactComponentAnnotation: {
-    enabled: true,
-  },
-});
+export default nextConfig;

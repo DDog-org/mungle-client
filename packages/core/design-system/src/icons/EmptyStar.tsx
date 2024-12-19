@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react';
 export const EmptyStar = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={14} height={13} fill="none" {...props}>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 13" {...props}>
     <path
       stroke="#E6E6E6"
       strokeWidth={0.5}

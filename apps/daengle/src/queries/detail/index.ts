@@ -12,25 +12,23 @@ import { getUserVetDetail, getUserShopDetail, getUserGroomerDetail } from '~/api
 
 export const useGetUserVetDetailQuery = (params: GetUserVetDetailRequestParams) => {
   return useQuery<GetUserVetDetailResponse>({
-    queryKey: QUERY_KEYS.GET_USER_VET_DETAIL,
-    queryFn: () => {
-      return getUserVetDetail(params);
-    },
+    queryKey: [...QUERY_KEYS.GET_USER_VETS_DETAIL, params.vetId],
+    queryFn: () => getUserVetDetail(params),
+    enabled: !!params.vetId,
   });
 };
 
 export const useGetUserShopDetailQuery = (params: GetUserShopDetailRequestParams) => {
   return useQuery<GetUserShopDetailResponse>({
-    queryKey: QUERY_KEYS.GET_USER_SHOP_DETAIL,
-    queryFn: () => {
-      return getUserShopDetail(params);
-    },
+    queryKey: [...QUERY_KEYS.GET_USER_SHOP_DETAIL, params.shopId],
+    queryFn: () => getUserShopDetail(params),
+    enabled: !!params.shopId,
   });
 };
 
 export const useGetUserGroomerDetailQuery = (params: GetUserGroomerDetailRequestParams) => {
   return useQuery<GetUserGroomerDetailResponse>({
-    queryKey: QUERY_KEYS.GET_USER_GROOMER_DETAIL,
+    queryKey: QUERY_KEYS.GET_USER_GROOMERS_DETAIL,
     queryFn: () => {
       return getUserGroomerDetail(params);
     },

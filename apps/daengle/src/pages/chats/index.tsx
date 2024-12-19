@@ -72,6 +72,6 @@ const chatsWrapper = css`
 
   width: 100%;
   height: 100%;
-  margin: 22px 0 0;
+  margin: 34px 0 0;
   padding: 0 0 ${theme.size.gnbHeight};
 `;

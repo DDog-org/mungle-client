@@ -1,12 +1,10 @@
 import { css } from '@emotion/react';
+
 export const wrapper = css`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
 
   margin-bottom: 32px;
   padding: 0 18px;
-`;
-export const content = css`
-  margin-left: 2px;
 `;

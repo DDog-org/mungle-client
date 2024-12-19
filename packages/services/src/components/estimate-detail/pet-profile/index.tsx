@@ -20,7 +20,7 @@ interface Props {
     weight: keyof typeof PET_SIZE;
     significant: string;
   };
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const LABELS = ['나이', '몸무게', '특이사항'];

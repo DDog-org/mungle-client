@@ -34,7 +34,7 @@ export function GeneralCardList() {
       {estimates.map((data) => (
         <Card
           onDetailClick={() =>
-            router.push({ pathname: ROUTES.ESTIMATE_DETAIL(data.id), query: { type: type } })
+            router.push({ pathname: ROUTES.ESTIMATES_DETAIL(data.id), query: { type: type } })
           }
           imageUrl={data.imageUrl}
           nickname={data.nickname}

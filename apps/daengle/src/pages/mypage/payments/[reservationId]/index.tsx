@@ -7,6 +7,7 @@ import { ROUTES } from '~/constants/commons';
 import { useGetPaymentHistoryQuery } from '~/queries';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import { Loading } from '~/components/commons';
 
 export default function PaymentsDetail() {
   const router = useRouter();
@@ -14,9 +15,10 @@ export default function PaymentsDetail() {
   const isGroomer = params.get('service') === 'groomer';
 
   const reservationId = Number(router.query.reservationId);
-  const { data } = useGetPaymentHistoryQuery(reservationId);
+  const { data, isLoading } = useGetPaymentHistoryQuery(reservationId);
 
-  // TODO: loading, error 처리
+  // TODO: error 처리
+  if (isLoading) return <Loading title="예약 내역을 불러오고 있어요" />;
   if (!data) return <></>;
 
   const {

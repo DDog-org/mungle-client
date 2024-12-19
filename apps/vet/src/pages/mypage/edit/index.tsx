@@ -7,6 +7,7 @@ import {
   Layout,
   Text,
   theme,
+  useToast,
 } from '@daengle/design-system';
 import { useS3 } from '@daengle/services/hooks';
 import { formatPhoneNumberWithRegionNumber } from '@daengle/services/utils';
@@ -31,6 +32,8 @@ export default function vetProfile() {
 
   const validation = useValidateMyPageForm();
   const { uploadToS3 } = useS3({ targetFolderPath: 'vet/licenses' });
+
+  const { showToast } = useToast();
 
   const {
     register,
@@ -90,6 +93,9 @@ export default function vetProfile() {
       endTime: endTimeString,
       closedDays: selectedDaysOff,
     });
+
+    router.push('/mypage');
+    showToast({ title: '프로필이 성공적으로 수정되었습니다' });
   };
 
   return (

@@ -1,8 +1,8 @@
+import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
 import { Layout, Tabs, Text, theme } from '@daengle/design-system';
 import { GroomerList, VetList } from '~/components/reservations';
 import { GNB } from '~/components/commons';
-import { useRouter } from 'next/router';
 
 const TABS = [
   {
@@ -28,14 +28,6 @@ export default function Reservations() {
     }
   };
 
-  const { tab = 'groomer' } = router.query;
-
-  const handleTabChange = (activeTabId: string) => {
-    router.push({ pathname: '/reservations', query: { tab: activeTabId } }, undefined, {
-      shallow: true,
-    });
-  };
-
   return (
     <Layout isAppBarExist={false}>
       <section css={wrapper}>
@@ -57,7 +49,7 @@ const wrapper = css`
   flex-direction: column;
   flex: 1;
 
-  padding: calc(${theme.size.appBarHeight} - 18px) 0 0 0;
+  padding: 38px 0 0;
 
   background: ${theme.colors.background};
 

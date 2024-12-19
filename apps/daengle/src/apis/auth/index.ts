@@ -22,6 +22,8 @@ import {
   DeleteUserPetRequestData,
   GetUserValidateResponse,
   GetUserMypageResponse,
+  GetUserWithdrawInfoResponse,
+  DeleteUserResponse,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -83,9 +85,17 @@ export const deleteUserPet = async (data: DeleteUserPetRequestData) => {
 };
 
 export const getUserValidate = async () => {
-  return await guestApi.get<GetUserValidateResponse>('/user/validate');
+  return await api.get<GetUserValidateResponse>('/user/validate');
 };
 
 export const getUserMypage = async () => {
   return await api.get<GetUserMypageResponse>('/user/mypage');
+};
+
+export const getUserWithdrawInfo = async () => {
+  return await api.get<GetUserWithdrawInfoResponse>('/user/withdraw-info');
+};
+
+export const deleteUser = async () => {
+  return await api.delete<DeleteUserResponse>('/user');
 };

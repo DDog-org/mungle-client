@@ -16,7 +16,7 @@ export function OptionSelector({ estimateId }: Props): JSX.Element {
       <TextButton
         onClick={() =>
           router.push({
-            pathname: ROUTES.ESTIMATE_REQUEST(estimateId || 0),
+            pathname: ROUTES.ESTIMATES_REQUEST(estimateId || 0),
             query: { service: tab },
           })
         }

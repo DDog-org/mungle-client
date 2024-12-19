@@ -146,7 +146,7 @@ export const useUerEstimateRequestGroomingQuery = (
   params: GetUserEstimateRequestGroomingParams
 ) => {
   return useQuery<GetUserEstimateRequestGroomingResponse>({
-    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_REQUEST_GROOMING,
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATES_REQUEST_GROOMING,
     queryFn: () => {
       return getUserEstimateRequestGrooming(params);
     },
@@ -176,7 +176,7 @@ export const useUserEstimateDesignationCareQuery = (petId: number | undefined) =
 
 export const useUerEstimateRequestCareQuery = (params: GetUserEstimateRequestCareParams) => {
   return useQuery<GetUserEstimateRequestCareResponse>({
-    queryKey: QUERY_KEYS.GET_USER_ESTIMATE_REQUEST_CARE,
+    queryKey: QUERY_KEYS.GET_USER_ESTIMATES_REQUEST_CARE,
     queryFn: () => {
       return getUserEstimateRequestCare(params);
     },
@@ -204,52 +204,30 @@ export const usePostEstimateCancelCareMutation = () => {
 export const usePostUserEstimateGroomerUserInfoMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_ESTIMATE_GROOMER_USER_INFO,
-    mutationFn: async (body: PostUserEstimateGroomerUserInfoRequestBody) => {
-      try {
-        return await postUserEstimateGroomerUserInfo(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: postUserEstimateGroomerUserInfo,
   });
 };
 
 export const usePostUserEstimateGroomingMutation = () => {
   return useMutation({
-    mutationKey: QUERY_KEYS.POST_ESTIMATE_GROOMING,
-    mutationFn: async (body: PostUserEstimateGroomingRequestBody) => {
-      try {
-        return await postUserEstimateGrooming(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationKey: QUERY_KEYS.POST_ESTIMATES_GROOMING,
+    mutationFn: postUserEstimateGrooming,
   });
 };
 
-export const usePostUserEstimateVetUserInfoMutation = () => {
+export const usePostUserEstimateVetUserInfoMutation = ({ vetId }: { vetId: number }) => {
   return useMutation({
-    mutationKey: [QUERY_KEYS.POST_USER_ESTIMATE_VET_USER_INFO],
-    mutationFn: async (body: PostUserEstimateVetUserInfoRequestBody) => {
-      try {
-        return await postUserEstimateVetUserInfo(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationKey: [...QUERY_KEYS.POST_USER_ESTIMATES_VET_USER_INFO, vetId],
+    mutationFn: () => postUserEstimateVetUserInfo({ vetId }),
   });
 };
+
+//
 
 export const usePostUserEstimateCareMutation = () => {
   return useMutation({
     mutationKey: [QUERY_KEYS.POST_USER_ESTIMATE_CARE],
-    mutationFn: async (body: PostUserEstimateCareRequestBody) => {
-      try {
-        return await postUserEstimateCare(body);
-      } catch (error) {
-        throw new Error(String(error));
-      }
-    },
+    mutationFn: postUserEstimateCare,
   });
 };
 
@@ -258,7 +236,7 @@ export const useEstimateGroomingDetailQuery = (
   enabled: boolean
 ) => {
   return useQuery<UserEstimateGroomingDetailData>({
-    queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_GROOMER_DETAIL, params],
+    queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_GROOMERS_DETAIL, params],
     queryFn: async () => {
       try {
         const data = await getUserEstimateGroomingDetail(params);
@@ -276,7 +254,7 @@ export const useEstimateCareDetailQuery = (
   enabled: boolean
 ) => {
   return useQuery<UserEstimateCareDetailData>({
-    queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_VET_DETAIL, params],
+    queryKey: [QUERY_KEYS.GET_USER_ESTIMATES_VETS_DETAIL, params],
     queryFn: async () => {
       try {
         const data = await getUserEstimateCareDetail(params);

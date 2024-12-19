@@ -1,4 +1,8 @@
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { css } from '@emotion/react';
 import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
+import { VetDefaultImage } from '@daengle/design-system/images';
 import {
   ButtonTextButtonArrow,
   DetailCall,
@@ -8,33 +12,32 @@ import {
   Paw,
   ToolTip,
 } from '@daengle/design-system/icons';
-import { VetDefaultImage } from '@daengle/design-system/images';
-import { css } from '@emotion/react';
-import { useRouter } from 'next/router';
-import { ROUTES } from '~/constants/commons';
-import { VET_DAT_OFF } from '~/constants/detail';
-import { GetUserVetDetailRequestParams } from '~/models/detail';
-import { useGetUserVetDetailQuery } from '~/queries/detail';
+import { DAY_OFF, ROUTES } from '~/constants';
+import { useGetChatStartQuery, useGetUserVetDetailQuery } from '~/queries';
 
 export default function VetInfo() {
   const router = useRouter();
   const { vetId } = router.query;
-  const getVetId = Number(vetId);
-  const vetParams: GetUserVetDetailRequestParams = { vetId: getVetId };
 
-  const { data: VetDetail } = useGetUserVetDetailQuery(vetParams);
-  console.log('VetDetail:', VetDetail);
+  const { data: vetInfo } = useGetUserVetDetailQuery({ vetId: Number(vetId) });
+  const { data: chatStartInfo } = useGetChatStartQuery({ otherId: Number(vetId) });
 
   return (
     <Layout isAppBarExist={false}>
       <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
-      <div css={wrapper}>
-        <div css={imageSection(VetDetail?.vetImage)}>
-          {VetDetail?.vetImage ? null : <VetDefaultImage />}
 
-          <Text typo="title2" color="white" css={vetName}>
-            {VetDetail?.vetName}
+      <div css={wrapper}>
+        <div css={imageSection}>
+          {vetInfo?.vetImage ? (
+            <Image src={vetInfo.vetImage} alt="동물병원 이미지" objectFit="cover" />
+          ) : (
+            <VetDefaultImage />
+          )}
+
+          <Text typo="title2" color={vetInfo?.vetImage ? 'white' : 'gray700'} css={vetName}>
+            {vetInfo?.vetName}
           </Text>
+
           <div css={tags}>
             {/*  TODO: 뱃지 나오면 연동 */}
             <Text typo="body12" color="white" css={tag}>
@@ -45,31 +48,32 @@ export default function VetInfo() {
             </Text>
           </div>
         </div>
+
         <div css={infoBox}>
           <section css={topSection}>
             <section css={infoSection}>
               <div css={time}>
                 <DetailTime width={20} />
                 <Text typo="body9">
-                  {VetDetail?.closedDay
-                    ? `${VetDetail?.startTime.substring(0, 5)} - ${VetDetail?.endTime.substring(0, 5)} ${VetDetail.closedDay
-                        .map((day) => VET_DAT_OFF.find((item) => item.value === day)?.label || day)
+                  {vetInfo?.closedDay
+                    ? `${vetInfo?.startTime.substring(0, 5)} - ${vetInfo?.endTime.substring(0, 5)} ${vetInfo.closedDay
+                        .map((day) => DAY_OFF.find((item) => item.value === day)?.label || day)
                         .join(', ')} 휴무`
-                    : `매일 ${VetDetail?.startTime.substring(0, 5)} - ${VetDetail?.endTime.substring(0, 5)}`}
+                    : `매일 ${vetInfo?.startTime.substring(0, 5)} - ${vetInfo?.endTime.substring(0, 5)}`}
                 </Text>
               </div>
               <div css={call}>
                 <DetailCall width={20} />
-                <Text typo="body9">{VetDetail?.vetNumber}</Text>
+                <Text typo="body9">{vetInfo?.vetNumber}</Text>
               </div>
               <div css={address}>
                 <DetailLocation width={20} />
-                <Text typo="body9">{VetDetail?.vetAddress}</Text>
+                <Text typo="body9">{vetInfo?.vetAddress}</Text>
               </div>
             </section>
             <section css={infoText}>
               <Text typo="body1">소개</Text>
-              <Text typo="body10">{VetDetail?.introduction}</Text>
+              <Text typo="body10">{vetInfo?.introduction}</Text>
             </section>
             <section css={daengleMeter}>
               <div css={textBox}>
@@ -86,11 +90,11 @@ export default function VetInfo() {
                   </div>
                 </div>
                 <Text typo="body1" color="blue200" css={meter}>
-                  {VetDetail?.daengleMeter}m
+                  {vetInfo?.daengleMeter}m
                 </Text>
               </div>
               <div css={graph}>
-                <div css={graphBar(VetDetail?.daengleMeter)}>
+                <div css={graphBar(vetInfo?.daengleMeter)}>
                   <Heart width={8} height={7} css={heart} />
                 </div>
                 <Paw width={9} height={7} css={paw} />
@@ -99,24 +103,35 @@ export default function VetInfo() {
             <div css={button}>
               <RoundButton
                 fullWidth={true}
-                onClick={() => router.push(ROUTES.ESTIMATE_VET(getVetId))}
+                onClick={() => router.push(ROUTES.ESTIMATES_VET(Number(vetId)))}
               >
                 바로 예약
               </RoundButton>
               <RoundButton
                 fullWidth={true}
                 variant="primaryLow"
-                onClick={() => router.push(ROUTES.CHATS_DETAIL(getVetId))}
+                onClick={() =>
+                  chatStartInfo?.chatRoomId &&
+                  router.push(ROUTES.CHATS_DETAIL(chatStartInfo?.chatRoomId))
+                }
               >
                 채팅하기
               </RoundButton>
             </div>
           </section>
           <section css={bottomSection}>
-            <div css={menu} onClick={() => router.push(ROUTES.VET_REVIEWS(getVetId))}>
+            <div
+              css={menu}
+              onClick={() =>
+                router.push({
+                  pathname: ROUTES.VETS_REVIEWS(Number(vetId)),
+                  query: { otherId: Number(vetId), service: 'vet' },
+                })
+              }
+            >
               <div css={review}>
                 <Text typo="subtitle1">받은 리뷰</Text>
-                <Text typo="subtitle1">{VetDetail?.reviewCount}</Text>
+                <Text typo="subtitle1">{vetInfo?.reviewCount}</Text>
               </div>
               <ButtonTextButtonArrow width={6} />
             </div>
@@ -128,24 +143,25 @@ export default function VetInfo() {
 }
 
 const wrapper = css`
+  display: flex;
+  flex-direction: column;
   position: relative;
 
   width: 100%;
   height: 100%;
-
-  background-color: aliceblue;
 `;
 
-const imageSection = (vetImage: string | undefined) => css`
-  position: relative;
+const imageSection = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
 
   width: 100%;
   height: 416px;
 
-  background-image: url(${vetImage});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: ${theme.colors.gray200};
 `;
 
 const vetName = css`
@@ -177,13 +193,17 @@ const topSection = css`
 `;
 
 const infoBox = css`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   position: absolute;
-  bottom: 0;
+  top: 376px;
+  z-index: 2;
 
   width: 100%;
   border-radius: 20px 20px 0 0;
 
-  background-color: white;
+  background: ${theme.colors.white};
 `;
 
 const infoSection = css`

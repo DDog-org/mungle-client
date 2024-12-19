@@ -1,7 +1,7 @@
 export interface PetInfo {
   petId: number;
   name: string;
-  imageURL: string;
+  imageUrl: string | null;
 }
 
 export interface PetEstimateId extends PetInfo {
@@ -31,7 +31,7 @@ export interface UserEstimateGeneralCareType {
 export interface UserEstimateGroomingDetailData {
   groomingEstimateId: number;
   groomerId: number;
-  imageURL: string;
+  imageUrl: string;
   name: string;
   shopId: number;
   shopName?: string | null;
@@ -58,4 +58,29 @@ export interface UserEstimateCareDetailData {
   cause: string;
   treatment: string;
   tags?: string[];
+}
+
+export interface GeneralVetEstimateDefaultUserData {
+  vetImageUrl: string;
+  vetName: string;
+  address: string;
+  petInfos: PetInfo[];
+}
+
+export interface UserEstimateCareForm {
+  vetId: number;
+  petId: number | null;
+  address: string;
+  reservedDate: string;
+  symptoms: string;
+  requirements: string;
+}
+
+export interface UserEstimateGroomingForm {
+  groomerId: number | null;
+  petId: number | null;
+  address: string;
+  reservedDate: string;
+  desiredStyle: string;
+  requirements: string;
 }

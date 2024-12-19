@@ -1,3 +1,4 @@
+import { PET_DISLIKE_PARTS_LABELS, PET_SIGNIFICANT_TAGS_LABELS } from '~/constants';
 import { PostJoinWithoutPetRequestBody } from '~/models';
 
 export interface UserInfoFormFormType extends PostJoinWithoutPetRequestBody {}
@@ -47,17 +48,12 @@ export interface PetProfileEditType {
   significant: string;
 }
 
-export interface DislikeParts {
-  part: string;
-  partName: string;
-}
 export interface SignificantTags {
   tagName: string;
   tag: string;
 }
 
 export interface PetProfileCreateFormType {
-  image: File | null;
   name: string;
   birth: number;
   gender: 'MALE' | 'FEMALE';
@@ -66,8 +62,8 @@ export interface PetProfileCreateFormType {
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
   groomingExperience: boolean;
   isBite: boolean;
-  dislikeParts: DislikeParts[];
-  significantTags: SignificantTags[];
+  dislikeParts: (keyof typeof PET_DISLIKE_PARTS_LABELS)[];
+  significantTags: (keyof typeof PET_SIGNIFICANT_TAGS_LABELS)[];
   significant: string;
 }
 
@@ -85,3 +81,9 @@ export interface PetInfoForm {
   petImage: string;
   petName: string;
 }
+
+export type PetDislikePartValue = keyof typeof PET_DISLIKE_PARTS_LABELS;
+export type PetDislikePart = { value: PetDislikePartValue; label: string };
+
+export type PetSignificantTagValue = keyof typeof PET_SIGNIFICANT_TAGS_LABELS;
+export type PetSignificantTag = { value: PetSignificantTagValue; label: string };

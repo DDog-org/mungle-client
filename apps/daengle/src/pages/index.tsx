@@ -1,66 +1,90 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import { css } from '@emotion/react';
-import { AppBar, Layout, RoundButton, Tabs, Text, theme, useDialog } from '@daengle/design-system';
-import { MainLogo, SearchIcon, SelectUnfoldInactive } from '@daengle/design-system/icons';
-import { GNB } from '~/components/commons';
-import ActionSheet from '~/components/main/action-sheet';
-import { GroomerListComponent } from '~/components/main/groomer-list-component';
-import { VetListComponent } from '~/components/main/vet-list-component';
-import { ROUTES } from '~/constants/commons';
-import { useGetUserValidateQuery } from '~/queries';
-import { useAddressFormStore } from '~/stores/main';
-import dogGif from '/public/images/main-dog.gif';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useEffect, useMemo, useState } from 'react';
+import { css } from '@emotion/react';
+import {
+  ActionSheet,
+  AppBar,
+  Layout,
+  RoundButton,
+  Tabs,
+  Text,
+  theme,
+  useDialog,
+} from '@daengle/design-system';
+import { MainLogo, SearchIcon, SelectUnfoldInactive } from '@daengle/design-system/icons';
+import { ROUTES, TABS } from '~/constants';
+import { GNB } from '~/components/commons';
+import { GroomerList, VetList } from '~/components/home';
+import { useGetUserValidateQuery } from '~/queries';
+import { useAddressStore } from '~/stores';
+import dogGif from '/public/images/main-dog.gif';
 
-const TABS = [
-  {
-    id: 'groomer',
-    label: '미용사',
-  },
-  {
-    id: 'vet',
-    label: '병원',
-  },
+const ACTION_SHEET_MENUS = [
+  { id: 'groomer', label: '미용사', to: ROUTES.ESTIMATES_GROOMING },
+  { id: 'vet', label: '병원', to: ROUTES.ESTIMATES_VET },
 ];
 
 export default function Home() {
-  // TODO: 무한스크롤 구현
-  // TODO: 회원인 경우 기본 주소값으로 회원 정보에 저장된 주소값을 가져오기(에러나서 아직 해결 못함..)
   const router = useRouter();
-  const [isVisible, setIsVisible] = useState(false);
-  const { data: getUserValidate, isError } = useGetUserValidateQuery();
-  const { addressForm } = useAddressFormStore();
 
-  const handleSearchAddress = () => {
-    if (getUserValidate?.data.isValidateMember) {
-      router.push(ROUTES.SEARCH_ADDRESS);
-    } else {
-      alert('로그인 후 이용해 주세요');
+  const [activeTab, setActiveTab] = useState<string>('groomer');
+  const [isActionSheetOpen, setIsActionSheetOpen] = useState<boolean>(false);
+
+  const { data: getUserValidate } = useGetUserValidateQuery();
+  const { address } = useAddressStore();
+  const { open } = useDialog();
+
+  const isLoggedInUser = useMemo(() => getUserValidate?.isValidateMember, [getUserValidate]);
+
+  const handleSearchAddressClick = () => {
+    if (isLoggedInUser) router.push(ROUTES.SEARCH_ADDRESS);
+    else {
+      open({
+        title: '로그인 후 이용해 주세요',
+        primaryActionLabel: '로그인 하기',
+        onPrimaryAction: () => router.replace(ROUTES.LOGIN),
+      });
     }
   };
 
   const handleOpenActionSheet = () => {
-    if (getUserValidate?.data.isValidateMember) {
-      setIsVisible(true);
+    if (isLoggedInUser) {
+      setIsActionSheetOpen(true);
     } else {
-      alert('로그인 후 이용해 주세요');
+      open({
+        title: '로그인 후 이용해 주세요',
+        primaryActionLabel: '로그인 하기',
+        onPrimaryAction: () => router.replace(ROUTES.LOGIN),
+      });
     }
   };
 
   const handleCloseActionSheet = () => {
-    setIsVisible(false);
+    setIsActionSheetOpen(false);
   };
 
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'groomer':
-        return <GroomerListComponent />;
+        return <GroomerList />;
       case 'vet':
-        return <VetListComponent />;
+        return <VetList />;
       default:
-        return <GroomerListComponent />;
+        return <GroomerList />;
     }
+  };
+
+  useEffect(() => {
+    const queryTab = router.query.tab as string;
+    if (queryTab && TABS.some((tab) => tab.id === queryTab)) {
+      setActiveTab(queryTab);
+    }
+  }, [router.query.tab]);
+
+  const handleTabClick = (tabId: string) => {
+    router.push({ query: { tab: tabId } }, undefined, { shallow: true });
+    setActiveTab(tabId);
   };
 
   return (
@@ -80,9 +104,9 @@ export default function Home() {
       <div css={wrapper}>
         <section css={topSection}>
           <div css={textBox}>
-            <div css={address} onClick={handleSearchAddress}>
+            <div css={addressWrapper} onClick={handleSearchAddressClick}>
               <Text tag="h1" typo="title1" color="white">
-                {addressForm}
+                {address.split(' ').length > 3 ? address.split(' ').slice(1).join(' ') : address}
               </Text>
               <SelectUnfoldInactive width={12} height={6} />
             </div>
@@ -90,19 +114,32 @@ export default function Home() {
               주변에서 찾기
             </Text>
           </div>
-          <Image src={dogGif} alt="dogGif" width={150} height={150} css={daengleDog} />
+
+          <Image src={dogGif} alt="dogGif" width={150} height={150} css={daengleDog} priority />
           <RoundButton size="XL" onClick={handleOpenActionSheet}>
             견적 요청하기
           </RoundButton>
         </section>
 
         <section css={content}>
-          <Tabs tabs={TABS} renderContent={renderContent} />
+          <Tabs
+            tabs={[...TABS]}
+            renderContent={renderContent}
+            activeTabId={activeTab}
+            onTabClick={handleTabClick}
+          />
         </section>
 
-        {isVisible && (
+        {isActionSheetOpen && (
           <>
-            <ActionSheet />
+            <ActionSheet
+              title="누구에게 견적을 요청할까요?"
+              menus={ACTION_SHEET_MENUS.map((menu) => ({
+                ...menu,
+                onClick: () => router.push(menu.to()),
+              }))}
+              onClose={() => setIsActionSheetOpen(false)}
+            />
             <div css={overlay} onClick={handleCloseActionSheet} />
           </>
         )}
@@ -138,7 +175,7 @@ const textBox = css`
   margin-bottom: 24px;
 `;
 
-const address = css`
+const addressWrapper = css`
   display: flex;
   align-items: center;
   gap: 6px;
@@ -159,7 +196,7 @@ const content = css`
   flex: 1;
 
   width: 100%;
-  padding: 18px 0;
+  padding: 18px 0 ${theme.size.gnbHeight};
   border-radius: 30px 30px 0 0;
 
   background-color: ${theme.colors.white};

@@ -11,12 +11,12 @@ import {
 } from '@daengle/design-system';
 import {
   BIRTH_YEAR_OPTIONS,
-  PET_DISLIKEPART,
+  PET_DISLIKE_PARTS,
   PET_GENDER,
   PET_IS_NEUTERED,
-  PET_SIGNIFICANTTAG,
+  PET_SIGNIFICANT_TAGS,
   PET_WEIGHT,
-} from '~/constants/mypage';
+} from '~/constants';
 import {
   useDeleteUserPetMutation,
   useGetBreedListQuery,
@@ -26,15 +26,15 @@ import {
 import Image from 'next/image';
 import { Controller, useForm } from 'react-hook-form';
 import { css } from '@emotion/react';
-import useValidatePetEdit from '~/hooks/mypage/use-validate-pet-form';
 import { useEffect, useState } from 'react';
 import { PetProfile } from '~/models/auth';
-import { ImageInputBox } from '~/components/mypage/user-profile/imageInput';
 import { useS3 } from '@daengle/services/hooks';
 import { DefaultImage } from '@daengle/design-system/icons';
 import { PetProfileEditType } from '~/interfaces/auth';
 import router from 'next/router';
 import { ROUTES } from '~/constants/commons';
+import { useValidatePetEdit } from '~/hooks';
+import { ImageInputBox } from '~/components/mypage';
 
 export default function PetInfoEdit() {
   const [petInfos, setPetInfos] = useState<PetProfile[] | null>(null);
@@ -74,7 +74,7 @@ export default function PetInfoEdit() {
       if (defaultPet) {
         setSelectedPetId(defaultPet.id);
 
-        const dislikeParts = defaultPet.dislikeParts.map((part) => part.part);
+        const dislikeParts = defaultPet.dislikeParts;
         const significantTags = defaultPet.significantTags.map((tag) => tag.tag);
 
         setValue('name', defaultPet.name || '');
@@ -96,7 +96,7 @@ export default function PetInfoEdit() {
 
     const selectedPet = petInfos?.find((pet) => pet.id === petId);
 
-    const dislikeParts = selectedPet?.dislikeParts.map((part) => part.part);
+    const dislikeParts = selectedPet?.dislikeParts;
     const significantTags = selectedPet?.significantTags.map((tag) => tag.tag);
 
     if (selectedPet) {
@@ -387,7 +387,7 @@ export default function PetInfoEdit() {
                   control={control}
                   render={({ field }) => (
                     <>
-                      {PET_DISLIKEPART.map((item) => {
+                      {PET_DISLIKE_PARTS.map((item) => {
                         return (
                           <ChipToggleButton
                             key={item.value}
@@ -422,7 +422,7 @@ export default function PetInfoEdit() {
                     control={control}
                     render={({ field }) => (
                       <>
-                        {PET_SIGNIFICANTTAG.map((item) => {
+                        {PET_SIGNIFICANT_TAGS.map((item) => {
                           return (
                             <ChipToggleButton
                               key={item.value}

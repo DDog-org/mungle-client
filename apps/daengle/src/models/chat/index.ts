@@ -56,3 +56,14 @@ export interface PostChatMessagesRequestBody {
 export interface DeleteChatDeleteRequestParams {
   roomId: number;
 }
+
+export interface GetchatStartRequestParams {
+  otherId: number;
+}
+
+export interface GetChatStartResponse {
+  chatRoomId: number;
+  userId: number;
+  partnerId: number;
+  partnerType: 'GROOMER_PARTNER' | 'VET_PARTNER';
+}

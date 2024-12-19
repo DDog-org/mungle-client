@@ -20,9 +20,11 @@ export default function AuthKakaoCallback() {
         data: { access_token },
       } = await postOauthToken(code as string);
 
-      const { isOnboarding, email, accessToken } = await postKakao({
+      const response = await postKakao({
         kakaoAccessToken: access_token,
-      }).then((res) => res.data.response);
+      });
+
+      const { isOnboarding, email, accessToken } = response;
 
       if (isOnboarding && email) {
         setForm({ email });

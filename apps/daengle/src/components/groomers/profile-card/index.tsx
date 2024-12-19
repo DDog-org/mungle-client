@@ -6,7 +6,7 @@ import Image from 'next/image';
 interface Props {
   groomerName: string;
   groomerImage: string | null;
-  keywords: string[];
+  badges: string[];
   daengleMeter: number;
   onClick: () => void;
 }
@@ -14,13 +14,13 @@ interface Props {
 export default function ProfileCard({
   groomerName,
   groomerImage,
-  keywords,
+  badges,
   daengleMeter,
   onClick,
 }: Props) {
   return (
     <div css={profileCard} onClick={onClick}>
-      {groomerImage === null ? (
+      {!groomerImage ? (
         <DefaultProfile width={80} height={94} css={imageStyle} />
       ) : (
         <Image src={groomerImage} alt="이미지" width={80} height={94} css={imageStyle} />
@@ -32,6 +32,7 @@ export default function ProfileCard({
             <Paw width={9} css={paw} />
             {daengleMeter}m
           </Text>
+          {/** TODO: Badge로 변경 */}
           <Text typo="body12" color="blue200" css={tag}>
             #대형견
           </Text>

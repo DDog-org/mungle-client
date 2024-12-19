@@ -5,6 +5,8 @@ import {
   GetChatWithResponse,
   PostChatMessagesRequestArgs,
   DeleteChatDeleteRequestParams,
+  GetchatStartRequestParams,
+  GetChatStartResponse,
 } from '~/models';
 import { api } from '../config';
 
@@ -26,4 +28,8 @@ export const postChatMessages = async ({ roomId, body }: PostChatMessagesRequest
 
 export const deleteChatDelete = async ({ roomId }: DeleteChatDeleteRequestParams) => {
   return await api.delete(`/chat/delete/${roomId}`);
+};
+
+export const getChatStart = async (params: GetchatStartRequestParams) => {
+  return await api.get<GetChatStartResponse>(`/chat/start`, { params });
 };

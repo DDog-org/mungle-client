@@ -15,6 +15,7 @@ import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { OptionSelector } from '../option';
 import { Empty, useDialog } from '@daengle/design-system';
+import { Loading } from '~/components/commons';
 
 interface Props {
   isDesignation: boolean;
@@ -83,16 +84,16 @@ export function VetEstimateList({ isDesignation }: Props) {
   return (
     <>
       {petLoading ? (
-        <div>로딩 중...</div>
+        <Loading title="견적서를 불러오고 있어요" />
       ) : petError ? (
         <div>펫 정보를 불러오는데 실패했습니다.</div>
       ) : petInfos.length === 0 ? (
-        <Empty title="등록된 반려견이 없어요" />
+        <Empty title="작성된 견적서가 없어요" />
       ) : (
         <>
           <ProfileSelector
             petInfos={petInfos}
-            selectedPetId={selectedPetId}
+            selectedPetId={selectedPetId!}
             onSelectPet={(petId) => {
               setSelectedPetId(petId);
               router.push({ pathname: router.pathname, query: { ...router.query, petId } });
@@ -100,7 +101,7 @@ export function VetEstimateList({ isDesignation }: Props) {
           />
           <OptionSelector estimateId={selectedEstimateId} />
           {estimateLoading ? (
-            <div>견적 데이터를 불러오는 중...</div>
+            <Loading title="견적서를 불러오고 있어요" />
           ) : estimateError ? (
             <div>견적 데이터를 불러오는데 실패했습니다.</div>
           ) : flattenedEstimates.length === 0 ? (
@@ -112,7 +113,7 @@ export function VetEstimateList({ isDesignation }: Props) {
               estimateData={flattenedEstimates}
               onCardClick={(id: number) =>
                 router.push({
-                  pathname: ROUTES.ESTIMATE_DETAIL(id),
+                  pathname: ROUTES.ESTIMATES_DETAIL(id),
                   query: { service: 'vet', petId: selectedPetId },
                 })
               }

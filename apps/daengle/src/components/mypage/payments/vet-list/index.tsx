@@ -16,7 +16,9 @@ export function VetList() {
       {data ? (
         data?.pages.map((page, index) =>
           page.paymentHistoryList.length > 0 || index > 0 ? (
-            page.paymentHistoryList.map((item) => <PaymentListItem item={item} />)
+            page.paymentHistoryList.map((item) => (
+              <PaymentListItem key={item.reservationId} item={item} />
+            ))
           ) : (
             <Empty title="결제한 내역이 없어요" />
           )

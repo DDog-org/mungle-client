@@ -30,7 +30,7 @@ export const useVetEstimateDesignationListQuery = () => {
 
 export const useVetEstimateDetailQuery = (params: GetVetEstimateDetailRequestParams) => {
   return useQuery<GetVetEstimateDetailResponse>({
-    queryKey: [QUERY_KEYS.GET_VET_ESTIMATE_DETAIL, params],
+    queryKey: [QUERY_KEYS.GET_VET_ESTIMATES_DETAIL, params],
     queryFn: () => getVetEstimateDetail(params),
   });
 };

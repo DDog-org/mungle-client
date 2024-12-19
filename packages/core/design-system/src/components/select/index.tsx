@@ -27,6 +27,7 @@ export const Select = forwardRef<HTMLSelectElement, Props>(
           <Text typo="body10" color={isFocused ? 'blue200' : value ? 'black100' : 'gray200'}>
             {value ? options.find((option) => option.value === String(value))?.label : placeholder}
           </Text>
+
           {isFocused ? (
             <SelectUnfoldActive width="8px" height="5px" />
           ) : (

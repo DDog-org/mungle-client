@@ -22,21 +22,21 @@ export interface GetUserShopDetailResponse {
   shopId: number;
   shopName: string;
   shopAddress: string;
-  shopNumber: string;
+  shopNumber: string | null;
   imageUrlList: string[];
   groomers: GroomerInfo[];
   startTime: string;
   endTime: string;
   closedDay: string[];
   introduction: string;
-  reviewCount: number;
+  reviewCount: number | null;
 }
 
 export interface GroomerInfo {
   groomerAccountId: number;
   groomerName: string;
-  groomerImage: string | null;
-  keywords: string[];
+  groomerImage: string;
+  badges: string[];
   daengleMeter: number;
   reviewCount: number;
 }

@@ -1,14 +1,15 @@
+import { PET_DISLIKE_PARTS_LABELS, PET_SIGNIFICANT_TAGS_LABELS } from '~/constants';
+import { PetDislikePartValue } from '~/interfaces';
+
 export interface PostKakaoRequestBody {
   kakaoAccessToken: string;
 }
 
 export interface PostKakaoResponse {
-  response: {
-    isOnboarding: boolean;
-    email: string | null;
-    grantType: 'Bearer' | null;
-    accessToken: string | null;
-  };
+  isOnboarding: boolean;
+  email: string | null;
+  grantType: 'Bearer' | null;
+  accessToken: string | null;
 }
 
 export interface PostJoinWithoutPetRequestBody {
@@ -28,9 +29,7 @@ export interface PostAvailableNicknameRequestBody {
 }
 
 export interface PostAvailableNicknameResponse {
-  response: {
-    isAvailable: boolean;
-  };
+  isAvailable: boolean;
 }
 
 export interface GetBreedListResponse {
@@ -83,15 +82,11 @@ export interface PetProfile {
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
   groomingExperience: boolean;
   isBite: boolean;
-  dislikeParts: DislikePart[];
+  dislikeParts: PetDislikePartValue[];
   significantTags: SignificantTag[];
   significant: string;
 }
 
-export interface DislikePart {
-  part: string;
-  partName: string;
-}
 export interface SignificantTag {
   tagName: string;
   tag: string;
@@ -109,54 +104,11 @@ export interface PostUserPetRequestBody {
   breed: string;
   isNeutered: boolean;
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
-  groomingExperience: Boolean;
-  isBite: Boolean;
-  dislikeParts: DislikePart[];
-  significantTags: SignificantTag[];
-  significant: string;
-}
-export interface PostUserPetRequestBody {
-  image: string | null;
-  name: string;
-  birth: number;
-  gender: 'MALE' | 'FEMALE';
-  breed: string;
-  isNeutered: boolean;
-  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
-  groomingExperience: Boolean;
-  isBite: Boolean;
-  dislikeParts: DislikePart[];
-  significantTags: SignificantTag[];
-  significant: string;
-}
-
-export interface PostUserPetRequestBody {
-  image: string | null;
-  name: string;
-  birth: number;
-  gender: 'MALE' | 'FEMALE';
-  breed: string;
-  isNeutered: boolean;
-  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
-  groomingExperience: Boolean;
-  isBite: Boolean;
-  dislikeParts: DislikePart[];
-  significantTags: SignificantTag[];
-  significant: string;
-}
-export interface PostUserPetRequestBody {
-  image: string | null;
-  name: string;
-  birth: number;
-  gender: 'MALE' | 'FEMALE';
-  breed: string;
-  isNeutered: boolean;
-  weight: 'SMALL' | 'MEDIUM' | 'LARGE';
-  groomingExperience: Boolean;
-  isBite: Boolean;
-  dislikeParts: DislikePart[];
-  significantTags: SignificantTag[];
-  significant: string;
+  groomingExperience: boolean;
+  isBite: boolean;
+  dislikeParts: (keyof typeof PET_DISLIKE_PARTS_LABELS)[];
+  significantTags: (keyof typeof PET_SIGNIFICANT_TAGS_LABELS)[];
+  significant: string | null;
 }
 export type PostUserPetResponse = string;
 
@@ -169,8 +121,8 @@ export interface PatchUserPetInfoRequestBody {
   breed: string;
   isNeutered: boolean;
   weight: 'SMALL' | 'MEDIUM' | 'LARGE';
-  groomingExperience: Boolean;
-  isBite: Boolean;
+  groomingExperience: boolean;
+  isBite: boolean;
   dislikeParts: string[];
   significantTags: string[];
   significant: string;
@@ -201,4 +153,13 @@ export interface PetInfo {
   petId: number;
   petImage: string;
   petName: string;
+}
+
+export interface GetUserWithdrawInfoResponse {
+  waitingForServiceCount: number;
+}
+
+export interface DeleteUserResponse {
+  accountId: number;
+  withdrawDate: string;
 }

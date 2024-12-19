@@ -1,23 +1,35 @@
+import router from 'next/router';
+import { css } from '@emotion/react';
 import { useForm } from 'react-hook-form';
-import { AppBar, ChipButton, CTAButton, Input, Layout, Text, theme } from '@daengle/design-system';
+import {
+  AppBar,
+  ChipButton,
+  CTAButton,
+  Input,
+  Layout,
+  Text,
+  theme,
+  useToast,
+} from '@daengle/design-system';
+import { useS3 } from '@daengle/services/hooks';
 import {
   useGetUserProfileInfoQuery,
   usePostAvailableNicknameMutation,
   usePatchUserInfoMutation,
 } from '~/queries';
-import { UserProfileInfoEditForm } from '~/interfaces/auth';
-import { useValidateUserForm } from '~/hooks/mypage';
-import { useS3 } from '@daengle/services/hooks';
-import { ImageInputBox } from '~/components/mypage/user-profile/imageInput';
-import router from 'next/router';
-import { ROUTES } from '~/constants/commons';
-import { css } from '@emotion/react';
+import { UserProfileInfoEditForm } from '~/interfaces';
+import { useValidateUserNickname } from '~/hooks';
+import { ROUTES } from '~/constants';
+import { ImageInputBox } from '~/components/mypage';
+import { DevTool } from '@hookform/devtools';
+import { useEffect } from 'react';
 
 export default function EditProfile() {
-  const { data: getUserInfo } = useGetUserProfileInfoQuery();
+  const { showToast } = useToast();
+
+  const { data: userInfo } = useGetUserProfileInfoQuery();
   const { mutateAsync: postAvailableNickname } = usePostAvailableNicknameMutation();
-  const { mutate: patchUserInfo } = usePatchUserInfoMutation();
-  const validation = useValidateUserForm();
+  const { mutateAsync: patchUserInfo } = usePatchUserInfoMutation();
 
   const { uploadToS3, deleteFromS3 } = useS3({ targetFolderPath: 'user/profile-images' });
 
@@ -27,21 +39,22 @@ export default function EditProfile() {
     register,
     setError,
     setValue,
+    control,
     clearErrors,
     formState: { errors, isValid },
   } = useForm<UserProfileInfoEditForm>({
-    mode: 'onChange',
+    mode: 'onBlur',
     defaultValues: {
-      image: null,
-      nickname: '',
-      isAvailableNickname: false,
+      isAvailableNickname: true,
     },
   });
+  const validation = useValidateUserNickname();
 
   const checkIsAvailableNickname = async () => {
     const nickname = watch('nickname');
+
     if (!nickname) {
-      setError('nickname', { message: '닉네임을 입력해주세요.' });
+      setError('nickname', { message: '닉네임을 입력해 주세요' });
       setValue('isAvailableNickname', false);
       return;
     }
@@ -53,7 +66,7 @@ export default function EditProfile() {
     }
 
     const response = await postAvailableNickname({ nickname });
-    if (response.data.response.isAvailable) {
+    if (response.isAvailable) {
       setValue('isAvailableNickname', true);
     } else {
       setError('nickname', { message: '이미 사용 중인 닉네임입니다.' });
@@ -64,8 +77,8 @@ export default function EditProfile() {
   const onSubmit = async (data: UserProfileInfoEditForm) => {
     let imageString = '';
 
-    if (getUserInfo?.image) {
-      const fileName = getUserInfo.image.split('/').pop();
+    if (userInfo?.image) {
+      const fileName = userInfo.image.split('/').pop();
       if (fileName) {
         await deleteFromS3(fileName);
       }
@@ -77,18 +90,30 @@ export default function EditProfile() {
         imageString = uploadedImages[0] ?? '';
       }
     } else {
-      imageString = getUserInfo?.image || '';
+      imageString = userInfo?.image || '';
     }
 
-    if (imageString != undefined) {
-      patchUserInfo({ ...data, image: imageString });
+    if (imageString) {
+      await patchUserInfo({
+        ...data,
+        nickname: data.nickname ?? userInfo?.nickname,
+        image: imageString ?? null,
+      });
+      router.push(ROUTES.MYPAGE);
+      showToast({ title: '프로필이 수정되었어요' });
     }
-    router.push(ROUTES.MYPAGE);
   };
+
   const handleNicknameChange = () => {
     setValue('isAvailableNickname', false);
     clearErrors('nickname');
   };
+
+  useEffect(() => {
+    if (userInfo?.nickname) {
+      setValue('nickname', userInfo.nickname);
+    }
+  }, [userInfo?.nickname]);
 
   return (
     <Layout isAppBarExist={true}>
@@ -106,7 +131,7 @@ export default function EditProfile() {
           <div css={profileImageWrapper}>
             <ImageInputBox
               onChange={(files) => setValue('image', files, { shouldValidate: true })}
-              defaultValue={getUserInfo?.image || ''}
+              defaultValue={userInfo?.image || ''}
             />
           </div>
 
@@ -114,8 +139,8 @@ export default function EditProfile() {
             <li css={nickNameWrapper}>
               <Input
                 label="닉네임"
-                placeholder={getUserInfo?.nickname}
                 maxLength={10}
+                defaultValue={userInfo?.nickname}
                 suffix={
                   <ChipButton onClick={checkIsAvailableNickname} type="button">
                     중복검사
@@ -134,23 +159,25 @@ export default function EditProfile() {
                 이름
               </Text>
               <Text typo="body3" color="gray400">
-                {getUserInfo?.username}
+                {userInfo?.username}
               </Text>
             </li>
+
             <li css={readOnlyTextBox}>
               <Text tag="h2" typo="subtitle3">
                 휴대폰번호
               </Text>
               <Text typo="body3" color="gray400">
-                {getUserInfo?.phoneNumber}
+                {userInfo?.phoneNumber}
               </Text>
             </li>
+
             <li css={readOnlyTextBox}>
               <Text tag="h2" typo="subtitle3">
                 이메일
               </Text>
               <Text typo="body3" color="gray400">
-                {getUserInfo?.email}
+                {userInfo?.email}
               </Text>
             </li>
           </ul>
@@ -160,6 +187,8 @@ export default function EditProfile() {
           </CTAButton>
         </form>
       </section>
+
+      <DevTool control={control} />
     </Layout>
   );
 }

@@ -6,11 +6,11 @@ import { PetInfo } from '~/interfaces/estimate';
 
 interface Props {
   petInfos: PetInfo[];
-  selectedPetId: number | undefined;
+  selectedPetId: number | null;
   onSelectPet: (petId: number) => void;
 }
 
-export function ProfileSelector({ petInfos, selectedPetId, onSelectPet }: Props): JSX.Element {
+export function ProfileSelector({ petInfos, selectedPetId, onSelectPet }: Props) {
   const [failedImages, setFailedImages] = useState<Record<number, boolean>>({});
 
   const handleImageError = (index: number) => {
@@ -26,11 +26,11 @@ export function ProfileSelector({ petInfos, selectedPetId, onSelectPet }: Props)
           onClick={() => onSelectPet(pet.petId)}
           icons={{
             prefix:
-              !pet.imageURL || failedImages[pet.petId] ? (
+              !pet.imageUrl || failedImages[pet.petId] ? (
                 <DefaultProfile css={defaultImage} />
               ) : (
                 <img
-                  src={pet.imageURL}
+                  src={pet.imageUrl}
                   alt={`${pet.name} 프로필`}
                   onError={() => handleImageError(pet.petId)}
                 />

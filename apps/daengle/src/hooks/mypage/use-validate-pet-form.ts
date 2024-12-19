@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-export default function useValidatePetEdit() {
+export function useValidatePetEdit() {
   return useMemo(
     () => ({
       name: {
@@ -32,14 +32,13 @@ export default function useValidatePetEdit() {
       weight: {
         required: '몸무게를 선택해 주세요',
       },
+
       groomingExperience: {
         required: '미용 경험 여부를 선택해 주세요',
       },
+
       isBite: {
         required: '입질 여부를 선택해 주세요',
-      },
-      dislikeParts: {
-        required: '싫어하는 부위를 선택해 주세요',
       },
     }),
     []

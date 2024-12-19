@@ -8,8 +8,8 @@ export const ROUTES = {
 
   // Estimates
   ESTIMATES: '/estimates',
-  ESTIMATE_DETAIL: (estimateId: number) => `/estimates/${estimateId}`,
-  ESTIMATE_PETINFO: (petId: number) => `/estimates/pet-info/${petId}`,
+  ESTIMATES_DETAIL: (estimateId: number) => `/estimates/${estimateId}`,
+  ESTIMATES_PET_INFO: (petId: number) => `/estimates/pet-info/${petId}`,
   ESTIMATE_COMPLELTE: '/estimates/complete',
 
   // Reservations
