@@ -27,9 +27,9 @@ import {
   PET_GENDER,
   PET_IS_NEUTERED,
   PET_SIGNIFICANTTAG,
-} from '~/constants/pet';
-import { Breed } from '~/interface/pet';
-import { PET_SIZE } from '~/constants';
+} from '../../constants/pet';
+import { Breed } from '../../interface/pet';
+import { PET_SIZE } from '../../constants';
 
 interface Props {
   petInfo: PetInfo;
