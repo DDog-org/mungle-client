@@ -26,7 +26,7 @@ export function Item({ partnerId, partnerImage, partnerName, badges, onClick }: 
             <div css={tags}>
               {badges?.map((hashTag, index) => (
                 <Tag key={index} service="search" variant="line">
-                  {hashTag}
+                  #{hashTag}
                 </Tag>
               ))}
             </div>
@@ -43,7 +43,7 @@ export function Item({ partnerId, partnerImage, partnerName, badges, onClick }: 
             <div css={tags}>
               {badges.map((hashTag, index) => (
                 <Tag key={index} service="search" variant="line">
-                  {hashTag}
+                  #{hashTag}
                 </Tag>
               ))}
             </div>
