@@ -10,7 +10,7 @@ interface Props {
 export function WeekDateTabs({ selectedDate, onSelectDate, dates }: Props) {
   return (
     <div css={wrapper}>
-      <Text typo="title2">{`${selectedDate?.slice(5, 7)}월`}</Text> {/* 동적 월 표시 */}
+      <Text typo="title2">{`${selectedDate?.slice(5, 7)}월`}</Text>
       <div css={dateTabs}>
         {dates.map((date) => (
           <div

@@ -1,4 +1,4 @@
-import { CapsuleButton, Text, TextButton } from '@daengle/design-system';
+import { CapsuleButton, Rating, Text, TextButton } from '@daengle/design-system';
 import {
   wrapper,
   userImage,
@@ -16,12 +16,12 @@ import {
   tagsWrapper,
   tagWrapper,
 } from './index.styles';
-import { ReviewStars } from '../star';
+
 import {
   ButtonTextButtonArrow,
+  DefaultProfile,
   ReviewFold,
   ReviewUnfold,
-  SelectUnfoldInactive,
 } from '@daengle/design-system/icons';
 import { useState } from 'react';
 import { PartnersReviewListType } from '../../../interface';
@@ -55,13 +55,27 @@ export function ReviewCard<T extends PartnersReviewListType>({
     setIsUnrolled(!isUnrolled);
   }
 
+  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    event.currentTarget.onerror = null;
+    event.currentTarget.src = '';
+  };
+
   return (
     <div css={wrapper}>
       <div css={reviewerInfo}>
         <div css={userInfo}>
-          <img src={reviewerImageUrl} alt={`${reviewerName} 프로필`} css={userImage} />
+          {reviewerImageUrl ? (
+            <img
+              src={reviewerImageUrl}
+              alt={`${reviewerName} 프로필`}
+              css={userImage}
+              onError={handleImageError}
+            />
+          ) : (
+            <DefaultProfile css={userImage} />
+          )}
           <Text typo="subtitle2">{reviewerName}</Text>
-          <ReviewStars rating={starRating} />
+          <Rating size="S" rate={starRating} />
         </div>
         {!flagged && (
           <CapsuleButton onClick={(event) => onReport(event, review.reviewId, review.userId)}>

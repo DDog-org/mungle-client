@@ -19,6 +19,7 @@ import {
   useGetGroomerReviewReportQuery,
   usePostGroomerReviewReportMutation,
 } from '~/queries/review';
+import { PostGroomerReviewReportRequestBody } from '~/models';
 
 const options = Object.entries(REPORT_KEYWORDS).map(([key, value]) => ({
   value: key,
@@ -29,6 +30,7 @@ export default function MyReviews() {
   const router = useRouter();
   const { id, groomerId } = router.query;
   const groomingReviewId = Number(id);
+  const groomingId = Number(groomerId);
 
   const { data, isLoading, isError } = useGetGroomerReviewReportQuery({ groomingReviewId });
   const mutation = usePostGroomerReviewReportMutation();
@@ -46,14 +48,14 @@ export default function MyReviews() {
       alert('신고 유형과 내용을 모두 입력해주세요.');
       return;
     }
-    const reportData = {
-      groomerId: Number(groomerId),
+    const body: PostGroomerReviewReportRequestBody = {
+      groomerId: groomingId,
       reviewId: groomingReviewId,
       reportType: selectedKeyword,
-      reportContent,
+      reportContent: reportContent,
     };
 
-    mutation.mutate(reportData, {
+    mutation.mutate(body, {
       onSuccess: () => {
         alert('신고가 성공적으로 접수되었습니다.');
         router.push(ROUTES.MYPAGE_REVIEWS);

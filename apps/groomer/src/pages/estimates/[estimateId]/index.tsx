@@ -86,7 +86,7 @@ export default function EstimateDetail() {
             attributes={{
               age: estimate.age,
               weight: estimate.weight,
-              significant: estimate.significant ?? '없음',
+              significant: estimate.significant ?? '특이사항 없음',
             }}
             onClick={() => {}} //TODO: pet-info 상세정보 연동시 router 처리
           />

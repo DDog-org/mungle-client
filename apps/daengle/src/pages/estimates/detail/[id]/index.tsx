@@ -96,7 +96,7 @@ export default function Detail() {
         };
 
     setOrderInfo(orderInfo);
-    router.push(ROUTES.PAYMENTS_ORDER);
+    router.push({ pathname: ROUTES.PAYMENTS_ORDER, query: { service: service } });
   };
 
   if (isGroomingDetail(detailData)) {
@@ -115,7 +115,7 @@ export default function Detail() {
       <Layout isAppBarExist={false}>
         <AppBar
           backgroundColor={theme.colors.background}
-          onBackClick={router.back}
+          onBackClick={() => router.push(ROUTES.RESERVATIONS)}
           onHomeClick={() => router.push(ROUTES.HOME)}
         />
         <div css={wrapper}>

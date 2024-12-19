@@ -17,6 +17,7 @@ import { formatPhoneNumber } from '@daengle/services/utils';
 
 export default function Order() {
   const router = useRouter();
+  const { service } = router.query;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [orderUid, setOrderUid] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -135,9 +136,10 @@ export default function Order() {
           });
 
           if (validateResponse) {
-            //결제 성공
-
-            router.push(ROUTES.PAYMENTS_COMPLETE);
+            router.push({
+              pathname: ROUTES.PAYMENTS_COMPLETE,
+              query: { estimateId: estimateId, service: service },
+            });
           } else {
             console.error('결제 검증 실패:', validateResponse);
             alert('결제 검증에 실패했습니다.');
