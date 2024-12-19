@@ -3,3 +3,4 @@ export * from './estimate-list';
 export * from './pet-profile';
 export * from './reservations';
 export * from './review';
+export * from './partner-pet-info';

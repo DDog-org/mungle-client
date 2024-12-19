@@ -38,3 +38,25 @@ export interface Breed {
   breedName: string;
   breed: string;
 }
+
+export interface GetGroomerReservationRequestParams {
+  reservationId: number;
+}
+
+export interface GetGroomerReservationResponse {
+  userId: number;
+  userProfile: string;
+  userName: string;
+  partnerAddress: string;
+  reservedDate: string;
+  petId: number;
+  petProfile: string;
+  petName: string;
+  petAge: number;
+  petWeight: keyof typeof PET_SIZE;
+  dislikeParts: string[];
+  significantTags: string[];
+  desiredStyle: string;
+  requirements: string;
+  overallOpinion: string;
+}

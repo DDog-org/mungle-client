@@ -18,7 +18,7 @@ interface Props {
   attributes: {
     age: number;
     weight: keyof typeof PET_SIZE;
-    significant: string;
+    significant: string[] | string;
   };
   onClick?: () => void;
 }
@@ -53,7 +53,7 @@ export function PetDetails({ image, name, attributes, onClick }: Props): JSX.Ele
             ))}
           </div>
 
-          <TextButton icons={{ suffix: <ButtonTextButtonArrow width={5} /> }}>
+          <TextButton onClick={onClick} icons={{ suffix: <ButtonTextButtonArrow width={5} /> }}>
             <Text color="gray500" typo="body10">
               자세히 보기
             </Text>
@@ -62,7 +62,11 @@ export function PetDetails({ image, name, attributes, onClick }: Props): JSX.Ele
         <div css={valueWrapper}>
           <Text typo="body9">{attributes.age}</Text>
           <Text typo="body9">{PET_SIZE[attributes.weight]}</Text>
-          <Text typo="body9">{attributes.significant}</Text>
+          <Text typo="body9">
+            {Array.isArray(attributes.significant)
+              ? attributes.significant.join(', ') // 배열일 경우
+              : attributes.significant}
+          </Text>
         </div>
       </div>
     </div>

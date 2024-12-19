@@ -3,6 +3,8 @@ import {
   GetBreedListResponse,
   GetGroomerPetInfoRequestParams,
   GetGroomerPetInfoResponse,
+  GetGroomerReservationRequestParams,
+  GetGroomerReservationResponse,
   GetGroomerWeekRequestParams,
   GetGroomerWeekResponse,
 } from '~/models/reservation';
@@ -17,4 +19,10 @@ export const getGroomerPetInfo = async (params: GetGroomerPetInfoRequestParams) 
 
 export const getBreedList = async () => {
   return await api.get<GetBreedListResponse>('/user/breed/list');
+};
+
+export const getGroomerReservation = async (params: GetGroomerReservationRequestParams) => {
+  return await api.get<GetGroomerReservationResponse>(
+    `/groomer/reservation/${params.reservationId}`
+  );
 };

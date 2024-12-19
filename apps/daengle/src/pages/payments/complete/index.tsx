@@ -8,7 +8,8 @@ import { useOrderInfoStore } from '~/stores/payment';
 
 export default function PaymentComplete() {
   const router = useRouter();
-  const { estimateId, recipientName, shopName, schedule } = useOrderInfoStore();
+  const { estimateId, service } = router.query;
+  const { recipientName, shopName, schedule } = useOrderInfoStore();
 
   const date = schedule.split('T', 1);
   const time = schedule.substring(11, 16);
@@ -38,7 +39,10 @@ export default function PaymentComplete() {
         <RoundButton
           size="S"
           onClick={() => {
-            router.push(ROUTES.RESERVATIONS_DETAIL(estimateId));
+            router.push({
+              pathname: ROUTES.RESERVATIONS_DETAIL(Number(estimateId)),
+              query: { service: service },
+            });
           }}
         >
           예약 내역 보기

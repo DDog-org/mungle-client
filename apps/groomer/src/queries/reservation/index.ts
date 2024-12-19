@@ -2,11 +2,18 @@ import { useQuery } from '@tanstack/react-query';
 import {
   GetGroomerPetInfoRequestParams,
   GetGroomerPetInfoResponse,
+  GetGroomerReservationRequestParams,
+  GetGroomerReservationResponse,
   GetGroomerWeekRequestParams,
   GetGroomerWeekResponse,
 } from '~/models/reservation';
 import { QUERY_KEYS } from '../query-keys';
-import { getBreedList, getGroomerPetInfo, getGroomerWeek } from '~/apis/reservation';
+import {
+  getBreedList,
+  getGroomerPetInfo,
+  getGroomerReservation,
+  getGroomerWeek,
+} from '~/apis/reservation';
 
 export const useGetGroomerWeekQuery = (params: GetGroomerWeekRequestParams) => {
   return useQuery<GetGroomerWeekResponse>({
@@ -31,5 +38,14 @@ export const useGetBreedListQuery = () => {
     queryKey: QUERY_KEYS.GET_BREED_LIST,
     queryFn: getBreedList,
     select: (response) => response?.breedList,
+  });
+};
+
+export const useGetGroomerReservationQuery = (params: GetGroomerReservationRequestParams) => {
+  return useQuery<GetGroomerReservationResponse>({
+    queryKey: [QUERY_KEYS.GET_GROOMER_RESERVATION, params],
+    queryFn: () => {
+      return getGroomerReservation(params);
+    },
   });
 };

@@ -41,7 +41,7 @@ export function ReservationList({ reservations, onClick }: Props) {
           return (
             <div key={index} css={timeline}>
               <div css={dot(isLast)}></div>
-              <span css={time}>{item.scheduleTime}</span>
+              <span css={time}>{item.scheduleTime.slice(0, 5)}</span>
               <div css={content} onClick={() => onClick(item.reservationId)}>
                 {item.petProfile ? (
                   <img

@@ -1,8 +1,17 @@
 import { css } from '@emotion/react';
 import { theme } from '../../../foundation';
 import { Size } from './index.types';
+import { Service } from '../../../types';
 
-export const chipRadio = ({ isSelected, size }: { isSelected: boolean; size: Size }) => css`
+export const chipRadio = ({
+  isSelected,
+  size,
+  service,
+}: {
+  isSelected: boolean;
+  size: Size;
+  service: Service;
+}) => css`
   display: flex;
 
   border-radius: 27.5px;
@@ -15,9 +24,9 @@ export const chipRadio = ({ isSelected, size }: { isSelected: boolean; size: Siz
 
   ${isSelected
     ? css`
-        color: ${theme.colors.blue200};
-        background: ${theme.colors.blue100};
-        border: 1px solid ${theme.colors.blue200};
+        color: ${service === 'partner' ? theme.colors.green200 : theme.colors.blue200};
+        background: ${service === 'partner' ? theme.colors.green100 : theme.colors.blue100};
+        border: 1px solid ${service === 'partner' ? theme.colors.green200 : theme.colors.blue200};
       `
     : css`
         color: ${theme.colors.gray300};
