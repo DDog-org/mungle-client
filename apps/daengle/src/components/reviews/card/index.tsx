@@ -37,13 +37,7 @@ export function Card({
       <div css={top}>
         <div css={reviewerInfo}>
           {reviewerImageUrl ? (
-            <Image
-              src={reviewerImageUrl}
-              alt="리뷰 작성자 이미지"
-              width={33}
-              height={33}
-              objectFit="cover"
-            />
+            <Image src={reviewerImageUrl} alt="리뷰 작성자 이미지" width={33} height={33} />
           ) : (
             <DefaultProfile width={33} height={33} />
           )}

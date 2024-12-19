@@ -98,7 +98,8 @@ export function RequestEstimate({
 
         <Section title="시술 희망 날짜 및 시간">
           <Text typo="title2">
-            {dayjs(reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
+            {/* {dayjs(reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')} */}
+            2024년 12월 25일(월) • 14:00
           </Text>
         </Section>
 

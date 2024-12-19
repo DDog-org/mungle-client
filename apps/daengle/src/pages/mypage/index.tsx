@@ -198,7 +198,7 @@ export default function Mypage() {
                   type: 'warn',
                   title: '회원 탈퇴',
                   description: waitingForServiceCount
-                    ? `현재 예약 중인 서비스가 ${waitingForServiceCount}건 있어요.\n탈퇴 시 예약금은 전액환불 처리될 예정이에요.`
+                    ? `현재 예약 중인 서비스가 ${waitingForServiceCount}건 있어요.\n3일 전까지 취소: 예약금 100% 환불\n1일전 까지 취소:  예약금 50% 환불\n당일 취소: 예약금 환불 불가`
                     : '정말로 탈퇴하시겠어요?\n탈퇴된 계정은 다시 복구할 수 없어요',
                   primaryActionLabel: '탈퇴하기',
                   onPrimaryAction: async () => {

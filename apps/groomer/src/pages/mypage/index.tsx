@@ -40,7 +40,6 @@ export default function GroomerInfo() {
               width={101}
               height={117}
               css={imageStyle}
-              objectFit="cover"
             />
           ) : (
             <DefaultProfile width={101} height={117} css={imageStyle} />
@@ -146,6 +145,10 @@ const groomerProfile = css`
 
   width: 100%;
   padding: 24px 0;
+
+  img {
+    object-fit: cover;
+  }
 `;
 
 const imageStyle = css`

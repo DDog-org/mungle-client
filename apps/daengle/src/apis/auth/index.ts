@@ -85,7 +85,7 @@ export const deleteUserPet = async (data: DeleteUserPetRequestData) => {
 };
 
 export const getUserValidate = async () => {
-  return await guestApi.get<GetUserValidateResponse>('/user/validate');
+  return await api.get<GetUserValidateResponse>('/user/validate');
 };
 
 export const getUserMypage = async () => {

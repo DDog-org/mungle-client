@@ -35,9 +35,8 @@ export default function Home() {
   const { address } = useAddressStore();
   const { open } = useDialog();
 
-  const isLoggedInUser = useMemo(() => getUserValidate?.isValidateMember, [getUserValidate]);
-
   const handleSearchAddressClick = () => {
+    const isLoggedInUser = getUserValidate?.isValidateMember;
     if (isLoggedInUser) router.push(ROUTES.SEARCH_ADDRESS);
     else {
       open({
@@ -49,6 +48,8 @@ export default function Home() {
   };
 
   const handleOpenActionSheet = () => {
+    const isLoggedInUser = getUserValidate?.isValidateMember;
+
     if (isLoggedInUser) {
       setIsActionSheetOpen(true);
     } else {

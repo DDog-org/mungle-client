@@ -11,6 +11,10 @@ export const wrapper = css`
 
   cursor: pointer;
 
+  image {
+    object-fit: cover;
+  }
+
   & + & {
     border-top: 1px solid ${theme.colors.gray200};
   }
