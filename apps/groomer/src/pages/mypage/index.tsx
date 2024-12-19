@@ -26,6 +26,8 @@ export default function GroomerInfo() {
 
   const { open } = useDialog();
 
+  if (!getGroomerInfo?.shopId) return;
+
   return (
     <Layout isAppBarExist={false}>
       <section css={topSection}>
@@ -54,7 +56,10 @@ export default function GroomerInfo() {
                 #노견
               </Text>
             </div>
-            <TextButton icons={{ suffix: <ButtonTextButtonArrow width={6} /> }}>
+            <TextButton
+              icons={{ suffix: <ButtonTextButtonArrow width={6} /> }}
+              onClick={() => router.push(ROUTES.MYPAGE_SHOP(getGroomerInfo?.shopId))}
+            >
               <Text typo="body9" color="gray500">
                 {getGroomerInfo?.shopName}
               </Text>
@@ -101,7 +106,7 @@ export default function GroomerInfo() {
           <Text typo="body4">리뷰 관리</Text>
           <ButtonTextButtonArrow width={6} />
         </div>
-        <div css={menu} onClick={() => router.push(ROUTES.MYPAGE_MY_SHOP)}>
+        <div css={menu} onClick={() => router.push(ROUTES.MYPAGE_SHOP_EDIT)}>
           <Text typo="body4">마이샵 관리</Text>
           <ButtonTextButtonArrow width={6} />
         </div>

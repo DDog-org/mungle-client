@@ -1,4 +1,4 @@
-import { forwardRef, ChangeEvent, useImperativeHandle, useRef } from 'react';
+import { forwardRef, ChangeEvent, useImperativeHandle, useRef, useState, useEffect } from 'react';
 import { ImageUploadPlus } from '../../icons';
 import {
   deleteImageButton,
@@ -17,6 +17,14 @@ interface Props {
 export const ImageInput = forwardRef(({ onChange, defaultValue = [], maxLength }: Props, ref) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const filesRef = useRef<File[]>(defaultValue);
+  const [files, setFiles] = useState<File[]>(defaultValue);
+
+  useEffect(() => {
+    if (defaultValue && defaultValue.length > 0) {
+      filesRef.current = defaultValue;
+      setFiles(defaultValue);
+    }
+  }, [defaultValue]);
 
   useImperativeHandle(ref, () => ({
     getFiles: () => filesRef.current,
@@ -32,8 +40,10 @@ export const ImageInput = forwardRef(({ onChange, defaultValue = [], maxLength }
       return;
     }
 
-    filesRef.current = [...filesRef.current, ...uploadedImages];
-    onChange?.(filesRef.current);
+    const updatedFiles = [...filesRef.current, ...uploadedImages];
+    filesRef.current = updatedFiles;
+    setFiles(updatedFiles);
+    onChange?.(updatedFiles);
 
     if (inputRef.current) {
       inputRef.current.value = '';
@@ -41,8 +51,12 @@ export const ImageInput = forwardRef(({ onChange, defaultValue = [], maxLength }
   };
 
   const handleRemoveImage = (index: number) => {
-    filesRef.current = filesRef.current.filter((_, idx) => idx !== index);
-    onChange?.(filesRef.current);
+    const updatedFiles = filesRef.current.filter((_, idx) => idx !== index);
+
+    filesRef.current = updatedFiles;
+
+    setFiles(updatedFiles);
+    onChange?.(updatedFiles);
   };
 
   return (
@@ -58,7 +72,7 @@ export const ImageInput = forwardRef(({ onChange, defaultValue = [], maxLength }
         />
       </label>
 
-      {filesRef.current.map((file, index) => (
+      {files.map((file, index) => (
         <div key={file.name + index} css={imageWrapper}>
           <button css={deleteImageButton} onClick={() => handleRemoveImage(index)}>
             <div />

@@ -20,6 +20,7 @@ import { DAY_OFF } from '~/constants/mypage';
 import TimePickerComponent from '~/components/mypage/time-picker';
 import { GroomerProfileForm } from '~/interfaces';
 import { useValidateMyPageForm } from '~/hooks/mypage/use-validate-mypage-form';
+import { ROUTES } from '~/constants';
 
 export default function groomerProfile() {
   const [selectedStartTime, setSelectedStartTime] = useState<Dayjs | null>(null);
@@ -40,6 +41,7 @@ export default function groomerProfile() {
     formState: { errors, isValid },
   } = useForm<GroomerProfileForm>({
     defaultValues: {
+      imageUrlList: [],
       phoneNumber: getGroomerShopInfo?.phoneNumber,
       closedDays: getGroomerShopInfo?.closedDays,
     },
@@ -97,7 +99,11 @@ export default function groomerProfile() {
 
   return (
     <Layout isAppBarExist={true}>
-      <AppBar onBackClick={router.back} backgroundColor={theme.colors.white} />
+      <AppBar
+        onBackClick={router.back}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+        backgroundColor={theme.colors.white}
+      />
       <div css={wrapper}>
         <Text tag="h1" typo="title1" color="black">
           마이샵 관리
@@ -111,7 +117,10 @@ export default function groomerProfile() {
               <ImageInput
                 maxLength={10}
                 {...register('imageUrlList', { ...validation.imageUrls })}
-                onChange={(files) => setValue('imageUrlList', files, { shouldValidate: true })}
+                onChange={(files) => {
+                  console.log('Uploaded files:', files);
+                  setValue('imageUrlList', files, { shouldValidate: true });
+                }}
               />
             </section>
 
@@ -200,7 +209,7 @@ export default function groomerProfile() {
               />
             </li>
           </ul>
-          <CTAButton type="submit" service="partner" disabled={isValid}>
+          <CTAButton type="submit" service="partner" disabled={!isValid}>
             수정하기
           </CTAButton>
         </form>
