@@ -282,7 +282,7 @@ export const chatList = ({ isEstimateExist }: { isEstimateExist: boolean }) => c
   display: flex;
   flex-direction: column;
   gap: 10px;
-  overflow-y: auto;
+  overflow: hidden auto;
 
   width: 100%;
   height: 100%;

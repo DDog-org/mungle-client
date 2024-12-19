@@ -29,10 +29,10 @@ export const ROUTES = {
   GROOMERS_PORFOLIO: (groomerId: number) => `/groomers/${groomerId}/porfolio`,
 
   // Vets
-  VET_DETAIL: (vetId: number) => `/vets/${vetId}`,
-  VET_REVIEWS: (vetId: number) => `/vets/${vetId}/reviews`,
-  VET_ESTIMATE_FORM: '/vets/estimate-form',
-  VET_REVIEW_FORM_EDIT: (reviewId: number) => `/vet/review/${reviewId}/edit`,
+  VETS_DETAIL: (vetId: number) => `/vets/${vetId}`,
+  VETS_REVIEWS: (vetId: number) => `/vets/${vetId}/reviews`,
+  VETS_ESTIMATE_FORM: '/vets/estimate-form',
+  VETS_REVIEW_FORM_EDIT: (reviewId: number) => `/vet/review/${reviewId}/edit`,
 
   // Reviews
   REVIEWS_FORM: (reservationId: number) => `/reviews/${reservationId}/form`,

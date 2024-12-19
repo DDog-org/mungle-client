@@ -1,4 +1,12 @@
-import { AppBar, CTAButton, Layout, RoundButton, Text } from '@daengle/design-system';
+import {
+  AppBar,
+  CTAButton,
+  Layout,
+  RoundButton,
+  Text,
+  useDialog,
+  useToast,
+} from '@daengle/design-system';
 import { useRouter } from 'next/router';
 import { Section } from '../section';
 import dayjs from 'dayjs';
@@ -37,28 +45,31 @@ export function RequestEstimate({
 }: Props): JSX.Element {
   const router = useRouter();
 
-  const { mutate: cancelGroomingEstimate } = usePostEstimateCancelGroomingMutation();
-  const { mutate: cancelCareEstimate } = usePostEstimateCancelCareMutation();
+  const { mutateAsync: cancelGroomingEstimate, isSuccess: isCancelGroomingSuccess } =
+    usePostEstimateCancelGroomingMutation();
+  const { mutateAsync: cancelCareEstimate, isSuccess: isCancelCateSuccess } =
+    usePostEstimateCancelCareMutation();
+
+  const { open } = useDialog();
+  const { showToast } = useToast();
 
   const handleRequest = () => {
-    if (!confirm('견적을 그만 받으시겠습니까?')) return;
-
-    const onSuccess = () => {
-      alert('요청이 성공적으로 취소되었습니다.');
-      router.push(ROUTES.ESTIMATES);
-    };
-
-    const onError = (error: any) => {
-      console.error(error);
-      alert('요청 취소 중 오류가 발생했습니다.');
-    };
-
-    if (service === 'groomer') {
-      cancelGroomingEstimate({ estimateId }, { onSuccess, onError });
-    } else if (service === 'vet') {
-      cancelCareEstimate({ estimateId }, { onSuccess, onError });
-    }
+    open({
+      type: 'warn',
+      title: '견적을 그만 받으시겠습니까?',
+      primaryActionLabel: '그만 받기',
+      onPrimaryAction:
+        service === 'groomer'
+          ? () => cancelGroomingEstimate({ estimateId })
+          : () => cancelCareEstimate({ estimateId }),
+      secondaryActionLabel: '취소',
+    });
   };
+
+  if (isCancelGroomingSuccess || isCancelCateSuccess) {
+    router.push(ROUTES.ESTIMATES);
+    showToast({ title: '견적 요청이 취소되었어요' });
+  }
 
   return (
     <Layout>

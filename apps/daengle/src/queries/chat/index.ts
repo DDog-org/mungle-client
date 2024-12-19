@@ -1,12 +1,13 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   deleteChatDelete,
+  getChatStart,
   getChatUserGroomerList,
   getChatUserVetList,
   getChatWith,
   postChatMessages,
 } from '~/apis';
-import { PostChatMessagesRequestArgs } from '~/models/chat';
+import { GetchatStartRequestParams, PostChatMessagesRequestArgs } from '~/models/chat';
 import { QUERY_KEYS } from '../query-keys';
 
 export const useGetChatUserGroomerListQuery = () => {
@@ -43,5 +44,13 @@ export const useDeleteChatDeleteMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.DELETE_CHAT_DELETE,
     mutationFn: deleteChatDelete,
+  });
+};
+
+export const useGetChatStartQuery = (params: GetchatStartRequestParams) => {
+  return useQuery({
+    queryKey: QUERY_KEYS.GET_CHAT_START,
+    queryFn: () => getChatStart(params),
+    enabled: !!params.otherId,
   });
 };

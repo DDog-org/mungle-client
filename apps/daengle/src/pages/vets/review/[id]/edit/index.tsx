@@ -110,7 +110,7 @@ export default function VetReviewEdit() {
           queryClient.refetchQueries({ queryKey: QUERY_KEYS.GET_USER_CARE_REVIEW });
 
           alert('리뷰가 성공적으로 수정되었습니다!');
-          router.push(ROUTES.VET_REVIEWS(vetId));
+          router.push(ROUTES.VETS_REVIEWS(vetId));
         },
         onError: handleError,
       }

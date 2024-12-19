@@ -126,7 +126,7 @@ export default function ReviewPage() {
       postCareReview.mutate(body, {
         onSuccess: (response) => {
           alert('리뷰가 성공적으로 등록되었습니다!');
-          router.push(ROUTES.VET_REVIEWS(response.revieweeId));
+          router.push(ROUTES.VETS_REVIEWS(response.revieweeId));
         },
         onError: handleError,
       });

@@ -71,7 +71,7 @@ export default function EstimateCare() {
       address: watch('address'),
       reservedDate: watch('reservedDate'),
       symptoms: watch('symptoms'),
-      requirements: watch('requirements') ?? null,
+      requirements: watch('requirements'),
     };
 
     postUserEstimateCare(payload, {
@@ -152,6 +152,7 @@ export default function EstimateCare() {
             label="추가 요청사항"
             placeholder="추가 요청사항을 입력해 주세요"
             rows={5}
+            required
             {...register('requirements', { ...validate.requirements })}
             errorMessage={errors.requirements?.message}
           />

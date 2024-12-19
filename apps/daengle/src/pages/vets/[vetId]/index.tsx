@@ -13,13 +13,14 @@ import {
   ToolTip,
 } from '@daengle/design-system/icons';
 import { DAY_OFF, ROUTES } from '~/constants';
-import { useGetUserVetDetailQuery } from '~/queries';
+import { useGetChatStartQuery, useGetUserVetDetailQuery } from '~/queries';
 
 export default function VetInfo() {
   const router = useRouter();
   const { vetId } = router.query;
 
   const { data: vetInfo } = useGetUserVetDetailQuery({ vetId: Number(vetId) });
+  const { data: chatStartInfo } = useGetChatStartQuery({ otherId: Number(vetId) });
 
   return (
     <Layout isAppBarExist={false}>
@@ -109,14 +110,25 @@ export default function VetInfo() {
               <RoundButton
                 fullWidth={true}
                 variant="primaryLow"
-                onClick={() => router.push(ROUTES.CHATS_DETAIL(Number(vetId)))}
+                onClick={() =>
+                  chatStartInfo?.chatRoomId &&
+                  router.push(ROUTES.CHATS_DETAIL(chatStartInfo?.chatRoomId))
+                }
               >
                 채팅하기
               </RoundButton>
             </div>
           </section>
           <section css={bottomSection}>
-            <div css={menu} onClick={() => router.push(ROUTES.VETS_REVIEWS(Number(vetId)))}>
+            <div
+              css={menu}
+              onClick={() =>
+                router.push({
+                  pathname: ROUTES.VETS_REVIEWS(Number(vetId)),
+                  query: { otherId: Number(vetId), service: 'vet' },
+                })
+              }
+            >
               <div css={review}>
                 <Text typo="subtitle1">받은 리뷰</Text>
                 <Text typo="subtitle1">{vetInfo?.reviewCount}</Text>

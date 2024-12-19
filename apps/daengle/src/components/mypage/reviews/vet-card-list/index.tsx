@@ -42,9 +42,9 @@ export function VetCardList() {
                   starRating={starRating}
                   content={content}
                   imageUrlList={imageUrlList}
-                  onRevieweeNameClick={() => router.push(ROUTES.VET_DETAIL(vetId))}
+                  onRevieweeNameClick={() => router.push(ROUTES.VETS_DETAIL(vetId))}
                   onDelete={() => deleteUserCareReview({ reviewId: careReviewId })}
-                  onEdit={() => router.push(ROUTES.VET_REVIEW_FORM_EDIT(careReviewId))}
+                  onEdit={() => router.push(ROUTES.VETS_REVIEW_FORM_EDIT(careReviewId))}
                 />
               )
             )

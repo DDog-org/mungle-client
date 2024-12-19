@@ -7,7 +7,7 @@ import { DefaultImage, NeedLoginArrow } from '@daengle/design-system/icons';
 import { RegisterPetProfile } from '@daengle/services/components';
 import { ROUTES } from '~/constants';
 import { GNB } from '~/components/commons';
-import { Tab } from '~/components/mypage';
+import { SelectPet, Tab } from '~/components/mypage';
 import { ProfileSelector } from '~/components/estimate';
 import { PetInfoForm } from '~/interfaces';
 import {
@@ -145,17 +145,15 @@ export default function Mypage() {
         <section css={section}>
           <div css={petList}>
             {petInfos && petInfos.length > 0 ? (
-              <ProfileSelector
+              <SelectPet
                 petInfos={petInfos.map((pet) => ({
                   ...pet,
                   name: pet.petName,
                   imageUrl: pet.petImage,
                 }))}
                 selectedPetId={selectedPetId}
-                onSelectPet={(petId) => {
-                  setSelectedPetId(petId);
-                  router.push({ pathname: router.pathname, query: { ...router.query, petId } });
-                }}
+                handlePetSelect={(petId: number) => setSelectedPetId(petId)}
+                handlePetCreateClick={() => router.push(ROUTES.MYPAGE_PET_PROFILE_CREATE)}
               />
             ) : (
               <RegisterPetProfile
@@ -212,6 +210,7 @@ export default function Mypage() {
           </>
         )}
       </div>
+
       <GNB />
     </Layout>
   );

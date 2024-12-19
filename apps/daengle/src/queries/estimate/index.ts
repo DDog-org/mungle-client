@@ -254,7 +254,7 @@ export const useEstimateCareDetailQuery = (
   enabled: boolean
 ) => {
   return useQuery<UserEstimateCareDetailData>({
-    queryKey: [QUERY_KEYS.GET_USER_ESTIMATES_VET_DETAIL, params],
+    queryKey: [QUERY_KEYS.GET_USER_ESTIMATES_VETS_DETAIL, params],
     queryFn: async () => {
       try {
         const data = await getUserEstimateCareDetail(params);

@@ -12,7 +12,7 @@ export interface ToastProps {
   service?: 'daengle' | 'partner';
 }
 
-export function Toast({ isShow, title, time = 3000, service = 'daengle' }: ToastProps) {
+export function Toast({ isShow, title, time = 5000, service = 'daengle' }: ToastProps) {
   const [isOpen, setIsOpen] = useState<boolean>(isShow);
 
   useEffect(() => {

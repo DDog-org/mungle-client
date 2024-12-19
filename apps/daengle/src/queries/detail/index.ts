@@ -12,7 +12,7 @@ import { getUserVetDetail, getUserShopDetail, getUserGroomerDetail } from '~/api
 
 export const useGetUserVetDetailQuery = (params: GetUserVetDetailRequestParams) => {
   return useQuery<GetUserVetDetailResponse>({
-    queryKey: [...QUERY_KEYS.GET_USER_VET_DETAIL, params.vetId],
+    queryKey: [...QUERY_KEYS.GET_USER_VETS_DETAIL, params.vetId],
     queryFn: () => getUserVetDetail(params),
     enabled: !!params.vetId,
   });
