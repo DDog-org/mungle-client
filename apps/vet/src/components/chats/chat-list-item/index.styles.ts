@@ -7,7 +7,7 @@ export const wrapper = css`
   justify-content: space-between;
 
   width: 100%;
-  padding: 12px 18px;
+  padding: 12px 8px 12px 18px;
 
   cursor: pointer;
 
@@ -66,4 +66,8 @@ export const fab = css`
   box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
 
   cursor: pointer;
+`;
+
+export const timeWrapper = css`
+  padding: 0 10px 10px 0;
 `;

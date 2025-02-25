@@ -16,25 +16,21 @@ interface GroomerListProps {
 export function GroomerList({ inputValue }: GroomerListProps) {
   const router = useRouter();
   const [selectedTag, setSelectedTag] = useState<string | undefined>();
+  const { address } = useAddressStore();
+
+  const lastAddress = address.split(' ').pop();
 
   const params = {
     keyword: inputValue,
-    // TODO: 시연 영상 및 테스트 후 address으로 수정
-    address: '역삼동',
+    address: lastAddress,
     tag: selectedTag || '',
     page: 0,
     size: 6,
   };
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGetUserSearchGroomerInfiniteQuery(params);
   const { loadMoreRef } = useIntersectionLoad({ fetchNextPage, hasNextPage, isFetchingNextPage });
-
-  const { address } = useAddressStore();
-
-  const handleCardClick = (groomerId: number) => {
-    console.log(groomerId);
-    router.push(ROUTES.GROOMERS_DETAIL(groomerId));
-  };
 
   const handleTagClick = (tagValue: string) => {
     setSelectedTag((prevTag) => (prevTag === tagValue ? undefined : tagValue));

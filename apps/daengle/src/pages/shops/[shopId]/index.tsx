@@ -1,10 +1,11 @@
-import { AppBar, Empty, Layout, Text, theme } from '@daengle/design-system';
+import { AppBar, Dim, Empty, Layout, Text, theme } from '@daengle/design-system';
 import { DetailCall, DetailLocation, DetailTime } from '@daengle/design-system/icons';
 import { ShopDefaultImage } from '@daengle/design-system/images';
+import { formatDayOff } from '@daengle/services/utils';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import ProfileCard from '~/components/groomers/profile-card';
-import { DAY_OFF, ROUTES } from '~/constants';
+import { ROUTES } from '~/constants';
 import { GetUserShopDetailResponse } from '~/models';
 
 interface Props {
@@ -20,10 +21,15 @@ export default function ShopInfo({ shopInfo }: Props) {
 
   return (
     <Layout isAppBarExist={false}>
-      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
+      <AppBar
+        onBackClick={router.back}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+        isWhite={true}
+      />
 
       <div css={wrapper}>
         <div css={imageSection}>
+          <Dim />
           {shopInfo?.shopImage ? (
             <img src={shopInfo?.shopImage} alt="미용샵 이미지" />
           ) : (
@@ -40,11 +46,7 @@ export default function ShopInfo({ shopInfo }: Props) {
               <div css={time}>
                 <DetailTime width={20} />
                 <Text typo="body9">
-                  {shopInfo?.closedDay?.length
-                    ? `${shopInfo?.startTime?.substring(0, 5)} - ${shopInfo?.endTime?.substring(0, 5)} ${shopInfo?.closedDay
-                        .map((day) => DAY_OFF.find((item) => item.value === day)?.label || day)
-                        .join(', ')} 휴무`
-                    : `매일 ${shopInfo?.startTime?.substring(0, 5)} - ${shopInfo?.endTime?.substring(0, 5)}`}
+                  {formatDayOff(shopInfo.closedDay, shopInfo.startTime, shopInfo.endTime)}
                 </Text>
               </div>
 
@@ -65,7 +67,13 @@ export default function ShopInfo({ shopInfo }: Props) {
 
             <section css={infoText}>
               <Text typo="body1">소개</Text>
-              <Text typo="body10">{shopInfo?.introduction}</Text>
+              {shopInfo?.introduction ? (
+                <Text typo="body10">{shopInfo?.introduction}</Text>
+              ) : (
+                <Text typo="body10" color="gray500">
+                  아직 작성된 소개글이 없어요
+                </Text>
+              )}
             </section>
           </section>
 
@@ -101,6 +109,7 @@ export default function ShopInfo({ shopInfo }: Props) {
 
 export async function getServerSideProps(context: any) {
   const { shopId } = context.params;
+
   const res = await fetch(`${process.env.API_URL}/user/shop/${shopId}`);
   const shopInfo = await res.json();
 
@@ -124,8 +133,7 @@ const imageSection = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 0;
+  position: relative;
 
   width: 100%;
   height: 260px;
@@ -143,6 +151,7 @@ const shopName = css`
   position: absolute;
   bottom: 48px;
   left: 24px;
+  z-index: ${theme.zIndex.overlay + 2};
 `;
 
 const infoBox = css`
@@ -151,7 +160,7 @@ const infoBox = css`
   flex: 1;
   position: absolute;
   top: 228px;
-  z-index: 2;
+  z-index: ${theme.zIndex.overlay + 1};
 
   width: 100%;
   border-radius: 20px 20px 0 0;

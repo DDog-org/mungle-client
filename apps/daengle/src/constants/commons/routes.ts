@@ -4,6 +4,7 @@ export const ROUTES = {
   ONBOARDING_USER_INFO: '/onboarding?step=user-info',
   ONBOARDING_SEARCH_ADDRESS: '/onboarding?step=search-address',
   ONBOARDING_PET_INFO: '/onboarding?step=pet-info',
+  TERMS_OF_USE: '/login/terms',
 
   HOME: '/',
   SEARCH: '/search',
@@ -12,7 +13,7 @@ export const ROUTES = {
 
   // Estimates
   ESTIMATES: '/estimates',
-  ESTIMATES_DETAIL: (estimateId: number) => `/estimates/detail/${estimateId}`,
+  ESTIMATES_DETAIL: (estimateId: number) => `/estimates/${estimateId}`,
   ESTIMATES_GROOMING: (groomerId?: number) =>
     groomerId ? `/estimates/grooming/${groomerId}` : `/estimates/grooming`,
   ESTIMATES_VET: (vetId?: number) => (vetId ? `/estimates/care/${vetId}` : `/estimates/care`),

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import {
   ActionSheet,
@@ -43,6 +43,7 @@ export default function Home() {
         title: '로그인 후 이용해 주세요',
         primaryActionLabel: '로그인 하기',
         onPrimaryAction: () => router.replace(ROUTES.LOGIN),
+        secondaryActionLabel: '닫기',
       });
     }
   };
@@ -57,6 +58,7 @@ export default function Home() {
         title: '로그인 후 이용해 주세요',
         primaryActionLabel: '로그인 하기',
         onPrimaryAction: () => router.replace(ROUTES.LOGIN),
+        secondaryActionLabel: '닫기',
       });
     }
   };
@@ -77,14 +79,14 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const queryTab = router.query.tab as string;
+    const queryTab = router.query.service as string;
     if (queryTab && TABS.some((tab) => tab.id === queryTab)) {
       setActiveTab(queryTab);
     }
-  }, [router.query.tab]);
+  }, [router.query.service]);
 
   const handleTabClick = (tabId: string) => {
-    router.push({ query: { tab: tabId } }, undefined, { shallow: true });
+    router.replace({ query: { service: tabId } }, undefined, { shallow: true });
     setActiveTab(tabId);
   };
 

@@ -37,10 +37,10 @@ export interface GetVetModifyPageResponse {
   introduction: string;
 }
 
-export interface PatchVetInfoResponse {
+export interface PatchVetProfileResponse {
   requestResult: string;
 }
-export interface PatchVetInfoRequestBody {
+export interface PatchVetProfileRequestBody {
   imageUrls: string[];
   startTime: string;
   endTime: string;
@@ -53,7 +53,7 @@ export interface GetVetValidateResponse {
   isValidateMember: boolean;
 }
 
-export interface GetVetInfoResponse {
+export interface GetVetProfileResponse {
   imageUrls: string[];
   name: string;
   keywords: string[];

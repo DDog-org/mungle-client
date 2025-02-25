@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Layout, theme, Text } from '@daengle/design-system';
-
-import axios from 'axios';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { ReservationList, WeekDateTabs } from '@daengle/services/components';
@@ -9,6 +7,7 @@ import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants';
 import { GNB } from '~/components/commons';
+import { useGetVetWeekQuery } from '~/queries/reservation';
 
 const today = dayjs();
 const DATES = Array.from({ length: 5 }, (_, index) => {
@@ -25,20 +24,45 @@ export default function Reservations() {
   const router = useRouter();
 
   const [selectedDate, setSelectedDate] = useState(DATES[0]?.fullDate) || [];
-  const [reservations, setReservations] = useState([]);
+  const { data, isLoading, isError } = useGetVetWeekQuery({ date: selectedDate });
 
-  useEffect(() => {
-    const fetchReservations = async () => {
-      try {
-        const response = await axios.get(`/groomer/reservation/${selectedDate}/list`);
-        setReservations(response.data);
-      } catch (error) {
-        console.error('데이터 불러오기 실패:', error);
-      }
-    };
+  const reservations =
+    data?.scheduleList.map((item) => ({
+      reservationId: item.reservationId,
+      petId: item.petId,
+      scheduleTime: item.scheduleTime,
+      petName: item.petName,
+      desiredStyle: item.desiredStyle,
+      petProfile: item.petProfile?.[0]?.petImageUrl || '',
+    })) || [];
 
-    fetchReservations();
-  }, [selectedDate]);
+  if (isLoading) {
+    return (
+      <Layout isAppBarExist={false}>
+        <div css={wrapper}>
+          <header css={headerContainer}>
+            <Text typo="title1">예약</Text>
+          </header>
+          <Text typo="body1">로딩 중...</Text>
+        </div>
+        <GNB />
+      </Layout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Layout isAppBarExist={false}>
+        <div css={wrapper}>
+          <header css={headerContainer}>
+            <Text typo="title1">예약</Text>
+          </header>
+          <Text typo="body1">데이터를 불러오는 중 오류가 발생했습니다.</Text>
+        </div>
+        <GNB />
+      </Layout>
+    );
+  }
 
   return (
     <Layout isAppBarExist={false}>
@@ -46,14 +70,14 @@ export default function Reservations() {
         <header css={headerContainer}>
           <Text typo="title1">예약</Text>
         </header>
-
         <WeekDateTabs selectedDate={selectedDate} onSelectDate={setSelectedDate} dates={DATES} />
         <ReservationList
           reservations={reservations}
-          onClick={(id: number) => router.push(ROUTES.RESERVATIONS_DETAIL(id))}
+          onClick={(reservationId: number) =>
+            router.push(ROUTES.RESERVATIONS_DETAIL(reservationId))
+          }
         />
       </div>
-
       <GNB />
     </Layout>
   );

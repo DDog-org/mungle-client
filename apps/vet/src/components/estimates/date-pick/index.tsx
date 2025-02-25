@@ -8,10 +8,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 interface Props {
   onChange: (dateTime: Dayjs) => void;
   placeholderText?: string;
-  isEditable: boolean;
 }
 
-export function DatePick({ onChange, placeholderText, isEditable }: Props): JSX.Element {
+export function DatePick({ onChange, placeholderText }: Props): JSX.Element {
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
 
   const now = dayjs();
@@ -43,7 +42,6 @@ export function DatePick({ onChange, placeholderText, isEditable }: Props): JSX.
             : startOfToday
         }
         maxTime={selectedDate?.startOf('day').hour(19).minute(0)}
-        disabled={!isEditable}
         ampm={false}
         slotProps={{
           textField: {

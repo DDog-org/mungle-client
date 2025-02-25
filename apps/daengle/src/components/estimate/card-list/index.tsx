@@ -1,7 +1,7 @@
-import { Empty, Text, TextButton } from '@daengle/design-system';
+import { DefaultProfile } from '@daengle/design-system/icons';
+import { Text, TextButton } from '@daengle/design-system';
 import {
   wrapper,
-  card,
   contentContainer,
   cardHeader,
   cardContent,
@@ -11,74 +11,68 @@ import {
   tagsContainer,
   tagButtonStyle,
 } from './index.styles';
-import { DefaultProfile } from '@daengle/design-system/icons';
-import { UserEstimateGeneralGroomingType } from '~/interfaces/estimate';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import Image from 'next/image';
 
 interface Props {
   mode: 'general' | 'designation';
-  category: 'groomer' | 'vet';
-  estimateData: UserEstimateGeneralGroomingType[];
+  estimateId: number;
+  partnerName: string;
+  daengleMeter: number;
+  name: string;
+  reservedDate: string;
+  badges: string[];
+  imageUrl?: string;
   onCardClick?: (id: number) => void;
 }
 
-export function CardList({ mode, category, estimateData, onCardClick }: Props): JSX.Element {
-  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    event.currentTarget.onerror = null;
-    event.currentTarget.src = '';
-  };
-
+export function CardList({
+  mode,
+  estimateId,
+  partnerName,
+  daengleMeter,
+  name,
+  reservedDate,
+  badges,
+  imageUrl,
+  onCardClick,
+}: Props) {
   const isDesignation = mode === 'designation';
 
   return (
-    <div css={wrapper}>
-      {estimateData.length ? (
-        estimateData?.map((item) => (
-          <div key={item.id} css={card}>
-            <div css={contentContainer} onClick={() => onCardClick?.(item.id)}>
-              <div css={cardHeader}>
-                <Text css={nameStyle} typo="subtitle3">
-                  {item.name}
-                </Text>
-                <div css={distanceStyle(item.daengleMeter)}>
-                  {isDesignation ? '진행 중' : `🐾 ${item.daengleMeter}m`}
-                </div>
-              </div>
-              <div css={cardContent} onClick={() => onCardClick?.(item.id)}>
-                <Text typo="body11" color="gray400">
-                  {item.shopName || (category === 'vet' ? '' : '미용실 정보 없음')}
-                </Text>
-                <Text typo="body12" color="gray600">
-                  {dayjs(item.reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
-                </Text>
-                <div css={tagsContainer}>
-                  {item.keywords?.map((keyword) => (
-                    <TextButton key={item.id} css={tagButtonStyle}>
-                      #{keyword}
-                    </TextButton>
-                  ))}
-                </div>
-              </div>
-            </div>
-            {item.imageUrl ? (
-              <img
-                src={item.imageUrl}
-                alt={`${item.name} 프로필`}
-                css={profileImage}
-                onError={handleImageError}
-                onClick={() => onCardClick?.(item.id)}
-              />
-            ) : (
-              <DefaultProfile css={profileImage} />
-            )}
+    <div css={wrapper} onClick={() => onCardClick?.(estimateId)}>
+      <div css={contentContainer}>
+        <div css={cardHeader}>
+          <Text css={nameStyle} typo="subtitle3">
+            {partnerName}
+          </Text>
+          <div css={distanceStyle(daengleMeter)}>
+            {isDesignation ? '진행 중' : `🐾 ${daengleMeter}m`}
           </div>
-        ))
+        </div>
+
+        <div css={cardContent}>
+          <Text typo="body11" color="gray400">
+            {name}
+          </Text>
+          <Text typo="body12" color="gray600">
+            {dayjs(reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
+          </Text>
+          <div css={tagsContainer}>
+            {badges?.map((badge) => (
+              <TextButton key={badge} css={tagButtonStyle}>
+                #{badge}
+              </TextButton>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {imageUrl ? (
+        <Image src={imageUrl} alt={`${name} 프로필`} css={profileImage} width={108} height={108} />
       ) : (
-        <>
-          {/* TODO: 문구 변경 */}
-          <Empty title="견적서가 존재하지 않아요" />
-        </>
+        <DefaultProfile css={profileImage} />
       )}
     </div>
   );

@@ -1,18 +1,18 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
-  getGroomerInfo,
   getGroomerModifyPage,
   getGroomerShopInfo,
-  patchGroomerInfo,
   patchGroomerShopInfo,
   postJoin,
   postKakao,
   getGroomerWithdrawInfo,
   deleteGroomer,
   getGroomerValidate,
+  patchGroomerProfile,
+  getGroomerProfile,
 } from '~/apis';
 import {
-  PatchGroomerInfoRequestBody,
+  PatchGroomerProfileRequestBody,
   PatchGroomerShopInfoRequestBody,
   PostJoinRequestBody,
   PostKakaoRequestBody,
@@ -42,10 +42,10 @@ export const useGetGroomerModifyPageQuery = () => {
   });
 };
 
-export const usePatchGroomerInfoMutation = () => {
+export const usePatchGroomerProfileMutation = () => {
   return useMutation({
-    mutationKey: QUERY_KEYS.PATCH_GROOMER_INFO,
-    mutationFn: async (body: PatchGroomerInfoRequestBody) => await patchGroomerInfo(body),
+    mutationKey: QUERY_KEYS.PATCH_GROOMER_PROFILE,
+    mutationFn: async (body: PatchGroomerProfileRequestBody) => await patchGroomerProfile(body),
   });
 };
 
@@ -65,17 +65,18 @@ export const usePatchGroomerShopInfoMutation = () => {
   });
 };
 
-export const useGetGroomerInfoQuery = () => {
+export const useGetGroomerProfileQuery = () => {
   return useQuery({
-    queryKey: QUERY_KEYS.GET_GROOMER_INFO,
-    queryFn: getGroomerInfo,
+    queryKey: QUERY_KEYS.GET_GROOMER_PROFILE,
+    queryFn: getGroomerProfile,
   });
 };
 
-export const useGetGroomerWithdrawInfoQuery = () => {
+export const useGetGroomerWithdrawInfoQuery = ({ enable }: { enable: boolean }) => {
   return useQuery({
     queryKey: QUERY_KEYS.GET_GROOMER_WITHDRAW_INFO,
     queryFn: getGroomerWithdrawInfo,
+    enabled: enable,
   });
 };
 

@@ -21,6 +21,7 @@ export function GroomerChatList() {
           <ChatListItem
             key={chat.roomId}
             roomId={chat.roomId}
+            otherProfile={chat.otherProfile}
             partnerName={`${chat.otherName} 디자이너`}
             lastMessage={chat.lastMessage}
             messageTime={chat.messageTime}

@@ -8,7 +8,6 @@ interface Props {
 
 const totalStars = 5;
 
-// TODO: 리뷰 리스트 별로 쓸 수 있게 디자인 시스템에 넣기!!
 export function ReviewStars({ rating, onRatingChange }: Props) {
   const handleStarClick = (index: number) => {
     if (onRatingChange) onRatingChange(index + 1);

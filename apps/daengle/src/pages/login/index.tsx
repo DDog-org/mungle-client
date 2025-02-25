@@ -1,4 +1,4 @@
-import { AuthLogo, LoginKakaoLogo } from '@daengle/design-system/icons';
+import { AuthLogo, LoginKakaoLogo, ToolTip } from '@daengle/design-system/icons';
 import { AppBar, Layout, RoundButton, Text } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
@@ -31,6 +31,12 @@ export default function Login() {
             </Text>
           </div>
         </RoundButton>
+        <div css={termsUse} onClick={() => router.push(ROUTES.TERMS_OF_USE)}>
+          <Text typo="body1" color="gray400">
+            이용약관
+          </Text>
+          <ToolTip width={14} height={14} />
+        </div>
       </div>
     </Layout>
   );
@@ -55,4 +61,14 @@ const loginWrapper = css`
   display: flex;
   align-items: center;
   gap: 8px;
+`;
+
+const termsUse = css`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+
+  padding: 24px;
+
+  cursor: pointer;
 `;

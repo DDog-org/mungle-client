@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AppBar, Layout, Text, RoundButton } from '@daengle/design-system';
+import { AppBar, Layout, Text, RoundButton, useToast, useDialog } from '@daengle/design-system';
 import { css } from '@emotion/react';
 import { theme } from '@daengle/design-system';
 import {
@@ -57,6 +57,9 @@ export default function ReviewPage() {
           schedule: dayjs(data?.schedule).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm'),
         };
 
+  const { showToast } = useToast();
+  const { open } = useDialog();
+
   const toggleExpand = () => setIsExpanded((prev) => !prev);
 
   const handleTagToggle = (tag: string) => {
@@ -88,9 +91,25 @@ export default function ReviewPage() {
       const { code, message } = error;
 
       if (code === 4000) {
-        alert(`${message}는 등록할 수 없는 단어입니다!`);
+        open({
+          type: 'confirm',
+          title: '금칙어 작성',
+          description: `"${message}" : 등록할 수 없는 단어입니다!`,
+          primaryActionLabel: '다시 작성하기',
+          onPrimaryAction: () => {
+            router.back;
+          },
+        });
       } else {
-        alert(`리뷰 등록에 실패했습니다. 에러 메시지: ${message}`);
+        open({
+          type: 'confirm',
+          title: '오류',
+          description: '잠시 후 다시 시도해 주세요',
+          primaryActionLabel: '확인',
+          onPrimaryAction: () => {
+            router.push(ROUTES.MYPAGE_PAYMENTS);
+          },
+        });
       }
     };
     if (service === 'groomer') {
@@ -107,7 +126,7 @@ export default function ReviewPage() {
 
       postGroomingReview.mutate(body, {
         onSuccess: (response) => {
-          alert('리뷰가 성공적으로 등록되었습니다!');
+          showToast({ title: '리뷰가 성공적으로 등록되었습니다!' });
           router.push(ROUTES.GROOMERS_REVIEWS(response.revieweeId));
         },
         onError: handleError,
@@ -125,7 +144,7 @@ export default function ReviewPage() {
 
       postCareReview.mutate(body, {
         onSuccess: (response) => {
-          alert('리뷰가 성공적으로 등록되었습니다!');
+          showToast({ title: '리뷰가 성공적으로 등록되었습니다!' });
           router.push(ROUTES.VETS_REVIEWS(response.revieweeId));
         },
         onError: handleError,
@@ -139,7 +158,7 @@ export default function ReviewPage() {
     <Layout>
       <AppBar
         backgroundColor={theme.colors.background}
-        onBackClick={() => router.back}
+        onBackClick={router.back}
         onHomeClick={() => router.push(ROUTES.HOME)}
       />
       <div css={wrapper}>

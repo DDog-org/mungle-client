@@ -28,6 +28,7 @@ export function Fluid() {
     <div css={wrapper}>
       {ITEMS.map((item) => (
         <ChipRadio
+          key={item.value}
           label={item.label}
           value={item.value}
           isSelected={selected === item.value}
@@ -76,8 +77,9 @@ export function Full() {
 }
 
 const wrapper = css`
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+
+  width: 100%;
 `;

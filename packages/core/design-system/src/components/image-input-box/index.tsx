@@ -9,6 +9,7 @@ import {
 } from './index.styles';
 import { TextButton, Text } from '@daengle/design-system';
 import { DefaultImage } from '@daengle/design-system/icons';
+import Image from 'next/image';
 
 interface Props {
   onChange?: (files: File | null) => void;
@@ -48,7 +49,7 @@ export const ImageInputBox = forwardRef(({ onChange, defaultValue }: Props, ref)
         <label css={uploadImageButton}>
           {thumbnailSrc ? (
             <div css={thumbnailImage}>
-              <img src={thumbnailSrc} alt="썸네일" width={116} height={116} />
+              <Image src={thumbnailSrc} alt="썸네일" width={116} height={116} />
             </div>
           ) : (
             <div css={defaultImage}>

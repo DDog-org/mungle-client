@@ -7,19 +7,22 @@ import {
   ToolTip,
   Heart,
   Paw,
+  VetDefaultBackground,
+  GrayPaw,
 } from '@daengle/design-system/icons';
 import { css } from '@emotion/react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { GNB } from '~/components/commons';
 import { ROUTES } from '~/constants/commons';
-import { useGetVetInfoQuery } from '~/queries';
+import { useGetVetProfileQuery } from '~/queries';
 
 export default function VetProfile() {
   const [imageUrl, setImageUrl] = useState<string>();
   const router = useRouter();
 
-  const { data: getVetInfo } = useGetVetInfoQuery();
+  const { data: getVetProfile } = useGetVetProfileQuery();
 
   const dayMapping: { [key: string]: string } = {
     MONDAY: '월',
@@ -31,21 +34,25 @@ export default function VetProfile() {
     SUNDAY: '일',
   };
 
-  const closedDays = getVetInfo?.closedDays?.map((day) => dayMapping[day] || day).join(', ');
+  const closedDays = getVetProfile?.closedDays?.map((day) => dayMapping[day] || day).join(', ');
 
   useEffect(() => {
-    if (getVetInfo?.imageUrls) {
-      setImageUrl(getVetInfo?.imageUrls[0]);
+    if (getVetProfile?.imageUrls) {
+      setImageUrl(getVetProfile?.imageUrls[0]);
     }
-  }, [getVetInfo]);
+  }, [getVetProfile]);
 
   return (
     <Layout isAppBarExist={false}>
-      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
       <div css={wrapper}>
-        <div css={imageSection(imageUrl || '')}>
-          <Text typo="title2" color="white" css={vetName}>
-            {getVetInfo?.name}
+        <div css={imageSection}>
+          {imageUrl ? (
+            <Image src={imageUrl} alt="병원 프로필 이미지" width={480} height={320} />
+          ) : (
+            <VetDefaultBackground />
+          )}
+          <Text typo="title2" color={imageUrl ? 'white' : 'gray700'} css={vetName}>
+            {getVetProfile?.name}
           </Text>
           <div css={tags}>
             <Text typo="body12" color="white" css={tag}>
@@ -62,23 +69,23 @@ export default function VetProfile() {
               <div css={time}>
                 <DetailTime width={20} />
                 <Text typo="body9">
-                  {closedDays || '매일'} {getVetInfo?.startTime} - {getVetInfo?.endTime}
+                  {closedDays || '매일'} {getVetProfile?.startTime} - {getVetProfile?.endTime}
                 </Text>
               </div>
               <div css={call}>
                 <DetailCall width={20} />
-                <Text typo="body9">{getVetInfo?.phoneNumber}</Text>
+                <Text typo="body9">{getVetProfile?.phoneNumber}</Text>
               </div>
               <div css={address}>
                 <DetailLocation width={20} />
                 <Text typo="body9">
-                  {getVetInfo?.address} {getVetInfo?.detailAddress}
+                  {getVetProfile?.address} {getVetProfile?.detailAddress}
                 </Text>
               </div>
             </section>
             <section css={infoText}>
               <Text typo="body1">소개</Text>
-              <Text typo="body10">{getVetInfo?.introduction}</Text>
+              <Text typo="body10">{getVetProfile?.introduction}</Text>
             </section>
             <section css={daengleMeter}>
               <div css={textBox}>
@@ -94,14 +101,14 @@ export default function VetProfile() {
                   </div>
                 </div>
                 <Text typo="body1" color="red200" css={meter}>
-                  {getVetInfo?.daengleMeter}m
+                  {getVetProfile?.daengleMeter}m
                 </Text>
               </div>
               <div css={graph}>
-                <div css={graphBar}>
+                <div css={graphBar({ meter: getVetProfile?.daengleMeter ?? 0 })}>
                   <Heart width={8} height={7} css={heart} />
                 </div>
-                <Paw width={9} height={7} css={paw} />
+                <GrayPaw width={9} height={7} css={paw} />
               </div>
             </section>
           </section>
@@ -136,13 +143,12 @@ const wrapper = css`
   background-color: black;
 `;
 
-const imageSection = (imageUrl: string) => css`
+const imageSection = css`
   position: relative;
 
   width: 100%;
   height: 284px;
 
-  background-image: url(${imageUrl});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -150,7 +156,9 @@ const imageSection = (imageUrl: string) => css`
 
 const vetName = css`
   position: absolute;
-  bottom: 110px;
+  top: 174px;
+
+  /* bottom: 110px; */
   left: 50%;
   transform: translate(-50%);
 `;
@@ -159,7 +167,7 @@ const tags = css`
   display: flex;
   gap: 6px;
   position: absolute;
-  bottom: 70px;
+  bottom: 51px;
   left: 50%;
   transform: translate(-50%);
 `;
@@ -178,11 +186,10 @@ const topSection = css`
 
 const infoBox = css`
   position: absolute;
-  bottom: 0;
+  top: 265px;
   overflow-y: scroll;
 
   width: 100%;
-  height: 532px;
   padding-bottom: 55px;
   border-radius: 20px 20px 0 0;
 
@@ -236,10 +243,10 @@ const graph = css`
   background-color: ${theme.colors.gray200};
 `;
 
-const graphBar = css`
+const graphBar = ({ meter }: { meter: number }) => css`
   position: relative;
 
-  width: 30%;
+  width: ${meter}%;
   height: 100%;
 
   background: linear-gradient(0.25turn, ${theme.colors.blue100}, ${theme.colors.blue200});

@@ -27,6 +27,6 @@ export function Text({ tag = 'span', color = 'black100', typo, children, ...prop
       `,
       ...props,
     },
-    [children]
+    [<>{children}</>]
   );
 }

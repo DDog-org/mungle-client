@@ -19,9 +19,8 @@ export default function Home() {
   useEffect(() => {
     if (data?.isValidateMember === false) {
       open({
-        title: '로그인 후 이용 가능합니다',
+        title: '로그인 후 이용해 주세요',
         primaryActionLabel: '로그인 하기',
-        onPrimaryAction: () => router.replace(ROUTES.LOGIN),
       });
 
       router.replace(ROUTES.LOGIN);
@@ -30,14 +29,7 @@ export default function Home() {
 
   return (
     <Layout isAppBarExist={false}>
-      <AppBar
-        prefix={
-          <div css={logoWrapper}>
-            <AppBarPartnerLogo width="95px" />
-          </div>
-        }
-        suffix={<></>}
-      />
+      <AppBar prefix={<AppBarPartnerLogo width="95px" />} suffix={<></>} />
 
       <section css={wrapper}>
         <div css={top}>
@@ -107,10 +99,6 @@ export default function Home() {
     </Layout>
   );
 }
-
-const logoWrapper = css`
-  padding: 6px 0 0 10px;
-`;
 
 const wrapper = css`
   display: flex;

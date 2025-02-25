@@ -17,6 +17,7 @@ import { PetInfo, UserEstimateCareForm } from '~/interfaces';
 import { DatePicker, ProfileSelector } from '~/components/estimate';
 import { usePostUserEstimateCareMutation, usePostUserEstimateVetUserInfoMutation } from '~/queries';
 import { useForm, Controller } from 'react-hook-form';
+import { SelectPet } from '~/components/mypage';
 
 export default function EstimateCare() {
   const router = useRouter();
@@ -39,6 +40,7 @@ export default function EstimateCare() {
     formState: { errors, isValid },
   } = useForm<UserEstimateCareForm>({
     defaultValues: {
+      vetId,
       petId: null,
     },
   });
@@ -54,7 +56,7 @@ export default function EstimateCare() {
     fetchData();
   }, []);
 
-  const onSubmit = () => {
+  const onSubmit = (data: UserEstimateCareForm) => {
     const petId = watch('petId');
 
     if (!petId) {
@@ -66,17 +68,13 @@ export default function EstimateCare() {
     }
 
     const payload = {
+      ...data,
       vetId,
-      petId: watch('petId') as number,
-      address: watch('address'),
-      reservedDate: watch('reservedDate'),
-      symptoms: watch('symptoms'),
-      requirements: watch('requirements'),
     };
 
     postUserEstimateCare(payload, {
       onSuccess: () => {
-        router.push(ROUTES.ESTIMATES_FORM_COMPLETE);
+        router.replace(ROUTES.ESTIMATES_FORM_COMPLETE);
       },
     });
   };
@@ -112,7 +110,7 @@ export default function EstimateCare() {
               name="reservedDate"
               control={control}
               rules={validate.reservedDate}
-              render={({ field }) => <DatePicker onChange={field.onChange} />}
+              render={({ field }) => <DatePicker {...field} onChange={field.onChange} />}
             />
           </section>
 
@@ -127,10 +125,14 @@ export default function EstimateCare() {
                 control={control}
                 rules={validate.petId}
                 render={({ field }) => (
-                  <ProfileSelector
-                    petInfos={petInfos}
-                    selectedPetId={field.value}
-                    onSelectPet={field.onChange}
+                  <SelectPet
+                    petInfos={petInfos.map((pet) => ({
+                      petId: pet.petId,
+                      petName: pet.name,
+                      petImage: pet.imageUrl ?? '',
+                    }))}
+                    selectedPetId={field.value ?? -1}
+                    onPetSelect={field.onChange}
                   />
                 )}
               />
@@ -149,10 +151,10 @@ export default function EstimateCare() {
           />
 
           <TextField
-            label="추가 요청사항"
-            placeholder="추가 요청사항을 입력해 주세요"
-            rows={5}
             required
+            label="요청사항"
+            placeholder="요청사항을 입력해 주세요"
+            rows={5}
             {...register('requirements', { ...validate.requirements })}
             errorMessage={errors.requirements?.message}
           />

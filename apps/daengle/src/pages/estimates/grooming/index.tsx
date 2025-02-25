@@ -12,7 +12,7 @@ import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import { ROUTES } from '~/constants/commons';
 import { useRouter } from 'next/router';
-import { DatePicker, EstimateSelect, ProfileSelector } from '~/components/estimate';
+import { DatePicker, EstimateSelect } from '~/components/estimate';
 import {
   usePostUserEstimateGroomingMutation,
   usePostUserEstimateGroomerUserInfoMutation,
@@ -20,6 +20,8 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import { useValidateGeneralGroomingForm } from '~/hooks';
 import { PetInfo, UserEstimateGroomingForm } from '~/interfaces';
+import { SelectPet } from '~/components/mypage';
+import { DevTool } from '@hookform/devtools';
 
 export default function EstimateCreate() {
   const router = useRouter();
@@ -79,16 +81,16 @@ export default function EstimateCreate() {
 
     const payload = {
       groomerId: null,
+      desiredStyle,
       petId: watch('petId') as number,
       address: watch('address'),
       reservedDate: watch('reservedDate'),
-      desiredStyle: watch('desiredStyle'),
       requirements: watch('requirements'),
     };
 
     postUserEstimateGrooming(payload, {
       onSuccess: () => {
-        router.push(ROUTES.ESTIMATES_FORM_COMPLETE);
+        router.replace(ROUTES.ESTIMATES_FORM_COMPLETE);
       },
     });
   };
@@ -111,6 +113,7 @@ export default function EstimateCreate() {
         </Text>
 
         <form css={formWrapper} onSubmit={handleSubmit(onSubmit)}>
+          <DevTool control={control} />
           <section css={section}>
             <Text tag="h2" typo="subtitle3" color="black">
               지역
@@ -142,10 +145,14 @@ export default function EstimateCreate() {
                 control={control}
                 rules={validate.petId}
                 render={({ field }) => (
-                  <ProfileSelector
-                    petInfos={petInfos}
-                    selectedPetId={field.value}
-                    onSelectPet={field.onChange}
+                  <SelectPet
+                    petInfos={petInfos.map((pet) => ({
+                      petId: pet.petId,
+                      petName: pet.name,
+                      petImage: pet.imageUrl ?? '',
+                    }))}
+                    selectedPetId={field.value ?? -1}
+                    onPetSelect={field.onChange}
                   />
                 )}
               />
@@ -189,8 +196,9 @@ export default function EstimateCreate() {
           </section>
 
           <TextField
-            label="추가 요청사항"
-            placeholder="추가 요청사항을 입력해 주세요 (선택)"
+            required
+            label="요청사항"
+            placeholder="요청사항을 입력해 주세요"
             rows={5}
             {...register('requirements', { ...validate.requirements })}
             errorMessage={errors.requirements?.message}

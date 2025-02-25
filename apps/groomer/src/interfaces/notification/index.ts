@@ -1,4 +1,5 @@
 export interface GroomerScheduleReservation {
+  estimateId: number;
   reservationId: number;
   petId: number;
   petImage: string | null;

@@ -23,7 +23,7 @@ export interface GetGroomerPetInfoResponse {
   breed: string;
   isNeutered: boolean;
   weight: keyof typeof PET_SIZE;
-  groomingExperience: true;
+  groomingExperience: boolean;
   isBite: boolean;
   dislikeParts: string[];
   significantTags: string[];

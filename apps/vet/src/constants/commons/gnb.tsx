@@ -20,6 +20,7 @@ export const MENUS = [
       inactive: <GnbEstimateInactive width="32px" height="32px" />,
     },
     path: ROUTES.ESTIMATES,
+    canGuest: false,
   },
   {
     name: '예약',
@@ -28,6 +29,7 @@ export const MENUS = [
       inactive: <GnbReservationInactive width="32px" height="32px" />,
     },
     path: ROUTES.RESERVATIONS,
+    canGuest: false,
   },
   {
     name: '홈',
@@ -36,6 +38,7 @@ export const MENUS = [
       inactive: <GnbHomeInactive width="32px" height="32px" />,
     },
     path: ROUTES.HOME,
+    canGuest: false,
   },
   {
     name: '채팅',
@@ -44,6 +47,7 @@ export const MENUS = [
       inactive: <GnbChattingInactive width="32px" height="32px" />,
     },
     path: ROUTES.CHATS,
+    canGuest: false,
   },
   {
     name: '마이',
@@ -52,5 +56,6 @@ export const MENUS = [
       inactive: <GnbMyInactive width="32px" height="32px" />,
     },
     path: ROUTES.MYPAGE,
+    canGuest: false,
   },
 ];

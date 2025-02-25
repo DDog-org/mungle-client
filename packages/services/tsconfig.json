@@ -1,10 +1,6 @@
 {
   "extends": "@daengle/typescript-config/react-library.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["src/*"]
-    },
     "jsxImportSource": "@emotion/react"
   },
   "include": ["src", "../../apps/daengle/src/libs/portone"],

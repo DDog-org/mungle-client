@@ -1,9 +1,8 @@
 import { DefaultProfile } from '@daengle/design-system/icons';
-import { Tag, Text } from '@daengle/design-system';
+import { Dim, Tag, Text } from '@daengle/design-system';
 
 import Image from 'next/image';
-import { imageStyle, wrapper, profileWrapper, DetailsWrapper, opacity, tags } from './index.styles';
-import { Result } from '~/interfaces/search';
+import { wrapper, profileWrapper, DetailsWrapper, tags } from './index.styles';
 
 interface Props {
   partnerId: number;
@@ -16,33 +15,34 @@ interface Props {
 export function Item({ partnerId, partnerImage, partnerName, badges, onClick }: Props) {
   return (
     <div css={wrapper} onClick={() => onClick(partnerId)}>
-      {!partnerId ? (
-        <>
-          <DefaultProfile width={170} height={200} css={imageStyle} />
+      {!partnerImage ? (
+        <div css={profileWrapper}>
+          <DefaultProfile />
           <div css={DetailsWrapper}>
             <Text typo="subtitle1" color="white">
               {partnerName}
             </Text>
             <div css={tags}>
-              {badges?.map((hashTag, index) => (
-                <Tag key={index} service="search" variant="line">
+              {badges?.map((hashTag) => (
+                <Tag key={hashTag} service="search" variant="line">
                   #{hashTag}
                 </Tag>
               ))}
             </div>
           </div>
-        </>
+        </div>
       ) : (
         <div css={profileWrapper}>
-          <div css={opacity} />
-          <Image src={partnerImage} alt="프로필 이미지" width={170} height={200} css={imageStyle} />
+          <Image src={partnerImage} alt="프로필 이미지" width={170} height={200} />
+          <Dim />
+
           <div css={DetailsWrapper}>
             <Text typo="subtitle1" color="white">
               {partnerName}
             </Text>
             <div css={tags}>
-              {badges.map((hashTag, index) => (
-                <Tag key={index} service="search" variant="line">
+              {badges.map((hashTag) => (
+                <Tag key={hashTag} service="search" variant="line">
                   #{hashTag}
                 </Tag>
               ))}

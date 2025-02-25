@@ -19,7 +19,7 @@ export function PaymentListItem({
 }: Props) {
   const router = useRouter();
   const params = useSearchParams();
-  const isGroomer = params.get('tab') === 'groomer';
+  const isGroomer = params.get('service') === 'groomer';
 
   return (
     <div
@@ -27,7 +27,7 @@ export function PaymentListItem({
       onClick={() =>
         router.push({
           pathname: ROUTES.MYPAGE_PAYMENTS_DETAIL(reservationId),
-          query: { tab: params.get('tab') },
+          query: { service: params.get('service') },
         })
       }
     >

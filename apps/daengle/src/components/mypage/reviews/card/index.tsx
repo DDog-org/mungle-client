@@ -60,7 +60,9 @@ export function Card({
       </div>
 
       <div css={imageWrapper}>
-        {imageUrlList?.map((url) => <Image src={url} alt="리뷰 이미지" width={101} height={101} />)}
+        {imageUrlList?.map((url) => (
+          <Image key={url} src={url} alt="리뷰 이미지" width={101} height={101} />
+        ))}
       </div>
 
       <div css={tagsWrapper}>

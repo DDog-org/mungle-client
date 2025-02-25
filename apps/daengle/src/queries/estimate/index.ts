@@ -202,7 +202,8 @@ export const usePostEstimateCancelCareMutation = () => {
 export const usePostUserEstimateGroomerUserInfoMutation = () => {
   return useMutation({
     mutationKey: QUERY_KEYS.POST_ESTIMATE_GROOMER_USER_INFO,
-    mutationFn: postUserEstimateGroomerUserInfo,
+    mutationFn: (body: PostUserEstimateGroomerUserInfoRequestBody) =>
+      postUserEstimateGroomerUserInfo(body),
   });
 };
 
@@ -235,14 +236,7 @@ export const useEstimateGroomingDetailQuery = (
 ) => {
   return useQuery<UserEstimateGroomingDetailData>({
     queryKey: [QUERY_KEYS.GET_USER_ESTIMATE_GROOMERS_DETAIL, params],
-    queryFn: async () => {
-      try {
-        const data = await getUserEstimateGroomingDetail(params);
-        return data;
-      } catch (error) {
-        throw new Error('데이터 로딩에 실패했습니다.');
-      }
-    },
+    queryFn: () => getUserEstimateGroomingDetail(params),
     enabled,
   });
 };
@@ -253,14 +247,7 @@ export const useEstimateCareDetailQuery = (
 ) => {
   return useQuery<UserEstimateCareDetailData>({
     queryKey: [QUERY_KEYS.GET_USER_ESTIMATES_VETS_DETAIL, params],
-    queryFn: async () => {
-      try {
-        const data = await getUserEstimateCareDetail(params);
-        return data;
-      } catch (error) {
-        throw new Error('데이터 로딩에 실패했습니다.');
-      }
-    },
+    queryFn: () => getUserEstimateCareDetail(params),
     enabled,
   });
 };

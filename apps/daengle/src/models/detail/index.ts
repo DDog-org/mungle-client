@@ -1,3 +1,5 @@
+import { GROOMER_BADGES, VET_BADGES } from '~/constants';
+
 export interface GetUserVetDetailResponse {
   vetAccountId: number;
   vetName: string;
@@ -7,7 +9,7 @@ export interface GetUserVetDetailResponse {
   closedDay: string[];
   startTime: string;
   endTime: string;
-  badges: string[];
+  badges: (keyof typeof VET_BADGES)[];
   introduction: string | null;
   daengleMeter: number;
   reviewCount: number;
@@ -36,7 +38,7 @@ export interface GroomerInfo {
   groomerAccountId: number;
   groomerName: string;
   groomerImage: string;
-  badges: string[];
+  badges: (keyof typeof GROOMER_BADGES)[];
   daengleMeter: number;
   reviewCount: number;
 }
@@ -48,7 +50,7 @@ export interface GetUserGroomerDetailResponse {
   groomerAccountId: number;
   groomerName: string;
   groomerImage: string;
-  keywords: string[];
+  badges: (keyof typeof GROOMER_BADGES)[];
   introduction: string | null;
   shopId: number;
   shopName: string;

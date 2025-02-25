@@ -2,6 +2,7 @@ import { Text } from '@daengle/design-system';
 import { wrapper, image, name } from './index.styles';
 import Image from 'next/image';
 import { DefaultProfile } from '@daengle/design-system/icons';
+import { useState } from 'react';
 
 interface Props {
   petImage: string;
@@ -9,14 +10,15 @@ interface Props {
 }
 
 export function PetImage({ petImage, petname }: Props) {
+  const [isImageError, setIsImageError] = useState(false);
+
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    event.currentTarget.onerror = null;
-    event.currentTarget.src = '';
+    setIsImageError(true);
   };
 
   return (
     <div css={wrapper}>
-      {petImage ? (
+      {!isImageError && petImage ? (
         <img
           src={petImage}
           width={86}

@@ -30,11 +30,20 @@ interface VetItem {
 
 export function ReservationsCard({ item }: Props) {
   const router = useRouter();
+  const { service } = router.query;
 
   const isGroomer = (item: GroomerItem | VetItem): item is GroomerItem => 'groomerName' in item;
 
   return (
-    <div css={wrapper} onClick={() => router.push(ROUTES.RESERVATIONS_DETAIL(item.estimateId))}>
+    <div
+      css={wrapper}
+      onClick={() =>
+        router.push({
+          pathname: ROUTES.RESERVATIONS_DETAIL(item.estimateId),
+          query: { service: 'groomer' },
+        })
+      }
+    >
       <div css={infoWrapper}>
         <div css={top}>
           <Text typo="subtitle1" color="black">

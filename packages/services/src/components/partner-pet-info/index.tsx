@@ -19,6 +19,7 @@ import {
   profileWrapper,
   section,
   selectChipButtonBox,
+  selectInfo,
   toggleButtonBox,
 } from './index.styles';
 import {
@@ -30,6 +31,7 @@ import {
 } from '../../constants/pet';
 import { Breed } from '../../interface/pet';
 import { PET_SIZE } from '../../constants';
+import { DefaultProfile } from '@daengle/design-system/icons';
 
 interface Props {
   petInfo: PetInfo;
@@ -45,7 +47,7 @@ interface PetInfo {
   breed: string;
   isNeutered: boolean;
   weight: keyof typeof PET_SIZE;
-  groomingExperience: true;
+  groomingExperience: boolean;
   isBite: boolean;
   dislikeParts: string[];
   significantTags: string[];
@@ -70,7 +72,7 @@ export function PetProfileDetail({ petInfo, breeds }: Props) {
                 css={profileImage}
               />
             ) : (
-              <div css={defaultProfile}>No Image</div>
+              <DefaultProfile css={profileImage} />
             )}
             <Text typo="body1" color="green200">
               {petInfo.name}
@@ -86,7 +88,7 @@ export function PetProfileDetail({ petInfo, breeds }: Props) {
             <Text typo="subtitle3" color="black">
               탄생년도
             </Text>
-            <Select options={[]} placeholder="탄생년도" value={petInfo.birth} />
+            <div css={selectInfo}>{petInfo.birth}</div>
           </div>
           <div css={infoCard}>
             <Text typo="subtitle3">성별</Text>
@@ -122,13 +124,9 @@ export function PetProfileDetail({ petInfo, breeds }: Props) {
             <Text typo="subtitle3" color="black">
               품종
             </Text>
-            <Select
-              options={breeds.map((breed) => ({
-                value: breed.breed,
-                label: breed.breedName,
-              }))}
-              value={petInfo.breed}
-            />
+            <div css={selectInfo}>
+              {breeds.find((breed) => breed.breed === petInfo.breed)?.breedName || ''}
+            </div>
           </div>
           <div css={infoCard}>
             <Text typo="subtitle3">미용 경험</Text>

@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { useGetGroomerReservationQuery } from '~/queries/reservation';
 import { GetGroomerReservationRequestParams } from '~/models/reservation';
+import { PET_SIGNIFICANTTAG } from 'node_modules/@daengle/services/src/constants/pet';
 
 export default function ReservationDetail() {
   const router = useRouter();
@@ -19,9 +20,6 @@ export default function ReservationDetail() {
   const { data: reservation } = useGetGroomerReservationQuery(params);
 
   if (!reservation) return;
-
-  console.log('significantTags:', reservation.significantTags);
-  console.log('significant:', reservation.significantTags ?? '특이사항 없음');
 
   return (
     <Layout>
@@ -61,7 +59,9 @@ export default function ReservationDetail() {
               weight: reservation.petWeight,
               significant:
                 reservation.significantTags.length > 0
-                  ? reservation.significantTags
+                  ? reservation.significantTags.map(
+                      (tag) => PET_SIGNIFICANTTAG.find((item) => item.value === tag)?.label || tag
+                    )
                   : ['특이사항 없음'],
             }}
             onClick={() => router.push(ROUTES.ESTIMATE_PET_INFO(reservation.petId))}
@@ -74,7 +74,7 @@ export default function ReservationDetail() {
           </Text>
         </Section>
 
-        <Section title="추가 요청사항">
+        <Section title="요청사항">
           <Text typo="subtitle3" color="black">
             {reservation.requirements}
           </Text>
@@ -127,9 +127,9 @@ const form = css`
 const textFieldWrapper = css`
   display: flex;
   flex-direction: column;
-  margin-top: 24px;
   gap: 32px;
 
+  margin-top: 24px;
   padding: 0 18px;
 `;
 

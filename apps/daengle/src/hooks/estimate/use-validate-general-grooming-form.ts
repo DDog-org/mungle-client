@@ -16,10 +16,11 @@ export function useValidateGeneralGroomingForm() {
       },
 
       desiredStyle: {
-        required: '예약일을 선택해 주세요',
+        required: '원하는 미용을 선택해 주세요',
       },
 
       requirements: {
+        required: '요청사항을 입력해 주세요',
         minLength: {
           value: 1,
           message: '최소 1자 이상 입력해 주세요',

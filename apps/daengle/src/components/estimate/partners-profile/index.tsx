@@ -1,6 +1,7 @@
 import { Text, TextButton } from '@daengle/design-system';
 import { ButtonTextButtonArrow, DefaultProfile } from '@daengle/design-system/icons';
 import { wrapper, profileImage, details, tags, tag } from './index.styles';
+import { useState } from 'react';
 
 interface Props {
   profile: {
@@ -15,14 +16,15 @@ interface Props {
 }
 
 export const PartnersInfo = ({ profile, onClick }: Props) => {
+  const [isImageError, setIsImageError] = useState(false);
+
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    event.currentTarget.onerror = null;
-    event.currentTarget.src = '';
+    setIsImageError(true);
   };
 
   return (
     <div css={wrapper}>
-      {profile.image ? (
+      {!isImageError && profile.image ? (
         <img
           src={profile.image}
           width={112}
@@ -46,8 +48,8 @@ export const PartnersInfo = ({ profile, onClick }: Props) => {
         )}
 
         <div css={tags}>
-          {profile?.tags?.map((hashtag, index) => (
-            <Text color="blue200" typo="body12" key={`${profile.id}-${index}`} css={tag}>
+          {profile?.tags?.map((hashtag) => (
+            <Text color="blue200" typo="body12" key={hashtag} css={tag}>
               #{hashtag}
             </Text>
           ))}

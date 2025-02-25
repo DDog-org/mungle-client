@@ -1,19 +1,20 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Empty } from '@daengle/design-system';
-import { ROUTES, DAY_OFF } from '~/constants';
+import { ROUTES } from '~/constants';
 import { useAddressStore } from '~/stores';
 import { useIntersectionLoad } from '~/hooks';
 import { useGetUserVetsInfiniteQuery } from '~/queries';
 import { Card } from '../card';
 import { wrapper, bottom } from './index.styles';
 import { Loading } from '~/components/commons';
+import { formatDayOff } from '@daengle/services/utils';
 
 export function VetList() {
   const router = useRouter();
-  const { address, setAddress } = useAddressStore();
+  const { address } = useAddressStore();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, refetch } =
     useGetUserVetsInfiniteQuery({
       address,
     });
@@ -24,10 +25,8 @@ export function VetList() {
   });
 
   useEffect(() => {
-    if (data?.pages[0]) {
-      setAddress(data?.pages[0]?.userAddress);
-    }
-  }, [data?.pages[0]?.userAddress]);
+    refetch();
+  }, [address]);
 
   const handleCardClick = (id: number) => {
     router.push(ROUTES.VETS_DETAIL(id));
@@ -46,22 +45,16 @@ export function VetList() {
                 image={item.vetImage}
                 name={item.vetName}
                 address={item.vetAddress}
-                schedule={
-                  item.closedDay.length > 0
-                    ? `${item?.startTime.substring(0, 5)} - ${item?.endTime.substring(0, 5)} ${item.closedDay
-                        .map((day) => DAY_OFF.find((item) => item.value === day)?.label || day)
-                        .join(', ')} 휴무`
-                    : `매일 ${item?.startTime.substring(0, 5)} - ${item?.endTime.substring(0, 5)}`
-                }
+                schedule={formatDayOff(item.closedDay, item.startTime, item.endTime)}
                 onClick={() => handleCardClick(item.vetAccountId)}
               />
             ))
           ) : (
-            <Empty title="해당 주소 주변에 샵이 없어요" />
+            <Empty title="해당 주소 주변에 병원이 없어요" />
           )
         )
       ) : (
-        <Empty title="해당 주소 주변에 샵이 없어요" />
+        <Empty title="해당 주소 주변에 병원이 없어요" />
       )}
 
       <div ref={loadMoreRef} css={bottom} />

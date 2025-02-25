@@ -36,6 +36,7 @@ export default function Chats() {
               <ChatListItem
                 key={chat.roomId}
                 roomId={chat.roomId}
+                otherProfile={chat.otherProfile}
                 partnerName={chat.otherName}
                 lastMessage={chat.lastMessage}
                 messageTime={chat.messageTime}

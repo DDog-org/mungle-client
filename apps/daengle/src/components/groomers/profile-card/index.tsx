@@ -2,11 +2,12 @@ import { DefaultProfile, Paw } from '@daengle/design-system/icons';
 import { imageStyle, meterTag, profile, profileCard, tag, tags, paw } from './index.styles';
 import { Text } from '@daengle/design-system';
 import Image from 'next/image';
+import { GROOMER_BADGES } from '~/constants';
 
 interface Props {
   groomerName: string;
   groomerImage: string | null;
-  badges: string[];
+  badges: (keyof typeof GROOMER_BADGES)[];
   daengleMeter: number;
   onClick: () => void;
 }
@@ -32,13 +33,11 @@ export default function ProfileCard({
             <Paw width={9} css={paw} />
             {daengleMeter}m
           </Text>
-          {/** TODO: Badge로 변경 */}
-          <Text typo="body12" color="blue200" css={tag}>
-            #대형견
-          </Text>
-          <Text typo="body12" color="blue200" css={tag}>
-            #노견
-          </Text>
+          {badges.map((badge) => (
+            <Text typo="body12" color="blue200" css={tag}>
+              #{GROOMER_BADGES[badge]}
+            </Text>
+          ))}
         </div>
       </div>
     </div>

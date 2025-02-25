@@ -18,10 +18,10 @@ export function VetList({ inputValue }: VetListProps) {
   const [selectedTag, setSelectedTag] = useState<string | undefined>();
 
   const { address } = useAddressStore();
+  const lastAddress = address.split(' ').pop();
   const params = {
     keyword: inputValue,
-    // TODO: 시연 영상 및 테스트 후 addressForm으로 수정
-    address: '역삼동',
+    address: lastAddress,
     tag: selectedTag || '',
     page: 0,
     size: 6,
@@ -60,7 +60,7 @@ export function VetList({ inputValue }: VetListProps) {
           data?.pages.map((page, index) =>
             page.result.length > 0 || index > 0 ? (
               page.result.map(({ partnerId, partnerImage, partnerName, careBadges }) => (
-                <div css={cardBox}>
+                <div key={partnerId} css={cardBox}>
                   <Item
                     key={partnerId}
                     partnerId={partnerId}

@@ -1,3 +1,5 @@
+import { GROOMER_BADGES, VET_BADGES } from '~/constants';
+
 export interface PetProfileInfo {
   petId: number;
   imageUrl: string | null;
@@ -29,7 +31,7 @@ export interface GetUserEstimateGeneralGroomingList {
   daengleMeter: number;
   imageUrl: string;
   shopName: string;
-  keywords: string[];
+  badges: (keyof typeof GROOMER_BADGES)[];
   reservedDate: string;
 }
 
@@ -53,7 +55,7 @@ export interface GetUserEstimateGeneralCareList {
   name: string;
   daengleMeter: number;
   imageUrl: string;
-  keywords: string[];
+  badges: (keyof typeof VET_BADGES)[];
   reservedDate: string;
 }
 
@@ -69,7 +71,7 @@ export interface GetUserEstimateDesignationGroomingRequestParams {
 }
 
 export interface GetUserEstimateDesignationGroomingResponse {
-  estimates?: GetUserEstimateDesignationGroomingList[];
+  estimates: GetUserEstimateDesignationGroomingList[];
 }
 
 export interface GetUserEstimateDesignationGroomingList {
@@ -78,7 +80,7 @@ export interface GetUserEstimateDesignationGroomingList {
   daengleMeter: number;
   imageUrl: string;
   shopName: string;
-  keywords: string[];
+  badges: (keyof typeof GROOMER_BADGES)[];
   reservedDate: string;
 }
 
@@ -102,7 +104,7 @@ export interface GetUserEstimateDesignationCareList {
   name: string;
   daengleMeter: number;
   imageUrl: string;
-  keywords: string[];
+  badges: (keyof typeof VET_BADGES)[];
   reservedDate: string;
 }
 
@@ -192,12 +194,12 @@ export interface PostUserEstimateVetUserInfoResponse {
 }
 
 export interface PostUserEstimateCareRequestBody {
-  vetId: number;
-  petId: number;
+  vetId: number | null;
+  petId: number | null;
   address: string;
   reservedDate: string;
   symptoms: string;
-  requirements: string | null;
+  requirements: string;
 }
 
 export interface PostUserEstimateCareResponse {

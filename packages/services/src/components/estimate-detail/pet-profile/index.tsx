@@ -11,6 +11,7 @@ import {
   valueWrapper,
   labelItems,
 } from './index.styles';
+import { useState } from 'react';
 
 interface Props {
   image?: string;
@@ -26,15 +27,16 @@ interface Props {
 const LABELS = ['나이', '몸무게', '특이사항'];
 
 export function PetDetails({ image, name, attributes, onClick }: Props): JSX.Element {
+  const [isImageError, setIsImageError] = useState(false);
+
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    event.currentTarget.onerror = null;
-    event.currentTarget.src = '';
+    setIsImageError(true);
   };
 
   return (
     <div css={wrapper}>
       <div css={profile} onClick={onClick}>
-        {image ? (
+        {!isImageError && image ? (
           <img src={image} alt={`${name} 프로필`} css={imageUrl} onError={handleImageError} />
         ) : (
           <DefaultProfile width={80} height={80} css={imageUrl} />

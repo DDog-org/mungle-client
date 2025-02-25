@@ -3,13 +3,13 @@ import { api, guestApi } from '~/apis';
 import {
   GetVetModifyPageResponse,
   GetVetValidateResponse,
-  PatchVetInfoRequestBody,
-  PatchVetInfoResponse,
-  GetVetInfoResponse,
+  GetVetProfileResponse,
   PostKakaoRequestBody,
   PostKakaoResponse,
   PostVetJoinRequestBody,
   PostVetJoinResponse,
+  PatchVetProfileRequestBody,
+  PatchVetProfileResponse,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -38,14 +38,14 @@ export const getVetModifyPage = async () => {
   return await api.get<GetVetModifyPageResponse>('/vet/modify-page');
 };
 
-export const patchVetInfo = async (body: PatchVetInfoRequestBody) => {
-  return await api.patch<PatchVetInfoResponse>('/vet/info', body);
+export const patchVetProfile = async (body: PatchVetProfileRequestBody) => {
+  return await api.patch<PatchVetProfileResponse>('/vet/profile', body);
 };
 
 export const getVetValidate = async () => {
   return await api.get<GetVetValidateResponse>('/vet/validate');
 };
 
-export const getVetInfo = async () => {
-  return await api.get<GetVetInfoResponse>('/vet/info');
+export const getVetProfile = async () => {
+  return await api.get<GetVetProfileResponse>('/vet/profile');
 };

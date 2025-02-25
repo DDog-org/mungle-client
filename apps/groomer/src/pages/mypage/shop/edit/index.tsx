@@ -7,11 +7,12 @@ import {
   Layout,
   Text,
   theme,
+  useToast,
 } from '@daengle/design-system';
 import { useS3 } from '@daengle/services/hooks';
 import { formatPhoneNumberWithRegionNumber } from '@daengle/services/utils';
 import { css } from '@emotion/react';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useGetGroomerShopInfoQuery, usePatchGroomerShopInfoMutation } from '~/queries/auth';
@@ -23,9 +24,13 @@ import { useValidateMyPageForm } from '~/hooks/mypage/use-validate-mypage-form';
 import { ROUTES } from '~/constants';
 
 export default function groomerProfile() {
+  const router = useRouter();
+  const { showToast } = useToast();
+
   const [selectedStartTime, setSelectedStartTime] = useState<Dayjs | null>(null);
   const [selectedEndTime, setSelectedEndTime] = useState<Dayjs | null>(null);
   const [selectedDaysOff, setSelectedDaysOff] = useState<string[]>([]);
+  const [imageUrlList, setImageUrlList] = useState<File[]>([]);
 
   const { data: getGroomerShopInfo } = useGetGroomerShopInfoQuery();
   const { mutateAsync: patchGroomerShopInfo } = usePatchGroomerShopInfoMutation();
@@ -48,17 +53,35 @@ export default function groomerProfile() {
     mode: 'onChange',
   });
 
+  async function convertUrlsToFiles(urls: string[]): Promise<File[]> {
+    const filePromises = urls.map(async (url) => {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const fileName = url.split('/').pop() || 'uploaded-image';
+      return new File([blob], fileName, { type: blob.type });
+    });
+
+    return Promise.all(filePromises);
+  }
+
   useEffect(() => {
-    if (getGroomerShopInfo) {
-      setSelectedDaysOff(getGroomerShopInfo.closedDays || null);
-      setValue('phoneNumber', getGroomerShopInfo.phoneNumber || '');
-      setSelectedStartTime(
-        getGroomerShopInfo.startTime ? dayjs(getGroomerShopInfo.startTime, 'HH:mm') : null
-      );
-      setSelectedEndTime(
-        getGroomerShopInfo.endTime ? dayjs(getGroomerShopInfo.endTime, 'HH:mm') : null
-      );
+    async function initializeForm() {
+      if (getGroomerShopInfo) {
+        setSelectedDaysOff(getGroomerShopInfo.closedDays || []);
+        setValue('phoneNumber', getGroomerShopInfo.phoneNumber || '');
+        setSelectedStartTime(
+          getGroomerShopInfo.startTime ? dayjs(getGroomerShopInfo.startTime, 'HH:mm') : null
+        );
+        setSelectedEndTime(
+          getGroomerShopInfo.endTime ? dayjs(getGroomerShopInfo.endTime, 'HH:mm') : null
+        );
+
+        const files = await convertUrlsToFiles(getGroomerShopInfo.imageUrlList || []);
+        setImageUrlList(files);
+      }
     }
+
+    initializeForm();
   }, [getGroomerShopInfo, setValue]);
 
   const handleStartTimeChange = (newValue: Dayjs | null) => {
@@ -74,27 +97,33 @@ export default function groomerProfile() {
     );
   };
   const onSubmit = async (data: GroomerProfileForm) => {
-    const imageUrlList = await uploadToS3(data.imageUrlList);
-    if (!imageUrlList?.length) return;
+    const uploadedImageUrls = await uploadToS3(imageUrlList);
+    if (!uploadedImageUrls?.length) {
+      alert('이미지를 업로드하지 못했습니다.');
+      return;
+    }
 
     if (!selectedStartTime || !selectedEndTime) {
       alert('시작 시간과 종료 시간을 모두 선택해야 수정할 수 있습니다.');
       return;
     }
 
-    const startTimeString = selectedStartTime?.format('HH:mm');
-    const endTimeString = selectedEndTime?.format('HH:mm');
+    const startTimeString = selectedStartTime.format('HH:mm');
+    const endTimeString = selectedEndTime.format('HH:mm');
 
     if (!getGroomerShopInfo?.shopId) return;
 
     await patchGroomerShopInfo({
       ...data,
-      shopId: getGroomerShopInfo?.shopId,
-      imageUrlList,
+      shopId: getGroomerShopInfo.shopId,
+      imageUrlList: uploadedImageUrls,
       startTime: startTimeString,
       endTime: endTimeString,
       closedDays: selectedDaysOff,
     });
+
+    router.push(ROUTES.MYPAGE);
+    showToast({ title: '마이샵 정보가 수정되었어요' });
   };
 
   return (
@@ -116,10 +145,9 @@ export default function groomerProfile() {
               </Text>
               <ImageInput
                 maxLength={10}
-                {...register('imageUrlList', { ...validation.imageUrls })}
+                defaultValue={imageUrlList}
                 onChange={(files) => {
-                  console.log('Uploaded files:', files);
-                  setValue('imageUrlList', files, { shouldValidate: true });
+                  setImageUrlList(files);
                 }}
               />
             </section>

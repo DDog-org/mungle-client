@@ -10,7 +10,7 @@ export interface ChatUserListItem {
   roomId: number;
   otherId: number;
   otherName: string;
-  otherProfile: string | null;
+  otherProfile: string;
   messageTime: string;
   lastMessage: string;
   partnerType: 'GROOMER_PARTNER' | 'VET_PARTNER';

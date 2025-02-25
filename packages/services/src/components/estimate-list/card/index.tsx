@@ -1,4 +1,4 @@
-import { Text, TextButton } from '@daengle/design-system';
+import { Text } from '@daengle/design-system';
 import { ButtonTextButtonArrow, DefaultProfile } from '@daengle/design-system/icons';
 import {
   wrapper,
@@ -15,6 +15,7 @@ import {
 } from './index.styles';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import { useState } from 'react';
 
 interface EstimateGeneralListType {
   imageUrl: string;
@@ -33,16 +34,17 @@ export function Card({
   reservedDate,
   onDetailClick,
 }: EstimateGeneralListType): JSX.Element {
-  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    event.currentTarget.onerror = null;
-    event.currentTarget.src = '';
+  const [isImageError, setIsImageError] = useState(false);
+
+  const handleImageError = () => {
+    setIsImageError(true);
   };
 
   return (
     <div css={wrapper} onClick={onDetailClick}>
       <div css={contentContainer}>
         <div css={cardHeader}>
-          {imageUrl ? (
+          {!isImageError && imageUrl ? (
             <img
               src={imageUrl}
               alt={`${nickname} 프로필`}

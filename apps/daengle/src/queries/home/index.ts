@@ -8,7 +8,11 @@ export const useGetUserShopsInfiniteQuery = ({ address }: { address?: string }) 
     queryKey: [...QUERY_KEYS.GET_USER_SHOPS, address],
     initialPageParam: 0,
     queryFn: ({ pageParam = 0 }) => {
-      return getUserShops({ page: pageParam, size: PAGE_SIZE, address });
+      return getUserShops({
+        page: pageParam,
+        size: PAGE_SIZE,
+        address: address ?? '서울 강남구 역삼동',
+      });
     },
     getNextPageParam: (lastPage) => {
       const { currentPage, totalPages } = lastPage;

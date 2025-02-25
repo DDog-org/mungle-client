@@ -1,4 +1,4 @@
-import { ChipRadio, CTAButton, Input, Select, Text } from '@daengle/design-system';
+import { ChipRadio, CTAButton, Input, Select, Text, useDialog } from '@daengle/design-system';
 import { Controller, useForm } from 'react-hook-form';
 import { useValidatePetForm } from '~/hooks/onboarding';
 import { PetInfoFormType } from '~/interfaces/auth';
@@ -26,6 +26,8 @@ export function PetInfo({ onNext }: Props) {
   const router = useRouter();
   const { userInfoForm } = useUserInfoFormStore();
 
+  const { open } = useDialog();
+
   const { data: breeds } = useGetBreedListQuery();
   const { mutateAsync: postJoinWithPet } = usePostJoinWithPetMutation();
   const { mutate: postJoinWithoutPet } = usePostJoinWithoutPetMutation();
@@ -43,7 +45,28 @@ export function PetInfo({ onNext }: Props) {
     mode: 'onChange',
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: PetInfoFormType) => {
+    if (!data.petGender) {
+      open({
+        title: '성별을 선택해 주세요',
+        primaryActionLabel: '확인',
+      });
+    }
+
+    if (!data.isNeutered) {
+      open({
+        title: '중성화 여부를 선택해 주세요',
+        primaryActionLabel: '확인',
+      });
+    }
+
+    if (!data.petWeight) {
+      open({
+        title: '몸무게를 선택해 주세요',
+        primaryActionLabel: '확인',
+      });
+    }
+
     if (!isValid) return;
 
     await postJoinWithPet({

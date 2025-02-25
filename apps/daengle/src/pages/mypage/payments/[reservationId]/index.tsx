@@ -17,7 +17,6 @@ export default function PaymentsDetail() {
   const reservationId = Number(router.query.reservationId);
   const { data, isLoading } = useGetPaymentHistoryQuery(reservationId);
 
-  // TODO: error 처리
   if (isLoading) return <Loading title="예약 내역을 불러오고 있어요" />;
   if (!data) return <></>;
 

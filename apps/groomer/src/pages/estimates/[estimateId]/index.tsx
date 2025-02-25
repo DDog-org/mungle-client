@@ -9,18 +9,26 @@ import { ROUTES } from '~/constants/commons';
 import { useForm } from 'react-hook-form';
 import { GroomerEstimateForm } from '~/interfaces';
 import { useValidateEstimateForm } from '~/hooks';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
+import { DatePick } from '~/components/estimate';
+import { useState } from 'react';
 
 export default function EstimateDetail() {
   const router = useRouter();
+
+  const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | string>();
 
   const estimateId = Number(router.query.estimateId);
   const params: GetGroomerEstimateDetailRequestParams = { groomingEstimateId: estimateId };
 
   const { data: estimate } = useGroomerEstimateDetailQuery(params);
   const { mutate: postGroomerEstimate } = usePostGroomerEstimateMutation();
+  const isEditable = estimate?.proposal === 'DESIGNATION';
 
+  const handleDateTimeChange = (dateTime: Dayjs) => {
+    setSelectedDateTime(dateTime);
+  };
   const {
     register,
     handleSubmit,
@@ -37,7 +45,9 @@ export default function EstimateDetail() {
   const onSubmit = () => {
     const payload = {
       id: estimateId,
-      reservedDate: formatDateTime(estimate?.reservedDate!).toString(),
+      reservedDate: selectedDateTime
+        ? formatDateTime(selectedDateTime.toString()).toString()
+        : formatDateTime(estimate?.reservedDate!).toString(),
       overallOpinion: watch('overallOpinion'),
     };
 
@@ -74,9 +84,18 @@ export default function EstimateDetail() {
         </Section>
 
         <Section title="시술 희망 날짜 및 시간">
-          <Text typo="subtitle3" color="black">
-            {dayjs(estimate.reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
-          </Text>
+          {isEditable ? (
+            <DatePick
+              onChange={handleDateTimeChange}
+              placeholderText={dayjs(estimate.reservedDate)
+                .locale('ko')
+                .format('YYYY.MM.DD(ddd) • HH:mm')}
+            />
+          ) : (
+            <Text typo="subtitle3" color="black">
+              {dayjs(estimate.reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
+            </Text>
+          )}
         </Section>
 
         <Section title="어떤 아이를 가꿀 예정이신가요?">
@@ -88,7 +107,9 @@ export default function EstimateDetail() {
               weight: estimate.weight,
               significant: estimate.significant ?? '특이사항 없음',
             }}
-            onClick={() => {}} //TODO: pet-info 상세정보 연동시 router 처리
+            onClick={() => {
+              router.push(ROUTES.ESTIMATE_PET_INFO(estimate.petId));
+            }}
           />
         </Section>
 
@@ -98,7 +119,7 @@ export default function EstimateDetail() {
           </Text>
         </Section>
 
-        <Section title="추가 요청사항">
+        <Section title="요청사항">
           <Text typo="subtitle3" color="black">
             {estimate.requirements}
           </Text>

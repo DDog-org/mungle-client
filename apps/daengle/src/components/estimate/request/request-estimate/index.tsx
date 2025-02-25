@@ -98,8 +98,7 @@ export function RequestEstimate({
 
         <Section title="시술 희망 날짜 및 시간">
           <Text typo="title2">
-            {/* {dayjs(reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')} */}
-            2024년 12월 25일(월) • 14:00
+            {dayjs(reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
           </Text>
         </Section>
 
@@ -114,11 +113,15 @@ export function RequestEstimate({
         </Section>
 
         <Section title={specificField.title}>
-          <Text typo="subtitle1">{specificField.value}</Text>
+          <Text typo="title2" color="gray700">
+            {specificField.value}
+          </Text>
         </Section>
 
-        <Section title="추가 요청사항">
-          <Text typo="subtitle1">{requirements}</Text>
+        <Section title="요청사항">
+          <Text typo="title2" color="gray700">
+            {requirements}
+          </Text>
         </Section>
       </div>
 

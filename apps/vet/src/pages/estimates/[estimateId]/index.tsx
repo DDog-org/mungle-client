@@ -40,7 +40,6 @@ export default function EstimateDetail() {
   });
   const validation = useValidateEstimateForm();
 
-  // 지정 예약만 날짜 변경 가능
   const isEditable = estimate?.proposal === 'DESIGNATION';
 
   const handleDateTimeChange = (dateTime: Dayjs) => {
@@ -87,13 +86,18 @@ export default function EstimateDetail() {
         <Section title="지역">{estimate.address}</Section>
 
         <Section title="시술 희망 날짜 및 시간">
-          <DatePick
-            onChange={handleDateTimeChange}
-            placeholderText={dayjs(estimate.reservedDate)
-              .locale('ko')
-              .format('YYYY.MM.DD(ddd) • HH:mm')}
-            isEditable={isEditable}
-          />
+          {isEditable ? (
+            <DatePick
+              onChange={handleDateTimeChange}
+              placeholderText={dayjs(estimate.reservedDate)
+                .locale('ko')
+                .format('YYYY.MM.DD(ddd) • HH:mm')}
+            />
+          ) : (
+            <Text typo="subtitle3" color="black">
+              {dayjs(estimate.reservedDate).locale('ko').format('YYYY.MM.DD(ddd) • HH:mm')}
+            </Text>
+          )}
         </Section>
 
         <Section title="어떤 아이가 진료 받을 예정인가요?">
@@ -105,13 +109,15 @@ export default function EstimateDetail() {
               weight: estimate.weight,
               significant: estimate.significant,
             }}
-            onClick={() => {}} //TODO: pet-info 연결시 해당 경로로 라우팅
+            onClick={() => {
+              router.push(ROUTES.ESTIMATE_PET_INFO(estimate.petId));
+            }}
           />
         </Section>
 
         <Section title="증상">{estimate.symptoms}</Section>
 
-        <Section title="추가 요청사항">{estimate.requirements}</Section>
+        <Section title="요청사항">{estimate.requirements}</Section>
 
         <div css={sectionDivider} />
 

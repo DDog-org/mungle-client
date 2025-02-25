@@ -14,14 +14,16 @@ import {
   useGetUserMypageQuery,
   useGetUserWithdrawInfoQuery,
 } from '~/queries';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function Mypage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [petInfos, setPetInfos] = useState<PetInfoForm[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
 
-  const { data: getUserMypage, refetch: refetchUserMypage } = useGetUserMypageQuery();
+  const { data: getUserMypage } = useGetUserMypageQuery();
 
   const [isWithdrawTabClick, setIsWithdrawTabClick] = useState<boolean>(false);
   const { data: getUserWithdrawInfo } = useGetUserWithdrawInfoQuery({
@@ -34,14 +36,18 @@ export default function Mypage() {
 
   const isLoggedInUser = useMemo(() => !!getUserMypage?.id, [getUserMypage]);
 
-  const openNeedLoginDialog = ({ to }: { to: string }) => {
+  const openNeedLoginDialog = ({ to, query }: { to: string; query?: any }) => {
     if (isLoggedInUser) {
-      router.push(to);
+      router.push({
+        pathname: to,
+        query,
+      });
     } else {
       open({
-        title: '로그인 후 이용할 수 있어요',
-        primaryActionLabel: '로그인하기',
-        onPrimaryAction: () => router.push(ROUTES.LOGIN),
+        title: '로그인 후 이용해 주세요',
+        primaryActionLabel: '로그인 하기',
+        onPrimaryAction: () => router.replace(ROUTES.LOGIN),
+        secondaryActionLabel: '닫기',
       });
     }
   };
@@ -96,7 +102,17 @@ export default function Mypage() {
         </section>
 
         <section css={requestInfoWrapper}>
-          <div css={requestInfo} onClick={() => openNeedLoginDialog({ to: ROUTES.ESTIMATES })}>
+          <div
+            css={requestInfo}
+            onClick={() =>
+              openNeedLoginDialog({
+                to: ROUTES.ESTIMATES,
+                query: {
+                  service: 'groomer',
+                },
+              })
+            }
+          >
             <Text typo="body10" color="gray600">
               견적 요청 내역
             </Text>
@@ -111,7 +127,17 @@ export default function Mypage() {
             )}
           </div>
 
-          <div css={requestInfo} onClick={() => openNeedLoginDialog({ to: ROUTES.MYPAGE_REVIEWS })}>
+          <div
+            css={requestInfo}
+            onClick={() =>
+              openNeedLoginDialog({
+                to: ROUTES.MYPAGE_REVIEWS,
+                query: {
+                  service: 'groomer',
+                },
+              })
+            }
+          >
             <Text typo="body10" color="gray600">
               리뷰
             </Text>
@@ -155,8 +181,14 @@ export default function Mypage() {
                   imageUrl: pet.petImage,
                 }))}
                 selectedPetId={selectedPetId}
-                handlePetSelect={(petId: number) => setSelectedPetId(petId)}
-                handlePetCreateClick={() => router.push(ROUTES.MYPAGE_PET_PROFILE_CREATE)}
+                onClickPet={(petId: number) =>
+                  router.push({
+                    pathname: ROUTES.MYPAGE_PET_PROFILE,
+                    query: { petId },
+                  })
+                }
+                onPetSelect={(petId: number) => setSelectedPetId(petId)}
+                onPetCreateClick={() => router.push(ROUTES.MYPAGE_PET_PROFILE_CREATE)}
               />
             ) : (
               <RegisterPetProfile
@@ -171,9 +203,26 @@ export default function Mypage() {
       <div css={itemWrapper}>
         <Tab
           title="결제 내역"
-          onClick={() => openNeedLoginDialog({ to: ROUTES.MYPAGE_PAYMENTS })}
+          onClick={() =>
+            openNeedLoginDialog({
+              to: ROUTES.MYPAGE_PAYMENTS,
+              query: {
+                service: 'groomer',
+              },
+            })
+          }
         />
-        <Tab title="리뷰 내역" onClick={() => openNeedLoginDialog({ to: ROUTES.MYPAGE_REVIEWS })} />
+        <Tab
+          title="리뷰 내역"
+          onClick={() =>
+            openNeedLoginDialog({
+              to: ROUTES.MYPAGE_REVIEWS,
+              query: {
+                service: 'groomer',
+              },
+            })
+          }
+        />
         {isLoggedInUser && (
           <>
             <Tab
@@ -182,7 +231,7 @@ export default function Mypage() {
               onClick={() => {
                 localStorage.clear();
                 router.push(ROUTES.HOME);
-                refetchUserMypage();
+                queryClient.clear();
                 showToast({ title: '정상적으로 로그아웃 되었어요' });
               }}
             />
@@ -193,7 +242,6 @@ export default function Mypage() {
               onClick={() => {
                 setIsWithdrawTabClick(true);
                 const waitingForServiceCount = getUserWithdrawInfo?.waitingForServiceCount;
-
                 open({
                   type: 'warn',
                   title: '회원 탈퇴',
@@ -204,11 +252,11 @@ export default function Mypage() {
                   onPrimaryAction: async () => {
                     await deleteUserInfo();
                     router.push(ROUTES.HOME);
+                    localStorage.clear();
                     showToast({ title: '탈퇴 처리가 완료되었어요. 다음에 다시 만나요 🐾' });
                   },
                   secondaryActionLabel: '취소',
                 });
-                localStorage.clear();
               }}
             />
           </>
@@ -262,6 +310,8 @@ const needLoginWrapper = css`
 
   width: 100%;
   padding: 21px 0 16px;
+
+  cursor: pointer;
 `;
 
 const requestInfoWrapper = css`

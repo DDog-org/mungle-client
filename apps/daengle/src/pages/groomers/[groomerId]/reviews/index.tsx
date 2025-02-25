@@ -40,9 +40,11 @@ export default function GroomerReviews() {
                   starRating,
                   content,
                   imageUrlList,
+                  createdAt,
                 }) => (
                   <Card
                     key={groomingReviewId}
+                    createdAt={createdAt}
                     reviewId={groomingReviewId}
                     reviewerImageUrl={reviewerImageUrl}
                     reviewerName={reviewerName}

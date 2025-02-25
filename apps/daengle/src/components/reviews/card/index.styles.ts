@@ -16,6 +16,14 @@ export const wrapper = css`
 export const top = css`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+`;
+
+export const topLeft = css`
+  display: flex;
+  align-items: center;
   gap: 15px;
 `;
 
@@ -65,9 +73,10 @@ export const tagWrapper = css`
 
 export const clampText = css`
   display: -webkit-box;
+  overflow: hidden;
+
+  margin: 10px 0 0;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-
-  overflow: hidden;
   text-overflow: ellipsis;
 `;

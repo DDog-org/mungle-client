@@ -106,3 +106,12 @@ export const chipButtonBox = css`
   display: flex;
   gap: 7px;
 `;
+
+export const selectInfo = css`
+  width: 100%;
+  padding: 10px;
+  border: 1px solid ${theme.colors.green200};
+  border-radius: 30px;
+  ${theme.typo.body10};
+  text-align: center;
+`;

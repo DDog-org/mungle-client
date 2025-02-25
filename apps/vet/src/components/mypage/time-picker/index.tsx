@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Dayjs } from 'dayjs';
 import { Text } from '@daengle/design-system';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import { DesktopTimePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { box, dateSelect, text } from './index.styles';
 
 interface TimePickerComponentProps {
@@ -33,7 +33,7 @@ export default function TimePickerComponent({
     <div css={box}>
       <div css={dateSelect}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker
+          <DesktopTimePicker
             value={startTime}
             onChange={handleStartTimeChange}
             slotProps={{
@@ -57,7 +57,7 @@ export default function TimePickerComponent({
       </div>
       <div css={dateSelect}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker
+          <DesktopTimePicker
             value={endTime}
             onChange={handleEndTimeChange}
             slotProps={{

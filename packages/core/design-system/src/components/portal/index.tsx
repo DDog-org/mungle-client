@@ -7,5 +7,5 @@ interface Props {
 
 export function Portal({ children }: Props) {
   const element = typeof window !== 'undefined' && document.querySelector('#portal-container');
-  return element && children ? ReactDOM.createPortal(children, element) : null;
+  return element && children ? ReactDOM.createPortal(<>{children}</>, element) : null;
 }

@@ -6,6 +6,7 @@ export interface GetGroomerScheduleResponse {
 }
 
 export interface GroomerScheduleReservation {
+  estimateId: number;
   reservationId: number;
   petId: number;
   petImage: string | null;

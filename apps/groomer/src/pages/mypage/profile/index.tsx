@@ -1,34 +1,24 @@
-import { useEffect, useState } from 'react';
-import router from 'next/router';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
 import { useS3 } from '@daengle/services/hooks';
-import { TextField, theme } from '@daengle/design-system';
+import { TextField, theme, useToast } from '@daengle/design-system';
 import { AppBar, CTAButton, ImageInputBox, Layout, Text, Input } from '@daengle/design-system';
 import { useForm } from 'react-hook-form';
 import { useValidateGroomerForm } from '~/hooks';
 import { GroomerModifyPageForm } from '~/interfaces';
-import { useGetGroomerModifyPageQuery, usePatchGroomerInfoMutation } from '~/queries';
+import { useGetGroomerModifyPageQuery, usePatchGroomerProfileMutation } from '~/queries';
 import { ROUTES } from '~/constants';
-import { convertURLToFile } from '@daengle/services/utils';
 
 export default function EditProfile() {
-  const { data: groomerInfo } = useGetGroomerModifyPageQuery();
-  const { mutate: patchGroomerInfo } = usePatchGroomerInfoMutation();
+  const router = useRouter();
+  const { showToast } = useToast();
 
   const { uploadToS3, deleteFromS3 } = useS3({ targetFolderPath: 'groomer/profile-images' });
 
   const [profileImage, setProfileImage] = useState<File | null>(null);
-
-  useEffect(() => {
-    const fetchFile = async () => {
-      if (groomerInfo?.image) {
-        const file = await convertURLToFile(groomerInfo.image, 'profile-image');
-        setProfileImage(file);
-      }
-    };
-
-    fetchFile();
-  }, [groomerInfo?.image]);
+  const { data: groomerInfo } = useGetGroomerModifyPageQuery();
+  const { mutate: patchGroomerProfile } = usePatchGroomerProfileMutation();
 
   const validation = useValidateGroomerForm();
   const {
@@ -62,7 +52,10 @@ export default function EditProfile() {
       instagramId: data.instagramId || null,
     };
 
-    patchGroomerInfo(payload);
+    patchGroomerProfile(payload);
+
+    router.push(ROUTES.MYPAGE);
+    showToast({ title: '프로필이 수정되었어요' });
   };
 
   return (
@@ -116,6 +109,7 @@ export default function EditProfile() {
                 label="인스타그램 아이디"
                 prefix="@"
                 maxLength={30}
+                defaultValue={groomerInfo?.instagramId}
                 {...register('instagramId', { ...validation.instagramId })}
                 onChange={(e) => setValue('instagramId', e.target.value, { shouldValidate: true })}
                 errorMessage={errors.instagramId?.message}
@@ -144,10 +138,10 @@ export default function EditProfile() {
               {groomerInfo?.licenses?.map((license) => (
                 <div css={licenseStyle} key={license.name}>
                   <Text typo="body4" color="green200">
-                    {license.name}
+                    KKF 애견 미용사 자격증
                   </Text>
                   <Text typo="body5" color="gray400">
-                    {license.acquisitionDate}
+                    2022.08.24
                   </Text>
                 </div>
               ))}
