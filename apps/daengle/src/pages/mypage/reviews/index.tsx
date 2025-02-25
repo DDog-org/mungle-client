@@ -3,6 +3,7 @@ import { AppBar, Layout, Tabs, Text, theme } from '@daengle/design-system';
 import { GroomerCardList, VetCardList } from '~/components/mypage';
 import { ROUTES } from '~/constants/commons';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const TABS = [
   {
@@ -17,6 +18,7 @@ const TABS = [
 
 export default function Reviews() {
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState(TABS[0]?.id);
 
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
@@ -29,6 +31,18 @@ export default function Reviews() {
     }
   };
 
+  useEffect(() => {
+    const queryTab = router.query.service as string;
+    if (queryTab && TABS.some((tab) => tab.id === queryTab)) {
+      setActiveTab(queryTab);
+    }
+  }, [router.query.tab]);
+
+  const handleTabClick = (tabId: string) => {
+    router.replace({ query: { service: tabId } }, undefined, { shallow: true });
+    setActiveTab(tabId);
+  };
+
   return (
     <Layout isAppBarExist={false}>
       <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
@@ -38,7 +52,12 @@ export default function Reviews() {
         </Text>
 
         <div css={content}>
-          <Tabs tabs={TABS} renderContent={renderContent} />
+          <Tabs
+            tabs={TABS}
+            renderContent={renderContent}
+            activeTabId={activeTab}
+            onTabClick={handleTabClick}
+          />
         </div>
       </section>
     </Layout>

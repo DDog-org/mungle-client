@@ -1,4 +1,4 @@
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
 import { useS3 } from '@daengle/services/hooks';
 import {
@@ -35,6 +35,7 @@ import { useState } from 'react';
 import { DevTool } from '@hookform/devtools';
 
 export default function PetProfileCreate() {
+  const router = useRouter();
   const { data: breeds } = useGetBreedListQuery();
   const { mutateAsync: postUserPet } = usePostUserPetMutation();
   const { uploadToS3 } = useS3({ targetFolderPath: 'user/profile-images' });
@@ -402,7 +403,6 @@ const chipButtonBox = css`
 `;
 const detailInput = css`
   height: 136px;
-  padding: 14px;
   border-radius: 10px;
 
   background-color: ${theme.colors.gray100};

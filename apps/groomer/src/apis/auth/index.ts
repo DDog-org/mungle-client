@@ -3,9 +3,8 @@ import { api, guestApi } from '~/apis';
 import {
   GetGroomerModifyPageResponse,
   GetGroomerShopInfoResponse,
-  PatchGroomerInfoRequestBody,
-  PatchGroomerInfoResponse,
-  GetGroomerInfoResponse,
+  PatchGroomerProfileRequestBody,
+  PatchGroomerProfileResponse,
   PatchGroomerShopInfoRequestBody,
   PatchGroomerShopInfoResponse,
   PostJoinRequestBody,
@@ -15,6 +14,7 @@ import {
   GetGroomerWithdrawInfoResponse,
   DeleteGroomerResponse,
   GetGroomerValidateResponse,
+  GetGroomerProfileResponse,
 } from '~/models';
 
 export const postOauthToken = async (code: string) => {
@@ -43,12 +43,12 @@ export const getGroomerModifyPage = async () => {
   return await api.get<GetGroomerModifyPageResponse>('/groomer/modify-page');
 };
 
-export const patchGroomerInfo = async (body: PatchGroomerInfoRequestBody) => {
-  return await api.patch<PatchGroomerInfoResponse>('/groomer/info', body);
+export const patchGroomerProfile = async (body: PatchGroomerProfileRequestBody) => {
+  return await api.patch<PatchGroomerProfileResponse>('/groomer/profile', body);
 };
 
-export const getGroomerInfo = async () => {
-  return await api.get<GetGroomerInfoResponse>('/groomer/info');
+export const getGroomerProfile = async () => {
+  return await api.get<GetGroomerProfileResponse>('/groomer/profile');
 };
 
 export const getGroomerWithdrawInfo = async () => {
@@ -56,7 +56,7 @@ export const getGroomerWithdrawInfo = async () => {
 };
 
 export const deleteGroomer = async () => {
-  return await api.delete<DeleteGroomerResponse>('/groomer');
+  return await api.delete<DeleteGroomerResponse>('/groomer/profile');
 };
 
 export const getGroomerValidate = async () => {

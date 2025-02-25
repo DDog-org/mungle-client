@@ -61,11 +61,11 @@ export const postJoinWithPet = async (body: PostJoinWithPetRequestBody) => {
 };
 
 export const getUserInfo = async () => {
-  return await api.get<GetUserInfoResponse>('/user/info');
+  return await api.get<GetUserInfoResponse>('/user/profile');
 };
 
 export const patchUserInfo = async (body: PatchUserInfoRequestBody) => {
-  return await api.patch<PatchUserInfoResponse>('/user/info', body);
+  return await api.patch<PatchUserInfoResponse>('/user/profile', body);
 };
 
 export const getUserPetInfo = async () => {
@@ -97,5 +97,5 @@ export const getUserWithdrawInfo = async () => {
 };
 
 export const deleteUserInfo = async () => {
-  return await api.delete<DeleteUserInfoResponse>('/user/info');
+  return await api.delete<DeleteUserInfoResponse>('/user/profile');
 };

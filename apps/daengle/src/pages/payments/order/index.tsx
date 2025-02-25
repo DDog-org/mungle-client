@@ -14,6 +14,7 @@ import { useValidateVisitorForm } from '~/hooks/payment';
 import { useForm } from 'react-hook-form';
 import { VisitorInfoFormType } from '~/interfaces/payment';
 import { formatPhoneNumber } from '@daengle/services/utils';
+import { useUserInfoFormStore } from '~/stores';
 
 export default function Order() {
   const router = useRouter();
@@ -46,6 +47,7 @@ export default function Order() {
   const visitorPhoneNumber = watch('phoneNumber');
 
   const validation = useValidateVisitorForm();
+  const { userInfoForm } = useUserInfoFormStore();
 
   const { mutateAsync: postPaymentOrder } = usePostPaymentOrderMutation();
   const { mutateAsync: postPaymentValidate } = usePostPaymentValidateMutation();
@@ -69,6 +71,14 @@ export default function Order() {
     schedule: schedule,
     m_redirect_url: ROUTES.PAYMENTS_COMPLETE,
   };
+
+  useEffect(() => {
+    if (userInfoForm) {
+      const { username, phoneNumber } = userInfoForm.form; // username과 phoneNumber 추출
+      setValue('username', username || customerName); // 초기값 설정
+      setValue('phoneNumber', phoneNumber || customerPhoneNumber);
+    }
+  }, [userInfoForm, customerName, customerPhoneNumber, setValue]);
 
   useEffect(() => {
     if (!visitorName && !visitorPhoneNumber) {
@@ -136,7 +146,7 @@ export default function Order() {
           });
 
           if (validateResponse) {
-            router.push({
+            router.replace({
               pathname: ROUTES.PAYMENTS_COMPLETE,
               query: { estimateId: estimateId, service: service },
             });
@@ -157,7 +167,11 @@ export default function Order() {
   return (
     <Layout>
       <Script src="https://cdn.iamport.kr/v1/iamport.js" strategy="afterInteractive" />
-      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
+      <AppBar
+        onBackClick={router.back}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+        backgroundColor="white"
+      />
       <div css={wrapper}>
         <section css={section}>
           <Text tag="h1" typo="title1" css={title}>
@@ -238,14 +252,14 @@ export default function Order() {
           </section>
           <section css={additionalInfoBox}>
             <div css={additionalInfo}>
-              <div css={additionalInfoButton}>
+              <div css={additionalInfoButton} onClick={handleArrowToggle}>
                 <Text typo="body5" color="gray600">
                   실제 방문자가 다르신가요?
                 </Text>
                 {isOpen ? (
-                  <SelectUnfoldActive width={12} css={arrow} onClick={handleArrowToggle} />
+                  <SelectUnfoldActive width={12} css={arrow} />
                 ) : (
-                  <SelectUnfoldInactive width={12} css={arrow} onClick={handleArrowToggle} />
+                  <SelectUnfoldInactive width={12} css={arrow} />
                 )}
               </div>
               <div css={grayLine} />
@@ -379,6 +393,8 @@ const additionalInfoButton = css`
   border-radius: 30px;
 
   background-color: ${theme.colors.gray100};
+
+  cursor: pointer;
 `;
 
 const arrow = css`

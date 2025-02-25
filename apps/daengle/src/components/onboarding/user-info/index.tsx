@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import { ChipButton, CTAButton, Input, RoundButton, Text } from '@daengle/design-system';
+import { ChipButton, CTAButton, Input, RoundButton, Text, useDialog } from '@daengle/design-system';
 import { formatPhoneNumber } from '@daengle/services/utils';
 import { ROUTES } from '~/constants/commons/routes';
 import { usePostAvailableNicknameMutation } from '~/queries';
@@ -20,6 +20,8 @@ export function UserInfo({ onNext }: Props) {
   const { mutateAsync: postAvailableNickname } = usePostAvailableNicknameMutation();
   const validation = useValidateUserForm();
 
+  const { open } = useDialog();
+
   const {
     register,
     handleSubmit,
@@ -27,18 +29,23 @@ export function UserInfo({ onNext }: Props) {
     setValue,
     setError,
     clearErrors,
-    formState: { errors, isValid },
-  } = useForm<UserInfoFormFormType>({ defaultValues: { ...userInfoForm.form } });
+    formState: { errors, isValid, isDirty },
+  } = useForm<UserInfoFormFormType>({
+    mode: 'onBlur',
+    defaultValues: { ...userInfoForm.form },
+  });
 
   const checkIsAvailableNickname = async () => {
     const nickname = watch('nickname');
 
     if (!nickname) {
       setError('nickname', { message: '닉네임을 입력해 주세요' });
+      return;
     }
 
     if (nickname.length < 2 || nickname.length > 10) {
       setError('nickname', { message: '닉네임은 2글자 이상 10글자 미만으로 작성해 주세요' });
+      return;
     }
 
     const response = await postAvailableNickname({ nickname });
@@ -51,7 +58,22 @@ export function UserInfo({ onNext }: Props) {
   };
 
   const onSubmit = (data: UserInfoFormFormType) => {
-    if (!data.address) return;
+    if (!data.address) {
+      open({
+        title: '주소를 선택해 주세요',
+        primaryActionLabel: '확인',
+      });
+      return;
+    }
+
+    if (!userInfoForm.isAvailableNickname) {
+      open({
+        title: '닉네임 중복검사를 진행해 주세요',
+        primaryActionLabel: '확인',
+      });
+      return;
+    }
+
     setUserInfoForm({ ...userInfoForm, ...watch() });
   };
 
@@ -78,6 +100,7 @@ export function UserInfo({ onNext }: Props) {
           />
 
           <Input
+            type="tel"
             label="휴대폰 번호"
             placeholder="휴대폰 번호를 입력해 주세요"
             maxLength={13}
@@ -103,7 +126,9 @@ export function UserInfo({ onNext }: Props) {
               clearErrors();
             }}
             errorMessage={errors.nickname?.message}
-            confirmMessage={userInfoForm.isAvailableNickname ? '사용 가능한 닉네임입니다' : ''}
+            confirmMessage={
+              isDirty && userInfoForm.isAvailableNickname ? '사용 가능한 닉네임입니다' : ''
+            }
           />
 
           <div css={location}>

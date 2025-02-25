@@ -55,16 +55,17 @@ export function ReviewCard<T extends PartnersReviewListType>({
     setIsUnrolled(!isUnrolled);
   }
 
+  const [isImageError, setIsImageError] = useState(false);
+
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    event.currentTarget.onerror = null;
-    event.currentTarget.src = '';
+    setIsImageError(true);
   };
 
   return (
     <div css={wrapper}>
       <div css={reviewerInfo}>
         <div css={userInfo}>
-          {reviewerImageUrl ? (
+          {!isImageError && reviewerImageUrl ? (
             <img
               src={reviewerImageUrl}
               alt={`${reviewerName} 프로필`}
@@ -91,7 +92,7 @@ export function ReviewCard<T extends PartnersReviewListType>({
       <div css={tagsWrapper}>
         {keywordsList.length > 0 &&
           keywordsList.map((tag) => (
-            <div css={tagWrapper}>
+            <div key={tag} css={tagWrapper}>
               <Text typo="body12" color="blue200">
                 {`#${tag}`}
               </Text>

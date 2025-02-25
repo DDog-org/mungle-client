@@ -1,3 +1,5 @@
+import { GROOMER_BADGES } from '~/constants';
+
 export interface PostKakaoRequestBody {
   kakaoAccessToken: string;
 }
@@ -41,20 +43,20 @@ export interface License {
   name: string;
   acquisitionDate: string;
 }
-export interface PatchGroomerInfoResponse {
+export interface PatchGroomerProfileResponse {
   requestResult: string;
 }
 
-export interface PatchGroomerInfoRequestBody {
+export interface PatchGroomerProfileRequestBody {
   image: string;
   instagramId: string | null;
   introduction: string | null;
 }
 
-export interface GetGroomerInfoResponse {
+export interface GetGroomerProfileResponse {
   imageUrl: string;
   name: string;
-  keywords: string[];
+  badges: (keyof typeof GROOMER_BADGES)[];
   shopId: number;
   shopName: string;
   introduction: string;

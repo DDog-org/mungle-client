@@ -2,12 +2,12 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   getVetModifyPage,
   getVetValidate,
-  patchVetInfo,
-  getVetInfo,
   postKakao,
   postVetJoin,
+  getVetProfile,
+  patchVetProfile,
 } from '~/apis';
-import { PatchVetInfoRequestBody, PostVetJoinRequestBody } from '~/models/auth';
+import { PatchVetProfileRequestBody, PostVetJoinRequestBody } from '~/models/auth';
 import { QUERY_KEYS } from '~/queries/query-keys';
 
 export const usePostKakaoMutation = () => {
@@ -33,11 +33,11 @@ export const useGetVetModifyPageQuery = () => {
   });
 };
 
-export const usePatchVetInfoMutation = () => {
+export const usePatchVetProfileMutation = () => {
   return useMutation({
-    mutationKey: QUERY_KEYS.PATCH_VET_MODIFY_PAGE,
-    mutationFn: async (body: PatchVetInfoRequestBody) => {
-      return await patchVetInfo(body);
+    mutationKey: QUERY_KEYS.PATCH_VET_PROFILE,
+    mutationFn: async (body: PatchVetProfileRequestBody) => {
+      return await patchVetProfile(body);
     },
   });
 };
@@ -49,9 +49,9 @@ export const useGetVetValidateQuery = () => {
   });
 };
 
-export const useGetVetInfoQuery = () => {
+export const useGetVetProfileQuery = () => {
   return useQuery({
-    queryKey: QUERY_KEYS.GET_VET_INFO,
-    queryFn: getVetInfo,
+    queryKey: QUERY_KEYS.GET_VET_PROFILE,
+    queryFn: getVetProfile,
   });
 };

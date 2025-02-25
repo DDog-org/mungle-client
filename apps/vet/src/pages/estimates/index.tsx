@@ -15,14 +15,14 @@ export default function EstimateList() {
   const [activeTab, setActiveTab] = useState(TABS[0]?.id);
 
   useEffect(() => {
-    const queryTab = router.query.tab as string;
+    const queryTab = router.query.service as string;
     if (queryTab && TABS.some((tab) => tab.id === queryTab)) {
       setActiveTab(queryTab);
     }
   }, [router.query.tab]);
 
   const handleTabClick = (tabId: string) => {
-    router.push({ query: { tab: tabId } }, undefined, { shallow: true });
+    router.replace({ query: { service: tabId } }, undefined, { shallow: true });
     setActiveTab(tabId);
   };
 
@@ -57,11 +57,10 @@ export default function EstimateList() {
 }
 
 const wrapper = css`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+  height: 100vh;
+  padding-bottom: 104px;
 
-  background: ${theme.colors.background};
+  background-color: ${theme.colors.background};
 `;
 
 const headerWrapper = css`

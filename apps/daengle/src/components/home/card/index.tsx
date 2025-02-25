@@ -1,7 +1,6 @@
-import { DefaultProfile } from '@daengle/design-system/icons';
-import { Text } from '@daengle/design-system';
-
 import Image from 'next/image';
+import { Text } from '@daengle/design-system';
+import { DefaultProfile } from '@daengle/design-system/icons';
 import { addressStyle, imageStyle, textBox, wrapper } from './index.styles';
 
 interface Props {

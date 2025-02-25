@@ -18,7 +18,7 @@ export function GroomerList() {
               <PaymentListItem key={item.reservationId} item={item} />
             ))
           ) : (
-            <Empty title="결제한 내역이 없어요" />
+            <Empty key={index} title="결제한 내역이 없어요" />
           )
         )
       ) : (

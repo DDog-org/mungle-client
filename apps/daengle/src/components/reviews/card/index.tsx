@@ -10,7 +10,9 @@ import {
   tagWrapper,
   wrapper,
   top,
+  topLeft,
 } from './index.styles';
+import dayjs from 'dayjs';
 
 interface Props {
   reviewId: number;
@@ -20,6 +22,7 @@ interface Props {
   starRating: 1 | 2 | 3 | 4 | 5;
   content: string | null;
   imageUrlList: string[] | null;
+  createdAt: string;
 }
 
 export function Card({
@@ -29,29 +32,35 @@ export function Card({
   starRating,
   content,
   imageUrlList,
+  createdAt,
 }: Props) {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   return (
     <div css={wrapper}>
       <div css={top}>
-        <div css={reviewerInfo}>
-          {reviewerImageUrl ? (
-            <Image src={reviewerImageUrl} alt="리뷰 작성자 이미지" width={33} height={33} />
-          ) : (
-            <DefaultProfile width={33} height={33} />
-          )}
-          <Text typo="subtitle1" color="black">
-            {reviewerName}
-          </Text>
+        <div css={topLeft}>
+          <div css={reviewerInfo}>
+            {reviewerImageUrl ? (
+              <Image src={reviewerImageUrl} alt="리뷰 작성자 이미지" width={33} height={33} />
+            ) : (
+              <DefaultProfile width={33} height={33} />
+            )}
+            <Text typo="subtitle1" color="black">
+              {reviewerName}
+            </Text>
+          </div>
+          <Rating rate={starRating} />
         </div>
-        <Rating rate={starRating} />
+        <Text typo="body11" color="gray400">
+          {dayjs(createdAt).format('YYYY.MM.DD')}
+        </Text>
       </div>
 
-      {imageUrlList && imageUrlList?.length && (
+      {imageUrlList && !!imageUrlList?.length && (
         <div css={imageWrapper}>
           {imageUrlList?.map((url) => (
-            <Image src={url} alt="리뷰 이미지" width={101} height={101} />
+            <Image key={url} src={url} alt="리뷰 이미지" width={101} height={101} />
           ))}
         </div>
       )}
@@ -59,7 +68,7 @@ export function Card({
       <div css={tagsWrapper}>
         {keywordReviewList.length > 0 &&
           keywordReviewList.map((tag) => (
-            <div css={tagWrapper}>
+            <div key={tag} css={tagWrapper}>
               <Text typo="body12" color="blue200">
                 {`#${tag}`}
               </Text>

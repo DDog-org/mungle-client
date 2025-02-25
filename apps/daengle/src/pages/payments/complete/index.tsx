@@ -39,7 +39,7 @@ export default function PaymentComplete() {
         <RoundButton
           size="S"
           onClick={() => {
-            router.push({
+            router.replace({
               pathname: ROUTES.RESERVATIONS_DETAIL(Number(estimateId)),
               query: { service: service },
             });
@@ -60,7 +60,9 @@ const wrapper = css`
   align-items: center;
   gap: 40px;
 
+  width: 100%;
   margin: auto;
+  padding: 0 18px;
 `;
 
 const section = css`
@@ -76,7 +78,7 @@ const reservationDetail = css`
   align-items: center;
   justify-content: center;
 
-  width: 357px;
+  width: 100%;
   height: 117px;
   padding: 18px;
   border: 1px solid ${theme.colors.gray200};

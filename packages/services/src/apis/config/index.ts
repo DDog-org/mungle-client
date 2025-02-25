@@ -27,8 +27,18 @@ export const createHttpClient = ({ baseURL, role }: Props) => {
 
       const daengleError = error.response.data.error;
 
-      if (daengleError.code === ERROR_CODES.FORBIDDEN) {
-        window.location.href = '/login';
+      // if (daengleError.code === ERROR_CODES.FORBIDDEN) {
+      //   window.location.href = '/login';
+      //   return Promise.reject(error);
+      // }
+
+      if (daengleError.code === 1001) {
+        localStorage.clear();
+        return Promise.reject(error);
+      }
+
+      if (daengleError.code === ERROR_CODES.NO_USER_EXIST) {
+        localStorage.clear();
         return Promise.reject(error);
       }
 
@@ -40,7 +50,7 @@ export const createHttpClient = ({ baseURL, role }: Props) => {
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return api(originalRequest);
         } catch (err) {
-          window.location.href = '/login';
+          localStorage.clear();
           return Promise.reject(err);
         }
       }
@@ -55,7 +65,7 @@ export const createHttpClient = ({ baseURL, role }: Props) => {
         `/${role}/refresh-token`,
         {},
         {
-          baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+          baseURL: process.env.NEXT_PUBLIC_API_URL,
           withCredentials: true,
         }
       );

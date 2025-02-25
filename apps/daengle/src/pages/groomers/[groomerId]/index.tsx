@@ -1,4 +1,12 @@
-import { AppBar, Layout, RoundButton, Text, TextButton, theme } from '@daengle/design-system';
+import {
+  AppBar,
+  Layout,
+  RoundButton,
+  Text,
+  TextButton,
+  theme,
+  useDialog,
+} from '@daengle/design-system';
 import {
   ButtonTextButtonArrow,
   DefaultProfile,
@@ -9,10 +17,14 @@ import {
 import { css } from '@emotion/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { ROUTES } from '~/constants/commons';
+import { useEffect, useState } from 'react';
+import { GROOMER_BADGES, ROUTES } from '~/constants/commons';
 import { GetUserGroomerDetailRequestParams } from '~/models';
-import { useGetChatStartQuery, useGetUserGroomerDetailQuery } from '~/queries';
+import {
+  useGetChatStartQuery,
+  useGetUserGroomerDetailQuery,
+  useGetUserValidateQuery,
+} from '~/queries';
 
 export default function GroomerInfo() {
   const router = useRouter();
@@ -20,13 +32,27 @@ export default function GroomerInfo() {
   const getGroomerId = Number(groomerId);
   const groomerParams: GetUserGroomerDetailRequestParams = { groomerId: getGroomerId };
 
-  const [isStartChat, setIsStartChat] = useState<boolean>(false);
+  const [isChatStart, setIsChatStart] = useState<boolean>(false);
+  const { open } = useDialog();
 
   const { data: groomerDetail } = useGetUserGroomerDetailQuery(groomerParams);
   const { data: chatStartInfo } = useGetChatStartQuery({
-    params: { otherId: getGroomerId },
-    enable: isStartChat,
+    params: { otherId: groomerDetail?.groomerAccountId ?? 0 },
+    enabled: isChatStart,
   });
+
+  const { data: isValidUser } = useGetUserValidateQuery();
+
+  useEffect(() => {
+    if (isChatStart && chatStartInfo) {
+      router.push({
+        pathname: ROUTES.CHATS_DETAIL(chatStartInfo.chatRoomId),
+        query: { otherId: Number(groomerDetail?.groomerAccountId), service: 'groomer' },
+      });
+
+      setIsChatStart(false);
+    }
+  }, [isChatStart, chatStartInfo]);
 
   return (
     <Layout>
@@ -37,7 +63,7 @@ export default function GroomerInfo() {
           {groomerDetail?.groomerImage ? (
             <Image
               src={groomerDetail?.groomerImage}
-              alt="미용사 프로필이미지"
+              alt="미용사 프로필 이미지"
               width={101}
               height={117}
               css={imageStyle}
@@ -48,13 +74,11 @@ export default function GroomerInfo() {
           <div css={infoBox}>
             <Text typo="title2">{groomerDetail?.groomerName}</Text>
             <div css={tags}>
-              <Text typo="body12" color="blue200" css={tag}>
-                {/*  TODO: 뱃지 나오면 연동 */}
-                #대형견
-              </Text>
-              <Text typo="body12" color="blue200" css={tag}>
-                #노견
-              </Text>
+              {groomerDetail?.badges.map((badge) => (
+                <Text typo="body12" color="blue200" css={tag}>
+                  #{GROOMER_BADGES[badge]}
+                </Text>
+              ))}
             </div>
             <TextButton
               icons={{ suffix: <ButtonTextButtonArrow width={6} /> }}
@@ -68,7 +92,11 @@ export default function GroomerInfo() {
         </section>
         <section css={infoText}>
           <Text typo="body1">소개</Text>
-          <Text typo="body10">{groomerDetail?.introduction}</Text>
+          <Text typo="body10">
+            {groomerDetail?.introduction
+              ? groomerDetail?.introduction
+              : '아직 등록된 소개글이 없어요'}
+          </Text>
         </section>
         <section css={daengleMeter}>
           <div css={textBox}>
@@ -88,7 +116,7 @@ export default function GroomerInfo() {
             </Text>
           </div>
           <div css={graph}>
-            <div css={graphBar}>
+            <div css={graphBar({ meter: groomerDetail?.daengleMeter ?? 0 })}>
               <Heart width={8} height={7} css={heart} />
             </div>
             <Paw width={9} height={7} css={paw} />
@@ -97,19 +125,35 @@ export default function GroomerInfo() {
         <div css={button}>
           <RoundButton
             fullWidth={true}
-            onClick={() => router.push(ROUTES.ESTIMATES_GROOMING(getGroomerId))}
+            disabled={!isValidUser?.isValidateMember}
+            onClick={
+              isValidUser?.isValidateMember
+                ? () => router.push(ROUTES.ESTIMATES_GROOMING(getGroomerId))
+                : () =>
+                    open({
+                      title: '로그인 후 이용해 주세요',
+                      primaryActionLabel: '로그인 하기',
+                      onPrimaryAction: () => router.replace(ROUTES.LOGIN),
+                      secondaryActionLabel: '닫기',
+                    })
+            }
           >
             바로 예약
           </RoundButton>
           <RoundButton
+            disabled={!isValidUser?.isValidateMember}
             fullWidth={true}
-            onClick={() => {
-              setIsStartChat(true);
-              router.push({
-                pathname: ROUTES.CHATS_DETAIL(chatStartInfo?.chatRoomId!),
-                query: { otherId: Number(groomerId), service: 'groomer' },
-              });
-            }}
+            onClick={
+              isValidUser?.isValidateMember
+                ? () => setIsChatStart(true)
+                : () =>
+                    open({
+                      title: '로그인 후 이용해 주세요',
+                      primaryActionLabel: '로그인 하기',
+                      onPrimaryAction: () => router.replace(ROUTES.LOGIN),
+                      secondaryActionLabel: '닫기',
+                    })
+            }
             variant="primaryLow"
           >
             채팅하기
@@ -124,18 +168,19 @@ export default function GroomerInfo() {
           </div>
           <ButtonTextButtonArrow width={6} />
         </div>
-        <div css={line} />
-        <div
-          css={menu}
-          onClick={() =>
-            router.push(
-              `${ROUTES.GROOMERS_PORFOLIO(getGroomerId)}?instagram=${groomerDetail?.instagram}`
-            )
-          }
-        >
-          <Text typo="subtitle1">포트폴리오</Text>
-          <ButtonTextButtonArrow width={6} />
-        </div>
+        {groomerDetail?.instagram && (
+          <div
+            css={menu}
+            onClick={() =>
+              router.push(
+                `${ROUTES.GROOMERS_PORFOLIO(getGroomerId)}?instagram=${groomerDetail?.instagram}`
+              )
+            }
+          >
+            <Text typo="subtitle1">포트폴리오</Text>
+            <ButtonTextButtonArrow width={6} />
+          </div>
+        )}
       </section>
     </Layout>
   );
@@ -205,10 +250,10 @@ const graph = css`
   background-color: ${theme.colors.gray200};
 `;
 
-const graphBar = css`
+const graphBar = ({ meter }: { meter: number }) => css`
   position: relative;
 
-  width: 30%;
+  width: ${meter}%;
   height: 100%;
 
   background: linear-gradient(0.25turn, ${theme.colors.blue100}, ${theme.colors.blue200});
@@ -289,12 +334,6 @@ const toolTipInfo = css`
   opacity: 0;
 `;
 
-const line = css`
-  height: 1px;
-
-  background-color: ${theme.colors.gray100};
-`;
-
 const bottomSection = css`
   padding: 0 18px;
 `;
@@ -306,6 +345,10 @@ const menu = css`
   padding: 24px 0;
 
   cursor: pointer;
+
+  & + & {
+    border-top: 1px solid ${theme.colors.gray100};
+  }
 `;
 
 const review = css`

@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { DAY_OFF } from '../../constants/partner';
 
 export const formatPhoneNumber = (phoneNumber: string) => {
   return phoneNumber
@@ -51,4 +52,20 @@ export const formatDateTime = (dateTime: string) => {
   const seconds = String(date.getSeconds()).padStart(2, '0');
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
+export const formatDayOff = (closedDays: string[], startTime: string, endTime: string) => {
+  const start = startTime.slice(0, 5);
+  const end = endTime.slice(0, 5);
+
+  const closed = closedDays.map((day) => DAY_OFF.find((item) => item.value === day));
+
+  if (closed.length > 0) {
+    return `${start} - ${end} ${closed
+      .sort((a, b) => (a && b ? a.id - b.id : 0))
+      .map((day) => day?.label)
+      .join(', ')} 휴무`;
+  }
+
+  return `매일 ${start} - ${end}`;
 };

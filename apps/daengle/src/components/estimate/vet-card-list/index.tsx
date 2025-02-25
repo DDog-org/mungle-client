@@ -1,7 +1,6 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-
-import { ProfileSelector } from '../pet-profile';
-import { CardList } from '../card-list';
+import { Empty, useDialog } from '@daengle/design-system';
 import {
   useUserEstimateDesignationCarePetsQuery,
   useUserEstimateDesignationCareQuery,
@@ -10,12 +9,10 @@ import {
 } from '~/queries';
 import { GetUserEstimateDesignationCareList, GetUserEstimateGeneralCareList } from '~/models';
 import { useIntersectionLoad } from '~/hooks';
-import { bottom } from './index.styles';
-import { useRouter } from 'next/router';
-import { ROUTES } from '~/constants/commons';
-import { OptionSelector } from '../option';
-import { Empty, useDialog } from '@daengle/design-system';
+import { ROUTES, VET_BADGES } from '~/constants/commons';
 import { Loading } from '~/components/commons';
+import { CardList, OptionSelector, ProfileSelector } from '~/components/estimate';
+import { bottom, contentWrapper, wrapper } from './index.styles';
 
 interface Props {
   isDesignation: boolean;
@@ -23,7 +20,8 @@ interface Props {
 
 export function VetEstimateList({ isDesignation }: Props) {
   const router = useRouter();
-  const { petId, vetId } = router.query;
+  const { petId } = router.query;
+  const { open } = useDialog();
 
   const [selectedPetId, setSelectedPetId] = useState<number | undefined>(
     petId ? Number(petId) : undefined
@@ -32,14 +30,18 @@ export function VetEstimateList({ isDesignation }: Props) {
   const {
     data: petData,
     isLoading: petLoading,
-    error: petError,
     isError,
   } = isDesignation
     ? useUserEstimateDesignationCarePetsQuery()
     : useUserEstimateGeneralCarePetsQuery();
 
   if (isError) {
-    alert('로그인 후 이용해 주세요');
+    open({
+      title: '로그인 후 이용해 주세요',
+      primaryActionLabel: '로그인 하기',
+      onPrimaryAction: () => router.replace(ROUTES.LOGIN),
+      secondaryActionLabel: '닫기',
+    });
     router.back();
   }
 
@@ -63,7 +65,6 @@ export function VetEstimateList({ isDesignation }: Props) {
   const {
     data: estimates,
     isLoading: estimateLoading,
-    error: estimateError,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -82,11 +83,9 @@ export function VetEstimateList({ isDesignation }: Props) {
         .filter((estimate): estimate is GetUserEstimateGeneralCareList => !!estimate) || [];
 
   return (
-    <>
+    <div css={wrapper}>
       {petLoading ? (
         <Loading title="견적서를 불러오고 있어요" />
-      ) : petError ? (
-        <div>펫 정보를 불러오는데 실패했습니다.</div>
       ) : petInfos.length === 0 ? (
         <Empty title="작성된 견적서가 없어요" />
       ) : (
@@ -100,28 +99,39 @@ export function VetEstimateList({ isDesignation }: Props) {
             }}
           />
           <OptionSelector estimateId={selectedEstimateId} />
-          {estimateLoading ? (
-            <Loading title="견적서를 불러오고 있어요" />
-          ) : estimateError ? (
-            <div>견적 데이터를 불러오는데 실패했습니다.</div>
-          ) : flattenedEstimates.length === 0 ? (
-            <Empty title="견적서가 존재하지 않아요" />
-          ) : (
-            <CardList
-              mode={isDesignation ? 'designation' : 'general'}
-              category="vet"
-              estimateData={flattenedEstimates}
-              onCardClick={(id: number) =>
-                router.push({
-                  pathname: ROUTES.ESTIMATES_DETAIL(id),
-                  query: { service: 'vet', petId: selectedPetId },
-                })
-              }
-            />
-          )}
+
+          <div css={contentWrapper}>
+            {estimateLoading ? (
+              <Loading title="견적서를 불러오고 있어요" />
+            ) : flattenedEstimates.length === 0 ? (
+              <Empty title="견적서가 존재하지 않아요" />
+            ) : (
+              <>
+                {flattenedEstimates.map((estimate) => (
+                  <CardList
+                    mode={isDesignation ? 'designation' : 'general'}
+                    estimateId={estimate.id}
+                    partnerName={estimate.name}
+                    daengleMeter={estimate.daengleMeter}
+                    name=""
+                    reservedDate={estimate.reservedDate}
+                    badges={estimate.badges.map((badge) => VET_BADGES[badge])}
+                    imageUrl={estimate.imageUrl}
+                    onCardClick={(id: number) =>
+                      router.push({
+                        pathname: ROUTES.ESTIMATES_DETAIL(id),
+                        query: { service: 'vet', petId: selectedPetId },
+                      })
+                    }
+                  />
+                ))}
+              </>
+            )}
+          </div>
+
           <div ref={loadMoreRef} css={bottom} />
         </>
       )}
-    </>
+    </div>
   );
 }

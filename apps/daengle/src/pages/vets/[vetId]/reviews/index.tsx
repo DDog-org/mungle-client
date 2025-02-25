@@ -39,6 +39,7 @@ export default function VetReviews() {
                   starRating,
                   content,
                   imageUrlList,
+                  createdAt,
                 }) => (
                   <Card
                     key={careReviewId}
@@ -51,6 +52,7 @@ export default function VetReviews() {
                     starRating={starRating}
                     content={content}
                     imageUrlList={imageUrlList}
+                    createdAt={createdAt}
                   />
                 )
               )

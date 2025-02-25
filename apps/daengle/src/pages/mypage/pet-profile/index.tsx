@@ -1,3 +1,7 @@
+import { useState } from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { css } from '@emotion/react';
 import {
   AppBar,
   ChipRadio,
@@ -9,7 +13,6 @@ import {
   Text,
   theme,
 } from '@daengle/design-system';
-import { css } from '@emotion/react';
 import {
   BIRTH_YEAR_OPTIONS,
   PET_DISLIKE_PARTS,
@@ -18,40 +21,20 @@ import {
   PET_SIGNIFICANT_TAGS,
   PET_WEIGHT,
 } from '~/constants';
-import { useGetBreedListQuery, useGetUserPetInfoQuery } from '~/queries';
-import { useEffect, useState } from 'react';
-import { PetProfile } from '~/models/auth';
-import router from 'next/router';
 import { ROUTES } from '~/constants/commons';
-import { ProfileSelector } from '~/components/estimate';
-import { Loading } from '~/components/commons';
+import { useGetBreedListQuery, useGetUserPetInfoQuery } from '~/queries';
+import { DefaultImage } from '@daengle/design-system/icons';
 
 export default function PetProfileDetail() {
-  const [petInfos, setPetInfos] = useState<PetProfile[] | null>(null);
-  const [selectedPetId, setSelectedPetId] = useState<number>(0);
+  const router = useRouter();
+  const [selectedPetId, setSelectedPetId] = useState<number>(Number(router.query.petId));
+
   const { data: breeds } = useGetBreedListQuery();
-  const { data: getUserPetInfo, isLoading } = useGetUserPetInfoQuery();
+  const { data: getUserPetInfo } = useGetUserPetInfoQuery();
 
-  const selectedPet = petInfos?.find((pet) => pet.id === selectedPetId);
-
-  const handlePetSelect = (petId: number) => {
-    setSelectedPetId(petId);
-  };
-
-  const handleGoToEdit = () => {
-    router.push(ROUTES.MYPAGE_PET_PROFILE_EDIT);
-  };
-
-  if (isLoading) {
-    return <Loading title="정보를 불러오고 있어요" />;
-  }
-
-  useEffect(() => {
-    if (getUserPetInfo && getUserPetInfo.petDetails) {
-      setPetInfos(getUserPetInfo.petDetails);
-      setSelectedPetId(getUserPetInfo.petDetails[0]?.id || 0);
-    }
-  }, [getUserPetInfo]);
+  const selectedPetInfo = getUserPetInfo?.petDetails?.filter(
+    (pet) => pet.id === selectedPetId
+  )?.[0];
 
   return (
     <Layout isAppBarExist={true}>
@@ -60,41 +43,59 @@ export default function PetProfileDetail() {
         onHomeClick={() => router.push(ROUTES.HOME)}
         backgroundColor={theme.colors.white}
       />
+
       <div css={wrapper}>
         <div css={titleBox}>
           <Text typo="title1">상세보기</Text>
         </div>
+
         <div css={petProfileWrapper}>
           <section css={section}>
             <Text tag="h2" typo="subtitle3" color="black">
               내 아이
             </Text>
+
             <div css={petList}>
-              {petInfos && petInfos?.length > 0 && (
-                <ProfileSelector
-                  petInfos={petInfos.map((item) => ({
-                    petId: item.id,
-                    name: item.name,
-                    imageUrl: item.image,
-                  }))}
-                  selectedPetId={selectedPetId}
-                  onSelectPet={handlePetSelect}
-                />
-              )}
+              {getUserPetInfo?.petDetails.map((pet) => (
+                <div key={pet.id} css={petProfile} onClick={() => setSelectedPetId(pet.id)}>
+                  {pet.image ? (
+                    <Image
+                      src={pet.image}
+                      alt="반려견 프로필"
+                      width={86}
+                      height={86}
+                      css={profileImage({ isSelected: selectedPetId === pet.id })}
+                    />
+                  ) : (
+                    <DefaultImage css={profileImage({ isSelected: selectedPetId === pet.id })} />
+                  )}
+                  <Text typo="body1" color={selectedPetId === pet.id ? 'blue200' : 'gray400'}>
+                    {pet.name}
+                  </Text>
+                </div>
+              ))}
             </div>
           </section>
         </div>
       </div>
+
       <div css={line} />
+
       <section css={inputWrapper}>
         <div css={readOnlyLayer} />
-        <Input label="이름" readOnly value={selectedPet?.name} />
+        <Input label="이름" readOnly value={selectedPetInfo?.name} />
+
         <section css={formBox}>
           <Text typo="subtitle3" color="black">
             탄생년도
           </Text>
-          <Select options={BIRTH_YEAR_OPTIONS} placeholder="탄생년도" value={selectedPet?.birth} />
+          <Select
+            options={BIRTH_YEAR_OPTIONS}
+            placeholder="탄생년도"
+            value={selectedPetInfo?.birth}
+          />
         </section>
+
         <section css={formBox}>
           <Text typo="subtitle3">성별</Text>
           <section css={toggleButtonBox}>
@@ -104,11 +105,12 @@ export default function PetProfileDetail() {
                 value={gender.value}
                 label={gender.label}
                 size="full"
-                isSelected={selectedPet?.gender === gender.value}
+                isSelected={selectedPetInfo?.gender === gender.value}
               />
             ))}
           </section>
         </section>
+
         <section css={formBox}>
           <Text typo="subtitle3">중성화</Text>
           <section css={toggleButtonBox}>
@@ -118,11 +120,12 @@ export default function PetProfileDetail() {
                 value={item.value}
                 label={item.label}
                 size="full"
-                isSelected={String(selectedPet?.isNeutered) === item.value}
+                isSelected={String(selectedPetInfo?.isNeutered) === item.value}
               />
             ))}
           </section>
         </section>
+
         <section css={formBox}>
           <Text typo="subtitle3" color="black">
             품종
@@ -130,9 +133,10 @@ export default function PetProfileDetail() {
           <Select
             options={breeds?.map((breed) => ({ value: breed.breed, label: breed.breedName })) ?? []}
             placeholder="품종"
-            value={selectedPet?.breed}
+            value={selectedPetInfo?.breed}
           />
         </section>
+
         <section css={formBox}>
           <Text typo="subtitle3">몸무게</Text>
           <section css={chipToggleButtonBox}>
@@ -143,7 +147,7 @@ export default function PetProfileDetail() {
                   value={item.value}
                   label={item.label}
                   size="full"
-                  isSelected={selectedPet?.weight === item.value}
+                  isSelected={selectedPetInfo?.weight === item.value}
                 />
                 <Text typo="body12" color="gray200">
                   {item.description}
@@ -152,6 +156,7 @@ export default function PetProfileDetail() {
             ))}
           </section>
         </section>
+
         <section css={formBox}>
           <Text typo="subtitle3">미용 경험</Text>
           <section css={toggleButtonBox}>
@@ -161,11 +166,12 @@ export default function PetProfileDetail() {
                 value={item.value}
                 label={item.label}
                 size="full"
-                isSelected={String(selectedPet?.groomingExperience) === item.value}
+                isSelected={String(selectedPetInfo?.groomingExperience) === item.value}
               />
             ))}
           </section>
         </section>
+
         <section css={formBox}>
           <Text typo="subtitle3">입질</Text>
           <section css={toggleButtonBox}>
@@ -175,7 +181,7 @@ export default function PetProfileDetail() {
                 value={item.value}
                 label={item.label}
                 size="full"
-                isSelected={String(selectedPet?.isBite) === item.value}
+                isSelected={String(selectedPetInfo?.isBite) === item.value}
               />
             ))}
           </section>
@@ -184,7 +190,7 @@ export default function PetProfileDetail() {
           <Text typo="subtitle3">싫어하는 부위</Text>
           <section css={selectChipButtonBox}>
             {PET_DISLIKE_PARTS.map((item) => {
-              const selectedParts = selectedPet?.dislikeParts;
+              const selectedParts = selectedPetInfo?.dislikeParts;
               const isSelected = selectedParts?.map((part) => part.part).includes(item.value);
 
               return (
@@ -203,7 +209,7 @@ export default function PetProfileDetail() {
                 <ChipToggleButton
                   key={item.value}
                   size="full"
-                  isSelected={selectedPet?.significantTags.some(
+                  isSelected={selectedPetInfo?.significantTags.some(
                     (tag: { tag: string }) => tag.tag === item.value
                   )}
                 >
@@ -211,34 +217,44 @@ export default function PetProfileDetail() {
                 </ChipToggleButton>
               ))}
             </section>
-            <textarea
-              css={detailInput}
-              placeholder="특이사항이 있다면 입력해주세요"
-              readOnly
-              value={selectedPet?.significant}
-            />
+
+            {selectedPetInfo?.significant && (
+              <textarea
+                css={detailInput}
+                placeholder="특이사항이 있다면 입력해 주세요"
+                readOnly
+                value={selectedPetInfo?.significant}
+              />
+            )}
           </section>
         </section>
-        <CTAButton onClick={handleGoToEdit}>반려견 프로필 수정</CTAButton>
+
+        <CTAButton onClick={() => router.push(ROUTES.MYPAGE_PET_PROFILE_EDIT)}>
+          반려견 프로필 수정
+        </CTAButton>
       </section>
     </Layout>
   );
 }
+
 const wrapper = css`
   position: relative;
 
   padding: 18px 18px 0;
 `;
-// pet profile css
+
+const petList = css`
+  display: flex;
+  gap: 14px;
+  overflow-x: scroll;
+`;
+
 const section = css`
   display: flex;
   flex-direction: column;
   gap: 15px;
 `;
-const petList = css`
-  display: flex;
-  gap: 14px;
-`;
+
 const petProfile = css`
   display: flex;
   flex-direction: column;
@@ -247,6 +263,7 @@ const petProfile = css`
 
   cursor: pointer;
 `;
+
 const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
   width: 86px;
   height: 86px;
@@ -257,11 +274,11 @@ const profileImage = ({ isSelected }: { isSelected: boolean }) => css`
 
   transition: border 0.2s ease;
 `;
-const petName = css`
-  transition: 0.2s ease;
-`;
+
 const readOnlyLayer = css`
   position: absolute;
+  top: 0;
+  left: 0;
   z-index: ${theme.zIndex.ctaButton - 1};
 
   width: 100%;
@@ -272,20 +289,24 @@ const readOnlyLayer = css`
   cursor: not-allowed;
   pointer-events: all;
 `;
+
 const titleBox = css`
   margin: 0 0 40px;
 `;
+
 const petProfileWrapper = css`
   display: flex;
   flex-direction: column;
   gap: 15px;
 `;
+
 const line = css`
   width: 100%;
   height: 7px;
   margin: 32px 0;
   border: 3.5px solid ${theme.colors.gray100};
 `;
+
 const inputWrapper = css`
   display: flex;
   flex-direction: column;
@@ -332,6 +353,7 @@ const detailInput = css`
     color: ${theme.colors.gray200};
   }
 `;
+
 const weightWrapper = css`
   display: flex;
   flex-direction: column;

@@ -31,6 +31,7 @@ export interface UserEstimateGeneralCareType {
 export interface UserEstimateGroomingDetailData {
   groomingEstimateId: number;
   groomerId: number;
+  accountId: number;
   imageUrl: string;
   name: string;
   shopId: number;
@@ -48,6 +49,7 @@ export interface UserEstimateGroomingDetailData {
 export interface UserEstimateCareDetailData {
   careEstimateId: number;
   vetId: number;
+  accountId: number;
   imageUrl: string;
   name: string;
   daengleMeter: number;
@@ -68,7 +70,7 @@ export interface GeneralVetEstimateDefaultUserData {
 }
 
 export interface UserEstimateCareForm {
-  vetId: number;
+  vetId: number | null;
   petId: number | null;
   address: string;
   reservedDate: string;
@@ -81,6 +83,5 @@ export interface UserEstimateGroomingForm {
   petId: number | null;
   address: string;
   reservedDate: string;
-  desiredStyle: string;
   requirements: string;
 }

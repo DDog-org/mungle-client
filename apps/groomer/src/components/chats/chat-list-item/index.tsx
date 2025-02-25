@@ -1,7 +1,15 @@
 import { Text } from '@daengle/design-system';
 import { ChatItemMenu, DefaultImage } from '@daengle/design-system/icons';
 import { formatLastSendTime } from '@daengle/services/utils';
-import { chatItem, chatItemText, chatMenu, fab, fabWrapper, wrapper } from './index.styles';
+import {
+  chatItem,
+  chatItemText,
+  chatMenu,
+  fab,
+  fabWrapper,
+  timeWrapper,
+  wrapper,
+} from './index.styles';
 import { useState, useEffect, useRef } from 'react';
 import { useDeleteChatDeleteMutation } from '~/queries';
 
@@ -57,8 +65,8 @@ export function ChatListItem({
       <div css={chatMenu}>
         <div css={fabWrapper} ref={fabRef}>
           <ChatItemMenu
-            width={12}
-            height={3}
+            width={32}
+            height={32}
             cursor="pointer"
             onClick={(e) => {
               e.stopPropagation();
@@ -81,7 +89,7 @@ export function ChatListItem({
           )}
         </div>
 
-        <Text typo="body11" color="gray300">
+        <Text typo="body11" color="gray300" css={timeWrapper}>
           {formatLastSendTime(messageTime)}
         </Text>
       </div>

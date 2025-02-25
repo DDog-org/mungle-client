@@ -76,15 +76,16 @@ export interface GetUserGroomerReviewListResponse {
 }
 
 export interface GetUserGroomerReviewList {
-  reviewerName: string;
-  reviewerImageUrl: string | null;
   groomingReviewId: number;
   groomerId: number;
   groomingKeywordList: (keyof typeof GROOMER_REVIEW_KEYWORDS)[];
+  reviewerName: string;
+  reviewerImageUrl: string | null;
   revieweeName: string;
+  createdAt: string;
   starRating: StarRating;
   content: string | null;
-  imageUrlList: string[] | null;
+  imageUrlList: string[];
 }
 
 export interface GetUserVetReviewListRequestParams {
@@ -110,6 +111,7 @@ export interface GetUserVetReviewList {
   starRating: StarRating;
   content: string | null;
   imageUrlList: string[] | null;
+  createdAt: string;
 }
 export interface GetUserReservationReviewParams {
   reservationId: number;

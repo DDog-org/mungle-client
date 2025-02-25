@@ -1,4 +1,5 @@
-import router from 'next/router';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { css } from '@emotion/react';
 import { useForm } from 'react-hook-form';
 import {
@@ -10,6 +11,7 @@ import {
   Text,
   theme,
   useToast,
+  ImageInputBox,
 } from '@daengle/design-system';
 import { useS3 } from '@daengle/services/hooks';
 import {
@@ -20,11 +22,10 @@ import {
 import { UserProfileInfoEditForm } from '~/interfaces';
 import { useValidateUserNickname } from '~/hooks';
 import { ROUTES } from '~/constants';
-import { ImageInputBox } from '~/components/mypage';
-import { DevTool } from '@hookform/devtools';
-import { useEffect } from 'react';
+import { convertURLToFile } from '@daengle/services/utils';
 
 export default function EditProfile() {
+  const router = useRouter();
   const { showToast } = useToast();
 
   const { data: userInfo } = useGetUserProfileInfoQuery();
@@ -39,7 +40,6 @@ export default function EditProfile() {
     register,
     setError,
     setValue,
-    control,
     clearErrors,
     formState: { errors, isValid },
   } = useForm<UserProfileInfoEditForm>({
@@ -53,23 +53,25 @@ export default function EditProfile() {
   const checkIsAvailableNickname = async () => {
     const nickname = watch('nickname');
 
-    if (!nickname) {
-      setError('nickname', { message: '닉네임을 입력해 주세요' });
-      setValue('isAvailableNickname', false);
+    const isSameNickname = nickname === userInfo?.nickname;
+    if (isSameNickname) return;
+
+    if (nickname.length < 2) {
+      setError('nickname', { message: '닉네임은 2글자 이상 작성해 주세요' });
       return;
     }
 
-    if (nickname.length < 2 || nickname.length > 10) {
-      setError('nickname', { message: '닉네임은 2글자 이상 10글자 미만으로 작성해 주세요' });
-      setValue('isAvailableNickname', false);
+    if (nickname.length > 10) {
+      setError('nickname', { message: '닉네임은 10글자 미만으로 작성해 주세요' });
       return;
     }
 
     const response = await postAvailableNickname({ nickname });
+
     if (response.isAvailable) {
       setValue('isAvailableNickname', true);
     } else {
-      setError('nickname', { message: '이미 사용 중인 닉네임입니다.' });
+      !isSameNickname && setError('nickname', { message: '이미 사용 중인 닉네임이에요' });
       setValue('isAvailableNickname', false);
     }
   };
@@ -130,8 +132,8 @@ export default function EditProfile() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div css={profileImageWrapper}>
             <ImageInputBox
+              defaultValue={userInfo?.image!}
               onChange={(files) => setValue('image', files, { shouldValidate: true })}
-              defaultValue={userInfo?.image || ''}
             />
           </div>
 
@@ -151,7 +153,11 @@ export default function EditProfile() {
                   onChange: handleNicknameChange,
                 })}
                 errorMessage={errors.nickname?.message}
-                confirmMessage={watch('isAvailableNickname') ? '사용 가능한 닉네임입니다.' : ''}
+                confirmMessage={
+                  watch('nickname') !== userInfo?.nickname && watch('isAvailableNickname')
+                    ? '사용 가능한 닉네임입니다.'
+                    : ''
+                }
               />
             </li>
             <li css={readOnlyTextBox}>
@@ -187,14 +193,14 @@ export default function EditProfile() {
           </CTAButton>
         </form>
       </section>
-
-      <DevTool control={control} />
     </Layout>
   );
 }
 
 export const wrapper = css`
-  padding: 18px;
+  overflow-y: auto;
+
+  padding: 18px 18px calc(${theme.size.ctaButtonHeight} + 18px) 18px;
 `;
 
 export const profileImageWrapper = css`

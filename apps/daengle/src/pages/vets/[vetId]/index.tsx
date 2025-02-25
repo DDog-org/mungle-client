@@ -1,7 +1,6 @@
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { css } from '@emotion/react';
-import { AppBar, Layout, RoundButton, Text, theme } from '@daengle/design-system';
+import { AppBar, Dim, Layout, RoundButton, Text, theme, useDialog } from '@daengle/design-system';
 import { VetDefaultImage } from '@daengle/design-system/images';
 import {
   ButtonTextButtonArrow,
@@ -12,10 +11,11 @@ import {
   Paw,
   ToolTip,
 } from '@daengle/design-system/icons';
-import { DAY_OFF, ROUTES } from '~/constants';
-import { useGetChatStartQuery, useGetUserVetDetailQuery } from '~/queries';
-import { useState } from 'react';
+import { ROUTES, VET_BADGES } from '~/constants';
+import { useGetChatStartQuery, useGetUserValidateQuery } from '~/queries';
 import { GetUserVetDetailResponse } from '~/models';
+import { formatDayOff } from '@daengle/services/utils';
+import { useEffect, useState } from 'react';
 
 interface Props {
   vetInfo: GetUserVetDetailResponse;
@@ -24,20 +24,39 @@ interface Props {
 export default function VetInfo({ vetInfo }: Props) {
   const router = useRouter();
 
-  console.log(vetInfo);
-  const [isStartChat, setIsStartChat] = useState<boolean>(false);
+  const [isChatStart, setIsChatStart] = useState<boolean>(false);
+  const { open } = useDialog();
 
   const { data: chatStartInfo } = useGetChatStartQuery({
-    params: { otherId: Number(vetInfo.vetAccountId) },
-    enable: isStartChat,
+    params: { otherId: vetInfo.vetAccountId },
+    enabled: isChatStart,
   });
+
+  const { data: isValidUser } = useGetUserValidateQuery();
+
+  useEffect(() => {
+    if (isChatStart && chatStartInfo) {
+      router.push({
+        pathname: ROUTES.CHATS_DETAIL(chatStartInfo.chatRoomId),
+        query: { otherId: Number(vetInfo.vetAccountId), service: 'vet' },
+      });
+
+      setIsChatStart(false);
+    }
+  }, [isChatStart, chatStartInfo]);
 
   return (
     <Layout isAppBarExist={false}>
-      <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
+      <AppBar
+        onBackClick={router.back}
+        onHomeClick={() => router.push(ROUTES.HOME)}
+        isWhite={true}
+      />
 
       <div css={wrapper}>
         <div css={imageSection}>
+          <Dim />
+
           {vetInfo?.vetImage ? (
             <img src={vetInfo.vetImage} alt="동물병원 이미지" />
           ) : (
@@ -49,13 +68,11 @@ export default function VetInfo({ vetInfo }: Props) {
           </Text>
 
           <div css={tags}>
-            {/*  TODO: 뱃지 나오면 연동 */}
-            <Text typo="body12" color="white" css={tag}>
-              #대형견
-            </Text>
-            <Text typo="body12" color="white" css={tag}>
-              #노견
-            </Text>
+            {vetInfo.badges.map((badge) => (
+              <Text typo="body12" color="white" css={tag}>
+                #{VET_BADGES[badge]}
+              </Text>
+            ))}
           </div>
         </div>
 
@@ -65,11 +82,7 @@ export default function VetInfo({ vetInfo }: Props) {
               <div css={time}>
                 <DetailTime width={20} />
                 <Text typo="body9">
-                  {vetInfo?.closedDay
-                    ? `${vetInfo?.startTime?.substring(0, 5)} - ${vetInfo?.endTime?.substring(0, 5)} ${vetInfo?.closedDay
-                        .map((day) => DAY_OFF.find((item) => item.value === day)?.label || day)
-                        .join(', ')} 휴무`
-                    : `매일 ${vetInfo?.startTime?.substring(0, 5)} - ${vetInfo?.endTime?.substring(0, 5)}`}
+                  {formatDayOff(vetInfo.closedDay, vetInfo.startTime, vetInfo.endTime)}
                 </Text>
               </div>
               <div css={call}>
@@ -83,7 +96,13 @@ export default function VetInfo({ vetInfo }: Props) {
             </section>
             <section css={infoText}>
               <Text typo="body1">소개</Text>
-              <Text typo="body10">{vetInfo?.introduction}</Text>
+              {vetInfo?.introduction ? (
+                <Text typo="body10">{vetInfo?.introduction}</Text>
+              ) : (
+                <Text typo="body10" color="gray500">
+                  아직 작성된 소개글이 없어요
+                </Text>
+              )}
             </section>
             <section css={daengleMeter}>
               <div css={textBox}>
@@ -113,22 +132,36 @@ export default function VetInfo({ vetInfo }: Props) {
             <div css={button}>
               <RoundButton
                 fullWidth={true}
-                onClick={() => router.push(ROUTES.ESTIMATES_VET(vetInfo.vetAccountId))}
+                disabled={!isValidUser?.isValidateMember}
+                onClick={
+                  isValidUser?.isValidateMember
+                    ? () => router.push(ROUTES.ESTIMATES_VET(vetInfo.vetAccountId))
+                    : () =>
+                        open({
+                          title: '로그인 후 이용해 주세요',
+                          primaryActionLabel: '로그인 하기',
+                          onPrimaryAction: () => router.replace(ROUTES.LOGIN),
+                          secondaryActionLabel: '닫기',
+                        })
+                }
               >
                 바로 예약
               </RoundButton>
               <RoundButton
                 fullWidth={true}
                 variant="primaryLow"
-                onClick={() => {
-                  setIsStartChat(true);
-
-                  chatStartInfo?.chatRoomId &&
-                    router.push({
-                      pathname: ROUTES.CHATS_DETAIL(chatStartInfo?.chatRoomId),
-                      query: { otherId: vetInfo.vetAccountId, service: 'vet' },
-                    });
-                }}
+                disabled={!isValidUser?.isValidateMember}
+                onClick={
+                  isValidUser?.isValidateMember
+                    ? () => setIsChatStart(true)
+                    : () =>
+                        open({
+                          title: '로그인 후 이용해 주세요',
+                          primaryActionLabel: '로그인 하기',
+                          onPrimaryAction: () => router.replace(ROUTES.LOGIN),
+                          secondaryActionLabel: '닫기',
+                        })
+                }
               >
                 채팅하기
               </RoundButton>
@@ -138,10 +171,19 @@ export default function VetInfo({ vetInfo }: Props) {
             <div
               css={menu}
               onClick={() =>
-                router.push({
-                  pathname: ROUTES.VETS_REVIEWS(vetInfo.vetAccountId),
-                  query: { otherId: vetInfo.vetAccountId, service: 'vet' },
-                })
+                isValidUser?.isValidateMember
+                  ? () => setIsChatStart(true)
+                  : () =>
+                      open({
+                        title: '로그인 후 이용해 주세요',
+                        primaryActionLabel: '로그인 하기',
+                        onPrimaryAction: () =>
+                          router.push({
+                            pathname: ROUTES.VETS_REVIEWS(vetInfo.vetAccountId),
+                            query: { otherId: vetInfo.vetAccountId, service: 'vet' },
+                          }),
+                        secondaryActionLabel: '닫기',
+                      })
               }
             >
               <div css={review}>
@@ -182,8 +224,7 @@ const imageSection = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 0;
+  position: relative;
 
   width: 100%;
   height: 416px;
@@ -202,6 +243,7 @@ const vetName = css`
   bottom: 150px;
   left: 50%;
   transform: translate(-50%);
+  z-index: ${theme.zIndex.overlay + 1};
 `;
 
 const tags = css`
@@ -211,6 +253,7 @@ const tags = css`
   bottom: 120px;
   left: 50%;
   transform: translate(-50%);
+  z-index: ${theme.zIndex.overlay + 1};
 `;
 
 const tag = css`
@@ -230,8 +273,8 @@ const infoBox = css`
   flex-direction: column;
   flex: 1;
   position: absolute;
-  top: 376px;
-  z-index: 2;
+  top: 320px;
+  z-index: ${theme.zIndex.overlay + 1};
 
   width: 100%;
   border-radius: 20px 20px 0 0;

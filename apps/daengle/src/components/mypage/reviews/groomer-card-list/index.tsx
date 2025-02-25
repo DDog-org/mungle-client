@@ -53,6 +53,7 @@ export function GroomerCardList() {
             )
           ) : (
             <Empty
+              key="empty"
               title="작성한 리뷰가 없어요"
               actionLabel="리뷰 작성하기"
               onActionButtonClick={() => router.push(ROUTES.MYPAGE_PAYMENTS)}

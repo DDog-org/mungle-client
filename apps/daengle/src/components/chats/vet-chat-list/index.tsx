@@ -7,6 +7,8 @@ import { Loading } from '~/components/commons';
 
 export function VetChatList() {
   const router = useRouter();
+  const { open } = useDialog();
+
   const {
     data: chats,
     refetch: refetchRoomList,
@@ -17,7 +19,12 @@ export function VetChatList() {
   if (isLoading) return <Loading title="채팅 내역을 불러오고 있어요" />;
 
   if (isError) {
-    alert('로그인 후 이용해 주세요');
+    open({
+      title: '로그인 후 이용해 주세요',
+      primaryActionLabel: '로그인 하기',
+      onPrimaryAction: () => router.replace(ROUTES.LOGIN),
+      secondaryActionLabel: '닫기',
+    });
     router.back();
   }
 
@@ -30,6 +37,7 @@ export function VetChatList() {
           <ChatListItem
             key={chat.roomId}
             roomId={chat.roomId}
+            otherProfile={chat.otherProfile}
             partnerName={chat.otherName}
             lastMessage={chat.lastMessage}
             messageTime={chat.messageTime}

@@ -31,8 +31,17 @@ export const input = ({
   flex: 1;
 
   padding: 6px 0 10px 6px;
+  border-radius: 0;
 
   text-align: left;
+
+  border-bottom: ${errorMessage
+    ? `1px solid ${theme.colors.red200}`
+    : `1px solid ${theme.colors.gray200}`};
+
+  &:focus {
+    border-bottom: 1px solid ${service === 'daengle' ? theme.colors.blue200 : theme.colors.green200};
+  }
 
   ${theme.typo.body8};
 
@@ -53,13 +62,6 @@ export const input = ({
 
   &:disabled {
     color: ${theme.colors.gray300};
-  }
-  border-bottom: ${errorMessage
-    ? `1px solid ${theme.colors.red200}`
-    : `1px solid ${theme.colors.gray200}`};
-
-  &:focus {
-    border-bottom: 1px solid ${service === 'daengle' ? theme.colors.blue200 : theme.colors.green200};
   }
   transition: border-bottom 0.2s ease;
 `;

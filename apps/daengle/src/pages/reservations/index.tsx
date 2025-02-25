@@ -3,6 +3,9 @@ import { css } from '@emotion/react';
 import { Layout, Tabs, Text, theme } from '@daengle/design-system';
 import { GroomerList, VetList } from '~/components/reservations';
 import { GNB } from '~/components/commons';
+import { useEffect, useState } from 'react';
+import { useGetUserValidateQuery } from '~/queries';
+import { ROUTES } from '~/constants';
 
 const TABS = [
   {
@@ -17,6 +20,17 @@ const TABS = [
 
 export default function Reservations() {
   const router = useRouter();
+
+  const { data: isValidUser, isSuccess } = useGetUserValidateQuery();
+
+  useEffect(() => {
+    if (!isValidUser?.isValidateMember && isSuccess) {
+      router.replace(ROUTES.LOGIN);
+    }
+  }, [isSuccess, isValidUser]);
+
+  const [activeTab, setActiveTab] = useState<string>('groomer');
+
   const renderContent = (activeTabId: string) => {
     switch (activeTabId) {
       case 'groomer':
@@ -28,6 +42,18 @@ export default function Reservations() {
     }
   };
 
+  useEffect(() => {
+    const queryTab = router.query.service as string;
+    if (queryTab && TABS.some((tab) => tab.id === queryTab)) {
+      setActiveTab(queryTab);
+    }
+  }, [router.query.tab]);
+
+  const handleTabClick = (tabId: string) => {
+    router.replace({ query: { service: tabId } }, undefined, { shallow: true });
+    setActiveTab(tabId);
+  };
+
   return (
     <Layout isAppBarExist={false}>
       <section css={wrapper}>
@@ -36,7 +62,12 @@ export default function Reservations() {
         </Text>
 
         <div css={content}>
-          <Tabs tabs={TABS} renderContent={renderContent} />
+          <Tabs
+            tabs={TABS}
+            renderContent={renderContent}
+            activeTabId={activeTab}
+            onTabClick={handleTabClick}
+          />
         </div>
         <GNB />
       </section>

@@ -13,7 +13,7 @@ export const wrapper = ({ fullScreen }: { fullScreen?: boolean }) =>
         width: 100%;
         height: 100vh;
 
-        background: ${theme.colors.grayOpacity300};
+        background: ${theme.colors.grayOpacity200};
       `
     : css`
         position: absolute;
@@ -25,5 +25,5 @@ export const wrapper = ({ fullScreen }: { fullScreen?: boolean }) =>
         width: 100%;
         height: 100%;
 
-        background: ${theme.colors.grayOpacity300};
+        background: ${theme.colors.grayOpacity200};
       `;

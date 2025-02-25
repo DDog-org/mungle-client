@@ -1,11 +1,11 @@
 import { AppBar, Empty, Layout, Text, theme } from '@daengle/design-system';
 import { DetailCall, DetailLocation, DetailTime } from '@daengle/design-system/icons';
 import { ShopDefaultImage } from '@daengle/design-system/images';
+import { formatDayOff } from '@daengle/services/utils';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import ProfileCard from '~/components/mypage/profile-card';
 import { ROUTES } from '~/constants';
-import { DAY_OFF } from '~/constants/mypage';
 import { GetGroomerMyPageShopInfoRequestParams } from '~/models/mypage';
 import { useGetGroomerMyPageShopInfoQuery } from '~/queries/mypage';
 
@@ -15,16 +15,16 @@ export default function GroomerMyShopInfo() {
   const getShopId = Number(id);
   const shopParams: GetGroomerMyPageShopInfoRequestParams = { id: getShopId };
 
-  const { data: ShopInfo } = useGetGroomerMyPageShopInfoQuery(shopParams);
+  const { data: shopInfo } = useGetGroomerMyPageShopInfoQuery(shopParams);
 
   return (
     <Layout isAppBarExist={false}>
       <AppBar onBackClick={router.back} onHomeClick={() => router.push(ROUTES.HOME)} />
       <div css={wrapper}>
-        <div css={imageSection(ShopInfo?.imageUrlList[0])}>
-          {ShopInfo?.imageUrlList[0] ? null : <ShopDefaultImage />}
+        <div css={imageSection(shopInfo?.imageUrlList[0])}>
+          {shopInfo?.imageUrlList[0] ? null : <ShopDefaultImage />}
           <Text typo="title2" color="white" css={shopName}>
-            {ShopInfo?.shopName}
+            {shopInfo?.shopName}
           </Text>
         </div>
         <div css={infoBox}>
@@ -33,40 +33,37 @@ export default function GroomerMyShopInfo() {
               <div css={time}>
                 <DetailTime width={20} />
                 <Text typo="body9">
-                  {ShopInfo?.closedDay?.length
-                    ? `${ShopInfo?.startTime.substring(0, 5)} - ${ShopInfo?.endTime.substring(0, 5)} ${ShopInfo?.closedDay
-                        .map((day) => DAY_OFF.find((item) => item.value === day)?.label || day)
-                        .join(', ')} 휴무`
-                    : `매일 ${ShopInfo?.startTime.substring(0, 5)} - ${ShopInfo?.endTime.substring(0, 5)}`}
+                  {shopInfo?.closedDay &&
+                    formatDayOff(shopInfo?.closedDay, shopInfo?.startTime, shopInfo?.endTime)}
                 </Text>
               </div>
               <div css={call}>
                 <DetailCall width={20} />
-                <Text typo="body9">{ShopInfo?.shopNumber}</Text>
+                <Text typo="body9">{shopInfo?.shopNumber}</Text>
               </div>
               <div css={address}>
                 <DetailLocation width={20} />
-                <Text typo="body9">{ShopInfo?.shopAddress}</Text>
+                <Text typo="body9">{shopInfo?.shopAddress}</Text>
               </div>
             </section>
             <div css={line} />
             <section css={infoText}>
               <Text typo="body1">소개</Text>
-              <Text typo="body10">{ShopInfo?.introduction}</Text>
+              <Text typo="body10">{shopInfo?.introduction}</Text>
             </section>
           </section>
           <section css={bottomSection}>
             <div css={textBox}>
               <Text typo="title2">디자이너</Text>
-              <Text typo="title2">{ShopInfo?.groomers.length}</Text>
+              <Text typo="title2">{shopInfo?.groomers.length}</Text>
             </div>
             <section css={groomerList}>
-              {ShopInfo?.groomers.length === 0 ? (
+              {shopInfo?.groomers.length === 0 ? (
                 <div css={emptyBox}>
                   <Empty title="해당 샵에 등록된 디자이너가 없습니다." />
                 </div>
               ) : (
-                ShopInfo?.groomers.map((groomer) => (
+                shopInfo?.groomers.map((groomer) => (
                   <ProfileCard
                     key={groomer.groomerAccountId}
                     groomerName={groomer.groomerName}

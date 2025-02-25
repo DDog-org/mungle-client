@@ -15,14 +15,14 @@ export const Receipt = ({ items }: Props) => {
   return (
     <div css={wrapper}>
       <div css={zigzagContainer}>
-        <div css={zigzag}></div>
+        <div css={zigzag} />
       </div>
-      {items.map((item, index) => (
-        <Content key={index} {...item} />
+      {items.map((item) => (
+        <Content key={item.title} {...item} />
       ))}
-      <div css={space}></div>
+      <div css={space} />
       <div css={zigzagContainer}>
-        <div css={zigzagUpsideDown}></div>
+        <div css={zigzagUpsideDown} />
       </div>
     </div>
   );

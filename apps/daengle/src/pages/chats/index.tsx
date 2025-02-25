@@ -5,6 +5,7 @@ import { GNB } from '~/components/commons';
 import { GroomerChatList, VetChatList } from '~/components/chats';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants';
+import { useGetUserValidateQuery } from '~/queries';
 
 const TABS = [
   {
@@ -19,7 +20,17 @@ const TABS = [
 
 export default function Chats() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState(TABS[0]?.id);
+  const { service } = router.query;
+
+  const { data: isValidUser, isSuccess } = useGetUserValidateQuery();
+
+  useEffect(() => {
+    if (!isValidUser?.isValidateMember && isSuccess) {
+      router.replace(ROUTES.LOGIN);
+    }
+  }, [isSuccess, isValidUser]);
+
+  const [activeTab, setActiveTab] = useState(service ?? TABS[0]?.id);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -40,14 +51,14 @@ export default function Chats() {
   }, []);
 
   useEffect(() => {
-    const queryTab = router.query.tab as string;
+    const queryTab = router.query.service as string;
     if (queryTab && TABS.some((tab) => tab.id === queryTab)) {
       setActiveTab(queryTab);
     }
-  }, [router.query.tab]);
+  }, [router.query.service]);
 
   const handleTabClick = (tabId: string) => {
-    router.push({ query: { tab: tabId } }, undefined, { shallow: true });
+    router.replace({ query: { service: tabId } }, undefined, { shallow: true });
     setActiveTab(tabId);
   };
 
@@ -65,7 +76,7 @@ export default function Chats() {
           <Tabs
             tabs={TABS}
             renderContent={renderContent}
-            activeTabId={activeTab}
+            activeTabId={activeTab as string}
             onTabClick={handleTabClick}
           />
         </div>

@@ -3,7 +3,7 @@ import { GROOMER_SEARCH_TAG, VET_SEARCH_TAG } from '~/constants/search';
 export interface GetUserSearchRequestParams {
   page?: number;
   size?: number;
-  address: string;
+  address: string | undefined;
   keyword: string;
   tag: string;
 }

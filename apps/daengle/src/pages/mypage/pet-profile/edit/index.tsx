@@ -35,13 +35,13 @@ import { PetProfile } from '~/models/auth';
 import { useS3 } from '@daengle/services/hooks';
 import { DefaultImage } from '@daengle/design-system/icons';
 import { PetProfileEditType } from '~/interfaces/auth';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants/commons';
 import { useValidatePetEdit } from '~/hooks';
 import { ImageInputBox } from '~/components/mypage';
-import { convertURLToFile } from '@daengle/services/utils';
 
 export default function PetInfoEdit() {
+  const router = useRouter();
   const [petInfos, setPetInfos] = useState<PetProfile[] | null>(null);
   const [selectedPetId, setSelectedPetId] = useState<number>(0);
 
@@ -94,6 +94,9 @@ export default function PetInfoEdit() {
         setValue('isBite', defaultPet.isBite);
         setValue('dislikeParts', dislikeParts || []);
         setValue('significantTags', significantTags || []);
+        setValue('significant', defaultPet.significant || '');
+
+        console.log('기존 이미지 URL:', defaultPet.image);
       }
     }
   }, [getUserPetInfo, setValue]);
@@ -117,6 +120,7 @@ export default function PetInfoEdit() {
       setValue('isBite', selectedPet.isBite);
       setValue('dislikeParts', dislikeParts);
       setValue('significantTags', significantTags || []);
+      setValue('significant', selectedPet.significant || '');
     }
   };
 
@@ -143,8 +147,12 @@ export default function PetInfoEdit() {
   const onSubmit = async (data: PetProfileEditType) => {
     let imageUrl = '';
 
-    if (getUserPetInfo?.image) {
-      const fileName = getUserPetInfo.image.split('/').pop();
+    const defaultPet = getUserPetInfo?.petDetails[0];
+    const existingImage = defaultPet?.image;
+
+    if (existingImage && data.image) {
+      const fileName = existingImage.split('/').pop();
+
       if (fileName) {
         await deleteFromS3(fileName);
       }
@@ -153,10 +161,10 @@ export default function PetInfoEdit() {
     if (data.image) {
       const uploadedImages = await uploadToS3([data.image]);
       if (uploadedImages && uploadedImages.length > 0) {
-        imageUrl = uploadedImages[0] ?? '';
+        imageUrl = uploadedImages[0] || '';
       }
-    } else {
-      imageUrl = getUserPetInfo?.image || '';
+    } else if (existingImage) {
+      imageUrl = existingImage;
     }
 
     const payload = {
@@ -471,7 +479,7 @@ export default function PetInfoEdit() {
                     <textarea
                       css={detailInput}
                       placeholder="특이사항이 있다면 입력해주세요"
-                      value={field.value}
+                      value={field.value || ''}
                       onChange={field.onChange}
                     />
                   </>

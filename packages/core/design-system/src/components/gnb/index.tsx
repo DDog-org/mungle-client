@@ -9,6 +9,7 @@ interface MenuItem {
     inactive: ReactNode;
   };
   path: string;
+  canGuest: boolean;
 }
 
 interface Props {

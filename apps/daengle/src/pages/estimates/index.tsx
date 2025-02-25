@@ -8,6 +8,7 @@ import { GroomerEstimateList } from '~/components/estimate/groomer-card-list';
 import { VetEstimateList } from '~/components/estimate/vet-card-list';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants';
+import { useGetUserValidateQuery } from '~/queries';
 
 const TABS = [
   {
@@ -28,6 +29,14 @@ const ACTION_SHEET_MENUS = [
 export default function EstimateList() {
   const router = useRouter();
 
+  const { data: isValidUser, isSuccess } = useGetUserValidateQuery();
+
+  useEffect(() => {
+    if (isSuccess && !isValidUser?.isValidateMember) {
+      router.replace(ROUTES.LOGIN);
+    }
+  }, [isSuccess, isValidUser]);
+
   const { isDesignation: isDesignationQuery } = router.query;
   const isDesignation = isDesignationQuery === 'true';
 
@@ -38,7 +47,6 @@ export default function EstimateList() {
     switch (activeTabId) {
       case 'groomer':
         return <GroomerEstimateList isDesignation={isDesignation} />;
-
       case 'vet':
         return <VetEstimateList isDesignation={isDesignation} />;
       default:
@@ -55,10 +63,14 @@ export default function EstimateList() {
     if (queryTab && TABS.some((tab) => tab.id === queryTab)) {
       setActiveTab(queryTab);
     }
-  }, [router.query.serviceb]);
+  }, [router.query.service]);
 
   const handleTabClick = (tabId: string) => {
-    router.push({ query: { service: tabId } }, undefined, { shallow: true });
+    router.replace(
+      { query: { service: tabId, isDesignation: isDesignation ? 'true' : undefined } },
+      undefined,
+      { shallow: true }
+    );
     setActiveTab(tabId);
   };
 

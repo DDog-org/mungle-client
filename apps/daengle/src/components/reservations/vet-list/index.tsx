@@ -9,8 +9,15 @@ export function VetList() {
   const router = useRouter();
   const { data, isError } = useUserReservationCareListQuery();
 
+  const { open } = useDialog();
+
   if (isError) {
-    alert('로그인 후 이용해 주세요');
+    open({
+      title: '로그인 후 이용해 주세요',
+      primaryActionLabel: '로그인 하기',
+      onPrimaryAction: () => router.replace(ROUTES.LOGIN),
+      secondaryActionLabel: '닫기',
+    });
     router.back();
   }
 
@@ -20,5 +27,9 @@ export function VetList() {
     return <Empty title="예약 내역이 없어요" />;
   }
 
-  return <div css={wrapper}>{reservations?.map((item) => <ReservationsCard item={item} />)}</div>;
+  return (
+    <div css={wrapper}>
+      {reservations?.map((item) => <ReservationsCard key={item.estimateId} item={item} />)}
+    </div>
+  );
 }

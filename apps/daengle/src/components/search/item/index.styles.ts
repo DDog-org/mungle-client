@@ -20,10 +20,14 @@ export const profileWrapper = css`
 
   width: 100%;
   height: 100%;
+  border-radius: 120px 120px 0 0;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
 `;
-export const opacity = css`
-  background: ${theme.colors.grayOpacity200};
-`;
+
 export const DetailsWrapper = css`
   display: flex;
   flex-direction: column;
@@ -32,18 +36,12 @@ export const DetailsWrapper = css`
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+  z-index: ${theme.zIndex.overlay + 1};
 
   width: 100%;
   padding: 15px;
 
   color: white;
-`;
-export const imageStyle = css`
-  width: 100%;
-  height: 200px;
-  border-radius: 120px 120px 0 0;
-
-  background-color: ${theme.colors.gray200};
 `;
 
 export const textBox = css`
@@ -55,5 +53,6 @@ export const textBox = css`
 
 export const tags = css`
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
 `;

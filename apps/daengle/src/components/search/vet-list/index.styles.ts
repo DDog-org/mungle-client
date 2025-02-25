@@ -7,8 +7,12 @@ export const wrapper = css`
 export const tag = css`
   display: flex;
   gap: 6px;
+  overflow-x: auto;
 
+  max-width: 100%;
   padding: 14px 18px 24px;
+
+  white-space: nowrap;
 `;
 
 export const itemBox = css`

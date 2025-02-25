@@ -12,6 +12,7 @@ import {
   timeline,
   wrapper,
 } from './index.styles';
+import { useState } from 'react';
 
 interface Reservation {
   reservationId: number;
@@ -27,12 +28,13 @@ interface Props {
   onClick: (reservationId: number) => void;
 }
 
-const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
-  event.currentTarget.onerror = null;
-  event.currentTarget.src = '';
-};
-
 export function ReservationList({ reservations, onClick }: Props) {
+  const [isImageError, setIsImageError] = useState(false);
+
+  const handleImageError = () => {
+    setIsImageError(true);
+  };
+
   return (
     <div css={wrapper}>
       {reservations.length > 0 ? (
@@ -43,12 +45,14 @@ export function ReservationList({ reservations, onClick }: Props) {
               <div css={dot(isLast)}></div>
               <span css={time}>{item.scheduleTime.slice(0, 5)}</span>
               <div css={content} onClick={() => onClick(item.reservationId)}>
-                {item.petProfile ? (
+                {!isImageError && item.petProfile ? (
                   <img
                     src={item.petProfile}
                     alt="profile"
                     css={profileImage}
                     onError={handleImageError}
+                    width={70}
+                    height={70}
                   />
                 ) : (
                   <DefaultProfile css={profileImage} />

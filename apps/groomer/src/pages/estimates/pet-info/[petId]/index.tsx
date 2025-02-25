@@ -5,6 +5,7 @@ import { useGetBreedListQuery, useGetGroomerPetInfoQuery } from '~/queries/reser
 import { ROUTES } from '~/constants/commons';
 import { css } from '@emotion/react';
 import { PetProfileDetail } from '@daengle/services/components';
+import { Loading } from '~/components/commons';
 
 export default function GroomerPetProfileDetail() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function GroomerPetProfileDetail() {
   });
 
   if (breedsLoading || petInfoLoading) {
-    return <div>Loading...</div>;
+    return <Loading title="반려견 정보를 불러오고 있어요" />;
   }
 
   if (isError || !petInfo || !breeds) {

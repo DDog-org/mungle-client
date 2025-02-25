@@ -6,9 +6,25 @@ import './normalize.css';
 const defaultStyles = css`
   @font-face {
     font-family: Pretendard;
-    src: url('../../public/fonts/Pretendard.woff2') format('woff2');
+    src: url('../../fonts/Pretendard-SemiBold.woff2') format('woff2');
 
-    font-weight: normal;
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: Pretendard;
+    src: url('../../fonts/Pretendard-Medium.woff2') format('woff2');
+
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: Pretendard;
+    src: url('../../fonts/Pretendard-Regular.woff2') format('woff2');
+
+    font-weight: 400;
     font-style: normal;
   }
 
@@ -93,6 +109,10 @@ const defaultStyles = css`
 
     background: none;
   }
+
+  img {
+    object-fit: cover;
+  }
 `;
 
 interface Props {
@@ -103,7 +123,9 @@ export default function GlobalStyle({ children }: Props) {
   return (
     <>
       <Global styles={defaultStyles} />
-      <ThemeProvider theme={{ ...theme }}>{children}</ThemeProvider>
+      <ThemeProvider theme={{ ...theme }}>
+        <>{children}</>
+      </ThemeProvider>
     </>
   );
 }

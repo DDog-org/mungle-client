@@ -3,12 +3,6 @@ import { theme } from '@daengle/design-system';
 
 export const wrapper = css`
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-
-export const card = css`
-  display: flex;
   align-items: center;
   justify-content: space-between;
 

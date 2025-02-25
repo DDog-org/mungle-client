@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Text } from '@daengle/design-system';
@@ -18,7 +17,7 @@ export function ReservationItem({ reservation }: Props) {
   return (
     <div css={wrapper} onClick={() => router.push(ROUTES.RESERVATIONS_DETAIL(reservationId))}>
       <Text typo="body5" color="gray600">
-        {dayjs(reservationTime).format('YYYY.MM.DD HH:mm')}
+        {reservationTime.slice(0, 5)}
       </Text>
 
       <div css={info}>

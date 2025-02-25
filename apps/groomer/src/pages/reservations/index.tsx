@@ -6,7 +6,7 @@ import { ReservationList, WeekDateTabs } from '@daengle/services/components';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { ROUTES } from '~/constants';
-import { GNB } from '~/components/commons';
+import { GNB, Loading } from '~/components/commons';
 import { useGetGroomerWeekQuery } from '~/queries/reservation';
 
 const today = dayjs();
@@ -24,7 +24,7 @@ export default function Reservations() {
   const router = useRouter();
 
   const [selectedDate, setSelectedDate] = useState(DATES[0]?.fullDate) || [];
-  const { data, isLoading, isError } = useGetGroomerWeekQuery({ date: selectedDate });
+  const { data, isLoading } = useGetGroomerWeekQuery({ date: selectedDate });
 
   const reservations =
     data?.scheduleList.map((item) => ({
@@ -43,21 +43,7 @@ export default function Reservations() {
           <header css={headerContainer}>
             <Text typo="title1">예약</Text>
           </header>
-          <Text typo="body1">로딩 중...</Text>
-        </div>
-        <GNB />
-      </Layout>
-    );
-  }
-
-  if (isError) {
-    return (
-      <Layout isAppBarExist={false}>
-        <div css={wrapper}>
-          <header css={headerContainer}>
-            <Text typo="title1">예약</Text>
-          </header>
-          <Text typo="body1">데이터를 불러오는 중 오류가 발생했습니다.</Text>
+          <Loading title="예약 내역을 불러오고 있어요" />
         </div>
         <GNB />
       </Layout>
@@ -71,12 +57,16 @@ export default function Reservations() {
           <Text typo="title1">예약</Text>
         </header>
         <WeekDateTabs selectedDate={selectedDate} onSelectDate={setSelectedDate} dates={DATES} />
-        <ReservationList
-          reservations={reservations}
-          onClick={(reservationId: number) =>
-            router.push(ROUTES.RESERVATIONS_DETAIL(reservationId))
-          }
-        />
+        {isLoading ? (
+          <Loading title="예약 내역을 불러오고 있어요" />
+        ) : (
+          <ReservationList
+            reservations={reservations}
+            onClick={(reservationId: number) =>
+              router.push(ROUTES.RESERVATIONS_DETAIL(reservationId))
+            }
+          />
+        )}
       </div>
       <GNB />
     </Layout>
@@ -86,6 +76,7 @@ export default function Reservations() {
 const wrapper = css`
   height: 100vh;
   padding-bottom: 104px;
+
   background-color: ${theme.colors.background};
 `;
 
